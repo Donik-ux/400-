@@ -1,0 +1,313 @@
+@import "tailwindcss";
+
+/* ── Light Theme – Booking.com inspired ── */
+@theme {
+  --color-bg:          #f5f5f5;
+  --color-surface:     #ffffff;
+  --color-surface2:    #f8f9fa;
+  --color-border:      #e7e7e7;
+  --color-border2:     #f0f0f0;
+  --color-text:        #1a1a1a;
+  --color-text-sub:    #595959;
+  --color-text-muted:  #9ca3af;
+  --color-primary:     #003580;
+  --color-primary-deep:#002250;
+  --color-accent:      #0071c2;
+  --color-gold:        #febb02;
+  --color-gold-deep:   #f5b942;
+
+  /* Premium elevation scale (warm-neutral, soft) */
+  --shadow-soft:  0 1px 2px rgba(16,24,40,0.04), 0 2px 6px rgba(16,24,40,0.06);
+  --shadow-float: 0 6px 18px -6px rgba(16,24,40,0.14), 0 12px 36px -12px rgba(16,24,40,0.12);
+  --shadow-lift:  0 14px 40px -12px rgba(0,53,128,0.22), 0 8px 16px -8px rgba(16,24,40,0.10);
+
+  /* Motion */
+  --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+:root {
+  background-color: #f5f5f5;
+  color: #1a1a1a;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
+  scroll-behavior: smooth;
+
+  /* Editorial display serif for headings; Inter stays the UI/body workhorse */
+  --font-display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #f5f5f5;
+  position: relative;
+}
+
+/* Whisper-soft global grain for tactile depth (doesn't touch component colors) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+* { box-sizing: border-box; }
+
+/* ── Editorial headings ── */
+h1, h2, .font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+}
+/* Slightly looser tracking + soft axis on the largest display sizes */
+h1 { letter-spacing: -0.025em; font-variation-settings: 'SOFT' 0, 'opsz' 144; }
+.font-display { font-family: var(--font-display); }
+
+/* Keyboard-only focus ring (doesn't affect mouse clicks) */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,113,194,0.35);
+  border-radius: 6px;
+}
+
+/* ── Transitions ── */
+.transition-premium {
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Premium elevation utilities ── */
+.shadow-soft  { box-shadow: var(--shadow-soft); }
+.shadow-float { box-shadow: var(--shadow-float); }
+.shadow-lift  { box-shadow: var(--shadow-lift); }
+
+/* Smooth hover-raise for any card/button */
+.lift {
+  transition: transform 0.25s var(--ease-premium), box-shadow 0.25s var(--ease-premium);
+  will-change: transform;
+}
+.lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+.lift:active { transform: translateY(-1px); }
+
+/* Premium gold CTA — matches the navbar gradient */
+.btn-gold {
+  background: linear-gradient(135deg, #febb02 0%, #f5b942 55%, #e0a435 100%);
+  color: #1a1a1a;
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-premium), box-shadow 0.2s var(--ease-premium);
+  box-shadow: 0 4px 14px rgba(245,185,66,0.35);
+}
+.btn-gold:hover  { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(245,185,66,0.5); }
+.btn-gold:active { transform: scale(0.98); }
+
+/* Hairline dividers */
+.hairline       { height: 1px; background: linear-gradient(to right, transparent, rgba(16,24,40,0.10), transparent); }
+.hairline-gold  { height: 1px; background: linear-gradient(to right, transparent, rgba(245,185,66,0.45), transparent); }
+
+/* Dark glass (navy surfaces) */
+.glass-dark {
+  background: rgba(0, 34, 80, 0.72);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+}
+
+/* Animated shimmer for skeletons / "loading" accents */
+@keyframes shimmer {
+  0%   { background-position: -480px 0; }
+  100% { background-position: 480px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #eef2f6 25%, #f6f9fc 50%, #eef2f6 75%);
+  background-size: 960px 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* Slow float for hero accents */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.animate-float { animation: floatY 6s ease-in-out infinite; }
+
+/* Slow Ken-Burns zoom for the Flights hero background photo */
+@keyframes heroZoom {
+  0%   { transform: scale(1.05) translateY(0); }
+  100% { transform: scale(1.12) translateY(-10px); }
+}
+
+/* Gentle drift for ambient mesh glows */
+@keyframes meshDrift {
+  0%, 100% { transform: translate3d(0,0,0); }
+  50%      { transform: translate3d(2%, -2%, 0); }
+}
+
+/* ── Atmosphere: living aurora mesh for navy hero surfaces ── */
+.aurora-bg {
+  background:
+    radial-gradient(42% 55% at 12% 18%, rgba(0,113,194,0.55) 0%, transparent 70%),
+    radial-gradient(38% 48% at 88% 26%, rgba(245,185,66,0.22) 0%, transparent 68%),
+    radial-gradient(55% 65% at 62% 96%, rgba(0,63,150,0.55) 0%, transparent 72%),
+    radial-gradient(40% 50% at 30% 80%, rgba(0,149,210,0.30) 0%, transparent 70%),
+    linear-gradient(160deg, #001a3d 0%, #002a63 48%, #003f96 100%);
+  background-size: 180% 180%;
+  animation: auroraShift 22s ease-in-out infinite;
+}
+@keyframes auroraShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* Film-grain overlay — drop as an absolutely-positioned child inside a relative hero */
+.film-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* Fine top-light sheen for premium dark panels */
+.sheen-top {
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent 30%);
+}
+
+/* ── Cards ── */
+.card-hover {
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Page fade-in ── */
+.page-fade {
+  animation: pageFade 0.35s ease both;
+}
+@keyframes pageFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ── Stagger delays ── */
+.stagger-1 { animation-delay: 0.04s; }
+.stagger-2 { animation-delay: 0.08s; }
+.stagger-3 { animation-delay: 0.12s; }
+.stagger-4 { animation-delay: 0.16s; }
+.stagger-5 { animation-delay: 0.20s; }
+.stagger-6 { animation-delay: 0.24s; }
+
+/* ── Blue gradient text ── */
+.text-gradient {
+  background: linear-gradient(135deg, #003580 0%, #0071c2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Gold gradient text (premium accents) ── */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #febb02 0%, #f5b942 50%, #e0a435 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f5f5f5; }
+::-webkit-scrollbar-thumb { background: #c9d1d9; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #959ea6; }
+
+/* ── Date input ── */
+input[type='date']::-webkit-calendar-picker-indicator {
+  filter: none;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+/* ── Number input ── */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
+
+/* ── Input base ── */
+.inp {
+  width: 100%;
+  background: white;
+  border: 1.5px solid #e7e7e7;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.18s;
+}
+.inp:focus   { border-color: #0071c2; box-shadow: 0 0 0 3px rgba(0,113,194,0.1); }
+.inp::placeholder { color: #b0b0b0; }
+.inp.err     { border-color: #ef4444; }
+
+/* ── Primary button ── */
+.btn-primary {
+  background: #0071c2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-primary:hover  { background: #005fa3; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,113,194,0.3); }
+.btn-primary:active { transform: scale(0.98); }
+
+/* ── White card ── */
+.wcard {
+  background: white;
+  border: 1px solid #e7e7e7;
+  border-radius: 12px;
+}
+
+/* ── Custom Animations ── */
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-bounce-slow {
+  animation: bounceSlow 3s ease-in-out infinite;
+}
+
+/* ── Glassmorphism ── */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* ── Print styles for PDF ── */
+@media print {
+  body * { visibility: hidden; }
+  #print-plan, #print-plan * { visibility: visible; }
+  #print-plan { position: fixed; top: 0; left: 0; width: 100%; background: white; padding: 20px; }
+  .no-print { display: none !important; }
+}
+
+/* ── Respect reduced-motion preference ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

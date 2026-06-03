@@ -154,12 +154,6 @@ export default function Login() {
             {t('auth.login.guest')}
           </button>
         </div>
-
-        <div className="mt-4 p-3 bg-white border border-[#e7e7e7] rounded-xl text-center shadow-soft">
-          <p className="text-[#c9d1d9] text-xs">
-            {t('auth.login.adminLabel')} <span className="text-[#9ca3af]">admin@maftravel.com</span> / <span className="text-[#9ca3af]">Admin@2026</span>
-          </p>
-        </div>
       </div>
       </div>
     </div>

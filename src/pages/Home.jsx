@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Plane, Hotel, Package, Car, Search, MapPin, Calendar, Users, ArrowRight,
+  Plane, Hotel, Search, MapPin, Calendar, Users, ArrowRight,
   Flame, Sparkles, Star, Shield, Headphones, BadgePercent, Globe,
   TrendingUp, Heart, Mountain, Waves, Building2, Compass, Clock, Wand2, Wallet,
   ChevronRight, Award, ThumbsUp, Check, Mail, FileText, Download,
@@ -17,6 +17,9 @@ import { heroFor } from '../utils/destinationImages';
 import { toast } from '../components/Toast';
 import SmartImage from '../components/SmartImage';
 import BudgetAdvisory from '../components/BudgetAdvisory';
+import CityAutocomplete from '../features/flights/CityAutocomplete';
+import WeatherWidget from '../components/WeatherWidget';
+import DestinationMap from '../components/DestinationMap';
 
 /* ── Static showcases ─────────────────────────────────────────────── */
 const TRENDING = [
@@ -58,8 +61,6 @@ const Home = () => {
 
   // search widget state
   const [tab, setTab]         = useState('tours');
-  const [from, setFrom]       = useState('Dubai (DXB)');
-  const [to, setTo]           = useState('');
   const [dest, setDest]       = useState('');
   const [checkin, setCheckin] = useState('');
   const [checkout, setCheckout] = useState('');
@@ -88,9 +89,7 @@ const Home = () => {
 
   const submit = (e) => {
     e?.preventDefault?.();
-    if (tab === 'flights') navigate('/flights');
-    else if (tab === 'tours' || tab === 'packages') navigate('/hot-tours');
-    else if (tab === 'stays') navigate('/exotic-tours');
+    if (tab === 'tours') navigate('/hot-tours');
     else if (tab === 'ai') {
       // Clamp values so the API never gets garbage
       const rawBalance = Number(aiBalance);
@@ -181,27 +180,14 @@ const Home = () => {
           className="relative max-w-6xl mx-auto px-4 md:px-8 -mb-24 md:-mb-28">
           <div className="bg-white rounded-2xl shadow-float border border-[#febb02]/50 ring-4 ring-[#febb02]/20">
             <div className="flex items-center gap-1 px-2 pt-2 overflow-x-auto">
-              <Tab active={tab === 'tours'}    onClick={() => setTab('tours')}    icon={<Package className="w-4 h-4" />} label={t('homePage.tabs.tours')} />
-              <Tab active={tab === 'flights'}  onClick={() => setTab('flights')}  icon={<Plane className="w-4 h-4" />}   label={t('homePage.tabs.flights')} />
-              <Tab active={tab === 'stays'}    onClick={() => setTab('stays')}    icon={<Hotel className="w-4 h-4" />}   label={t('homePage.tabs.stays')} />
+              <Tab active={tab === 'tours'}    onClick={() => setTab('tours')}    icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.tours')} />
               <Tab active={tab === 'ai'}       onClick={() => setTab('ai')}       icon={<Sparkles className="w-4 h-4" />} label={t('homePage.tabs.ai')} highlight newLabel={t('homePage.tabs.newBadge')} />
-              <Tab active={tab === 'cars'}     onClick={() => setTab('cars')}     icon={<Car className="w-4 h-4" />}     label={t('homePage.tabs.cars')} />
             </div>
 
             <form onSubmit={submit} className="p-3 md:p-4">
-              {tab === 'flights' && (
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-1">
-                  <SearchInput className="md:col-span-3" icon={<Plane className="w-4 h-4" />} label={t('homePage.search.from')} placeholder="Dubai (DXB)" value={from} onChange={setFrom} />
-                  <SearchInput className="md:col-span-3" icon={<Plane className="w-4 h-4 rotate-90" />} label={t('homePage.search.to')} placeholder="Maldives (MLE)" value={to} onChange={setTo} />
-                  <SearchInput className="md:col-span-3" icon={<Calendar className="w-4 h-4" />} label={t('homePage.search.departure')} type="date" value={checkin} onChange={setCheckin} />
-                  <SearchInput className="md:col-span-2" icon={<Users className="w-4 h-4" />} label={t('homePage.search.travelers')} type="number" value={travelers} onChange={setTravelers} />
-                  <SearchButton className="md:col-span-1" label={t('homePage.common.search')} />
-                </div>
-              )}
-
               {tab === 'tours' && (
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-1">
-                  <SearchInput
+                  <CityAutocomplete
                     className="md:col-span-4"
                     icon={<MapPin className="w-4 h-4" />}
                     label={t('homePage.search.whereTo')}
@@ -239,29 +225,19 @@ const Home = () => {
                 </div>
               )}
 
-              {tab === 'stays' && (
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-1">
-                  <SearchInput className="md:col-span-4" icon={<MapPin className="w-4 h-4" />} label={t('homePage.search.destination')} placeholder="Dubai" value={dest} onChange={setDest} />
-                  <SearchInput className="md:col-span-3" icon={<Calendar className="w-4 h-4" />} label={t('homePage.search.checkIn')} type="date" value={checkin} onChange={setCheckin} />
-                  <SearchInput className="md:col-span-3" icon={<Calendar className="w-4 h-4" />} label={t('homePage.search.checkOut')} type="date" value={checkout} onChange={setCheckout} />
-                  <SearchInput className="md:col-span-1" icon={<Users className="w-4 h-4" />} label={t('homePage.search.guests')} type="number" value={travelers} onChange={setTravelers} />
-                  <SearchButton className="md:col-span-1" label={t('homePage.common.search')} />
-                </div>
-              )}
-
               {tab === 'ai' && (
                 <div className="space-y-2">
                   {/* Row 1: destination + from + start date */}
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-1">
-                    <SearchInput
+                    <CityAutocomplete
                       className="md:col-span-5"
                       icon={<MapPin className="w-4 h-4" />}
                       label={t('homePage.search.whereTo')}
-                      placeholder={`Berlin, Dubai, Tokyo… ${t('homePage.search.orLeaveEmpty')}`}
+                      placeholder="Berlin, Dubai, Tokyo…"
                       value={aiDest}
                       onChange={setAiDest}
                     />
-                    <SearchInput
+                    <CityAutocomplete
                       className="md:col-span-3"
                       icon={<Plane className="w-4 h-4" />}
                       label={t('homePage.search.from')}
@@ -353,34 +329,19 @@ const Home = () => {
                 </div>
               )}
 
-              {tab === 'cars' && (
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-1">
-                  <SearchInput className="md:col-span-5" icon={<MapPin className="w-4 h-4" />} label={t('homePage.search.pickupLocation')} placeholder="Dubai International Airport" value={dest} onChange={setDest} />
-                  <SearchInput className="md:col-span-3" icon={<Calendar className="w-4 h-4" />} label={t('homePage.search.pickupDate')} type="date" value={checkin} onChange={setCheckin} />
-                  <SearchInput className="md:col-span-3" icon={<Calendar className="w-4 h-4" />} label={t('homePage.search.returnDate')} type="date" value={checkout} onChange={setCheckout} />
-                  <SearchButton className="md:col-span-1" label={t('homePage.common.search')} />
-                </div>
-              )}
-
               {/* Quick destination chips — fills the destination field of the CURRENT tab, never switches */}
               <div className="flex items-center flex-wrap gap-1.5 pt-3 px-1">
                 <span className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af]">{t('homePage.search.popular')}</span>
                 {['Dubai', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Berlin', 'Paris'].map(c => {
-                  // What value is the current tab's destination field showing?
-                  const currentValue =
-                    tab === 'ai'      ? aiDest :
-                    tab === 'flights' ? to     :
-                                         dest;
+                  const currentValue = tab === 'ai' ? aiDest : dest;
                   const active = String(currentValue || '').toLowerCase() === c.toLowerCase();
                   return (
                     <button
                       key={c}
                       type="button"
                       onClick={() => {
-                        // Never change tab — just fill the destination input of the current tab.
-                        if (tab === 'ai')            setAiDest(c);
-                        else if (tab === 'flights')  setTo(c);
-                        else                          setDest(c); // tours / stays / cars
+                        if (tab === 'ai')  setAiDest(c);
+                        else               setDest(c);
                       }}
                       className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition active:scale-95 ${
                         active ? 'bg-[#003580] text-white shadow-md' : 'bg-[#f0f5ff] text-[#0071c2] hover:bg-[#dceaff]'
@@ -390,6 +351,12 @@ const Home = () => {
                 })}
               </div>
             </form>
+
+            {(tab === 'ai' && aiDest) || (tab === 'tours' && dest) ? (
+              <div className="border-t border-[#e7e7e7] mt-2 pt-2">
+                <WeatherWidget city={tab === 'ai' ? aiDest : dest} />
+              </div>
+            ) : null}
           </div>
         </motion.div>
       </section>
@@ -670,6 +637,19 @@ const Home = () => {
             </motion.button>
           ))}
         </div>
+      </section>
+
+      {/* ─── DESTINATION MAP ─────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
+        <div className="flex items-end justify-between mb-5">
+          <div>
+            <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-1">
+              <Globe className="w-3.5 h-3.5" /> {t('homePage.map.eyebrow') || 'Explore'}
+            </div>
+            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('homePage.map.heading') || 'Destinations worldwide'}</h2>
+          </div>
+        </div>
+        <DestinationMap destinations={TRENDING} className="shadow-float" />
       </section>
 
       {/* ─── BROWSE BY THEME ─────────────────────────────────────── */}

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { MapPin, Calendar, Clock, DollarSign, Sparkles, AlertTriangle, Navigation, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from '../../store/useLangStore';
 import { getVisaInfo, lookupDestination, getDestinationHero } from '../../services/destinationLookup';
+import CityAutocomplete from '../flights/CityAutocomplete';
 
 /* ── Budget tiers ─────────────────────────────────────────────────────────── */
 /* `budget` values are data; labelKey/descKey resolve to translated UI text. */
@@ -79,35 +80,27 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
       <div className="mb-5">
         <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] block mb-2">{t('plannerPage.form.route')}</label>
         <div className="flex items-center gap-2">
-          {/* From */}
-          <div className="relative flex-1">
-            <Navigation className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af] pointer-events-none" />
-            <input
-              type="text"
-              placeholder={t('plannerPage.form.fromPlaceholder')}
-              value={formData.fromCity || ''}
-              onChange={(e) => onChange({ ...formData, fromCity: e.target.value })}
-              className={inputCls}
-            />
-          </div>
-          {/* Arrow */}
+          <CityAutocomplete
+            className="flex-1"
+            icon={<Navigation className="w-4 h-4" />}
+            label={t('plannerPage.form.fromLabel') || 'From'}
+            placeholder={t('plannerPage.form.fromPlaceholder')}
+            value={formData.fromCity || ''}
+            onChange={(val) => onChange({ ...formData, fromCity: val })}
+          />
           <div className="flex flex-col items-center gap-0.5 px-1 shrink-0">
             <div className="w-5 h-px bg-[#c9d1d9]" />
             <span className="text-[11px] text-[#9ca3af] font-black">✈</span>
             <div className="w-5 h-px bg-[#c9d1d9]" />
           </div>
-          {/* To */}
-          <div className="relative flex-1">
-            <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af] pointer-events-none" />
-            <input
-              type="text"
-              required
-              placeholder={t('planner.form.destPlaceholder')}
-              value={formData.destination}
-              onChange={set('destination')}
-              className={inputCls}
-            />
-          </div>
+          <CityAutocomplete
+            className="flex-1"
+            icon={<MapPin className="w-4 h-4" />}
+            label={t('plannerPage.form.toLabel') || 'To'}
+            placeholder={t('planner.form.destPlaceholder')}
+            value={formData.destination}
+            onChange={set('destination')}
+          />
         </div>
 
         {/* Live destination preview */}

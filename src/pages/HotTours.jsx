@@ -20,6 +20,7 @@ import { toast } from '../components/Toast';
 import useSEO from '../hooks/useSEO';
 import { useDateDaysSync } from '../hooks/useDateDaysSync';
 import BudgetAdvisory from '../components/BudgetAdvisory';
+import CityAutocomplete from '../features/flights/CityAutocomplete';
 
 const PREFS_KEY = 'maf_ai_prefs';
 const loadPrefs = () => { try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; } catch { return {}; } };
@@ -273,16 +274,23 @@ const HotTours = () => {
                     </div>
                   </div>
 
-                  <Field icon={<MapPin className="w-4 h-4" />} label={t('hotTours.form.destLabel')}>
-                    <input type="text" value={destInput} onChange={e => setDestInput(e.target.value)}
-                      placeholder={t('hotTours.form.destPlaceholder')}
-                      className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a] placeholder:text-[#b0b0b0]" />
-                  </Field>
+                  <CityAutocomplete
+                    className="w-full"
+                    icon={<MapPin className="w-4 h-4" />}
+                    label={t('hotTours.form.destLabel')}
+                    placeholder={t('hotTours.form.destPlaceholder')}
+                    value={destInput}
+                    onChange={setDestInput}
+                  />
 
-                  <Field icon={<Plane className="w-4 h-4" />} label={t('hotTours.form.fromLabel')}>
-                    <input type="text" value={from} onChange={e => setFrom(e.target.value)} placeholder={t('hotTours.form.fromPlaceholder')}
-                      className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a]" />
-                  </Field>
+                  <CityAutocomplete
+                    className="w-full"
+                    icon={<Plane className="w-4 h-4" />}
+                    label={t('hotTours.form.fromLabel')}
+                    placeholder={t('hotTours.form.fromPlaceholder')}
+                    value={from}
+                    onChange={setFrom}
+                  />
 
                   <div className="grid grid-cols-2 gap-3">
                     <Field icon={<Calendar className="w-4 h-4" />} label={t('hotTours.form.departLabel')}>

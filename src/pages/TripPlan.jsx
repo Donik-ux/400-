@@ -18,6 +18,7 @@ import { heroFor } from '../utils/destinationImages';
 import { toast } from '../components/Toast';
 import SmartImage from '../components/SmartImage';
 import { useTranslation } from '../store/useLangStore';
+import CityAutocomplete from '../features/flights/CityAutocomplete';
 
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) : '—';
 
@@ -643,10 +644,14 @@ export default function TripPlan() {
                     className="w-full bg-transparent outline-none text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#b0b0b0]" />
                 </Field>
 
-                <Field label={t('tripPlan.fromCity')} icon={<Plane className="w-3.5 h-3.5" />}>
-                  <input type="text" placeholder={t('tripPlan.fromCityPh')} value={fromCity} onChange={e => setFromCity(e.target.value)}
-                    className="w-full bg-transparent outline-none text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#b0b0b0]" />
-                </Field>
+                <CityAutocomplete
+                  className="w-full"
+                  icon={<Plane className="w-3.5 h-3.5" />}
+                  label={t('tripPlan.fromCity')}
+                  placeholder={t('tripPlan.fromCityPh')}
+                  value={fromCity}
+                  onChange={setFromCity}
+                />
 
                 <div className="grid grid-cols-2 gap-2">
                   <Field label={t('tripPlan.depart')} icon={<Calendar className="w-3.5 h-3.5" />}>

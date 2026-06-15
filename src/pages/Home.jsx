@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Plane, Hotel, Search, MapPin, Calendar, Users, ArrowRight,
+  Plane, Hotel, Search, MapPin, Calendar, Users, ArrowRight, ArrowRightLeft,
   Flame, Sparkles, Star, Shield, Headphones, BadgePercent, Globe,
   TrendingUp, Heart, Mountain, Waves, Building2, Compass, Clock, Wand2, Wallet,
   ChevronRight, Award, ThumbsUp, Check, Mail, FileText, Download,
@@ -65,6 +65,11 @@ const Home = () => {
   const [checkin, setCheckin] = useState('');
   const [checkout, setCheckout] = useState('');
   const [travelers, setTravelers] = useState(2);
+  // flights tab state
+  const [flightFrom, setFlightFrom]       = useState('');
+  const [flightTo, setFlightTo]           = useState('');
+  const [flightDate, setFlightDate]       = useState('');
+  const [flightReturn, setFlightReturn]   = useState('');
   // dedicated AI-tab state — keeps it isolated from the flight/tour fields
   const [aiBalance, setAiBalance] = useState(2000);
   const [aiDays,    setAiDays]    = useState(7);
@@ -90,7 +95,18 @@ const Home = () => {
   const submit = (e) => {
     e?.preventDefault?.();
     if (tab === 'tours') navigate('/hot-tours');
-    else if (tab === 'ai') {
+    else if (tab === 'flights') {
+      navigate('/flights', {
+        state: {
+          formData: {
+            from: flightFrom,
+            to: flightTo,
+            date: flightDate,
+            returnDate: flightReturn,
+          },
+        },
+      });
+    } else if (tab === 'ai') {
       // Clamp values so the API never gets garbage
       const rawBalance = Number(aiBalance);
       const rawDays    = Number(aiDays);
@@ -181,6 +197,7 @@ const Home = () => {
           <div className="bg-white rounded-2xl shadow-float border border-[#febb02]/50 ring-4 ring-[#febb02]/20">
             <div className="flex items-center gap-1 px-2 pt-2 overflow-x-auto">
               <Tab active={tab === 'tours'}    onClick={() => setTab('tours')}    icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.tours')} />
+              <Tab active={tab === 'flights'} onClick={() => setTab('flights')} icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.flights')} />
               <Tab active={tab === 'ai'}       onClick={() => setTab('ai')}       icon={<Sparkles className="w-4 h-4" />} label={t('homePage.tabs.ai')} highlight newLabel={t('homePage.tabs.newBadge')} />
             </div>
 
@@ -220,6 +237,51 @@ const Home = () => {
                     type="number"
                     value={travelers}
                     onChange={setTravelers}
+                  />
+                  <SearchButton className="md:col-span-1" label={t('homePage.common.search')} />
+                </div>
+              )}
+
+              {tab === 'flights' && (
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-1">
+                  <CityAutocomplete
+                    className="md:col-span-3"
+                    icon={<MapPin className="w-4 h-4" />}
+                    label={t('homePage.search.from')}
+                    placeholder="Dubai (DXB)"
+                    value={flightFrom}
+                    onChange={setFlightFrom}
+                  />
+                  <button type="button" onClick={() => { const tmp = flightFrom; setFlightFrom(flightTo); setFlightTo(tmp); }}
+                    className="md:col-span-1 flex items-center justify-center self-center mx-auto md:mx-0 -my-1 md:my-0 w-9 h-9 rounded-full bg-white border-2 border-[#0071c2] text-[#0071c2] hover:bg-[#f0f5ff] hover:rotate-180 active:scale-95 transition-all duration-300 shadow-soft"
+                    aria-label="Swap from and to">
+                    <ArrowRightLeft className="w-4 h-4" />
+                  </button>
+                  <CityAutocomplete
+                    className="md:col-span-3"
+                    icon={<MapPin className="w-4 h-4" />}
+                    label={t('homePage.search.to')}
+                    placeholder="Maldives (MLE)"
+                    value={flightTo}
+                    onChange={setFlightTo}
+                  />
+                  <SearchInput
+                    className="md:col-span-2"
+                    icon={<Calendar className="w-4 h-4" />}
+                    label={t('homePage.search.depart')}
+                    type="date"
+                    min={new Date().toISOString().split('T')[0]}
+                    value={flightDate}
+                    onChange={setFlightDate}
+                  />
+                  <SearchInput
+                    className="md:col-span-2"
+                    icon={<Calendar className="w-4 h-4" />}
+                    label={t('homePage.search.return')}
+                    type="date"
+                    min={flightDate || new Date().toISOString().split('T')[0]}
+                    value={flightReturn}
+                    onChange={setFlightReturn}
                   />
                   <SearchButton className="md:col-span-1" label={t('homePage.common.search')} />
                 </div>
@@ -330,29 +392,56 @@ const Home = () => {
               )}
 
               {/* Quick destination chips — fills the destination field of the CURRENT tab, never switches */}
-              <div className="flex items-center flex-wrap gap-1.5 pt-3 px-1">
-                <span className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af]">{t('homePage.search.popular')}</span>
-                {['Dubai', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Berlin', 'Paris'].map(c => {
-                  const currentValue = tab === 'ai' ? aiDest : dest;
-                  const active = String(currentValue || '').toLowerCase() === c.toLowerCase();
-                  return (
-                    <button
-                      key={c}
-                      type="button"
-                      onClick={() => {
-                        if (tab === 'ai')  setAiDest(c);
-                        else               setDest(c);
-                      }}
-                      className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition active:scale-95 ${
-                        active ? 'bg-[#003580] text-white shadow-md' : 'bg-[#f0f5ff] text-[#0071c2] hover:bg-[#dceaff]'
-                      }`}
-                    >{c}</button>
-                  );
-                })}
-              </div>
+              {tab !== 'flights' && (
+                <div className="flex items-center flex-wrap gap-1.5 pt-3 px-1">
+                  <span className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af]">{t('homePage.search.popular')}</span>
+                  {['Dubai', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Berlin', 'Paris'].map(c => {
+                    const currentValue = tab === 'ai' ? aiDest : dest;
+                    const active = String(currentValue || '').toLowerCase() === c.toLowerCase();
+                    return (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => {
+                          if (tab === 'ai') setAiDest(c);
+                          else              setDest(c);
+                        }}
+                        className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition active:scale-95 ${
+                          active ? 'bg-[#003580] text-white shadow-md' : 'bg-[#f0f5ff] text-[#0071c2] hover:bg-[#dceaff]'
+                        }`}
+                      >{c}</button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Quick flight routes for flights tab */}
+              {tab === 'flights' && (
+                <div className="flex items-center flex-wrap gap-1.5 pt-3 px-1">
+                  <span className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af]">{t('homePage.search.popular')}</span>
+                  {[
+                    { from: 'Dubai (DXB)', to: 'Maldives (MLE)', label: 'DXB → MLE' },
+                    { from: 'Dubai (DXB)', to: 'Bali (DPS)', label: 'DXB → DPS' },
+                    { from: 'Abu Dhabi (AUH)', to: 'Seychelles (SEZ)', label: 'AUH → SEZ' },
+                    { from: 'Istanbul (IST)', to: 'Mauritius (MRU)', label: 'IST → MRU' },
+                    { from: 'Dubai (DXB)', to: 'Phuket (HKT)', label: 'DXB → HKT' },
+                  ].map(r => {
+                    const active = flightFrom === r.from && flightTo === r.to;
+                    return (
+                      <button key={r.label} type="button"
+                        onClick={() => { setFlightFrom(r.from); setFlightTo(r.to); }}
+                        className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition active:scale-95 ${
+                          active ? 'bg-[#003580] text-white shadow-md' : 'bg-[#f0f5ff] text-[#0071c2] hover:bg-[#dceaff]'
+                        }`}>
+                        {r.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </form>
 
-            {(tab === 'ai' && aiDest) || (tab === 'tours' && dest) ? (
+            {(tab === 'ai' && aiDest) || (tab === 'tours' && dest) || (tab === 'flights' && flightTo) ? (
               <div className="border-t border-[#e7e7e7] mt-2 pt-2">
                 <WeatherWidget city={tab === 'ai' ? aiDest : dest} />
               </div>

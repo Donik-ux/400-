@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Plane, Filter, TrendingDown, ExternalLink, Search, Star, Globe,
@@ -41,6 +41,7 @@ const POPULAR_ROUTES = [
 export default function Flights() {
   const { t }      = useTranslation();
   const navigate   = useNavigate();
+  const location   = useLocation();
   useSEO({
     title: 'Search Cheap Flights · Compare 6 Airlines',
     description: 'Find cheap flights from Dubai, Abu Dhabi, Doha and Istanbul to the Maldives, Bali, Seychelles, Mauritius and 100+ destinations. Smart filters, real-time prices.',
@@ -54,6 +55,24 @@ export default function Flights() {
 
   const { flights }                   = useStore();
   const { getFlights, loading, error, aiRefining, aiSource, source } = useFlights();
+
+  // Auto-search when navigating from Home with prefilled formData
+  const initialRun = useRef(true);
+  useEffect(() => {
+    const state = location.state;
+    if (state?.formData && initialRun.current) {
+      initialRun.current = false;
+      const fd = state.formData;
+      setFormData(fd);
+      if (fd.from && fd.to) {
+        getFlights(fd);
+      }
+    }
+    // Clean up location state so refresh doesn't re-trigger
+    if (state?.formData) {
+      window.history.replaceState({}, '');
+    }
+  }, []);
 
   const handleSearch = async (eOrPayload) => {
     if (eOrPayload?.preventDefault) eOrPayload.preventDefault();

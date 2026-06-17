@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { AlertTriangle, CheckCircle, Shield } from 'lucide-react';
-import { useTranslation } from '../store/useLangStore';
+import useLangStore, { useTranslation } from '../store/useLangStore';
 
 const DISCLAIMER_KEY = 'imaf_disclaimer_accepted';
 
 export default function DisclaimerModal() {
   const { t } = useTranslation();
+  const lang = useLangStore((s) => s.lang);
+  const setLang = useLangStore((s) => s.setLang);
   const [visible, setVisible] = useState(false);
   const [read, setRead] = useState(false);
 
@@ -25,11 +27,23 @@ export default function DisclaimerModal() {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
       <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden">
         {/* Header */}
-        <div className="bg-[#003580] px-7 py-5 flex items-center gap-3">
-          <Shield className="w-6 h-6 text-yellow-300 shrink-0" />
-          <div>
-            <h2 className="text-white font-black text-[17px] leading-tight">MAFTRAVEL</h2>
-            <p className="text-white/60 text-[11px] uppercase tracking-widest font-bold">{t('ui.disclaimer.eyebrow')}</p>
+        <div className="bg-[#003580] px-7 py-5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <Shield className="w-6 h-6 text-yellow-300 shrink-0" />
+            <div>
+              <h2 className="text-white font-black text-[17px] leading-tight">MAFTRAVEL</h2>
+              <p className="text-white/60 text-[11px] uppercase tracking-widest font-bold">{t('ui.disclaimer.eyebrow')}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1 bg-white/10 rounded-lg p-0.5">
+            <button onClick={() => setLang('en')}
+              className={`px-2.5 py-1 rounded-md text-[11px] font-black transition ${lang === 'en' ? 'bg-white text-[#003580]' : 'text-white/70 hover:text-white'}`}>
+              EN
+            </button>
+            <button onClick={() => setLang('uz')}
+              className={`px-2.5 py-1 rounded-md text-[11px] font-black transition ${lang === 'uz' ? 'bg-white text-[#003580]' : 'text-white/70 hover:text-white'}`}>
+              UZ
+            </button>
           </div>
         </div>
 

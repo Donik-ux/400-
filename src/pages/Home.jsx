@@ -197,7 +197,7 @@ const Home = () => {
           <div className="bg-white rounded-2xl shadow-float border border-[#febb02]/50 ring-4 ring-[#febb02]/20">
             <div className="flex items-center gap-1 px-2 pt-2 overflow-x-auto">
               <Tab active={tab === 'tours'}    onClick={() => setTab('tours')}    icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.tours')} />
-              <Tab active={tab === 'flights'} onClick={() => setTab('flights')} icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.flights')} />
+              <Tab active={tab === 'flights'} onClick={() => setTab('flights')} icon={<Globe className="w-4 h-4" />} label={t('homePage.tabs.flights')} />
               <Tab active={tab === 'ai'}       onClick={() => setTab('ai')}       icon={<Sparkles className="w-4 h-4" />} label={t('homePage.tabs.ai')} highlight newLabel={t('homePage.tabs.newBadge')} />
             </div>
 

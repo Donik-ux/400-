@@ -5,15 +5,14 @@ import { useTranslation } from '../../store/useLangStore';
 import useAuthStore  from '../../store/useAuthStore';
 import useWishlistStore from '../../store/useWishlistStore';
 import GlobalSearch from '../UI/GlobalSearch';
-import { langNames } from '../../utils/translations';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 export default function Navbar() {
   const [scrolled,   setScrolled]   = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userOpen,   setUserOpen]   = useState(false);
-  const [langOpen,   setLangOpen]   = useState(false);
   const navigate                    = useNavigate();
-  const { lang, setLang, t }        = useTranslation();
+  const { t }                       = useTranslation();
   const user    = useAuthStore(s => s.user);
   const logout  = useAuthStore(s => s.logout);
   const wishlistItems = useWishlistStore(s => s.items);
@@ -27,7 +26,7 @@ export default function Navbar() {
   useEffect(() => {
     const close = (e) => {
       if (!e.target.closest('[data-dropdown]')) {
-        setUserOpen(false); setLangOpen(false);
+        setUserOpen(false);
       }
     };
     document.addEventListener('click', close);
@@ -40,6 +39,7 @@ export default function Navbar() {
     { to: '/flights',      label: t('nav.flights')         },
     { to: '/hot-tours',    label: t('nav2.hotTours')       },
     { to: '/exotic-tours', label: t('nav.exotic')          },
+    { to: '/services',     label: t('servicesPage.navLabel') },
   ];
 
   const handleLogout = () => { logout(); navigate('/'); setUserOpen(false); };
@@ -105,28 +105,14 @@ export default function Navbar() {
             )}
 
             {/* Language */}
-            <div className="relative hidden md:block" data-dropdown>
-              <button onClick={() => { setLangOpen(v => !v); setUserOpen(false); }}
-                className="flex items-center gap-1 px-3 py-2 rounded-lg text-[12px] font-bold text-white/75 hover:text-white hover:bg-white/10 transition-premium border border-white/15">
-                {langNames[lang]}
-                <ChevronDown className={`w-3 h-3 transition-transform ${langOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {langOpen && (
-                <div className="absolute right-0 top-full mt-2 w-28 bg-[#002a63] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 page-fade">
-                  {Object.entries(langNames).map(([code, label]) => (
-                    <button key={code} onClick={() => { setLang(code); setLangOpen(false); }}
-                      className={`w-full px-4 py-2.5 text-left text-[12px] font-bold transition-premium ${lang === code ? 'text-[#f5b942] bg-white/[0.06]' : 'text-white/70 hover:bg-white/[0.06] hover:text-white'}`}>
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              )}
+            <div className="hidden md:block">
+              <LanguageSwitcher align="right" />
             </div>
 
             {/* Auth */}
             {user ? (
               <div className="relative hidden md:block" data-dropdown>
-                <button onClick={() => { setUserOpen(v => !v); setLangOpen(false); }}
+                <button onClick={() => { setUserOpen(v => !v); }}
                   className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-white/15 hover:border-[#f5b942]/50 hover:bg-white/10 transition-premium">
                   <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#f5b942] to-[#d99a2b] flex items-center justify-center text-[11px] font-black text-[#002250] shadow-sm">
                     {user.avatar}
@@ -226,13 +212,8 @@ export default function Navbar() {
               )}
             </>
           )}
-          <div className="mt-3 flex gap-2">
-            {Object.entries(langNames).map(([code, label]) => (
-              <button key={code} onClick={() => setLang(code)}
-                className={`px-4 py-2 rounded-lg text-[12px] font-bold border transition-premium ${lang === code ? 'bg-[#f5b942] text-[#002250] border-[#f5b942]' : 'text-white/70 border-white/20'}`}>
-                {label}
-              </button>
-            ))}
+          <div className="mt-3">
+            <LanguageSwitcher align="left" full />
           </div>
           <div className="mt-4 flex flex-col gap-2">
             {user ? (

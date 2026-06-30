@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -12,6 +12,7 @@ import useAuthStore from '../store/useAuthStore';
 import useAdminStore from '../store/useAdminStore';
 import { generateAiItinerary, isAiAvailable } from '../services/aiPlannerService';
 import { generateItinerary } from '../services/plannerService';
+import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
 import { handleImgError } from '../utils/imageFallback';
 import { heroFor } from '../utils/destinationImages';
@@ -19,6 +20,8 @@ import { toast } from '../components/Toast';
 import SmartImage from '../components/SmartImage';
 import { useTranslation } from '../store/useLangStore';
 import CityAutocomplete from '../features/flights/CityAutocomplete';
+import DestinationMap from '../components/DestinationMap';
+import { getCoords } from '../data/coords';
 
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) : '—';
 
@@ -38,7 +41,7 @@ const STAT_ROWS = [
 export default function TripPlan() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const user = useAuthStore(s => s.user);
   const addBooking = useAdminStore(s => s.addBooking);
@@ -111,6 +114,18 @@ export default function TripPlan() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /* ── Re-build the plan in the newly selected language ── */
+  const prevLang = useRef(lang);
+  useEffect(() => {
+    if (prevLang.current === lang) return;       // ignore the initial render
+    prevLang.current = lang;
+    if (!plan || loading || !itemWithHero || !type) return;
+    if (!isAiAvailable()) return;                // no AI → keep current plan
+    toast.info(t('tripPlan.translatingTitle'), t('tripPlan.translatingBody'));
+    runGenerate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
+
   const runGenerate = async () => {
     if (!itemWithHero || loading) return;       // guard: no item OR already generating
     setLoading(true);
@@ -126,6 +141,7 @@ export default function TripPlan() {
         transportMode: 'walking',
         startDate:   travelDate,
         purpose,
+        lang,
       };
       let result;
       if (isAiAvailable()) {
@@ -136,6 +152,11 @@ export default function TripPlan() {
         }
       }
       if (!result) result = await generateItinerary(params);
+      // Offline/template plans are English — translate them for free via the
+      // Google proxy. AI (grok) plans are already generated in-language.
+      if (result && result.source !== 'grok' && lang && lang !== 'en') {
+        result = await localizePlan(result, lang);
+      }
       // Ensure header & emergency are always populated, even if a stale path skipped them.
       if (!result.emergency)  result.emergency = getEmergencyContacts(itemWithHero.destination || itemWithHero.name);
       if (!result.header) {
@@ -298,6 +319,26 @@ export default function TripPlan() {
                 </div>
               </div>
             )}
+
+            {/* ── Route map ── */}
+            {(() => {
+              const cleanCity = (s) => String(s || '').replace(/\s*\([^)]*\)\s*/g, '').trim();
+              const destCity = cleanCity(item.destination || item.name);
+              const fromClean = cleanCity(fromCity);
+              const mapPoints = [
+                fromClean && getCoords(fromClean) ? { city: fromClean } : null,
+                getCoords(destCity) ? { city: destCity } : null,
+              ].filter(Boolean);
+              if (!mapPoints.length) return null;
+              return (
+                <div className="bg-white border border-[#e7e7e7] rounded-2xl p-4 shadow-soft">
+                  <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#0071c2] mb-3 px-1">
+                    <MapIcon className="w-3.5 h-3.5" /> {t('tripPlan.routeMapLabel')}
+                  </div>
+                  <DestinationMap destinations={mapPoints} />
+                </div>
+              );
+            })()}
 
             {/* Description / includes */}
             {(item.description || item.includes?.length) && (

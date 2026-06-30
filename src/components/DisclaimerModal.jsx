@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { AlertTriangle, CheckCircle, Shield } from 'lucide-react';
-import useLangStore, { useTranslation } from '../store/useLangStore';
+import { useTranslation } from '../store/useLangStore';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const DISCLAIMER_KEY = 'imaf_disclaimer_accepted';
 
 export default function DisclaimerModal() {
   const { t } = useTranslation();
-  const lang = useLangStore((s) => s.lang);
-  const setLang = useLangStore((s) => s.setLang);
   const [visible, setVisible] = useState(false);
   const [read, setRead] = useState(false);
 
@@ -35,16 +34,8 @@ export default function DisclaimerModal() {
               <p className="text-white/60 text-[11px] uppercase tracking-widest font-bold">{t('ui.disclaimer.eyebrow')}</p>
             </div>
           </div>
-          <div className="flex items-center gap-1 bg-white/10 rounded-lg p-0.5">
-            <button onClick={() => setLang('en')}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-black transition ${lang === 'en' ? 'bg-white text-[#003580]' : 'text-white/70 hover:text-white'}`}>
-              EN
-            </button>
-            <button onClick={() => setLang('uz')}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-black transition ${lang === 'uz' ? 'bg-white text-[#003580]' : 'text-white/70 hover:text-white'}`}>
-              UZ
-            </button>
-          </div>
+          <LanguageSwitcher align="right" />
+
         </div>
 
         {/* Body */}

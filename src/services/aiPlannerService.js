@@ -1,6 +1,7 @@
 import { askGrok, isGrokAvailable, extractJson as extractJsonFromText } from './grokClient';
 import { findCity } from './cityDatabase';
 import { getEmergencyContacts } from './emergencyContacts';
+import { LANG_MAP } from '../i18n/languages';
 
 /* ── Budget distribution ── */
 const getBudgetBreakdown = (budget, style) => {
@@ -196,10 +197,24 @@ export const generateAiItinerary = async ({
   interests = [],
   transportMode = 'walking',
   purpose = 'Tourism and cultural exploration',
+  lang = 'en',
   apiKey,
   model,
 }) => {
   if (budgetStyle) style = budgetStyle;
+
+  // Language the human-readable plan text should be written in.
+  const langName = LANG_MAP[lang]?.target || LANG_MAP[lang]?.name || 'English';
+  const langBlock = (lang && lang !== 'en')
+    ? `
+OUTPUT LANGUAGE — VERY IMPORTANT:
+Write ALL human-readable text VALUES in ${langName}: every "title", "label", "transportNote", "transportToNext", "halalNote", restaurant "cuisine"/"note", "transportSuggestion", each item of "travelTips", "halalFoodGuide", and "header.purpose".
+- Keep ALL JSON keys in English exactly as specified below.
+- Keep "type" values in English (flight, transport, hotel, attraction, museum, food, nature, shopping, leisure, rest).
+- Keep real place names, hotel names and street addresses in their official local form so map links keep working (you MAY add a ${langName} translation in parentheses after the name).
+- Keep prices, currency symbols and times unchanged.
+`
+    : '';
 
   if (!isGrokAvailable() && !apiKey) throw new Error('NO_API_KEY');
 
@@ -241,6 +256,7 @@ export const generateAiItinerary = async ({
 
   const prompt = `
 You are an expert halal-conscious travel planner. Generate a realistic, city-specific ${numDays}-day itinerary for ${destination}.
+${langBlock}
 Purpose: ${purpose}
 Style: ${style} | Total budget: $${totalBdg} (~$${dailyBudget}/day) | Transport mode: ${transportMode}
 Budget tier note: ${tierHint}

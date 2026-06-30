@@ -113,6 +113,10 @@ export default {
         eyebrow: 'Trending destinations',
         heading: "Travelers' favorites this season",
       },
+      map: {
+        eyebrow: 'Explore',
+        heading: 'Destinations worldwide',
+      },
       themes: {
         beach: 'Beach',
         city: 'City',
@@ -273,6 +277,10 @@ export default {
       trending: {
         eyebrow: 'Mashhur manzillar',
         heading: 'Bu mavsumda sayohatchilarning sevimlilari',
+      },
+      map: {
+        eyebrow: 'Kashf eting',
+        heading: 'Butun dunyo bo‘ylab manzillar',
       },
       themes: {
         beach: 'Plaj',

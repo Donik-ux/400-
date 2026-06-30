@@ -30,6 +30,35 @@ function amadeusDevApi() {
   };
 }
 
+// Dev-only middleware so `/api/translate` (a Vercel serverless function in prod)
+// also works under `npm run dev`. Proxies to free Google Translate server-side.
+function translateDevApi() {
+  return {
+    name: 'translate-dev-api',
+    configureServer(server) {
+      // Local AV (e.g. Avast) often MITMs HTTPS with an untrusted cert which
+      // breaks Node's fetch. Relax verification for the dev server only.
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+      server.middlewares.use('/api/translate', async (req, res) => {
+        const send = (status, obj) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          let raw = ''; for await (const c of req) raw += c;
+          const body = raw ? JSON.parse(raw) : {};
+          const mod = await server.ssrLoadModule('/api/translate.js');
+          const translations = await mod.translateStrings(body);
+          send(200, { translations });
+        } catch (err) {
+          send(500, { error: String(err?.message || err), translations: [] });
+        }
+      });
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // loadEnv with '' prefix loads ALL vars (incl. non-VITE_) for server-side use.
@@ -45,6 +74,7 @@ export default defineConfig(({ mode }) => {
       react(),
       tailwindcss(),
       amadeusDevApi(),
+      translateDevApi(),
     ],
   };
 });

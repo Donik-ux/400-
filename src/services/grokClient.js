@@ -90,6 +90,14 @@ export const askGrok = async (prompt, opts = {}) => {
       const msg = data?.error?.message || data?.raw || res.statusText;
       const err = new Error(`Gemini ${res.status}: ${String(msg).slice(0, 200)}`);
       err.status = res.status;
+      // Surface Gemini's own RetryInfo (e.g. "retryDelay":"38s") so callers can
+      // back off for exactly as long as the API asks instead of guessing.
+      const details = data?.error?.details;
+      if (Array.isArray(details)) {
+        const ri = details.find((d) => String(d?.['@type'] || '').includes('RetryInfo'));
+        const m = ri?.retryDelay && /([\d.]+)s/.exec(ri.retryDelay);
+        if (m) err.retryAfterMs = Math.round(parseFloat(m[1]) * 1000);
+      }
       throw err;
     }
     const text = extractText(data);

@@ -7,6 +7,7 @@ import Home            from './pages/Home';
 import Planner         from './pages/Planner';
 import WhereToGo       from './pages/WhereToGo';
 import Tools           from './pages/Tools';
+import Services        from './pages/Services';
 import Flights         from './pages/Flights';
 import BerlinTrip      from './pages/BerlinTrip';
 import ExoticTours     from './pages/ExoticTours';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/planner"     element={<Planner />} />
           <Route path="/where-to-go" element={<WhereToGo />} />
           <Route path="/tools"       element={<Tools />} />
+          <Route path="/services"    element={<Services />} />
           <Route path="/flights"     element={<Flights />} />
           <Route path="/berlin-trip" element={<BerlinTrip />} />
           <Route path="/exotic-tours" element={<ExoticTours />} />

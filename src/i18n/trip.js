@@ -19,6 +19,9 @@ export default {
       heroSub: 'A full day-by-day plan for ${total} — places to visit, where to eat, how to get around.',
       // Summary card
       sectionLabel: 'Travel Plan',
+      routeMapLabel: 'Your route on the map',
+      translatingTitle: 'Rebuilding your plan',
+      translatingBody: 'Generating the itinerary in your selected language…',
       titleFallback: 'Travel Plan – {destination}',
       travelDates: 'Travel dates',
       route: 'Route',
@@ -193,6 +196,9 @@ export default {
       heroSub: '${total} uchun to‘liq kunma-kun reja — qayerga borish, qayerda ovqatlanish va qanday yurish.',
       // Summary card
       sectionLabel: 'Sayohat rejasi',
+      routeMapLabel: 'Marshrutingiz xaritada',
+      translatingTitle: 'Reja qayta tuzilmoqda',
+      translatingBody: 'Marshrut tanlangan tilingizda yaratilmoqda…',
       titleFallback: 'Sayohat rejasi – {destination}',
       travelDates: 'Sayohat sanalari',
       route: 'Yo‘nalish',

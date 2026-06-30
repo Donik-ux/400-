@@ -6,6 +6,7 @@ import {
   Flame, Sparkles, Star, Shield, Headphones, BadgePercent, Globe,
   TrendingUp, Heart, Mountain, Waves, Building2, Compass, Clock, Wand2, Wallet,
   ChevronRight, Award, ThumbsUp, Check, Mail, FileText, Download,
+  FileCheck, ShieldCheck, Wifi, Car, Navigation, Loader2,
 } from 'lucide-react';
 import useAdminStore from '../store/useAdminStore';
 import { useTranslation } from '../store/useLangStore';
@@ -20,6 +21,8 @@ import BudgetAdvisory from '../components/BudgetAdvisory';
 import CityAutocomplete from '../features/flights/CityAutocomplete';
 import WeatherWidget from '../components/WeatherWidget';
 import DestinationMap from '../components/DestinationMap';
+import RecommendedTrips from '../components/RecommendedTrips';
+import { detectCurrentLocation } from '../services/geolocation';
 
 /* ── Static showcases ─────────────────────────────────────────────── */
 const TRENDING = [
@@ -78,6 +81,22 @@ const Home = () => {
   const [aiFrom,    setAiFrom]    = useState('Dubai');
   const [aiStart,   setAiStart]   = useState('');
   const [aiReturn,  setAiReturn]  = useState('');
+  const [locatingFrom, setLocatingFrom] = useState(false);
+
+  // Fill the AI "From" field with the user's detected current city.
+  const useMyLocationForAi = async () => {
+    setLocatingFrom(true);
+    try {
+      const loc = await detectCurrentLocation();
+      const label = loc.label || loc.city;
+      if (label) setAiFrom(label);
+      else toast.info(t('tripRec.failed'));
+    } catch (e) {
+      toast.info(e?.code === 'GEO_DENIED' ? t('tripRec.denied') : t('tripRec.failed'));
+    } finally {
+      setLocatingFrom(false);
+    }
+  };
 
   // Two-way sync for the AI tab (departure ↔ return ↔ days)
   const aiSync = useDateDaysSync({
@@ -327,6 +346,15 @@ const Home = () => {
                     />
                   </div>
 
+                  {/* Use my current location → fills the From field */}
+                  <div className="px-1">
+                    <button type="button" onClick={useMyLocationForAi} disabled={locatingFrom}
+                      className="inline-flex items-center gap-1.5 text-[12px] font-black text-[#0071c2] hover:text-[#003580] disabled:opacity-60 transition active:scale-95">
+                      {locatingFrom ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Navigation className="w-3.5 h-3.5" />}
+                      {locatingFrom ? t('tripRec.locating') : t('tripRec.useLocation')}
+                    </button>
+                  </div>
+
                   {/* Row 2: balance + days + vibe + button */}
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-1">
                     <SearchInput
@@ -452,6 +480,32 @@ const Home = () => {
 
       {/* spacer for the floating card */}
       <div className="h-24 md:h-28" />
+
+      {/* ─── STATS BAND ──────────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 pt-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          {[
+            { icon: Users,        value: '10,000+', label: t('homeStats.travelers') },
+            { icon: Globe,        value: '50+',     label: t('homeStats.countries') },
+            { icon: Sparkles,     value: t('homeStats.ai'),     label: t('homeStats.aiSub') },
+            { icon: BadgePercent, value: t('homeStats.prices'), label: t('homeStats.pricesSub') },
+          ].map((s, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: i * 0.06 }}
+              className="bg-white border border-[#e7e7e7] rounded-2xl shadow-soft p-4 md:p-5 text-center lift">
+              <div className="w-10 h-10 mx-auto rounded-xl bg-[#f0f5ff] text-[#0071c2] flex items-center justify-center mb-2">
+                <s.icon className="w-5 h-5" />
+              </div>
+              <div className="text-[22px] md:text-[26px] font-black text-[#003580] leading-none">{s.value}</div>
+              <div className="text-[11px] md:text-[12px] font-bold text-[#9ca3af] mt-1">{s.label}</div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
       {/* ─── TRUST STRIP ─────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-6">
@@ -691,6 +745,54 @@ const Home = () => {
             </div>
           </div>
         </motion.div>
+      </section>
+
+      {/* ─── RECOMMENDED TRIPS (current location → destination) ──── */}
+      <RecommendedTrips />
+
+      {/* ─── TRAVEL SERVICES PROMO ───────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-8">
+        <div className="flex items-end justify-between mb-5">
+          <div>
+            <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-1">
+              <Sparkles className="w-3.5 h-3.5" /> {t('servicesHome.eyebrow')}
+            </div>
+            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('servicesHome.heading')}</h2>
+            <p className="text-[14px] text-[#595959] font-medium max-w-xl mt-1">{t('servicesHome.subtitle')}</p>
+          </div>
+          <button onClick={() => navigate('/services')} className="group hidden md:flex items-center gap-1 text-[13px] font-bold text-[#0071c2] hover:underline">
+            {t('servicesHome.cta')} <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          {[
+            { icon: FileCheck,   label: t('servicesPage.visa.title'),     accent: 'bg-[#f0fdf4] text-[#008009]' },
+            { icon: Wallet,      label: t('servicesPage.budget.title'),   accent: 'bg-[#f0f5ff] text-[#0071c2]' },
+            { icon: Plane,       label: t('servicesPage.flightPredict.title'), accent: 'bg-[#fff7e6] text-[#b8860b]' },
+            { icon: Hotel,       label: t('servicesPage.hotelPredict.title'),  accent: 'bg-[#fdf2f8] text-[#be185d]' },
+            { icon: ShieldCheck, label: t('servicesPage.insurance.title'), accent: 'bg-[#f0fdf4] text-[#008009]' },
+            { icon: Wifi,        label: t('servicesPage.esim.title'),      accent: 'bg-[#f0f5ff] text-[#0071c2]' },
+            { icon: Car,         label: t('servicesPage.transfer.title'),  accent: 'bg-[#fff7e6] text-[#b8860b]' },
+            { icon: Award,       label: t('servicesPage.lounge.title'),    accent: 'bg-[#f0f5ff] text-[#0071c2]' },
+          ].map((s, i) => (
+            <motion.button
+              key={i}
+              onClick={() => navigate('/services')}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.28, delay: (i % 4) * 0.05 }}
+              className="group bg-white border border-[#e7e7e7] rounded-2xl shadow-soft p-4 flex items-center gap-3 hover:border-[#0071c2] lift text-left">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform ${s.accent}`}>
+                <s.icon className="w-5 h-5" />
+              </div>
+              <div className="text-[13px] font-black text-[#1a1a1a] leading-snug">{s.label}</div>
+            </motion.button>
+          ))}
+        </div>
+        <div className="md:hidden mt-4 text-center">
+          <button onClick={() => navigate('/services')} className="text-[14px] font-black text-[#0071c2]">{t('servicesHome.cta')}</button>
+        </div>
       </section>
 
       {/* ─── TRENDING DESTINATIONS ───────────────────────────────── */}

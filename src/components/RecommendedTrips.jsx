@@ -67,21 +67,21 @@ export default function RecommendedTrips() {
           <Sparkles className="w-3.5 h-3.5" /> {t('tripRec.eyebrow')}
         </div>
         <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('tripRec.heading')}</h2>
-        <p className="text-[14px] text-[#595959] font-medium max-w-xl mt-1">{t('tripRec.subtitle')}</p>
+        <p className="text-[14px] text-[#5c5245] font-medium max-w-xl mt-1">{t('tripRec.subtitle')}</p>
       </div>
 
       {/* From-location control */}
-      <div className="bg-white border border-[#e7e7e7] rounded-2xl shadow-soft p-3 md:p-4 mb-5">
+      <div className="bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-3 md:p-4 mb-5">
         <div className="flex flex-col md:flex-row md:items-end gap-3">
           <label className="flex-1 block">
-            <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-1">
+            <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-1">
               <MapPin className="w-3.5 h-3.5 text-[#0071c2]" /> {t('tripRec.fromLabel')}
             </span>
             <input
               value={from}
               onChange={(e) => { setFrom(e.target.value); setDetected(false); setLocError(''); }}
               placeholder={t('tripRec.fromPh')}
-              className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition placeholder:text-[#b0b0b0]"
+              className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition placeholder:text-[#a89a7d]"
             />
           </label>
           <button

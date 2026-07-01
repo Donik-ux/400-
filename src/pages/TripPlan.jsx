@@ -22,6 +22,7 @@ import { useTranslation } from '../store/useLangStore';
 import CityAutocomplete from '../features/flights/CityAutocomplete';
 import DestinationMap from '../components/DestinationMap';
 import { getCoords } from '../data/coords';
+import Price, { usePriceFormatter } from '../components/Price';
 
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) : '—';
 
@@ -45,6 +46,7 @@ export default function TripPlan() {
   const [searchParams, setSearchParams] = useSearchParams();
   const user = useAuthStore(s => s.user);
   const addBooking = useAdminStore(s => s.addBooking);
+  const fmt = usePriceFormatter();
 
   // 1) Try router state (from in-app navigation).
   // 2) Fall back to URL query (so refresh / shared links still work).
@@ -64,9 +66,9 @@ export default function TripPlan() {
       price,
       category: searchParams.get('style') || 'standard',
       image: heroFor(destination),
-      description: `A ${duration}-day AI-built trip plan for ${destination} on a $${price} budget.`,
+      description: `A ${duration}-day AI-built trip plan for ${destination} on a ${fmt(price)} budget.`,
     };
-  }, [stateItem, searchParams]);
+  }, [stateItem, searchParams, fmt]);
 
   const rawItem = stateItem || itemFromUrl;
   const type    = stateType || (itemFromUrl ? 'package' : null);
@@ -178,15 +180,15 @@ export default function TripPlan() {
   /* ── No item passed in → friendly redirect ── */
   if (!item || !type) {
     return (
-      <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center p-6">
-        <div className="bg-white rounded-3xl border border-[#e7e7e7] p-10 max-w-md w-full text-center shadow-float relative overflow-hidden">
+      <div className="min-h-screen bg-[#faf6ed] flex items-center justify-center p-6">
+        <div className="bg-white rounded-3xl border border-[#e6dcc3] p-10 max-w-md w-full text-center shadow-float relative overflow-hidden">
           <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-[#febb02]/15 blur-3xl pointer-events-none animate-float" />
           <div className="relative">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#febb02] to-[#e0a435] flex items-center justify-center mx-auto mb-4 rotate-3 shadow-lift">
               <AlertCircle className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-black text-[#1a1a1a] mb-1.5">{t('tripPlan.noItemTitle')}</h2>
-            <p className="text-[#595959] text-[14px] font-medium mb-6 leading-relaxed">
+            <p className="text-[#5c5245] text-[14px] font-medium mb-6 leading-relaxed">
               {t('tripPlan.noItemSub')}
             </p>
             <button onClick={() => navigate('/hot-tours')}
@@ -227,7 +229,7 @@ export default function TripPlan() {
 
   /* ── Share trip text ── */
   const handleShare = async () => {
-    const text = buildShareText({ item, plan, travelDate, travelers });
+    const text = buildShareText({ item, plan, travelDate, travelers, fmt });
     if (navigator.share) {
       try { await navigator.share({ title: `MAFTRAVEL · ${item.destination || item.name}`, text }); return; } catch {}
     }
@@ -252,10 +254,10 @@ export default function TripPlan() {
     setTimeout(() => win.print(), 400);
   };
 
-  const totalNice = Number(item.price).toLocaleString();
+  const totalNice = fmt(item.price);
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5]">
+    <div className="min-h-screen bg-[#faf6ed]">
 
       {/* ── HEADER ────────────────────────────────────────────── */}
       <section className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#0071c2] text-white overflow-hidden">
@@ -284,7 +286,7 @@ export default function TripPlan() {
           <div className="lg:col-span-2 space-y-5" id="print-plan">
 
             {/* ── Berlin-style header summary ── */}
-            <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5 md:p-6 shadow-soft">
+            <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 md:p-6 shadow-soft">
               <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#0071c2] mb-1.5">
                 <MapIcon className="w-3.5 h-3.5" /> {t('tripPlan.sectionLabel')}
               </div>
@@ -331,7 +333,7 @@ export default function TripPlan() {
               ].filter(Boolean);
               if (!mapPoints.length) return null;
               return (
-                <div className="bg-white border border-[#e7e7e7] rounded-2xl p-4 shadow-soft">
+                <div className="bg-white border border-[#e6dcc3] rounded-2xl p-4 shadow-soft">
                   <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#0071c2] mb-3 px-1">
                     <MapIcon className="w-3.5 h-3.5" /> {t('tripPlan.routeMapLabel')}
                   </div>
@@ -342,11 +344,11 @@ export default function TripPlan() {
 
             {/* Description / includes */}
             {(item.description || item.includes?.length) && (
-              <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5 shadow-soft">
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-soft">
                 {item.description && <p className="text-[14px] text-[#1a1a1a] font-medium leading-relaxed mb-4">{item.description}</p>}
                 {item.includes?.length > 0 && (
                   <>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-2">{fill(t('tripPlan.whatsCovered'), { total: totalNice })}</div>
+                    <div className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">{fill(t('tripPlan.whatsCovered'), { total: totalNice })}</div>
                     <ul className="grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
                       {item.includes.map((inc, i) => (
                         <li key={i} className="flex items-start gap-2 text-[13px] text-[#1a1a1a] font-semibold">
@@ -365,7 +367,7 @@ export default function TripPlan() {
               const fullAddress = [h.name, h.address].filter(Boolean).join(', ');
               const url = mapsUrlFromAddress(fullAddress || h.name);
               return (
-                <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5 shadow-soft">
+                <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-soft">
                   <div className="flex items-start gap-3">
                     <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] flex items-center justify-center text-[#0071c2] shrink-0">
                       <Hotel className="w-5 h-5" />
@@ -401,20 +403,20 @@ export default function TripPlan() {
             })()}
 
             {/* Budget breakdown */}
-            <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5 shadow-soft">
-              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-3">
+            <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-soft">
+              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-3">
                 <Wallet className="w-3.5 h-3.5 text-[#0071c2]" /> {fill(t('tripPlan.whereMoneyGoes'), { total: totalNice })}
               </div>
               <div className="grid grid-cols-3 md:grid-cols-6 gap-2.5">
                 {STAT_ROWS.map((s, i) => {
                   const val = plan?.budgetBreakdown?.[s.key] ?? Math.round(item.price / STAT_ROWS.length);
                   return (
-                    <div key={i} className="group bg-gradient-to-b from-white to-[#f8f9fa] border border-[#eef2f6] rounded-xl p-3 text-center transition-all hover:border-[#cfe2f7] hover:shadow-soft">
+                    <div key={i} className="group bg-gradient-to-b from-white to-[#f6f1e4] border border-[#efe6d2] rounded-xl p-3 text-center transition-all hover:border-[#cfe2f7] hover:shadow-soft">
                       <div className="w-8 h-8 rounded-lg bg-[#f0f5ff] flex items-center justify-center mx-auto mb-1.5 transition-colors group-hover:bg-[#dceaff]">
                         <s.icon className="w-4 h-4 text-[#0071c2]" />
                       </div>
-                      <div className="text-[10px] uppercase tracking-widest font-black text-[#9ca3af]">{t(`tripPlan.stat.${s.statKey}`)}</div>
-                      <div className="text-[14px] font-black text-[#003580]">${val.toLocaleString()}</div>
+                      <div className="text-[10px] uppercase tracking-widest font-black text-[#93876f]">{t(`tripPlan.stat.${s.statKey}`)}</div>
+                      <div className="text-[14px] font-black text-[#003580]"><Price amount={val} /></div>
                     </div>
                   );
                 })}
@@ -422,7 +424,7 @@ export default function TripPlan() {
             </div>
 
             {/* Day-by-day plan */}
-            <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5 shadow-soft">
+            <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-soft">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-[18px] font-black text-[#1a1a1a]">{t('tripPlan.dayByDay')}</h3>
                 {plan?.source && (
@@ -435,7 +437,7 @@ export default function TripPlan() {
               {loading && (
                 <div className="py-12 text-center">
                   <Loader2 className="w-8 h-8 animate-spin text-[#0071c2] mx-auto mb-2" />
-                  <p className="text-[13px] font-bold text-[#595959]">
+                  <p className="text-[13px] font-bold text-[#5c5245]">
                     {isAiAvailable() ? t('tripPlan.buildingAi') : t('tripPlan.buildingSmart')}
                   </p>
                 </div>
@@ -453,11 +455,11 @@ export default function TripPlan() {
                 return (
                 <div className="space-y-3">
                   {/* Running budget tracker */}
-                  <div className="rounded-xl border border-[#e7e7e7] bg-gradient-to-br from-white to-[#f8f9fa] px-4 py-3.5 flex items-center gap-3 flex-wrap shadow-soft">
+                  <div className="rounded-xl border border-[#e6dcc3] bg-gradient-to-br from-white to-[#f6f1e4] px-4 py-3.5 flex items-center gap-3 flex-wrap shadow-soft">
                     <Wallet className="w-4 h-4 text-[#0071c2] shrink-0" />
-                    <div className="text-[12px] font-black uppercase tracking-widest text-[#9ca3af]">{t('tripPlan.spendingPlan')}</div>
+                    <div className="text-[12px] font-black uppercase tracking-widest text-[#93876f]">{t('tripPlan.spendingPlan')}</div>
                     <div className="flex-1 min-w-32">
-                      <div className="h-2.5 bg-[#f0f0f0] rounded-full overflow-hidden">
+                      <div className="h-2.5 bg-[#efe6d2] rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full transition-all duration-700 ${totalDayCosts > Number(item.price) ? 'bg-red-500' : 'bg-gradient-to-r from-[#febb02] to-[#f5b942]'}`}
                           style={{ width: `${Math.min(100, (totalDayCosts / Math.max(1, Number(item.price))) * 100)}%` }}
@@ -465,11 +467,11 @@ export default function TripPlan() {
                       </div>
                     </div>
                     <div className="text-[12px] font-black text-[#1a1a1a]">
-                      ${totalDayCosts.toLocaleString()} <span className="text-[#9ca3af] font-bold">/ ${Number(item.price).toLocaleString()}</span>
+                      {fmt(totalDayCosts)} <span className="text-[#93876f] font-bold">/ {fmt(item.price)}</span>
                     </div>
                     {totalDayCosts <= Number(item.price) && (
                       <span className="text-[10px] font-black text-[#008009] bg-[#e8f5e9] px-2 py-0.5 rounded">
-                        {fill(t('tripPlan.buffer'), { amount: (Number(item.price) - totalDayCosts).toLocaleString() })}
+                        {fill(t('tripPlan.buffer'), { amount: fmt(Number(item.price) - totalDayCosts) })}
                       </span>
                     )}
                   </div>
@@ -479,19 +481,19 @@ export default function TripPlan() {
                     const runningTotal = plan.days.slice(0, dayIdx + 1).reduce((s, x) => s + (Number(x.cost) || 0), 0);
                     return (
                     <motion.div key={d.day} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}
-                      className="relative rounded-xl border border-[#e7e7e7] bg-[#f8f9fa] overflow-hidden shadow-soft">
+                      className="relative rounded-xl border border-[#e6dcc3] bg-[#f6f1e4] overflow-hidden shadow-soft">
                       <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#0071c2] to-[#003580]" />
-                      <div className="px-4 py-3 pl-5 bg-white border-b border-[#f0f0f0] flex items-center gap-3 flex-wrap">
+                      <div className="px-4 py-3 pl-5 bg-white border-b border-[#efe6d2] flex items-center gap-3 flex-wrap">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#003580] to-[#0071c2] text-white text-[13px] font-black flex items-center justify-center shrink-0 shadow-soft">D{d.day}</div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-[10px] font-black uppercase tracking-widest text-[#0071c2]">{fill(t('tripPlan.dayLabel'), { day: d.day })}</span>
-                            {d.weekday && <span className="text-[10px] font-bold text-[#9ca3af]">· {d.weekday}{d.date ? `, ${d.date.split(',').slice(-1)[0].trim()}` : ''}</span>}
+                            {d.weekday && <span className="text-[10px] font-bold text-[#93876f]">· {d.weekday}{d.date ? `, ${d.date.split(',').slice(-1)[0].trim()}` : ''}</span>}
                             {d.label && <span className="text-[10px] font-black text-[#a45e00] bg-[#fff7e6] px-2 py-0.5 rounded-md">{d.label}</span>}
                           </div>
                           <div className="text-[14px] font-black text-[#1a1a1a] mt-0.5">{d.title || `${t('tripPlan.day')} ${d.day}`}</div>
-                          <div className="text-[12px] text-[#595959] font-semibold">
-                            {d.place || item.destination}{d.cost ? ` · ${fill(t('tripPlan.estCost'), { cost: d.cost })}` : ''}
+                          <div className="text-[12px] text-[#5c5245] font-semibold">
+                            {d.place || item.destination}{d.cost ? ` · ${fill(t('tripPlan.estCost'), { cost: fmt(d.cost) })}` : ''}
                           </div>
                         </div>
                         {dayMap && (
@@ -532,9 +534,9 @@ export default function TripPlan() {
                                       title="Open in Google Maps">
                                       <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#febb02]" />
                                       <span className="break-words">
-                                        <span className="text-[#9ca3af] font-black uppercase tracking-wider text-[10px] mr-1">{t('tripPlan.location')}</span>
+                                        <span className="text-[#93876f] font-black uppercase tracking-wider text-[10px] mr-1">{t('tripPlan.location')}</span>
                                         <span className="text-[#0071c2] group-hover/loc:underline">{ev.address}</span>
-                                        {ev.district && <span className="text-[#595959]"> · {ev.district}</span>}
+                                        {ev.district && <span className="text-[#5c5245]"> · {ev.district}</span>}
                                         <ExternalLink className="inline w-2.5 h-2.5 ml-1 mb-0.5 opacity-50" />
                                       </span>
                                     </a>
@@ -543,11 +545,11 @@ export default function TripPlan() {
                                   <div className="flex items-start gap-1.5 text-[12px] text-[#1a1a1a] font-semibold mt-0.5">
                                     <span className="text-[14px] leading-none mt-0.5">💰</span>
                                     <span>
-                                      <span className="text-[#9ca3af] font-black uppercase tracking-wider text-[10px] mr-1">{t('tripPlan.cost')}</span>
+                                      <span className="text-[#93876f] font-black uppercase tracking-wider text-[10px] mr-1">{t('tripPlan.cost')}</span>
                                       <span className={ev.price && /free|0/i.test(ev.price) ? 'text-[#008009] font-black' : 'text-[#003580] font-black'}>
                                         {ev.price || t('tripPlan.free')}
                                       </span>
-                                      {ev.duration && <span className="text-[#9ca3af] font-bold ml-2">· {ev.duration}</span>}
+                                      {ev.duration && <span className="text-[#93876f] font-bold ml-2">· {ev.duration}</span>}
                                     </span>
                                   </div>
                                 </div>
@@ -555,7 +557,7 @@ export default function TripPlan() {
 
                               {/* Transport hint connecting to next event */}
                               {!isLast && ev.transportToNext && (
-                                <div className="ml-12 pl-3 pr-4 py-1.5 border-l-2 border-dashed border-[#dceaff] flex items-center gap-2 text-[11px] text-[#595959] font-semibold">
+                                <div className="ml-12 pl-3 pr-4 py-1.5 border-l-2 border-dashed border-[#dceaff] flex items-center gap-2 text-[11px] text-[#5c5245] font-semibold">
                                   <Navigation className="w-3 h-3 text-[#0071c2] shrink-0" />
                                   <span className="truncate">{ev.transportToNext}</span>
                                 </div>
@@ -584,16 +586,16 @@ export default function TripPlan() {
                       })()}
 
                       {/* Daily spend summary */}
-                      <div className="px-4 py-2.5 bg-white border-t border-[#e7e7e7] flex items-center justify-between flex-wrap gap-2">
-                        <div className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af] flex items-center gap-1.5">
+                      <div className="px-4 py-2.5 bg-white border-t border-[#e6dcc3] flex items-center justify-between flex-wrap gap-2">
+                        <div className="text-[11px] font-black uppercase tracking-widest text-[#93876f] flex items-center gap-1.5">
                           <Wallet className="w-3.5 h-3.5 text-[#0071c2]" /> {t('tripPlan.spentToday')}
                         </div>
                         <div className="flex items-center gap-3 text-[12px] font-black">
-                          <span className="text-[#1a1a1a]">${(Number(d.cost) || 0).toLocaleString()}</span>
-                          <span className="text-[#9ca3af] font-bold">·</span>
-                          <span className="text-[#595959]">
-                            {t('tripPlan.runningTotal')} <span className="text-[#003580]">${runningTotal.toLocaleString()}</span>
-                            <span className="text-[#9ca3af] font-bold"> / ${Number(item.price).toLocaleString()}</span>
+                          <span className="text-[#1a1a1a]">{fmt(Number(d.cost) || 0)}</span>
+                          <span className="text-[#93876f] font-bold">·</span>
+                          <span className="text-[#5c5245]">
+                            {t('tripPlan.runningTotal')} <span className="text-[#003580]">{fmt(runningTotal)}</span>
+                            <span className="text-[#93876f] font-bold"> / {fmt(item.price)}</span>
                           </span>
                         </div>
                       </div>
@@ -607,7 +609,7 @@ export default function TripPlan() {
 
             {/* ── Emergency contacts (per country) ── */}
             {plan?.emergency && (
-              <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5 shadow-soft">
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-soft">
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                   <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600 shrink-0">
                     <ShieldAlert className="w-5 h-5" />
@@ -616,7 +618,7 @@ export default function TripPlan() {
                     <h3 className="text-[16px] font-black text-[#1a1a1a]">
                       {fill(t('tripPlan.emergencyTitle'), { country: plan.emergency.country })} {plan.emergency.flag}
                     </h3>
-                    <p className="text-[11px] text-[#9ca3af] font-bold uppercase tracking-widest">
+                    <p className="text-[11px] text-[#93876f] font-bold uppercase tracking-widest">
                       {t('tripPlan.emergencySub')}
                     </p>
                   </div>
@@ -624,16 +626,16 @@ export default function TripPlan() {
                 <div className="grid sm:grid-cols-2 gap-2.5">
                   {(plan.emergency.numbers || []).map((n, i) => (
                     <a key={i} href={`tel:${String(n.number).replace(/\s/g, '')}`}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-[#f8f9fa] border border-[#e7e7e7] hover:border-[#0071c2] hover:bg-[#f0f5ff] transition group">
-                      <div className="w-9 h-9 rounded-lg bg-white border border-[#e7e7e7] flex items-center justify-center text-[18px] shrink-0">
+                      className="flex items-center gap-3 p-3 rounded-xl bg-[#f6f1e4] border border-[#e6dcc3] hover:border-[#0071c2] hover:bg-[#f0f5ff] transition group">
+                      <div className="w-9 h-9 rounded-lg bg-white border border-[#e6dcc3] flex items-center justify-center text-[18px] shrink-0">
                         {n.icon || '☎️'}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="text-[12px] font-black text-[#9ca3af] uppercase tracking-wider truncate">{n.service}</div>
+                        <div className="text-[12px] font-black text-[#93876f] uppercase tracking-wider truncate">{n.service}</div>
                         <div className="text-[16px] font-black text-[#003580] tabular-nums">{n.number}</div>
-                        {n.note && <div className="text-[10.5px] text-[#595959] font-semibold truncate">{n.note}</div>}
+                        {n.note && <div className="text-[10.5px] text-[#5c5245] font-semibold truncate">{n.note}</div>}
                       </div>
-                      <Phone className="w-4 h-4 text-[#9ca3af] group-hover:text-[#0071c2] transition" />
+                      <Phone className="w-4 h-4 text-[#93876f] group-hover:text-[#0071c2] transition" />
                     </a>
                   ))}
                 </div>
@@ -650,7 +652,7 @@ export default function TripPlan() {
 
             {/* Travel tips */}
             {plan?.travelTips?.length > 0 && (
-              <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5 shadow-soft">
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-soft">
                 <div className="flex items-center gap-2 mb-3">
                   <Lightbulb className="w-4 h-4 text-[#febb02]" />
                   <h3 className="text-[16px] font-black text-[#1a1a1a]">{t('tripPlan.localTips')}</h3>
@@ -668,13 +670,13 @@ export default function TripPlan() {
 
           {/* ── Right: Actions ── */}
           <div className="lg:col-span-1">
-            <div className="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden sticky top-[80px] shadow-float no-print">
+            <div className="bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden sticky top-[80px] shadow-float no-print">
 
               <div className="relative bg-gradient-to-br from-[#002250] to-[#0071c2] text-white px-5 py-5 overflow-hidden">
                 <div className="absolute -top-12 -right-8 w-40 h-40 rounded-full bg-[#febb02]/15 blur-2xl pointer-events-none" />
                 <div className="relative">
                   <div className="text-[10px] font-black uppercase tracking-widest text-white/70 mb-0.5">{t('tripPlan.totalTripCost')}</div>
-                  <div className="text-[30px] font-black text-gradient-gold leading-none">${totalNice}</div>
+                  <div className="text-[30px] font-black text-gradient-gold leading-none">{totalNice}</div>
                   <div className="text-[11px] font-bold text-white/70 mt-1.5">{fill(t(travelers === 1 ? 'tripPlan.forDaysTravelers' : 'tripPlan.forDaysTravelersPlural'), { days: item.duration, count: travelers })}</div>
                 </div>
               </div>
@@ -682,7 +684,7 @@ export default function TripPlan() {
               <div className="p-5 space-y-3">
                 <Field label={t('tripPlan.yourName')} icon={<Users className="w-3.5 h-3.5" />}>
                   <input type="text" placeholder={t('tripPlan.yourNamePh')} value={name} onChange={e => setName(e.target.value)}
-                    className="w-full bg-transparent outline-none text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#b0b0b0]" />
+                    className="w-full bg-transparent outline-none text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d]" />
                 </Field>
 
                 <CityAutocomplete
@@ -748,11 +750,11 @@ export default function TripPlan() {
                     <Share2 className="w-4 h-4" /> {t('tripPlan.share')}
                   </button>
                   <button onClick={handlePrint}
-                    className="px-3 py-3 rounded-xl border-2 border-[#e7e7e7] text-[#1a1a1a] text-[12px] font-black hover:border-[#0071c2] hover:bg-[#f0f5ff] transition active:scale-95 flex items-center justify-center gap-1.5">
+                    className="px-3 py-3 rounded-xl border-2 border-[#e6dcc3] text-[#1a1a1a] text-[12px] font-black hover:border-[#0071c2] hover:bg-[#f0f5ff] transition active:scale-95 flex items-center justify-center gap-1.5">
                     <Printer className="w-4 h-4" /> {t('tripPlan.print')}
                   </button>
                   <button onClick={handleDownload}
-                    className="px-3 py-3 rounded-xl border-2 border-[#e7e7e7] text-[#1a1a1a] text-[12px] font-black hover:border-[#0071c2] hover:bg-[#f0f5ff] transition active:scale-95 flex items-center justify-center gap-1.5">
+                    className="px-3 py-3 rounded-xl border-2 border-[#e6dcc3] text-[#1a1a1a] text-[12px] font-black hover:border-[#0071c2] hover:bg-[#f0f5ff] transition active:scale-95 flex items-center justify-center gap-1.5">
                     <Download className="w-4 h-4" /> {t('tripPlan.pdf')}
                   </button>
                 </div>
@@ -763,9 +765,9 @@ export default function TripPlan() {
                 </button>
               </div>
 
-              <div className="bg-[#f8f9fa] border-t border-[#e7e7e7] px-5 py-3 flex items-start gap-2">
+              <div className="bg-[#f6f1e4] border-t border-[#e6dcc3] px-5 py-3 flex items-start gap-2">
                 <Heart className="w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5" />
-                <span className="text-[11px] font-semibold text-[#595959] leading-snug">
+                <span className="text-[11px] font-semibold text-[#5c5245] leading-snug">
                   {t('tripPlan.footerNote')}
                 </span>
               </div>
@@ -780,8 +782,8 @@ export default function TripPlan() {
 
 /* ── Header stat tile ─────────────────────────────────────── */
 const HeaderStat = ({ icon, label, value }) => (
-  <div className="bg-[#f8f9fa] border border-[#eef2f6] rounded-xl px-3 py-2.5">
-    <div className="flex items-center gap-1 text-[9.5px] font-black uppercase tracking-widest text-[#9ca3af] mb-1">
+  <div className="bg-[#f6f1e4] border border-[#efe6d2] rounded-xl px-3 py-2.5">
+    <div className="flex items-center gap-1 text-[9.5px] font-black uppercase tracking-widest text-[#93876f] mb-1">
       <span className="text-[#0071c2]">{icon}</span>{label}
     </div>
     <div className="text-[13px] font-black text-[#1a1a1a] leading-tight">{value || '—'}</div>
@@ -790,8 +792,8 @@ const HeaderStat = ({ icon, label, value }) => (
 
 /* ── Small field shell ─────────────────────────────────────── */
 const Field = ({ icon, label, children }) => (
-  <label className="block bg-white border border-[#e7e7e7] rounded-xl px-3 py-2 focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/10 transition">
-    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-0.5">
+  <label className="block bg-white border border-[#e6dcc3] rounded-xl px-3 py-2 focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/10 transition">
+    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-0.5">
       <span className="text-[#0071c2]">{icon}</span>{label}
     </div>
     {children}
@@ -799,15 +801,15 @@ const Field = ({ icon, label, children }) => (
 );
 
 /* ── Share text builder ─────────────────────────────────────── */
-function buildShareText({ item, plan, travelDate, travelers }) {
+function buildShareText({ item, plan, travelDate, travelers, fmt }) {
   const lines = [
     `🌍 MAFTRAVEL trip plan · ${item.destination || item.name}`,
-    `Duration: ${item.duration} days  ·  Budget: $${item.price}  ·  Travelers: ${travelers}`,
+    `Duration: ${item.duration} days  ·  Budget: ${fmt(item.price)}  ·  Travelers: ${travelers}`,
     travelDate ? `Start date: ${fmtDate(travelDate)}` : null,
     '',
     'Day-by-day:',
     ...(plan?.days || []).slice(0, 12).map(d =>
-      `  D${d.day} · ${d.title || d.place || 'Day plan'}${d.cost ? ` (est. $${d.cost})` : ''}`
+      `  D${d.day} · ${d.title || d.place || 'Day plan'}${d.cost ? ` (est. ${fmt(d.cost)})` : ''}`
     ),
     '',
     'Plan built with MAFTRAVEL — https://maftravel.com',
@@ -857,22 +859,22 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>MAFTRAVEL · ${escapeHtml(item.destination || item.name)}</title>
   <style>
     *{box-sizing:border-box} body{font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;padding:32px;max-width:820px;margin:auto;}
-    h1{color:#003580;font-size:30px;margin:6px 0 4px} h2{color:#003580;font-size:18px;margin:28px 0 8px;border-bottom:2px solid #e7e7e7;padding-bottom:4px}
+    h1{color:#003580;font-size:30px;margin:6px 0 4px} h2{color:#003580;font-size:18px;margin:28px 0 8px;border-bottom:2px solid #e6dcc3;padding-bottom:4px}
     h3{color:#003580;margin:10px 0 2px;font-size:15px} h3 .label{background:#fff7e6;color:#a45e00;padding:2px 6px;border-radius:5px;font-size:11px;margin-left:4px}
     ul{margin:6px 0 14px 18px;padding:0} li{margin-bottom:6px;font-size:12.5px;line-height:1.45}
-    .muted{color:#595959;font-size:12px} .badge{background:#febb02;color:#1a1a1a;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;display:inline-block;margin-right:6px}
+    .muted{color:#5c5245;font-size:12px} .badge{background:#febb02;color:#1a1a1a;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;display:inline-block;margin-right:6px}
     .summary{background:#f0f5ff;border-radius:10px;padding:14px;margin:12px 0 20px}
     .summary strong{color:#003580}
-    .day{padding:10px 0;border-top:1px solid #f0f0f0}
+    .day{padding:10px 0;border-top:1px solid #efe6d2}
     .addr{color:#1a1a1a;font-size:12px} .addr strong{color:#003580}
     .cost{color:#1a1a1a;font-size:12px} .cost strong{color:#003580}
     .next{color:#0071c2;font-size:11px;font-style:italic}
     .transport{background:#f0f5ff;border:1px solid #dceaff;padding:6px 10px;border-radius:6px;color:#003580;font-size:12px;margin:0 0 8px 0}
     .hotel{background:#fff7e6;border:1px solid #ffd76e;padding:10px 12px;border-radius:8px;font-size:13px;margin:6px 0 16px}
     .halal{background:#f0fdf4;border:1px solid #bbf7d0;padding:8px 10px;border-radius:6px;font-size:12px;color:#155724;margin-top:6px}
-    .day-total{background:#f8f9fa;border:1px solid #e7e7e7;padding:6px 10px;border-radius:6px;font-size:12px;margin-top:8px;text-align:right}
+    .day-total{background:#f6f1e4;border:1px solid #e6dcc3;padding:6px 10px;border-radius:6px;font-size:12px;margin-top:8px;text-align:right}
     .emerg li{font-size:13px}
-    .footer{margin-top:28px;padding-top:14px;border-top:2px solid #e7e7e7;color:#9ca3af;font-size:11px;text-align:center}
+    .footer{margin-top:28px;padding-top:14px;border-top:2px solid #e6dcc3;color:#93876f;font-size:11px;text-align:center}
   </style></head><body>
     <span class="badge">MAFTRAVEL · Free Trip Plan</span>
     <h1>${escapeHtml(h.title || `Travel Plan – ${item.destination || item.name}`)}</h1>

@@ -3,6 +3,8 @@
 // `label` is what gets stored in the form — flightService extracts the IATA
 // code from the parentheses, so keep the "City (CODE)" shape.
 
+import { NEIGHBORHOODS } from './neighborhoods';
+
 const RAW = [
   // ── CIS / Central Asia ──────────────────────────────────────────────
   ['Tashkent', 'Uzbekistan', 'TAS'],
@@ -190,6 +192,8 @@ const RAW = [
   ['Santiago', 'Chile', 'SCL'],
   ['Havana', 'Cuba', 'HAV'],
   ['Punta Cana', 'Dominican Republic', 'PUJ'],
+  ['Ushuaia', 'Argentina', 'USH'],
+  ['Antarctica', 'White Continent · via Ushuaia', 'USH'],
 
   // ── Oceania ─────────────────────────────────────────────────────────
   ['Sydney', 'Australia', 'SYD'],
@@ -242,4 +246,52 @@ export function searchAirports(query, limit = 8) {
 
   scored.sort((x, y) => x.score - y.score || x.a.city.localeCompare(y.a.city));
   return scored.slice(0, limit).map((s) => s.a);
+}
+
+/**
+ * Like `searchAirports`, but also surfaces curated neighborhood/area results
+ * (e.g. typing "Dubai" also matches "Dubai Marina", "Downtown Dubai") for
+ * destination-style fields. Cities rank above their own areas; areas from a
+ * matching city are capped so they don't crowd out other cities' airports.
+ */
+export function searchPlaces(query, limit = 8) {
+  const q = norm(query).trim();
+  if (!q) return AIRPORTS.slice(0, limit);
+
+  const scored = [];
+  for (const a of AIRPORTS) {
+    const city = norm(a.city);
+    const country = norm(a.country);
+    const code = norm(a.code);
+
+    let score = -1;
+    if (code === q) score = 0;
+    else if (city.startsWith(q)) score = 1;
+    else if (code.startsWith(q)) score = 2;
+    else if (country.startsWith(q)) score = 3;
+    else if (city.includes(q)) score = 4;
+    else if (country.includes(q)) score = 5;
+
+    if (score >= 0) scored.push({ item: a, score, sort: a.city });
+  }
+
+  let areaCount = 0;
+  for (const n of NEIGHBORHOODS) {
+    if (areaCount >= 4) break; // don't let areas crowd out other cities
+    const name = norm(n.name);
+    const city = norm(n.city);
+    const country = norm(n.country);
+
+    let score = -1;
+    if (name.startsWith(q)) score = 1.5;             // area name prefix
+    else if (city.startsWith(q)) score = 1.8;         // parent city prefix
+    else if (name.includes(q)) score = 4.5;           // area name substring
+    else if (city.includes(q)) score = 4.8;
+    else if (country.startsWith(q)) score = 3.5;
+
+    if (score >= 0) { scored.push({ item: n, score, sort: n.name }); areaCount += 1; }
+  }
+
+  scored.sort((x, y) => x.score - y.score || x.sort.localeCompare(y.sort));
+  return scored.slice(0, limit).map((s) => s.item);
 }

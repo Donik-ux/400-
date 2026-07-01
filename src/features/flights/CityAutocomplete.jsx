@@ -1,5 +1,5 @@
 import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
-import { searchAirports } from '../../data/airports';
+import { searchPlaces } from '../../data/airports';
 
 /**
  * City/airport autocomplete for the flight search.
@@ -22,7 +22,7 @@ export default function CityAutocomplete({
   const listId  = useId();
 
   // Suggestion list is derived from the current value (no effect needed).
-  const results = useMemo(() => searchAirports(value, 8), [value]);
+  const results = useMemo(() => searchPlaces(value, 8), [value]);
 
   // Close the dropdown when clicking outside the component.
   useEffect(() => {
@@ -63,8 +63,8 @@ export default function CityAutocomplete({
 
   return (
     <div ref={wrapRef} className={`relative ${className}`}>
-      <label className="block bg-white border-2 border-[#e7e7e7] hover:border-[#0071c2] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition">
-        <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-0.5">
+      <label className="block bg-white border-2 border-[#e6dcc3] hover:border-[#0071c2] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition">
+        <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-0.5">
           <span className="text-[#0071c2]">{icon}</span>{label}
         </div>
         <input
@@ -79,7 +79,7 @@ export default function CityAutocomplete({
           onChange={(e) => { onChange(e.target.value); setActive(0); setOpen(true); }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a] placeholder:text-[#b0b0b0]"
+          className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a] placeholder:text-[#a89a7d]"
         />
       </label>
 
@@ -87,11 +87,11 @@ export default function CityAutocomplete({
         <ul
           id={listId}
           role="listbox"
-          className="absolute left-0 right-0 top-full mt-1.5 max-h-72 overflow-auto bg-white border border-[#e7e7e7] rounded-2xl shadow-float z-40 py-1.5 page-fade"
+          className="absolute left-0 right-0 top-full mt-1.5 max-h-72 overflow-auto bg-white border border-[#e6dcc3] rounded-2xl shadow-float z-40 py-1.5 page-fade"
         >
           {results.map((a, i) => (
             <li
-              key={a.code}
+              key={a.label}
               role="option"
               aria-selected={i === active}
               onMouseEnter={() => setActive(i)}
@@ -99,12 +99,19 @@ export default function CityAutocomplete({
               // input's blur closes the list.
               onMouseDown={(e) => { e.preventDefault(); choose(a); }}
               className={`flex items-center justify-between gap-3 px-3 py-2 cursor-pointer transition ${
-                i === active ? 'bg-[#f0f5ff]' : 'hover:bg-[#f8f9fa]'
+                i === active ? 'bg-[#f0f5ff]' : 'hover:bg-[#f6f1e4]'
               }`}
             >
               <span className="min-w-0">
-                <span className="block text-[13.5px] font-black text-[#1a1a1a] truncate">{a.city}</span>
-                <span className="block text-[11px] font-bold text-[#9ca3af] truncate">{a.country}</span>
+                <span className="flex items-center gap-1.5 min-w-0">
+                  <span className="block text-[13.5px] font-black text-[#1a1a1a] truncate">{a.isArea ? a.name : a.city}</span>
+                  {a.isArea && (
+                    <span className="shrink-0 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-[#f0f5ff] text-[#0071c2]">Area</span>
+                  )}
+                </span>
+                <span className="block text-[11px] font-bold text-[#93876f] truncate">
+                  {a.isArea ? `${a.city}, ${a.country}` : a.country}
+                </span>
               </span>
               <span className="shrink-0 px-2 py-0.5 rounded-md bg-[#003580] text-white text-[11px] font-black tracking-wider">
                 {a.code}

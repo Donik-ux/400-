@@ -49,6 +49,7 @@ const COORDS = {
   'Amsterdam':    { lat: 52.3676,  lng: 4.9041 },
   'Brussels':     { lat: 50.8503,  lng: 4.3517 },
   'Seychelles':   { lat: -4.6796,  lng: 55.4920 },
+  'Antarctica':   { lat: -75.2509, lng: -0.0713 },
 };
 
 export function getCoords(city) {

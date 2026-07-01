@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapPin, Clock, Navigation } from 'lucide-react';
 import { useTranslation } from '../../store/useLangStore';
+import { usePriceFormatter } from '../../components/Price';
 
 const TYPE_CFG = {
   attraction: { emoji: '🏛️' },
@@ -18,11 +19,12 @@ const TYPE_CFG = {
 
 const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = [] }) => {
   const { t } = useTranslation();
+  const fmt = usePriceFormatter();
   const hasEvents = Array.isArray(dayPlan.events) && dayPlan.events.length > 0;
 
   return (
     <div
-      className="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden shadow-soft lift page-fade"
+      className="bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft lift page-fade"
       style={{ animationDelay: `${index * 0.07}s` }}
     >
       {/* Header */}
@@ -40,20 +42,20 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
             </div>
           </div>
           <div className="text-right">
-            <p className="text-[22px] font-black text-white leading-none">${dayPlan.cost}</p>
+            <p className="text-[22px] font-black text-white leading-none">{fmt(dayPlan.cost)}</p>
             <p className="text-[9px] text-white/45 uppercase tracking-wider">{t('planner.results.est')} {t('plannerPage.card.estSpend')}</p>
           </div>
         </div>
       </div>
 
       {/* Place */}
-      <div className="flex items-center gap-2 px-5 py-3 bg-[#f8f9fa] border-b border-[#f0f0f0]">
+      <div className="flex items-center gap-2 px-5 py-3 bg-[#f6f1e4] border-b border-[#efe6d2]">
         <MapPin className="w-3.5 h-3.5 text-[#0071c2] shrink-0" />
-        <span className="text-[13px] font-bold text-[#595959] truncate">{dayPlan.place}</span>
+        <span className="text-[13px] font-bold text-[#5c5245] truncate">{dayPlan.place}</span>
       </div>
 
       {/* Events */}
-      <div className="divide-y divide-[#f8f9fa]">
+      <div className="divide-y divide-[#f6f1e4]">
         {hasEvents ? dayPlan.events.map((ev, i) => {
           const { emoji } = TYPE_CFG[ev.type] || TYPE_CFG.attraction;
           const mapsQuery = ev.address ? encodeURIComponent(ev.address) : null;
@@ -64,7 +66,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
             : null;
 
           return (
-            <div key={i} className="px-5 py-3.5 hover:bg-[#f8f9fa] transition-premium">
+            <div key={i} className="px-5 py-3.5 hover:bg-[#f6f1e4] transition-premium">
               <div className="flex items-start gap-3">
                 {/* Time badge */}
                 <div className="shrink-0 mt-0.5">
@@ -97,7 +99,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
                   {/* Duration + Navigate */}
                   <div className="flex items-center gap-3 mt-1.5 flex-wrap">
                     {ev.duration && (
-                      <span className="flex items-center gap-1 text-[10px] text-[#9ca3af] font-semibold">
+                      <span className="flex items-center gap-1 text-[10px] text-[#93876f] font-semibold">
                         <Clock className="w-3 h-3" />{ev.duration}
                       </span>
                     )}
@@ -126,8 +128,8 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
               { label: t('planner.results.evening'),   value: dayPlan.evening   },
             ].filter(s => s.value).map(s => (
               <div key={s.label}>
-                <p className="text-[9px] font-black uppercase tracking-widest text-[#9ca3af] mb-0.5">{s.label}</p>
-                <p className="text-[13px] text-[#595959]">{s.value}</p>
+                <p className="text-[9px] font-black uppercase tracking-widest text-[#93876f] mb-0.5">{s.label}</p>
+                <p className="text-[13px] text-[#5c5245]">{s.value}</p>
               </div>
             ))}
           </div>
@@ -155,11 +157,11 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
 
       {/* Car nav apps strip */}
       {transportMode === 'car' && navApps.length > 0 && (
-        <div className="border-t border-[#f0f0f0] px-4 py-3 bg-[#f8f9fa]">
-          <p className="text-[9px] font-black uppercase tracking-widest text-[#9ca3af] mb-2">{t('plannerPage.card.navApps')}</p>
+        <div className="border-t border-[#efe6d2] px-4 py-3 bg-[#f6f1e4]">
+          <p className="text-[9px] font-black uppercase tracking-widest text-[#93876f] mb-2">{t('plannerPage.card.navApps')}</p>
           <div className="flex flex-wrap gap-2">
             {navApps.slice(0, 3).map(app => (
-              <span key={app.name} className="flex items-center gap-1 text-[10px] font-bold text-[#595959] bg-white border border-[#e7e7e7] px-2 py-1 rounded-lg">
+              <span key={app.name} className="flex items-center gap-1 text-[10px] font-bold text-[#5c5245] bg-white border border-[#e6dcc3] px-2 py-1 rounded-lg">
                 <span>{app.icon}</span>{app.name}
               </span>
             ))}

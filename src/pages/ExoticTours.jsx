@@ -4,6 +4,7 @@ import { Thermometer, Snowflake, Globe, ArrowRight, Clock, Star, Users, Plane, S
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../store/useLangStore';
 import { TOURS } from '../data/exoticTours';
+import Price, { usePriceFormatter } from '../components/Price';
 
 const parsePrice = (s) => Number(String(s || '').replace(/[^\d]/g, '')) || 0;
 
@@ -11,6 +12,7 @@ const TourCard = ({ tour, budget }) => {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const fmt = usePriceFormatter();
 
   const price     = parsePrice(tour.price);
   const hasBudget = budget > 0;
@@ -27,8 +29,8 @@ const TourCard = ({ tour, budget }) => {
       transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
       className={`group lift bg-white rounded-2xl border overflow-hidden shadow-soft flex flex-col ${
         hasBudget && !fits
-          ? 'border-[#e7e7e7] opacity-65 hover:opacity-100'
-          : fits ? 'border-green-300' : 'border-[#e7e7e7]'
+          ? 'border-[#e6dcc3] opacity-65 hover:opacity-100'
+          : fits ? 'border-green-300' : 'border-[#e6dcc3]'
       }`}
     >
       {/* Image */}
@@ -50,7 +52,7 @@ const TourCard = ({ tour, budget }) => {
           <div className={`absolute top-4 right-4 px-2.5 py-1 rounded-full text-[10px] font-black shadow-lg ${
             fits ? 'bg-green-500 text-white' : 'bg-gradient-to-r from-[#febb02] to-[#f5b942] text-[#1a1a1a]'
           }`}>
-            {fits ? `✓ ${t('exoticTours.inBudget')}` : `+€${over.toLocaleString()}`}
+            {fits ? `✓ ${t('exoticTours.inBudget')}` : `+${fmt(over)}`}
           </div>
         )}
 
@@ -63,7 +65,7 @@ const TourCard = ({ tour, budget }) => {
 
       <div className="p-5 flex flex-col flex-1">
         {/* Temperature route */}
-        <div className="flex items-center gap-2 mb-4 p-2.5 rounded-xl bg-gradient-to-r from-orange-50 via-white to-blue-50 border border-[#f0f0f0]">
+        <div className="flex items-center gap-2 mb-4 p-2.5 rounded-xl bg-gradient-to-r from-orange-50 via-white to-blue-50 border border-[#efe6d2]">
           <div className="text-center px-1 shrink-0">
             <div className="text-[18px] leading-none">{tour.from.icon}</div>
             <div className="text-[11px] font-black text-[#1a1a1a] mt-0.5">{tour.from.city}</div>
@@ -82,19 +84,19 @@ const TourCard = ({ tour, budget }) => {
 
         {/* Meta pills */}
         <div className="flex flex-wrap items-center gap-1.5 mb-3">
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#f5f5f5] text-[11px] font-bold text-[#595959]">
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#faf6ed] text-[11px] font-bold text-[#5c5245]">
             <Clock className="w-3 h-3" />{tour.days} {t('exotic.days')}
           </span>
           <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#fff7e6] text-[11px] font-bold text-[#a45e00]">
             <Star className="w-3 h-3 fill-[#febb02] text-[#febb02]" />{tour.rating} ({tour.reviews})
           </span>
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#f5f5f5] text-[11px] font-bold text-[#595959]">
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#faf6ed] text-[11px] font-bold text-[#5c5245]">
             <Users className="w-3 h-3" />{tour.groupSize}
           </span>
         </div>
 
         {/* Description */}
-        <p className="text-[13px] text-[#595959] leading-relaxed mb-3">{tour.desc}</p>
+        <p className="text-[13px] text-[#5c5245] leading-relaxed mb-3">{tour.desc}</p>
 
         {/* Highlights toggle */}
         <button
@@ -107,7 +109,7 @@ const TourCard = ({ tour, budget }) => {
         {expanded && (
           <ul className="mb-3 space-y-1.5">
             {tour.highlights.map((h, i) => (
-              <li key={i} className="flex items-center gap-2 text-[13px] text-[#595959]">
+              <li key={i} className="flex items-center gap-2 text-[13px] text-[#5c5245]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#0071c2] shrink-0" />
                 {h}
               </li>
@@ -116,10 +118,10 @@ const TourCard = ({ tour, budget }) => {
         )}
 
         {/* Price + CTA */}
-        <div className="flex items-center justify-between gap-3 pt-3 mt-auto border-t border-[#f0f0f0]">
+        <div className="flex items-center justify-between gap-3 pt-3 mt-auto border-t border-[#efe6d2]">
           <div>
-            <div className="text-[10px] text-[#9ca3af] font-bold uppercase tracking-wider">{t('exotic.perPerson')}</div>
-            <div className="text-[22px] font-black text-[#003580] leading-none">{tour.price}</div>
+            <div className="text-[10px] text-[#93876f] font-bold uppercase tracking-wider">{t('exotic.perPerson')}</div>
+            <div className="text-[22px] font-black text-[#003580] leading-none"><Price amount={price} /></div>
           </div>
           <button
             onClick={openTour}
@@ -164,7 +166,7 @@ const ExoticTours = () => {
     : 0;
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa]">
+    <div className="min-h-screen bg-[#f6f1e4]">
 
       {/* Hero */}
       <div className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#003580] overflow-hidden">
@@ -218,7 +220,7 @@ const ExoticTours = () => {
         {/* Wave divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 60L1440 60L1440 20C1200 60 720 0 0 40V60Z" fill="#f8f9fa" />
+            <path d="M0 60L1440 60L1440 20C1200 60 720 0 0 40V60Z" fill="#f6f1e4" />
           </svg>
         </div>
       </div>
@@ -227,25 +229,25 @@ const ExoticTours = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-10">
 
         {/* Budget finder */}
-        <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5 mb-6 flex flex-col md:flex-row md:items-center gap-4 shadow-soft">
+        <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 mb-6 flex flex-col md:flex-row md:items-center gap-4 shadow-soft">
           <div className="flex items-center gap-3 shrink-0">
             <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0071c2] to-[#003580] flex items-center justify-center shadow-sm">
               <Wallet className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="text-[14px] font-black text-[#1a1a1a]">{t('exoticTours.budgetFinderTitle')}</p>
-              <p className="text-[12px] text-[#9ca3af]">{t('exoticTours.budgetFinderSub')}</p>
+              <p className="text-[12px] text-[#93876f]">{t('exoticTours.budgetFinderSub')}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus-within:border-[#0071c2] transition flex-1 md:max-w-[240px]">
-            <span className="text-[16px] font-black text-[#595959]">€</span>
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#0071c2] transition flex-1 md:max-w-[240px]">
+            <span className="text-[16px] font-black text-[#5c5245]">$</span>
             <input
               type="number" min="0" step="500" value={budget || ''}
               onChange={e => setBudget(Math.max(0, Number(e.target.value)))}
               placeholder={t('exoticTours.budgetPlaceholder')}
-              className="flex-1 w-full text-[15px] font-black text-[#1a1a1a] outline-none placeholder:text-[#c9d1d9] placeholder:font-medium" />
+              className="flex-1 w-full text-[15px] font-black text-[#1a1a1a] outline-none placeholder:text-[#d9c9a3] placeholder:font-medium" />
             {budget > 0 && (
-              <button onClick={() => setBudget(0)} className="text-[#9ca3af] hover:text-[#1a1a1a]">
+              <button onClick={() => setBudget(0)} className="text-[#93876f] hover:text-[#1a1a1a]">
                 <X className="w-4 h-4" />
               </button>
             )}
@@ -270,13 +272,13 @@ const ExoticTours = () => {
               className={`px-5 py-2.5 rounded-full text-[13px] font-bold transition-all border ${
                 activeFilter === f.key
                   ? 'bg-[#003580] text-white border-[#003580] shadow-md'
-                  : 'bg-white text-[#595959] border-[#e7e7e7] hover:border-[#003580] hover:text-[#003580]'
+                  : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#003580] hover:text-[#003580]'
               }`}
             >
               {f.label}
             </button>
           ))}
-          <span className="ml-auto self-center text-[13px] text-[#9ca3af] font-medium">
+          <span className="ml-auto self-center text-[13px] text-[#93876f] font-medium">
             {visible.length} {t('exotic.toursFound')}
           </span>
         </div>

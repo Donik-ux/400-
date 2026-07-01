@@ -9,6 +9,7 @@ import {
 import { getTourById } from '../data/exoticTours';
 import useSEO from '../hooks/useSEO';
 import { useTranslation } from '../store/useLangStore';
+import Price, { usePriceFormatter } from '../components/Price';
 
 const parsePrice = (s) => Number(String(s || '').replace(/[^\d]/g, '')) || 0;
 
@@ -31,6 +32,7 @@ export default function TourDetail() {
   const navigate = useNavigate();
   const { t }    = useTranslation();
   const tour     = getTourById(id);
+  const fmt      = usePriceFormatter();
 
   useSEO({
     title: tour ? `${tour.title} · Exotic Tour` : 'Tour not found',
@@ -45,12 +47,12 @@ export default function TourDetail() {
 
   if (!tour) {
     return (
-      <div className="min-h-screen bg-[#f8f9fa] flex flex-col items-center justify-center text-center px-6">
+      <div className="min-h-screen bg-[#f6f1e4] flex flex-col items-center justify-center text-center px-6">
         <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#0071c2]/15 to-[#003580]/10 flex items-center justify-center mb-5 animate-float">
           <Compass className="w-10 h-10 text-[#0071c2]" />
         </div>
         <h1 className="text-2xl font-black text-[#1a1a1a] mb-2">{t('tourDetail.notFoundTitle')}</h1>
-        <p className="text-[#595959] mb-6">{t('tourDetail.notFoundSub')}</p>
+        <p className="text-[#5c5245] mb-6">{t('tourDetail.notFoundSub')}</p>
         <Link to="/exotic-tours" className="px-5 py-3 rounded-xl bg-[#003580] text-white font-black text-[13px] shadow-soft transition hover:bg-[#0071c2] active:scale-95">
           {t('tourDetail.allExoticTours')}
         </Link>
@@ -63,7 +65,6 @@ export default function TourDetail() {
   const fits      = diff >= 0;
   const progress  = Math.min(100, tourTotal > 0 ? (budget / tourTotal) * 100 : 100);
   const breakdown = COST_SPLIT.map(b => ({ ...b, amount: Math.round(tourTotal * b.pct) }));
-  const fmt = (n) => '€' + Number(n || 0).toLocaleString();
 
   const savingTips = !fits ? [
     `${t('tourDetail.tipShortBy1')} ${fmt(Math.abs(diff))} — ${t('tourDetail.tipShortBy2')} ${fmt(Math.ceil(Math.abs(diff) / Math.max(1, travelers)))} ${t('tourDetail.tipShortBy3')}`,
@@ -89,7 +90,7 @@ export default function TourDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa]">
+    <div className="min-h-screen bg-[#f6f1e4]">
 
       {/* Hero */}
       <div className="relative h-[400px] md:h-[460px] overflow-hidden">
@@ -145,28 +146,28 @@ export default function TourDetail() {
           {/* About */}
           <section>
             <h2 className="text-[20px] font-black text-[#1a1a1a] mb-3">{t('tourDetail.aboutTitle')}</h2>
-            <p className="text-[14px] text-[#595959] leading-relaxed">{tour.desc}</p>
+            <p className="text-[14px] text-[#5c5245] leading-relaxed">{tour.desc}</p>
           </section>
 
           {/* Temperature contrast */}
-          <section className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft">
+          <section className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft">
             <h2 className="text-[15px] font-black text-[#1a1a1a] mb-4">{t('tourDetail.contrastTitle')}</h2>
             <div className="flex items-center gap-3">
               <div className="flex-1 text-center">
                 <div className="text-[32px] leading-none mb-1">{tour.from.icon}</div>
                 <div className="text-[14px] font-black text-[#1a1a1a]">{tour.from.city}</div>
-                <div className="text-[12px] text-[#9ca3af]">{tour.from.country}</div>
+                <div className="text-[12px] text-[#93876f]">{tour.from.country}</div>
                 <div className="mt-1 inline-block px-2.5 py-1 rounded-lg bg-orange-50 text-orange-600 text-[13px] font-black">{tour.from.temp}</div>
               </div>
               <div className="flex flex-col items-center gap-1 shrink-0">
                 <Plane className="w-5 h-5 text-[#0071c2] rotate-45" />
                 <div className="w-24 h-[3px] rounded-full bg-gradient-to-r from-orange-400 to-blue-400" />
-                <span className="text-[10px] font-bold text-[#9ca3af]">{tour.days} {t('tourDetail.contrastDays')}</span>
+                <span className="text-[10px] font-bold text-[#93876f]">{tour.days} {t('tourDetail.contrastDays')}</span>
               </div>
               <div className="flex-1 text-center">
                 <div className="text-[32px] leading-none mb-1">{tour.to.icon}</div>
                 <div className="text-[14px] font-black text-[#1a1a1a]">{tour.to.city}</div>
-                <div className="text-[12px] text-[#9ca3af]">{tour.to.country}</div>
+                <div className="text-[12px] text-[#93876f]">{tour.to.country}</div>
                 <div className="mt-1 inline-block px-2.5 py-1 rounded-lg bg-blue-50 text-blue-600 text-[13px] font-black">{tour.to.temp}</div>
               </div>
             </div>
@@ -183,7 +184,7 @@ export default function TourDetail() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.28, delay: i * 0.05, ease: [0.4, 0, 0.2, 1] }}
-                  className="flex items-center gap-3 bg-white border border-[#e7e7e7] rounded-xl p-3.5 shadow-soft transition-colors hover:border-[#0071c2]/40"
+                  className="flex items-center gap-3 bg-white border border-[#e6dcc3] rounded-xl p-3.5 shadow-soft transition-colors hover:border-[#0071c2]/40"
                 >
                   <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0071c2] to-[#003580] text-white text-[12px] font-black flex items-center justify-center shrink-0 shadow-sm">
                     {i + 1}
@@ -196,24 +197,24 @@ export default function TourDetail() {
           </section>
 
           {/* Reviews */}
-          <section className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft">
+          <section className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft">
             <div className="flex items-center gap-4 mb-5">
               <div className="text-center shrink-0">
                 <div className="text-[40px] font-black text-gradient leading-none">{tour.rating}</div>
                 <div className="flex items-center gap-0.5 justify-center mt-1">
                   {[1, 2, 3, 4, 5].map(n => (
-                    <Star key={n} className={`w-3.5 h-3.5 ${n <= Math.round(tour.rating) ? 'fill-[#febb02] text-[#febb02]' : 'text-[#e7e7e7]'}`} />
+                    <Star key={n} className={`w-3.5 h-3.5 ${n <= Math.round(tour.rating) ? 'fill-[#febb02] text-[#febb02]' : 'text-[#e6dcc3]'}`} />
                   ))}
                 </div>
-                <div className="text-[11px] text-[#9ca3af] mt-1">{tour.reviews} {t('tourDetail.reviewsCount')}</div>
+                <div className="text-[11px] text-[#93876f] mt-1">{tour.reviews} {t('tourDetail.reviewsCount')}</div>
               </div>
               <div className="flex-1 space-y-1">
                 {[5, 4, 3, 2, 1].map(stars => {
                   const pct = stars === 5 ? 78 : stars === 4 ? 16 : stars === 3 ? 4 : stars === 2 ? 1 : 1;
                   return (
                     <div key={stars} className="flex items-center gap-2">
-                      <span className="text-[11px] font-bold text-[#9ca3af] w-3">{stars}</span>
-                      <div className="flex-1 h-1.5 rounded-full bg-[#f0f0f0] overflow-hidden">
+                      <span className="text-[11px] font-bold text-[#93876f] w-3">{stars}</span>
+                      <div className="flex-1 h-1.5 rounded-full bg-[#efe6d2] overflow-hidden">
                         <div className="h-full rounded-full bg-[#febb02]" style={{ width: `${pct}%` }} />
                       </div>
                     </div>
@@ -221,7 +222,7 @@ export default function TourDetail() {
                 })}
               </div>
             </div>
-            <div className="space-y-3 border-t border-[#f0f0f0] pt-4">
+            <div className="space-y-3 border-t border-[#efe6d2] pt-4">
               {REVIEWS.map((r, i) => (
                 <div key={i} className="flex gap-3">
                   <div className="w-9 h-9 rounded-full bg-[#003580] text-white text-[12px] font-black flex items-center justify-center shrink-0">
@@ -232,13 +233,13 @@ export default function TourDetail() {
                       <span className="text-[13px] font-black text-[#1a1a1a]">{r.name}</span>
                       <span className="flex items-center gap-0.5">
                         {[1, 2, 3, 4, 5].map(n => (
-                          <Star key={n} className={`w-3 h-3 ${n <= r.rating ? 'fill-[#febb02] text-[#febb02]' : 'text-[#e7e7e7]'}`} />
+                          <Star key={n} className={`w-3 h-3 ${n <= r.rating ? 'fill-[#febb02] text-[#febb02]' : 'text-[#e6dcc3]'}`} />
                         ))}
                       </span>
-                      <span className="text-[11px] text-[#9ca3af] ml-auto">{t(`tourDetail.${r.whenKey}`)}</span>
+                      <span className="text-[11px] text-[#93876f] ml-auto">{t(`tourDetail.${r.whenKey}`)}</span>
                     </div>
-                    <p className="text-[13px] text-[#595959] leading-relaxed mt-0.5 flex gap-1.5">
-                      <Quote className="w-3.5 h-3.5 text-[#c9d1d9] shrink-0 mt-0.5" />
+                    <p className="text-[13px] text-[#5c5245] leading-relaxed mt-0.5 flex gap-1.5">
+                      <Quote className="w-3.5 h-3.5 text-[#d9c9a3] shrink-0 mt-0.5" />
                       {t(`tourDetail.${r.textKey}`)}
                     </p>
                   </div>
@@ -250,18 +251,18 @@ export default function TourDetail() {
 
         {/* ── Right: budget calculator ── */}
         <div className="lg:col-span-1">
-          <div className="lg:sticky lg:top-[80px] bg-white border border-[#e7e7e7] rounded-2xl p-5 shadow-float">
+          <div className="lg:sticky lg:top-[80px] bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-float">
             <div className="flex items-baseline justify-between mb-4">
               <div>
-                <div className="text-[10px] text-[#9ca3af] font-bold uppercase tracking-wider">{t('tourDetail.pricePerPerson')}</div>
-                <div className="text-[26px] font-black text-gradient leading-none">{tour.price}</div>
+                <div className="text-[10px] text-[#93876f] font-bold uppercase tracking-wider">{t('tourDetail.pricePerPerson')}</div>
+                <div className="text-[26px] font-black text-gradient leading-none"><Price amount={pricePer} /></div>
               </div>
-              <div className="flex items-center gap-1 text-[12px] font-bold text-[#595959]">
+              <div className="flex items-center gap-1 text-[12px] font-bold text-[#5c5245]">
                 <Star className="w-3.5 h-3.5 fill-[#febb02] text-[#febb02]" />{tour.rating}
               </div>
             </div>
 
-            <p className="text-[12px] text-[#9ca3af] mb-4">
+            <p className="text-[12px] text-[#93876f] mb-4">
               {t('tourDetail.calcIntro')}
             </p>
 
@@ -272,13 +273,13 @@ export default function TourDetail() {
               </span>
               <div className="flex items-center gap-3">
                 <button onClick={() => setTravelers(v => Math.max(1, v - 1))}
-                  className="w-8 h-8 rounded-lg border border-[#e7e7e7] flex items-center justify-center hover:border-[#0071c2] transition active:scale-90">
-                  <Minus className="w-4 h-4 text-[#595959]" />
+                  className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] transition active:scale-90">
+                  <Minus className="w-4 h-4 text-[#5c5245]" />
                 </button>
                 <span className="text-[15px] font-black text-[#1a1a1a] w-6 text-center">{travelers}</span>
                 <button onClick={() => setTravelers(v => Math.min(12, v + 1))}
-                  className="w-8 h-8 rounded-lg border border-[#e7e7e7] flex items-center justify-center hover:border-[#0071c2] transition active:scale-90">
-                  <Plus className="w-4 h-4 text-[#595959]" />
+                  className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] transition active:scale-90">
+                  <Plus className="w-4 h-4 text-[#5c5245]" />
                 </button>
               </div>
             </div>
@@ -288,8 +289,8 @@ export default function TourDetail() {
               <span className="flex items-center gap-1.5 text-[12px] font-bold text-[#1a1a1a] mb-1.5">
                 <Wallet className="w-3.5 h-3.5 text-[#0071c2]" /> {t('tourDetail.totalBudget')}
               </span>
-              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus-within:border-[#0071c2] transition">
-                <span className="text-[15px] font-black text-[#595959]">€</span>
+              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#0071c2] transition">
+                <span className="text-[15px] font-black text-[#5c5245]">$</span>
                 <input type="number" min="0" step="100" value={budget}
                   onChange={e => setBudget(Math.max(0, Number(e.target.value)))}
                   className="flex-1 w-full text-[15px] font-black text-[#1a1a1a] outline-none" />
@@ -301,7 +302,7 @@ export default function TourDetail() {
               </span>
               <input type="date" min={today} value={date}
                 onChange={e => setDate(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus:border-[#0071c2] outline-none text-[14px] font-bold text-[#1a1a1a] transition" />
+                className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] outline-none text-[14px] font-bold text-[#1a1a1a] transition" />
             </label>
 
             {/* Fit banner */}
@@ -330,12 +331,12 @@ export default function TourDetail() {
             </div>
 
             {/* Breakdown */}
-            <p className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af] mb-2">{t('tourDetail.priceBreakdownTitle')}</p>
+            <p className="text-[11px] font-black uppercase tracking-widest text-[#93876f] mb-2">{t('tourDetail.priceBreakdownTitle')}</p>
             <div className="space-y-1.5 mb-4">
               {breakdown.map(b => (
                 <div key={b.labelKey} className="flex items-center gap-2">
                   <span className="text-[13px] w-5 text-center">{b.emoji}</span>
-                  <span className="text-[11px] text-[#595959] flex-1 truncate">{t(`tourDetail.${b.labelKey}`)}</span>
+                  <span className="text-[11px] text-[#5c5245] flex-1 truncate">{t(`tourDetail.${b.labelKey}`)}</span>
                   <span className="text-[12px] font-black text-[#1a1a1a]">{fmt(b.amount)}</span>
                 </div>
               ))}
@@ -363,7 +364,7 @@ export default function TourDetail() {
               <Sparkles className="w-4 h-4" /> {t('tourDetail.generateBtn')}
               <ArrowRight className="w-4 h-4" />
             </button>
-            <p className="text-[10px] text-[#9ca3af] text-center mt-2 flex items-center justify-center gap-1">
+            <p className="text-[10px] text-[#93876f] text-center mt-2 flex items-center justify-center gap-1">
               <MapPin className="w-3 h-3" /> {t('tourDetail.dayPlanFor1')} {tour.to.city} {t('tourDetail.dayPlanFor2')}
             </p>
           </div>

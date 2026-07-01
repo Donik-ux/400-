@@ -11,6 +11,7 @@ import { lookupPassport, validatePassport } from '../services/passportService';
 import { useTranslation } from '../store/useLangStore';
 import { toast } from '../components/Toast';
 import { handleImgError } from '../utils/imageFallback';
+import { usePriceFormatter } from '../components/Price';
 
 /* ─── Helpers ─── */
 const fmtDate    = d  => d ? new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : '—';
@@ -21,18 +22,18 @@ const mkConfirm  = () => 'MAF-' + Math.random().toString(36).toUpperCase().slice
 /* ─── Input field (light theme) ─── */
 const Field = ({ label, icon: Icon, error, children, hint }) => (
   <div>
-    <label className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-1.5 flex items-center gap-1.5">
+    <label className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-1.5 flex items-center gap-1.5">
       {Icon && <Icon className="w-3 h-3 text-[#0071c2]" />} {label}
     </label>
     {children}
     {error && <p className="text-red-500 text-xs mt-1 flex items-center gap-1 font-semibold"><AlertCircle className="w-3 h-3" />{error}</p>}
-    {hint && !error && <p className="text-[#9ca3af] text-xs mt-1 font-semibold">{hint}</p>}
+    {hint && !error && <p className="text-[#93876f] text-xs mt-1 font-semibold">{hint}</p>}
   </div>
 );
 
 const INPUT_CLS = (err) =>
-  `w-full bg-white border-2 rounded-xl px-4 py-3 text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#b0b0b0] outline-none transition ${
-    err ? 'border-red-400 focus:border-red-500' : 'border-[#e7e7e7] hover:border-[#cbd5e1] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10'
+  `w-full bg-white border-2 rounded-xl px-4 py-3 text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none transition ${
+    err ? 'border-red-400 focus:border-red-500' : 'border-[#e6dcc3] hover:border-[#cbd5e1] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10'
   }`;
 
 /* ─── Main Checkout ─── */
@@ -44,6 +45,7 @@ export default function Checkout() {
   const getProfile = useAuthStore(s => s.getProfile);
   const saveProfile = useAuthStore(s => s.saveProfile);
   const addBooking  = useAdminStore(s => s.addBooking);
+  const fmtPrice    = usePriceFormatter();
 
   const { type, item, passengers: initPax = 1 } = location.state || {};
 
@@ -79,11 +81,11 @@ export default function Checkout() {
 
   /* Price calculation */
   if (!item || !type) return (
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center">
-      <div className="bg-white rounded-2xl border border-[#e7e7e7] p-8 max-w-md mx-4 text-center shadow-sm">
+    <div className="min-h-screen bg-[#faf6ed] flex items-center justify-center">
+      <div className="bg-white rounded-2xl border border-[#e6dcc3] p-8 max-w-md mx-4 text-center shadow-sm">
         <AlertCircle className="w-10 h-10 text-[#febb02] mx-auto mb-3" />
         <p className="text-[#1a1a1a] font-bold mb-1">{t('checkout.noBooking') || 'No booking selected'}</p>
-        <p className="text-[#595959] text-sm font-medium mb-5">Pick a flight or tour package to start checkout.</p>
+        <p className="text-[#5c5245] text-sm font-medium mb-5">Pick a flight or tour package to start checkout.</p>
         <button onClick={() => navigate('/')} className="px-5 py-3 rounded-lg bg-[#0071c2] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95">
           {t('checkout.goHome') || 'Go to homepage'}
         </button>
@@ -207,7 +209,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5]">
+    <div className="min-h-screen bg-[#faf6ed]">
 
       {/* ── Top stripe (Booking-style) ── */}
       <div className="bg-[#003580] text-white">
@@ -239,17 +241,17 @@ export default function Checkout() {
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-black transition shrink-0 ${
                   step > s.n ? 'bg-[#008009] text-white'
                   : step === s.n ? 'bg-[#003580] text-white ring-4 ring-[#003580]/15'
-                  : 'bg-white border border-[#e7e7e7] text-[#9ca3af]'
+                  : 'bg-white border border-[#e6dcc3] text-[#93876f]'
                 }`}>
                   {step > s.n ? <Check className="w-4 h-4" /> : s.n}
                 </div>
                 <span className={`text-[13px] font-bold hidden sm:block truncate ${
-                  step === s.n ? 'text-[#1a1a1a]' : 'text-[#9ca3af]'
+                  step === s.n ? 'text-[#1a1a1a]' : 'text-[#93876f]'
                 }`}>{s.label}</span>
               </div>
               {i < arr.length - 1 && (
                 <div className={`flex-1 h-[3px] rounded-full ${
-                  step > s.n ? 'bg-[#008009]' : 'bg-[#e7e7e7]'
+                  step > s.n ? 'bg-[#008009]' : 'bg-[#e6dcc3]'
                 }`} />
               )}
             </React.Fragment>
@@ -262,14 +264,14 @@ export default function Checkout() {
 
             {/* ── STEP 1: Traveler Info ── */}
             {step === 1 && (
-              <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 md:p-7 flex flex-col gap-5 shadow-sm">
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 md:p-7 flex flex-col gap-5 shadow-sm">
                 <div className="flex items-start gap-3">
                   <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] flex items-center justify-center text-[#0071c2] shrink-0">
                     <User className="w-5 h-5" />
                   </div>
                   <div>
                     <h2 className="text-[18px] font-black text-[#1a1a1a]">{t('checkout.travelerInfo') || 'Traveler information'}</h2>
-                    <p className="text-[#595959] text-[13px] font-medium">{t('checkout.travelerSub') || 'Enter the lead traveler exactly as it appears on their passport.'}</p>
+                    <p className="text-[#5c5245] text-[13px] font-medium">{t('checkout.travelerSub') || 'Enter the lead traveler exactly as it appears on their passport.'}</p>
                   </div>
                 </div>
 
@@ -287,7 +289,7 @@ export default function Checkout() {
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2">
                       {passState === 'checking' && (
-                        <Loader2 className="w-4 h-4 text-[#9ca3af] animate-spin" />
+                        <Loader2 className="w-4 h-4 text-[#93876f] animate-spin" />
                       )}
                       {passState === 'found' && (
                         <div className="flex items-center gap-1.5 bg-[#e8f5e9] border border-[#008009]/25 rounded-full px-2 py-0.5">
@@ -319,7 +321,7 @@ export default function Checkout() {
                   {passState === 'idle' && !traveler.passport && (
                     <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                       {['🇰🇬 ID/AN…', '🇰🇿 N12…', '🇺🇿 AA…', '🇺🇸 A1234…'].map(f => (
-                        <span key={f} className="text-[10px] text-[#9ca3af] font-bold bg-[#f8f9fa] border border-[#eef2f6] rounded-lg px-2 py-1 text-center">{f}</span>
+                        <span key={f} className="text-[10px] text-[#93876f] font-bold bg-[#f6f1e4] border border-[#efe6d2] rounded-lg px-2 py-1 text-center">{f}</span>
                       ))}
                     </div>
                   )}
@@ -374,10 +376,10 @@ export default function Checkout() {
 
                 {/* Passengers stepper */}
                 <div>
-                  <label className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-2 flex items-center gap-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2 flex items-center gap-1.5">
                     <Users className="w-3 h-3 text-[#0071c2]" /> {t('checkout.passengers') || 'Travelers'}
                   </label>
-                  <div className="flex items-center gap-3 bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl px-4 py-2.5 w-fit">
+                  <div className="flex items-center gap-3 bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl px-4 py-2.5 w-fit">
                     <button onClick={() => setPassengers(p => Math.max(1, p - 1))}
                       className="w-9 h-9 rounded-lg bg-white border-2 border-[#0071c2] text-[#0071c2] text-lg font-black transition active:scale-95 hover:bg-[#f0f5ff] disabled:opacity-40"
                       disabled={passengers <= 1}>−</button>
@@ -385,13 +387,13 @@ export default function Checkout() {
                     <button onClick={() => setPassengers(p => Math.min(9, p + 1))}
                       className="w-9 h-9 rounded-lg bg-white border-2 border-[#0071c2] text-[#0071c2] text-lg font-black transition active:scale-95 hover:bg-[#f0f5ff] disabled:opacity-40"
                       disabled={passengers >= 9}>+</button>
-                    <span className="text-[#9ca3af] text-[12px] font-semibold ml-1">{t('checkout.maxPax') || 'Max 9'}</span>
+                    <span className="text-[#93876f] text-[12px] font-semibold ml-1">{t('checkout.maxPax') || 'Max 9'}</span>
                   </div>
                 </div>
 
                 {/* Save passport toggle */}
                 {!profile?.passportNumber && traveler.passport && passState !== 'invalid' && (
-                  <label className="flex items-center gap-3 cursor-pointer group bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl px-4 py-3"
+                  <label className="flex items-center gap-3 cursor-pointer group bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl px-4 py-3"
                     onClick={() => setSavePassport(v => !v)}>
                     <div className={`w-10 h-6 rounded-full transition-all relative shrink-0 ${savePassport ? 'bg-[#0071c2]' : 'bg-[#cbd5e1]'}`}>
                       <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all ${savePassport ? 'left-5' : 'left-1'}`} />
@@ -412,14 +414,14 @@ export default function Checkout() {
 
             {/* ── STEP 2: Payment ── */}
             {step === 2 && (
-              <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 md:p-7 flex flex-col gap-5 shadow-sm">
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 md:p-7 flex flex-col gap-5 shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-xl bg-[#e8f5e9] flex items-center justify-center">
                     <Lock className="w-5 h-5 text-[#008009]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h2 className="text-[18px] font-black text-[#1a1a1a]">{t('checkout.securePayment') || 'Secure payment'}</h2>
-                    <p className="text-[#595959] text-[12px] font-medium">{t('checkout.sslEncrypted') || '256-bit SSL · PCI-DSS compliant'}</p>
+                    <p className="text-[#5c5245] text-[12px] font-medium">{t('checkout.sslEncrypted') || '256-bit SSL · PCI-DSS compliant'}</p>
                   </div>
                   <div className="flex items-center gap-1.5">
                     {['VISA', 'MC', 'AMEX'].map(c => (
@@ -437,7 +439,7 @@ export default function Checkout() {
 
                 <Field label={t('checkout.cardNumber') || 'Card number'} icon={CreditCard} error={cErrors.number}>
                   <div className="relative">
-                    <CreditCard className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af]" />
+                    <CreditCard className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#93876f]" />
                     <input type="text" placeholder="4242 4242 4242 4242" maxLength={19}
                       value={card.number} onChange={e => setCard(c => ({ ...c, number: fmtCard(e.target.value) }))}
                       className={`${INPUT_CLS(cErrors.number)} pl-11 font-mono tracking-widest`}
@@ -470,13 +472,13 @@ export default function Checkout() {
                 </div>
 
                 {/* Traveler summary */}
-                <div className="bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl p-4">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-3">{t('checkout.bookingFor') || 'Booking for'}</p>
+                <div className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-4">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-3">{t('checkout.bookingFor') || 'Booking for'}</p>
                   <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-[13px]">
-                    <div><p className="text-[#9ca3af] text-[11px] font-bold uppercase tracking-wider">{t('checkout.name') || 'Name'}</p><p className="font-black text-[#1a1a1a]">{traveler.firstName} {traveler.lastName}</p></div>
-                    <div><p className="text-[#9ca3af] text-[11px] font-bold uppercase tracking-wider">{t('checkout.passport') || 'Passport'}</p><p className="font-mono font-bold text-[#1a1a1a]">{traveler.passport}</p></div>
-                    <div><p className="text-[#9ca3af] text-[11px] font-bold uppercase tracking-wider">{t('checkout.travelDate') || 'Date'}</p><p className="font-bold text-[#1a1a1a]">{fmtDate(travelDate)}</p></div>
-                    <div><p className="text-[#9ca3af] text-[11px] font-bold uppercase tracking-wider">{t('checkout.passengers') || 'Travelers'}</p><p className="font-bold text-[#1a1a1a]">{passengers}</p></div>
+                    <div><p className="text-[#93876f] text-[11px] font-bold uppercase tracking-wider">{t('checkout.name') || 'Name'}</p><p className="font-black text-[#1a1a1a]">{traveler.firstName} {traveler.lastName}</p></div>
+                    <div><p className="text-[#93876f] text-[11px] font-bold uppercase tracking-wider">{t('checkout.passport') || 'Passport'}</p><p className="font-mono font-bold text-[#1a1a1a]">{traveler.passport}</p></div>
+                    <div><p className="text-[#93876f] text-[11px] font-bold uppercase tracking-wider">{t('checkout.travelDate') || 'Date'}</p><p className="font-bold text-[#1a1a1a]">{fmtDate(travelDate)}</p></div>
+                    <div><p className="text-[#93876f] text-[11px] font-bold uppercase tracking-wider">{t('checkout.passengers') || 'Travelers'}</p><p className="font-bold text-[#1a1a1a]">{passengers}</p></div>
                   </div>
                 </div>
 
@@ -485,11 +487,11 @@ export default function Checkout() {
                   {loading ? (
                     <><Loader2 className="w-4 h-4 animate-spin" />{t('checkout.processing') || 'Processing your payment…'}</>
                   ) : (
-                    <><Lock className="w-4 h-4" />{(t('checkout.pay') || 'Pay')} ${totalPrice.toLocaleString()}</>
+                    <><Lock className="w-4 h-4" />{(t('checkout.pay') || 'Pay')} {fmtPrice(totalPrice)}</>
                   )}
                 </button>
 
-                <p className="text-center text-[#9ca3af] text-[12px] font-semibold flex items-center justify-center gap-1.5">
+                <p className="text-center text-[#93876f] text-[12px] font-semibold flex items-center justify-center gap-1.5">
                   <Shield className="w-3.5 h-3.5 text-[#008009]" />
                   {t('checkout.neverStored') || 'We never store your card details.'}
                 </p>
@@ -499,7 +501,7 @@ export default function Checkout() {
 
           {/* ── Right: Order Summary ── */}
           <div className="lg:col-span-1">
-            <div className="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden sticky top-[80px] shadow-sm">
+            <div className="bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden sticky top-[80px] shadow-sm">
 
               {/* Item preview with image */}
               {item.image && (
@@ -515,9 +517,9 @@ export default function Checkout() {
               )}
 
               <div className="p-5">
-                <p className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-3">{t('checkout.orderSummary') || 'Order summary'}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-3">{t('checkout.orderSummary') || 'Order summary'}</p>
 
-                <div className="flex items-start gap-3 mb-4 pb-4 border-b border-[#f0f0f0]">
+                <div className="flex items-start gap-3 mb-4 pb-4 border-b border-[#efe6d2]">
                   <div className="w-10 h-10 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
                     {type === 'flight' ? <Plane className="w-5 h-5 text-[#0071c2]" /> :
                      type === 'package' ? <Package className="w-5 h-5 text-[#0071c2]" /> :
@@ -527,7 +529,7 @@ export default function Checkout() {
                     <p className="text-[14px] font-black text-[#1a1a1a] leading-tight">
                       {type === 'flight' ? `${item.from} → ${item.to}` : item.name}
                     </p>
-                    <p className="text-[12px] text-[#595959] font-medium mt-0.5 truncate">
+                    <p className="text-[12px] text-[#5c5245] font-medium mt-0.5 truncate">
                       {type === 'flight'
                         ? `${item.airline || ''} · ${item.cabin || 'Economy'}`
                         : type === 'package'
@@ -539,27 +541,27 @@ export default function Checkout() {
 
                 <div className="flex flex-col gap-2 text-[13px]">
                   <div className="flex justify-between">
-                    <span className="text-[#595959] font-medium">${item.price} × {passengers} {t('checkout.pax') || 'pax'}</span>
-                    <span className="text-[#1a1a1a] font-bold">${basePrice.toLocaleString()}</span>
+                    <span className="text-[#5c5245] font-medium">{fmtPrice(item.price)} × {passengers} {t('checkout.pax') || 'pax'}</span>
+                    <span className="text-[#1a1a1a] font-bold">{fmtPrice(basePrice)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#595959] font-medium">{t('checkout.serviceTax') || 'Taxes & service fee (8%)'}</span>
-                    <span className="text-[#1a1a1a] font-bold">${taxAmount.toLocaleString()}</span>
+                    <span className="text-[#5c5245] font-medium">{t('checkout.serviceTax') || 'Taxes & service fee (8%)'}</span>
+                    <span className="text-[#1a1a1a] font-bold">{fmtPrice(taxAmount)}</span>
                   </div>
-                  <div className="flex justify-between pt-3 border-t border-[#f0f0f0]">
+                  <div className="flex justify-between pt-3 border-t border-[#efe6d2]">
                     <span className="text-[#1a1a1a] font-black">{t('checkout.total') || 'Total'}</span>
-                    <span className="text-[22px] text-[#003580] font-black leading-none">${totalPrice.toLocaleString()}</span>
+                    <span className="text-[22px] text-[#003580] font-black leading-none">{fmtPrice(totalPrice)}</span>
                   </div>
                 </div>
 
                 {travelDate && (
-                  <div className="mt-4 pt-4 border-t border-[#f0f0f0] flex items-center gap-2 text-[12px] text-[#595959] font-semibold">
+                  <div className="mt-4 pt-4 border-t border-[#efe6d2] flex items-center gap-2 text-[12px] text-[#5c5245] font-semibold">
                     <Calendar className="w-3.5 h-3.5 text-[#0071c2] shrink-0" />
                     <span>{fmtDate(travelDate)}</span>
                   </div>
                 )}
 
-                <div className="mt-4 pt-4 border-t border-[#f0f0f0] flex flex-col gap-2">
+                <div className="mt-4 pt-4 border-t border-[#efe6d2] flex flex-col gap-2">
                   {[
                     { icon: BadgePercent, txt: t('checkout.freeCancel')   || 'Free cancellation until 48 h before' },
                     { icon: Sparkles,     txt: t('checkout.instantConfirm') || 'Instant confirmation by email'      },
@@ -573,9 +575,9 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div className="bg-[#f8f9fa] border-t border-[#e7e7e7] px-5 py-3 flex items-center gap-2">
+              <div className="bg-[#f6f1e4] border-t border-[#e6dcc3] px-5 py-3 flex items-center gap-2">
                 <Shield className="w-4 h-4 text-[#008009]" />
-                <span className="text-[11px] font-bold text-[#595959]">SSL-encrypted · GDPR-safe · MAFTRAVEL Secure Checkout</span>
+                <span className="text-[11px] font-bold text-[#5c5245]">SSL-encrypted · GDPR-safe · MAFTRAVEL Secure Checkout</span>
               </div>
             </div>
           </div>
@@ -588,9 +590,9 @@ export default function Checkout() {
 /* ─── Confirmation Screen (light theme) ─── */
 function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
   return (
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-20">
+    <div className="min-h-screen bg-[#faf6ed] flex items-center justify-center px-4 py-20">
       <div className="max-w-lg w-full page-fade">
-        <div className="bg-white border border-[#e7e7e7] rounded-3xl p-8 md:p-10 shadow-sm text-center">
+        <div className="bg-white border border-[#e6dcc3] rounded-3xl p-8 md:p-10 shadow-sm text-center">
           <div className="relative mx-auto mb-5 w-20 h-20">
             <div className="absolute inset-0 rounded-full bg-[#008009]/10 animate-ping opacity-50" />
             <div className="relative w-20 h-20 rounded-full bg-[#e8f5e9] border-2 border-[#008009]/30 flex items-center justify-center">
@@ -599,13 +601,13 @@ function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
           </div>
 
           <h1 className="text-2xl md:text-3xl font-black text-[#1a1a1a] mb-2">{t('checkout.confirmed') || 'Booking confirmed!'}</h1>
-          <p className="text-[#595959] text-[14px] font-medium mb-7">
+          <p className="text-[#5c5245] text-[14px] font-medium mb-7">
             {t('checkout.confirmedSub') || 'A confirmation email has been sent to'} <span className="font-black text-[#1a1a1a]">{booking.userEmail}</span>.
           </p>
 
-          <div className="bg-[#f8f9fa] border border-[#e7e7e7] rounded-2xl p-5 text-left mb-6">
-            <div className="text-center mb-4 pb-4 border-b border-[#e7e7e7]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-1">{t('checkout.confirmNumber') || 'Confirmation number'}</p>
+          <div className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-2xl p-5 text-left mb-6">
+            <div className="text-center mb-4 pb-4 border-b border-[#e6dcc3]">
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-1">{t('checkout.confirmNumber') || 'Confirmation number'}</p>
               <p className="text-2xl font-black text-[#003580] font-mono tracking-wider">{booking.confirmCode || booking.id}</p>
             </div>
             <div className="flex flex-col gap-2.5 text-[13px]">
@@ -615,9 +617,9 @@ function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
               <Row label={t('checkout.passengers') || 'Travelers'} value={booking.passengers} />
               <Row label={t('checkout.travelDate') || 'Travel date'} value={booking.date ? fmtDate(booking.date) : '—'} />
               <Row label={t('checkout.passport') || 'Passport'} value={<span className="font-mono">{traveler.passport}</span>} />
-              <div className="pt-3 mt-1 border-t border-[#e7e7e7] flex justify-between font-black items-center">
+              <div className="pt-3 mt-1 border-t border-[#e6dcc3] flex justify-between font-black items-center">
                 <span className="text-[#1a1a1a]">{t('checkout.totalPaid') || 'Total paid'}</span>
-                <span className="text-[22px] text-[#003580]">${(booking.total || total).toLocaleString()}</span>
+                <span className="text-[22px] text-[#003580]">{fmtPrice(booking.total || total)}</span>
               </div>
             </div>
           </div>
@@ -628,7 +630,7 @@ function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
               {t('checkout.myBookings') || 'View my bookings'}
             </button>
             <button onClick={() => navigate('/')}
-              className="flex-1 py-3.5 rounded-xl border-2 border-[#e7e7e7] hover:border-[#0071c2] hover:bg-[#f0f5ff] text-[#1a1a1a] text-[13px] font-black tracking-wide transition">
+              className="flex-1 py-3.5 rounded-xl border-2 border-[#e6dcc3] hover:border-[#0071c2] hover:bg-[#f0f5ff] text-[#1a1a1a] text-[13px] font-black tracking-wide transition">
               {t('checkout.home') || 'Back to homepage'}
             </button>
           </div>
@@ -640,7 +642,7 @@ function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
 
 const Row = ({ label, value }) => (
   <div className="flex items-start justify-between gap-4">
-    <span className="text-[#9ca3af] font-bold shrink-0 text-[12px] uppercase tracking-wider">{label}</span>
+    <span className="text-[#93876f] font-bold shrink-0 text-[12px] uppercase tracking-wider">{label}</span>
     <span className="text-[#1a1a1a] font-bold text-right">{value}</span>
   </div>
 );

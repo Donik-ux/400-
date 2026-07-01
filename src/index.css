@@ -1,25 +1,26 @@
 @import "tailwindcss";
 
-/* ── Light Theme – Booking.com inspired ── */
+/* ── Warm editorial theme — ivory/sand neutrals instead of flat corporate grays,
+   navy + gold as the two brand anchors, gold carrying the single bright accent role ── */
 @theme {
-  --color-bg:          #f5f5f5;
+  --color-bg:          #faf6ed;
   --color-surface:     #ffffff;
-  --color-surface2:    #f8f9fa;
-  --color-border:      #e7e7e7;
-  --color-border2:     #f0f0f0;
+  --color-surface2:    #f6f1e4;
+  --color-border:      #e6dcc3;
+  --color-border2:     #efe6d2;
   --color-text:        #1a1a1a;
-  --color-text-sub:    #595959;
-  --color-text-muted:  #9ca3af;
+  --color-text-sub:    #5c5245;
+  --color-text-muted:  #93876f;
   --color-primary:     #003580;
   --color-primary-deep:#002250;
   --color-accent:      #0071c2;
   --color-gold:        #febb02;
   --color-gold-deep:   #f5b942;
 
-  /* Premium elevation scale (warm-neutral, soft) */
-  --shadow-soft:  0 1px 2px rgba(16,24,40,0.04), 0 2px 6px rgba(16,24,40,0.06);
-  --shadow-float: 0 6px 18px -6px rgba(16,24,40,0.14), 0 12px 36px -12px rgba(16,24,40,0.12);
-  --shadow-lift:  0 14px 40px -12px rgba(0,53,128,0.22), 0 8px 16px -8px rgba(16,24,40,0.10);
+  /* Premium elevation scale — three-layer recipe (contact + direct + ambient) for physically-grounded depth */
+  --shadow-soft:  0 1px 1px rgba(16,24,40,0.03), 0 2px 5px rgba(16,24,40,0.05), 0 8px 20px -8px rgba(16,24,40,0.08);
+  --shadow-float: 0 2px 6px rgba(16,24,40,0.05), 0 10px 24px -8px rgba(16,24,40,0.14), 0 28px 52px -18px rgba(16,24,40,0.16);
+  --shadow-lift:  0 4px 10px rgba(0,53,128,0.10), 0 18px 38px -12px rgba(0,53,128,0.24), 0 34px 64px -22px rgba(16,24,40,0.18);
 
   /* Motion */
   --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
@@ -27,24 +28,28 @@
 }
 
 :root {
-  background-color: #f5f5f5;
+  background-color: #faf6ed;
   color: #1a1a1a;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
   scroll-behavior: smooth;
 
-  /* Editorial display serif for headings; Inter stays the UI/body workhorse */
+  /* Editorial display serif for headings; Plus Jakarta Sans is the UI/body workhorse */
   --font-display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #faf6ed;
   position: relative;
+  /* Stop the browser from silently re-adjusting scroll position when async
+     content (images, AI results) loads in above the fold on a freshly
+     navigated page — it was fighting the route-change scroll-to-top reset. */
+  overflow-anchor: none;
 }
 
 /* Whisper-soft global grain for tactile depth (doesn't touch component colors) */
@@ -77,6 +82,24 @@ h1 { letter-spacing: -0.025em; font-variation-settings: 'SOFT' 0, 'opsz' 144; }
   border-radius: 6px;
 }
 
+/* Safety-net transition — every existing button/link/input gets a smooth
+   hover/focus animation even where a component forgot to opt in explicitly.
+   Anything with its own `transition-*` utility simply overrides this. */
+button, a, input, select, textarea {
+  transition: background-color 0.2s var(--ease-premium), border-color 0.2s var(--ease-premium),
+    color 0.2s var(--ease-premium), box-shadow 0.2s var(--ease-premium),
+    transform 0.2s var(--ease-premium), opacity 0.2s var(--ease-premium);
+}
+
+/* Brand-tinted text selection — small detail, easy to miss, reads as intentional */
+::selection {
+  background: rgba(0,113,194,0.22);
+  color: #002250;
+}
+
+/* Thin, brand-toned scrollbar in Firefox to match the WebKit rules below */
+* { scrollbar-width: thin; scrollbar-color: #d9c9a3 transparent; }
+
 /* ── Transitions ── */
 .transition-premium {
   transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
@@ -89,25 +112,94 @@ h1 { letter-spacing: -0.025em; font-variation-settings: 'SOFT' 0, 'opsz' 144; }
 
 /* Smooth hover-raise for any card/button */
 .lift {
-  transition: transform 0.25s var(--ease-premium), box-shadow 0.25s var(--ease-premium);
+  transition: transform 0.32s var(--ease-premium), box-shadow 0.32s var(--ease-premium);
   will-change: transform;
 }
-.lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
-.lift:active { transform: translateY(-1px); }
+.lift:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
+.lift:active { transform: translateY(-2px); }
 
-/* Premium gold CTA — matches the navbar gradient */
+/* Premium gold CTA — matches the navbar gradient, with a brushed-metal sheen so it reads
+   as a physical coin/badge rather than a flat fill */
 .btn-gold {
-  background: linear-gradient(135deg, #febb02 0%, #f5b942 55%, #e0a435 100%);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffd76e 0%, #febb02 42%, #f5b942 72%, #dc9a2e 100%);
   color: #1a1a1a;
   border: none;
   border-radius: 12px;
   font-weight: 800;
   cursor: pointer;
   transition: transform 0.2s var(--ease-premium), box-shadow 0.2s var(--ease-premium);
-  box-shadow: 0 4px 14px rgba(245,185,66,0.35);
+  box-shadow: 0 4px 14px rgba(224,164,53,0.35), 0 1px 0 rgba(255,255,255,0.5) inset;
 }
-.btn-gold:hover  { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(245,185,66,0.5); }
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.38), transparent 55%);
+  pointer-events: none;
+}
+/* Moving light streak — the "jewelry ad" sweep, always-on and slow so it reads as luxury, not a spinner */
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: -60%;
+  width: 40%;
+  background: linear-gradient(75deg, transparent 0%, rgba(255,255,255,0.75) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  animation: goldSweep 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes goldSweep {
+  0%   { left: -60%; }
+  55%  { left: 130%; }
+  100% { left: 130%; }
+}
+.btn-gold:hover  { transform: translateY(-2px) scale(1.015); box-shadow: 0 14px 34px rgba(224,164,53,0.55), 0 1px 0 rgba(255,255,255,0.6) inset; }
 .btn-gold:active { transform: scale(0.98); }
+
+/* ── Luxury ornamental divider — used to break up long homepage sections with intent ── */
+.divider-lux {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.divider-lux::before,
+.divider-lux::after {
+  content: '';
+  height: 1px;
+  width: 72px;
+  background: linear-gradient(90deg, transparent, rgba(245,185,66,0.7));
+}
+.divider-lux::after { background: linear-gradient(90deg, rgba(245,185,66,0.7), transparent); }
+
+/* ── Gold-veined glow frame — a slow-pulsing gold halo for the single most important
+   card on a page (the hero search card). Spend sparingly: one per page, not everywhere. ── */
+.frame-lux {
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(245,185,66,0.25), 0 24px 60px -18px rgba(245,185,66,0.45);
+}
+.frame-lux::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(120deg, #fff2cf, #febb02 28%, #8a5c17 52%, #febb02 76%, #fff2cf);
+  background-size: 220% 220%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: frameGoldShift 5s ease-in-out infinite;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px rgba(245,185,66,0.55));
+}
+@keyframes frameGoldShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
 
 /* Hairline dividers */
 .hairline       { height: 1px; background: linear-gradient(to right, transparent, rgba(16,24,40,0.10), transparent); }
@@ -126,7 +218,7 @@ h1 { letter-spacing: -0.025em; font-variation-settings: 'SOFT' 0, 'opsz' 144; }
   100% { background-position: 480px 0; }
 }
 .shimmer {
-  background: linear-gradient(90deg, #eef2f6 25%, #f6f9fc 50%, #eef2f6 75%);
+  background: linear-gradient(90deg, #f2ead9 25%, #faf6ed 50%, #f2ead9 75%);
   background-size: 960px 100%;
   animation: shimmer 1.4s linear infinite;
 }
@@ -150,16 +242,18 @@ h1 { letter-spacing: -0.025em; font-variation-settings: 'SOFT' 0, 'opsz' 144; }
   50%      { transform: translate3d(2%, -2%, 0); }
 }
 
-/* ── Atmosphere: living aurora mesh for navy hero surfaces ── */
+/* ── Atmosphere: living aurora mesh for navy hero surfaces — richer, more saturated,
+   with a visible gold vein through the middle instead of a faint tint ── */
 .aurora-bg {
   background:
-    radial-gradient(42% 55% at 12% 18%, rgba(0,113,194,0.55) 0%, transparent 70%),
-    radial-gradient(38% 48% at 88% 26%, rgba(245,185,66,0.22) 0%, transparent 68%),
-    radial-gradient(55% 65% at 62% 96%, rgba(0,63,150,0.55) 0%, transparent 72%),
-    radial-gradient(40% 50% at 30% 80%, rgba(0,149,210,0.30) 0%, transparent 70%),
-    linear-gradient(160deg, #001a3d 0%, #002a63 48%, #003f96 100%);
-  background-size: 180% 180%;
-  animation: auroraShift 22s ease-in-out infinite;
+    radial-gradient(46% 60% at 10% 15%, rgba(0,113,194,0.65) 0%, transparent 70%),
+    radial-gradient(42% 52% at 90% 20%, rgba(245,185,66,0.38) 0%, transparent 65%),
+    radial-gradient(60% 70% at 58% 100%, rgba(0,63,150,0.65) 0%, transparent 72%),
+    radial-gradient(46% 55% at 26% 85%, rgba(0,149,210,0.40) 0%, transparent 70%),
+    radial-gradient(30% 40% at 75% 70%, rgba(214,158,46,0.22) 0%, transparent 65%),
+    linear-gradient(160deg, #000e26 0%, #001c47 42%, #00295c 68%, #003f96 100%);
+  background-size: 200% 200%;
+  animation: auroraShift 20s ease-in-out infinite;
 }
 @keyframes auroraShift {
   0%, 100% { background-position: 0% 50%; }
@@ -181,18 +275,29 @@ h1 { letter-spacing: -0.025em; font-variation-settings: 'SOFT' 0, 'opsz' 144; }
   background-image: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent 30%);
 }
 
+/* Subtle gold lattice — a whisper of pattern on dark hero surfaces, evokes brass
+   filigree without becoming a wallpaper. Drop as an absolutely-positioned child. */
+.pattern-lux {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cg fill='none' stroke='%23f5b942' stroke-width='1'%3E%3Cpath d='M42 0 L84 42 L42 84 L0 42 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 84px 84px;
+}
+
 /* ── Cards ── */
 .card-hover {
-  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s var(--ease-premium), box-shadow 0.3s var(--ease-premium);
 }
 .card-hover:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lift);
 }
 
 /* ── Page fade-in ── */
 .page-fade {
-  animation: pageFade 0.35s ease both;
+  animation: pageFade 0.4s var(--ease-premium) both;
 }
 @keyframes pageFade {
   from { opacity: 0; transform: translateY(12px); }
@@ -215,19 +320,33 @@ h1 { letter-spacing: -0.025em; font-variation-settings: 'SOFT' 0, 'opsz' 144; }
   background-clip: text;
 }
 
-/* ── Gold gradient text (premium accents) ── */
+/* ── Gold gradient text (premium accents) — antique-brass depth, not flat highlighter ── */
 .text-gradient-gold {
-  background: linear-gradient(135deg, #febb02 0%, #f5b942 50%, #e0a435 100%);
+  background: linear-gradient(135deg, #ffe6a3 0%, #febb02 32%, #d99a2b 62%, #a8701c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+/* ── Editorial badge: dark glass + hairline gold border, for brand/category labels
+   (not deal callouts — those stay solid gold so they still read as "look here") ── */
+.badge-editorial {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, rgba(0,34,80,0.55), rgba(0,17,43,0.55));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(245,185,66,0.45);
+  color: #ffd76e;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 8px 24px -8px rgba(0,0,0,0.35);
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f5f5f5; }
-::-webkit-scrollbar-thumb { background: #c9d1d9; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #959ea6; }
+::-webkit-scrollbar-track { background: #faf6ed; }
+::-webkit-scrollbar-thumb { background: #d9c9a3; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #c2ac78; }
 
 /* ── Date input ── */
 input[type='date']::-webkit-calendar-picker-indicator {
@@ -244,38 +363,39 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
 .inp {
   width: 100%;
   background: white;
-  border: 1.5px solid #e7e7e7;
-  border-radius: 8px;
+  border: 1.5px solid #e6dcc3;
+  border-radius: 12px;
   padding: 10px 14px;
   font-size: 14px;
   color: #1a1a1a;
   outline: none;
-  transition: border-color 0.18s;
+  transition: border-color 0.18s, box-shadow 0.18s;
 }
-.inp:focus   { border-color: #0071c2; box-shadow: 0 0 0 3px rgba(0,113,194,0.1); }
-.inp::placeholder { color: #b0b0b0; }
+.inp:focus   { border-color: #0071c2; box-shadow: 0 0 0 4px rgba(0,113,194,0.12); }
+.inp::placeholder { color: #a89a7d; }
 .inp.err     { border-color: #ef4444; }
 
-/* ── Primary button ── */
+/* ── Primary button — subtle gradient + lift instead of a flat fill ── */
 .btn-primary {
-  background: #0071c2;
+  background: linear-gradient(135deg, #0080da 0%, #0071c2 55%, #005fa3 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 12px 24px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.18s;
+  box-shadow: 0 2px 8px rgba(0,113,194,0.25);
+  transition: all 0.2s var(--ease-premium);
 }
-.btn-primary:hover  { background: #005fa3; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,113,194,0.3); }
+.btn-primary:hover  { background: linear-gradient(135deg, #0090ee 0%, #0080da 55%, #006bb3 100%); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,113,194,0.38); }
 .btn-primary:active { transform: scale(0.98); }
 
 /* ── White card ── */
 .wcard {
   background: white;
-  border: 1px solid #e7e7e7;
-  border-radius: 12px;
+  border: 1px solid #e6dcc3;
+  border-radius: 16px;
 }
 
 /* ── Custom Animations ── */

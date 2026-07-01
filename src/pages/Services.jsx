@@ -11,17 +11,18 @@ import { whatsappLink } from '../config/contact';
 import {
   checkVisa, optimizeBudget, cheapestMonth, predictFlightPrice, predictHotelPrice,
 } from '../services/travelServicesService';
+import { usePriceFormatter } from '../components/Price';
 
 /* ── Shared shells ─────────────────────────────────────────────────── */
 const Shell = ({ icon: Icon, title, desc, children }) => (
-  <div className="bg-white border border-[#e7e7e7] rounded-2xl shadow-soft p-5 md:p-6 lift flex flex-col">
+  <div className="bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-5 md:p-6 lift flex flex-col">
     <div className="flex items-start gap-3 mb-4">
       <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] text-[#0071c2] flex items-center justify-center shrink-0">
         <Icon className="w-5 h-5" />
       </div>
       <div>
         <h3 className="text-[16px] font-black text-[#1a1a1a] leading-tight">{title}</h3>
-        <p className="text-[12px] text-[#9ca3af] font-medium mt-0.5 leading-snug">{desc}</p>
+        <p className="text-[12px] text-[#93876f] font-medium mt-0.5 leading-snug">{desc}</p>
       </div>
     </div>
     {children}
@@ -30,20 +31,20 @@ const Shell = ({ icon: Icon, title, desc, children }) => (
 
 const Field = ({ label, value, onChange, placeholder, type = 'text', min }) => (
   <label className="block">
-    <span className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af]">{label}</span>
+    <span className="text-[11px] font-black uppercase tracking-widest text-[#93876f]">{label}</span>
     <input
       type={type} value={value} min={min} placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition placeholder:text-[#b0b0b0]"
+      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition placeholder:text-[#a89a7d]"
     />
   </label>
 );
 
 const Select = ({ label, value, onChange, options }) => (
   <label className="block">
-    <span className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af]">{label}</span>
+    <span className="text-[11px] font-black uppercase tracking-widest text-[#93876f]">{label}</span>
     <select value={value} onChange={(e) => onChange(e.target.value)}
-      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition cursor-pointer">
+      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition cursor-pointer">
       {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
     </select>
   </label>
@@ -95,17 +96,20 @@ const useAI = (fn) => {
   return { ...state, run };
 };
 
-const PriceRange = ({ data, unit }) => (
-  <div className="grid grid-cols-3 gap-2 mt-3">
-    {[['low', data.low], ['typical', data.typical], ['high', data.high]].map(([k, v]) => (
-      <div key={k} className={`rounded-xl p-3 text-center border ${k === 'typical' ? 'bg-[#003580] text-white border-[#003580]' : 'bg-[#f8f9fa] border-[#e7e7e7]'}`}>
-        <div className={`text-[9px] font-black uppercase tracking-widest ${k === 'typical' ? 'text-white/60' : 'text-[#9ca3af]'}`}>{k}</div>
-        <div className={`text-[18px] font-black leading-tight ${k === 'typical' ? 'text-white' : 'text-[#1a1a1a]'}`}>${Math.round(v)}</div>
-        {unit && <div className={`text-[9px] font-bold ${k === 'typical' ? 'text-white/50' : 'text-[#9ca3af]'}`}>{unit}</div>}
-      </div>
-    ))}
-  </div>
-);
+const PriceRange = ({ data, unit }) => {
+  const fmt = usePriceFormatter();
+  return (
+    <div className="grid grid-cols-3 gap-2 mt-3">
+      {[['low', data.low], ['typical', data.typical], ['high', data.high]].map(([k, v]) => (
+        <div key={k} className={`rounded-xl p-3 text-center border ${k === 'typical' ? 'bg-[#003580] text-white border-[#003580]' : 'bg-[#f6f1e4] border-[#e6dcc3]'}`}>
+          <div className={`text-[9px] font-black uppercase tracking-widest ${k === 'typical' ? 'text-white/60' : 'text-[#93876f]'}`}>{k}</div>
+          <div className={`text-[18px] font-black leading-tight ${k === 'typical' ? 'text-white' : 'text-[#1a1a1a]'}`}>{fmt(Math.round(v))}</div>
+          {unit && <div className={`text-[9px] font-bold ${k === 'typical' ? 'text-white/50' : 'text-[#93876f]'}`}>{unit}</div>}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 /* ── 1. Visa Checker ───────────────────────────────────────────────── */
 function VisaChecker() {
@@ -119,7 +123,7 @@ function VisaChecker() {
     visa_on_arrival:  { label: t('servicesPage.visa.statusArrival'),  cls: 'bg-[#f0f5ff] text-[#0071c2] border-[#bcd9ff]' },
     e_visa:           { label: t('servicesPage.visa.statusEvisa'),    cls: 'bg-[#f0f5ff] text-[#0071c2] border-[#bcd9ff]' },
     visa_required:    { label: t('servicesPage.visa.statusRequired'), cls: 'bg-amber-50 text-amber-700 border-amber-200' },
-    unknown:          { label: t('servicesPage.visa.statusUnknown'),  cls: 'bg-[#f8f9fa] text-[#595959] border-[#e7e7e7]' },
+    unknown:          { label: t('servicesPage.visa.statusUnknown'),  cls: 'bg-[#f6f1e4] text-[#5c5245] border-[#e6dcc3]' },
   };
   const d = ai.data;
   const st = d && (statusMap[d.status] || statusMap.unknown);
@@ -146,17 +150,17 @@ function VisaChecker() {
             </div>
             {Array.isArray(d.documents) && d.documents.length > 0 && (
               <div>
-                <div className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af] mb-1">{t('servicesPage.visa.documents')}</div>
+                <div className="text-[11px] font-black uppercase tracking-widest text-[#93876f] mb-1">{t('servicesPage.visa.documents')}</div>
                 <ul className="space-y-1">
                   {d.documents.map((x, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#595959]">
+                    <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#5c5245]">
                       <Check className="w-3.5 h-3.5 text-[#0071c2] shrink-0 mt-0.5" /> {x}
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            <p className="text-[11px] text-[#9ca3af] italic">{d.disclaimer || t('servicesPage.common.disclaimer')}</p>
+            <p className="text-[11px] text-[#93876f] italic">{d.disclaimer || t('servicesPage.common.disclaimer')}</p>
           </div>
         )}
       </div>
@@ -165,8 +169,8 @@ function VisaChecker() {
 }
 
 const Stat = ({ label, value }) => (
-  <div className="bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl p-2.5 text-center">
-    <div className="text-[9px] font-black uppercase tracking-widest text-[#9ca3af]">{label}</div>
+  <div className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-2.5 text-center">
+    <div className="text-[9px] font-black uppercase tracking-widest text-[#93876f]">{label}</div>
     <div className="text-[12px] font-black text-[#1a1a1a] leading-tight mt-0.5">{value || '—'}</div>
   </div>
 );
@@ -174,6 +178,7 @@ const Stat = ({ label, value }) => (
 /* ── 2. Budget Optimizer ───────────────────────────────────────────── */
 function BudgetOptimizer() {
   const { t, lang } = useTranslation();
+  const fmt = usePriceFormatter();
   const [destination, setDestination] = useState('');
   const [budget, setBudget] = useState(2000);
   const [days, setDays] = useState(7);
@@ -203,7 +208,7 @@ function BudgetOptimizer() {
             <div className="flex items-center justify-between">
               <span className="text-[13px] font-black text-[#003580]">{verdictLabel}</span>
               {Number.isFinite(d.perDay) && (
-                <span className="text-[12px] font-bold text-[#595959]">${Math.round(d.perDay)} / {t('servicesPage.budget.perDay').toLowerCase()}</span>
+                <span className="text-[12px] font-bold text-[#5c5245]">{fmt(Math.round(d.perDay))} / {t('servicesPage.budget.perDay').toLowerCase()}</span>
               )}
             </div>
             {Array.isArray(d.breakdown) && (
@@ -212,9 +217,9 @@ function BudgetOptimizer() {
                   <div key={i}>
                     <div className="flex items-center justify-between text-[12px] font-bold mb-0.5">
                       <span className="text-[#1a1a1a]">{b.category}</span>
-                      <span className="text-[#595959]">${Math.round(b.amount)}</span>
+                      <span className="text-[#5c5245]">{fmt(Math.round(b.amount))}</span>
                     </div>
-                    <div className="h-1.5 rounded-full bg-[#f0f0f0] overflow-hidden">
+                    <div className="h-1.5 rounded-full bg-[#efe6d2] overflow-hidden">
                       <div className="h-full rounded-full bg-gradient-to-r from-[#0071c2] to-[#003580]" style={{ width: `${Math.min(100, b.pct || 0)}%` }} />
                     </div>
                   </div>
@@ -223,17 +228,17 @@ function BudgetOptimizer() {
             )}
             {Array.isArray(d.tips) && (
               <div>
-                <div className="text-[11px] font-black uppercase tracking-widest text-[#9ca3af] mb-1">{t('servicesPage.budget.tips')}</div>
+                <div className="text-[11px] font-black uppercase tracking-widest text-[#93876f] mb-1">{t('servicesPage.budget.tips')}</div>
                 <ul className="space-y-1">
                   {d.tips.map((x, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#595959]">
+                    <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#5c5245]">
                       <Sparkles className="w-3.5 h-3.5 text-[#febb02] shrink-0 mt-0.5" /> {x}
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            <p className="text-[11px] text-[#9ca3af] italic">{t('servicesPage.common.disclaimer')}</p>
+            <p className="text-[11px] text-[#93876f] italic">{t('servicesPage.common.disclaimer')}</p>
           </div>
         )}
       </div>
@@ -267,14 +272,14 @@ function CheapestMonth() {
               <div className="flex items-end gap-1 h-16 pt-1">
                 {d.months.map((m, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center justify-end gap-1" title={m.level}>
-                    <div className={`w-full rounded-t ${levelCls[m.level] || 'bg-[#e7e7e7]'}`}
+                    <div className={`w-full rounded-t ${levelCls[m.level] || 'bg-[#e6dcc3]'}`}
                       style={{ height: m.level === 'high' ? '100%' : m.level === 'medium' ? '60%' : '30%' }} />
-                    <span className="text-[8px] font-bold text-[#9ca3af]">{String(m.month).slice(0, 1)}</span>
+                    <span className="text-[8px] font-bold text-[#93876f]">{String(m.month).slice(0, 1)}</span>
                   </div>
                 ))}
               </div>
             )}
-            {d.summary && <p className="text-[12px] font-medium text-[#595959] leading-snug">{d.summary}</p>}
+            {d.summary && <p className="text-[12px] font-medium text-[#5c5245] leading-snug">{d.summary}</p>}
           </div>
         )}
       </div>
@@ -306,11 +311,11 @@ function FlightPredict() {
           <div className="space-y-2.5 pt-1">
             <div className="flex items-center justify-between"><TrendBadge trend={d.trend} /></div>
             <PriceRange data={d} />
-            <div className="bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl p-3">
-              <div className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af]">{t('servicesPage.flightPredict.window')}</div>
+            <div className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3">
+              <div className="text-[10px] font-black uppercase tracking-widest text-[#93876f]">{t('servicesPage.flightPredict.window')}</div>
               <div className="text-[13px] font-black text-[#1a1a1a]">{d.bestBookingWindow}</div>
             </div>
-            {d.advice && <p className="text-[12px] font-medium text-[#595959] leading-snug">{d.advice}</p>}
+            {d.advice && <p className="text-[12px] font-medium text-[#5c5245] leading-snug">{d.advice}</p>}
           </div>
         )}
       </div>
@@ -347,8 +352,8 @@ function HotelPredict() {
           <div className="space-y-2.5 pt-1">
             <div className="flex items-center justify-between"><TrendBadge trend={d.trend} /></div>
             <PriceRange data={d} unit={t('servicesPage.hotelPredict.perNight')} />
-            {d.areaTip && <p className="text-[12px] font-medium text-[#595959] leading-snug">📍 {d.areaTip}</p>}
-            {d.advice && <p className="text-[12px] font-medium text-[#595959] leading-snug">{d.advice}</p>}
+            {d.areaTip && <p className="text-[12px] font-medium text-[#5c5245] leading-snug">📍 {d.areaTip}</p>}
+            {d.advice && <p className="text-[12px] font-medium text-[#5c5245] leading-snug">{d.advice}</p>}
           </div>
         )}
       </div>
@@ -365,12 +370,12 @@ function BookableCard({ icon: Icon, title, desc, accent, message }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
-      className="group bg-white border border-[#e7e7e7] rounded-2xl shadow-soft p-5 lift flex flex-col">
+      className="group bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-5 lift flex flex-col">
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${accent}`}>
         <Icon className="w-6 h-6" />
       </div>
       <h3 className="text-[16px] font-black text-[#1a1a1a] leading-tight mb-1">{title}</h3>
-      <p className="text-[13px] text-[#595959] font-medium leading-snug mb-4 flex-1">{desc}</p>
+      <p className="text-[13px] text-[#5c5245] font-medium leading-snug mb-4 flex-1">{desc}</p>
       <a href={whatsappLink(message)} target="_blank" rel="noopener noreferrer"
         className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5b] text-white font-black text-[13px] rounded-xl py-2.5 px-4 shadow-soft transition active:scale-95">
         <MessageCircle className="w-4 h-4" /> {t('servicesPage.common.requestOnWhatsApp')}
@@ -396,7 +401,7 @@ export default function Services() {
   ];
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen">
+    <div className="bg-[#faf6ed] min-h-screen">
       {/* Hero */}
       <section className="relative bg-[#002250] text-white overflow-hidden">
         <div className="absolute inset-0 opacity-30 pointer-events-none animate-float"

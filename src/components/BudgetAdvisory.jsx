@@ -53,14 +53,14 @@ export default function BudgetAdvisory({ balance, className = '' }) {
 
         {/* Savings calculator */}
         <div className={`rounded-xl border backdrop-blur-sm ${isTiny ? 'border-red-100 bg-white/90' : 'border-[#febb02]/30 bg-white/85'} p-3 md:p-4 shadow-soft`}>
-          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-2.5">
+          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2.5">
             <TrendingUp className="w-3 h-3 text-[#008009]" />
             {`${t('ui.budget.saveHeader')} $${target}`}
           </div>
           <div className="grid grid-cols-3 gap-2">
             {scenarios.map(s => (
-              <div key={s.perMonth} className="rounded-lg bg-[#f8f9fa] border border-[#e7e7e7] p-2.5 text-center transition-premium hover:border-[#003580]/20 hover:bg-white hover:shadow-soft">
-                <div className="text-[10px] text-[#9ca3af] font-bold uppercase tracking-wider">{t('ui.budget.putAside')}</div>
+              <div key={s.perMonth} className="rounded-lg bg-[#f6f1e4] border border-[#e6dcc3] p-2.5 text-center transition-premium hover:border-[#003580]/20 hover:bg-white hover:shadow-soft">
+                <div className="text-[10px] text-[#93876f] font-bold uppercase tracking-wider">{t('ui.budget.putAside')}</div>
                 <div className="text-[13px] font-black text-[#003580] leading-tight my-0.5">{s.label}</div>
                 <div className="flex items-center justify-center gap-1 text-[11px] font-black text-[#008009] mt-1">
                   <Calendar className="w-3 h-3" />

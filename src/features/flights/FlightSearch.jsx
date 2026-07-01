@@ -32,11 +32,11 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-[0_30px_80px_-24px_rgba(0,26,61,0.45)] ring-1 ring-white/60 border border-[#ececf0] overflow-hidden">
+    <div className="bg-white rounded-3xl shadow-[0_30px_80px_-24px_rgba(0,26,61,0.45)] ring-1 ring-white/60 border border-[#e6dcc3] overflow-hidden">
       {/* ── Trip type / pax / cabin row ── */}
-      <div className="bg-[#f8f9fa] border-b border-[#e7e7e7] px-4 py-2.5 flex items-center justify-between flex-wrap gap-2">
+      <div className="bg-[#f6f1e4] border-b border-[#e6dcc3] px-4 py-2.5 flex items-center justify-between flex-wrap gap-2">
         {/* Trip type tabs */}
-        <div className="flex items-center gap-1 bg-white border border-[#e7e7e7] rounded-lg p-0.5">
+        <div className="flex items-center gap-1 bg-white border border-[#e6dcc3] rounded-lg p-0.5">
           {[
             { v: 'roundtrip', l: t('flightsPage.search.roundtrip') },
             { v: 'oneway',    l: t('flightsPage.search.oneway')    },
@@ -44,7 +44,7 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
           ].map(({ v, l }) => (
             <button key={v} type="button" onClick={() => setTripType(v)}
               className={`px-3 py-1.5 rounded-md text-[12px] font-black transition ${
-                tripType === v ? 'bg-[#003580] text-white' : 'text-[#595959] hover:bg-gray-50'
+                tripType === v ? 'bg-[#003580] text-white' : 'text-[#5c5245] hover:bg-gray-50'
               }`}>
               {l}
             </button>
@@ -54,16 +54,16 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
         {/* Pax + cabin combined dropdown */}
         <div className="relative" onMouseLeave={() => setPaxOpen(false)}>
           <button type="button" onClick={() => setPaxOpen(v => !v)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#e7e7e7] bg-white text-[12px] font-bold text-[#1a1a1a] hover:border-[#0071c2] transition">
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#e6dcc3] bg-white text-[12px] font-bold text-[#1a1a1a] hover:border-[#0071c2] transition">
             <Users className="w-3.5 h-3.5 text-[#0071c2]" />
             {pax} {pax === 1 ? t('flightsPage.search.travelerSingular') : t('flightsPage.search.travelerPlural')}
-            <span className="text-[#9ca3af]">·</span>
+            <span className="text-[#93876f]">·</span>
             <Briefcase className="w-3.5 h-3.5 text-[#0071c2]" /> {cabin}
-            <ChevronDown className={`w-3 h-3 text-[#9ca3af] transition ${paxOpen ? 'rotate-180' : ''}`} />
+            <ChevronDown className={`w-3 h-3 text-[#93876f] transition ${paxOpen ? 'rotate-180' : ''}`} />
           </button>
           {paxOpen && (
-            <div className="absolute right-0 top-full mt-1.5 w-64 bg-white border border-[#e7e7e7] rounded-2xl shadow-float z-30 p-3 page-fade">
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-2">{t('flightsPage.search.travelers')}</p>
+            <div className="absolute right-0 top-full mt-1.5 w-64 bg-white border border-[#e6dcc3] rounded-2xl shadow-float z-30 p-3 page-fade">
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">{t('flightsPage.search.travelers')}</p>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[13px] font-bold text-[#1a1a1a]">{t('flightsPage.search.adults')}</span>
                 <div className="flex items-center gap-2">
@@ -74,12 +74,12 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
                     className="w-7 h-7 rounded-md border-2 border-[#0071c2] text-[#0071c2] font-black hover:bg-[#f0f5ff] active:scale-95 transition">+</button>
                 </div>
               </div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-2">{t('flightsPage.search.cabinClass')}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">{t('flightsPage.search.cabinClass')}</p>
               <div className="grid grid-cols-2 gap-1.5">
                 {CABINS.map(c => (
                   <button key={c.val} type="button" onClick={() => { setCabin(c.val); setPaxOpen(false); }}
                     className={`px-2.5 py-2 rounded-lg text-[11.5px] font-black transition ${
-                      cabin === c.val ? 'bg-[#003580] text-white' : 'bg-[#f8f9fa] text-[#1a1a1a] hover:bg-[#f0f5ff]'
+                      cabin === c.val ? 'bg-[#003580] text-white' : 'bg-[#f6f1e4] text-[#1a1a1a] hover:bg-[#f0f5ff]'
                     }`}>
                     {t(`flightsPage.search.${c.labelKey}`)}
                   </button>
@@ -158,7 +158,7 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
 
         {/* Quick from/to chips */}
         <div className="flex items-center gap-1.5 flex-wrap pt-1 px-1">
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af]">{t('flightsPage.search.popularRoutes')}</span>
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#93876f]">{t('flightsPage.search.popularRoutes')}</span>
           {[
             { from: 'Dubai (DXB)',     to: 'Maldives (MLE)',   label: 'DXB → MLE' },
             { from: 'Dubai (DXB)',     to: 'Bali (DPS)',       label: 'DXB → DPS' },
@@ -179,7 +179,7 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
           })}
           {(formData.from || formData.to || formData.date) && (
             <button type="button" onClick={reset}
-              className="ml-auto flex items-center gap-1 text-[11px] font-black text-[#9ca3af] hover:text-red-500 transition">
+              className="ml-auto flex items-center gap-1 text-[11px] font-black text-[#93876f] hover:text-red-500 transition">
               <RotateCcw className="w-3 h-3" /> {t('flightsPage.search.reset')}
             </button>
           )}
@@ -192,8 +192,8 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
 /* ── Light Booking-style input ── */
 function FieldInput({ icon, label, placeholder, type = 'text', value, onChange, className = '', listId, min, required }) {
   return (
-    <label className={`block bg-white border-2 border-[#e7e7e7] hover:border-[#0071c2] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition ${className}`}>
-      <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-0.5">
+    <label className={`block bg-white border-2 border-[#e6dcc3] hover:border-[#0071c2] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition ${className}`}>
+      <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-0.5">
         <span className="text-[#0071c2]">{icon}</span>{label}
       </div>
       <input
@@ -204,7 +204,7 @@ function FieldInput({ icon, label, placeholder, type = 'text', value, onChange, 
         list={listId}
         min={min}
         required={required}
-        className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a] placeholder:text-[#b0b0b0]"
+        className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a] placeholder:text-[#a89a7d]"
       />
     </label>
   );

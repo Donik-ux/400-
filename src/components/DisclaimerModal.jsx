@@ -47,7 +47,7 @@ export default function DisclaimerModal() {
             </p>
           </div>
 
-          <div className="space-y-4 text-[13px] text-[#595959] leading-relaxed">
+          <div className="space-y-4 text-[13px] text-[#5c5245] leading-relaxed">
             <p>
               <strong className="text-[#1a1a1a]">{t('ui.disclaimer.s1Title')}</strong>{' '}
               {t('ui.disclaimer.s1Body')}
@@ -76,17 +76,17 @@ export default function DisclaimerModal() {
         </div>
 
         {/* Footer */}
-        <div className="px-7 py-5 border-t border-[#f0f0f0] bg-[#f8f9fa]">
+        <div className="px-7 py-5 border-t border-[#efe6d2] bg-[#f6f1e4]">
           <label className="flex items-start gap-3 cursor-pointer mb-5 select-none">
             <div
               onClick={() => setRead(v => !v)}
               className={`w-5 h-5 rounded shrink-0 mt-0.5 border-2 flex items-center justify-center transition-all cursor-pointer ${
-                read ? 'bg-[#003580] border-[#003580]' : 'border-[#c9d1d9] bg-white'
+                read ? 'bg-[#003580] border-[#003580]' : 'border-[#d9c9a3] bg-white'
               }`}
             >
               {read && <CheckCircle className="w-3.5 h-3.5 text-white" />}
             </div>
-            <span className="text-[13px] text-[#595959] leading-snug">
+            <span className="text-[13px] text-[#5c5245] leading-snug">
               {t('ui.disclaimer.checkbox')}
             </span>
           </label>
@@ -97,13 +97,13 @@ export default function DisclaimerModal() {
             className={`w-full py-3.5 rounded-2xl font-black text-[14px] uppercase tracking-wider transition-all ${
               read
                 ? 'bg-[#003580] text-white hover:bg-[#002060] active:scale-95'
-                : 'bg-[#e7e7e7] text-[#9ca3af] cursor-not-allowed'
+                : 'bg-[#e6dcc3] text-[#93876f] cursor-not-allowed'
             }`}
           >
             {t('ui.disclaimer.accept')}
           </button>
 
-          <p className="text-center text-[11px] text-[#9ca3af] mt-3">
+          <p className="text-center text-[11px] text-[#93876f] mt-3">
             {t('ui.disclaimer.footnote')}
           </p>
         </div>

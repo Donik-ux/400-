@@ -22,6 +22,7 @@ import { getLocalApps } from '../services/localApps';
 import { getCurrencyInfo, formatLocal } from '../services/currencyByCountry';
 import { toast } from '../components/Toast';
 import useSEO from '../hooks/useSEO';
+import { usePriceFormatter } from '../components/Price';
 
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80';
 
@@ -55,30 +56,30 @@ function downloadPDF(destination, days, meta, itineraries, t, extras = {}) {
 <style>
   body { font-family: Arial, sans-serif; color: #1a1a1a; margin: 0; padding: 20px; background: white; }
   h1 { color: #003580; font-size: 28px; margin-bottom: 4px; }
-  .subtitle { color: #595959; font-size: 14px; margin-bottom: 24px; }
+  .subtitle { color: #5c5245; font-size: 14px; margin-bottom: 24px; }
   .badge { background: #e8f4fd; color: #003580; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; margin-bottom: 24px; }
   .section { margin-bottom: 28px; }
   .section-title { font-size: 13px; font-weight: bold; color: #003580; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid #e8f4fd; }
-  .budget-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+  .budget-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #efe6d2; font-size: 13px; }
   .budget-row span:last-child { font-weight: bold; }
-  .day-card { background: #f8f9fa; border: 1px solid #e7e7e7; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .day-card { background: #f6f1e4; border: 1px solid #e6dcc3; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
   .day-title { font-size: 15px; font-weight: bold; color: #003580; margin-bottom: 8px; }
   .event { display: flex; gap: 10px; margin-bottom: 6px; font-size: 12px; padding: 6px 0; border-bottom: 1px solid #eee; }
   .event-time { color: #0071c2; font-weight: bold; min-width: 50px; }
-  .event-dur { color: #9ca3af; min-width: 60px; }
+  .event-dur { color: #93876f; min-width: 60px; }
   .event-name { flex: 1; }
   .event-price { color: #003580; font-weight: bold; }
   .halal { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 8px 10px; margin-top: 8px; font-size: 12px; color: #166534; }
   .places-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .place { background: #f8f9fa; border: 1px solid #e7e7e7; border-radius: 8px; padding: 10px 12px; page-break-inside: avoid; }
+  .place { background: #f6f1e4; border: 1px solid #e6dcc3; border-radius: 8px; padding: 10px 12px; page-break-inside: avoid; }
   .place-head { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
   .place-icon { font-size: 15px; }
   .place-name { font-size: 13px; font-weight: bold; color: #1a1a1a; flex: 1; }
   .place-day { font-size: 10px; font-weight: bold; color: #003580; background: #e8f4fd; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
-  .place-addr { font-size: 11px; color: #9ca3af; margin-bottom: 5px; line-height: 1.4; }
+  .place-addr { font-size: 11px; color: #93876f; margin-bottom: 5px; line-height: 1.4; }
   .place-map { font-size: 11px; color: #0071c2; text-decoration: none; font-weight: bold; }
-  .tips li { font-size: 13px; margin-bottom: 6px; color: #595959; }
-  .footer { margin-top: 32px; padding-top: 16px; border-top: 2px solid #e7e7e7; color: #9ca3af; font-size: 11px; text-align: center; }
+  .tips li { font-size: 13px; margin-bottom: 6px; color: #5c5245; }
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 2px solid #e6dcc3; color: #93876f; font-size: 11px; text-align: center; }
   @media print { body { padding: 10px; } }
 </style></head><body>
 <div class="badge">🌍 MAFTRAVEL Planning</div>
@@ -150,7 +151,7 @@ ${(day.events || []).map(ev => `
 <div class="event">
   <span class="event-time">${ev.time || ''}</span>
   <span class="event-dur">${ev.duration || ''}</span>
-  <span class="event-name"><b>${ev.name}</b> ${ev.address ? `<br><small style="color:#9ca3af">📍 ${ev.address}</small>` : ''}</span>
+  <span class="event-name"><b>${ev.name}</b> ${ev.address ? `<br><small style="color:#93876f">📍 ${ev.address}</small>` : ''}</span>
   <span class="event-price">${ev.price || ''}</span>
 </div>
 ${ev.halalNote ? `<div class="halal">🥩 ${ev.halalNote}</div>` : ''}`).join('')}
@@ -164,14 +165,14 @@ ${packing ? `
 ${packing.categories.map(cat => `
 <div class="day-card">
 <div class="day-title">${cat.emoji} ${esc(cat.title)}</div>
-${cat.items.map(it => `<div class="event" style="padding:4px 0;"><span style="color:#9ca3af;min-width:18px;">☐</span><span class="event-name">${esc(it)}</span></div>`).join('')}
+${cat.items.map(it => `<div class="event" style="padding:4px 0;"><span style="color:#93876f;min-width:18px;">☐</span><span class="event-name">${esc(it)}</span></div>`).join('')}
 </div>`).join('')}
 </div>` : ''}
 
 ${localApps ? `
 <div class="section">
 <div class="section-title">📱 Useful Apps · ${esc(localApps.country)}</div>
-${currency ? `<p style="font-size:12px;color:#595959;margin:-2px 0 10px;">💰 Local currency: ${esc(currency.name)} (${esc(currency.code)} ${esc(currency.symbol)}) · 1 USD ≈ ${esc(String(currency.perUsd))} ${esc(currency.code)}</p>` : ''}
+${currency ? `<p style="font-size:12px;color:#5c5245;margin:-2px 0 10px;">💰 Local currency: ${esc(currency.name)} (${esc(currency.code)} ${esc(currency.symbol)}) · 1 USD ≈ ${esc(String(currency.perUsd))} ${esc(currency.code)}</p>` : ''}
 ${[
   ['🚕 Taxi & transfer',    localApps.taxi],
   ['🗺️ Maps & navigation',  localApps.maps],
@@ -179,15 +180,15 @@ ${[
 ].map(([label, list]) => `
 <div class="day-card">
 <div class="day-title">${label}</div>
-${list.map(app => `<div class="event" style="padding:4px 0;"><span class="event-name"><b>${esc(app.name)}</b> — <small style="color:#9ca3af">${esc(app.reason)}</small></span></div>`).join('')}
+${list.map(app => `<div class="event" style="padding:4px 0;"><span class="event-name"><b>${esc(app.name)}</b> — <small style="color:#93876f">${esc(app.reason)}</small></span></div>`).join('')}
 </div>`).join('')}
 </div>` : ''}
 
 ${emergency ? `
 <div class="section">
 <div class="section-title">🆘 Emergency Contacts · ${emergency.flag} ${esc(emergency.country)}</div>
-${emergency.numbers.map(n => `<div class="budget-row"><span>${n.icon || '📞'} ${esc(n.service)}${n.note ? ` — <small style="color:#9ca3af">${esc(n.note)}</small>` : ''}</span><span>${esc(n.number)}</span></div>`).join('')}
-${emergency.tips?.length ? `<p style="font-size:12px;color:#595959;margin-top:10px;">💡 ${emergency.tips.map(esc).join(' · ')}</p>` : ''}
+${emergency.numbers.map(n => `<div class="budget-row"><span>${n.icon || '📞'} ${esc(n.service)}${n.note ? ` — <small style="color:#93876f">${esc(n.note)}</small>` : ''}</span><span>${esc(n.number)}</span></div>`).join('')}
+${emergency.tips?.length ? `<p style="font-size:12px;color:#5c5245;margin-top:10px;">💡 ${emergency.tips.map(esc).join(' · ')}</p>` : ''}
 </div>` : ''}
 
 ${meta?.travelTips?.length ? `
@@ -199,7 +200,7 @@ ${meta?.travelTips?.length ? `
 ${meta?.halalFoodGuide ? `
 <div class="section">
 <div class="section-title">🕌 Halal Food Guide</div>
-<p style="font-size:13px;color:#595959;">${meta.halalFoodGuide}</p>
+<p style="font-size:13px;color:#5c5245;">${meta.halalFoodGuide}</p>
 </div>` : ''}
 
 <div class="footer">
@@ -215,20 +216,21 @@ Generated by MAFTRAVEL · maftravel.com · All halal restaurants verified 🥩
 
 /* ─── Budget bar ─── */
 const BudgetBar = ({ label, amount, total, color, icon: Icon }) => {
+  const fmt = usePriceFormatter();
   const pct = total > 0 ? Math.round((amount / total) * 100) : 0;
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2">
-          <Icon className="w-4 h-4 text-[#595959]" />
-          <span className="text-[13px] text-[#595959]">{label}</span>
+          <Icon className="w-4 h-4 text-[#5c5245]" />
+          <span className="text-[13px] text-[#5c5245]">{label}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[13px] font-bold text-[#1a1a1a]">${amount.toLocaleString()}</span>
-          <span className="text-[11px] text-[#9ca3af]">{pct}%</span>
+          <span className="text-[13px] font-bold text-[#1a1a1a]">{fmt(amount)}</span>
+          <span className="text-[11px] text-[#93876f]">{pct}%</span>
         </div>
       </div>
-      <div className="h-2 rounded-full bg-[#f0f0f0]">
+      <div className="h-2 rounded-full bg-[#efe6d2]">
         <div className={`h-full rounded-full ${color} transition-all duration-700`} style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -239,6 +241,7 @@ const BudgetBar = ({ label, amount, total, color, icon: Icon }) => {
 export default function Planner() {
   const { t }      = useTranslation();
   const navigate   = useNavigate();
+  const fmt        = usePriceFormatter();
   const resultsRef = useRef(null);
   const printRef   = useRef(null);
   useSEO({
@@ -317,7 +320,7 @@ export default function Planner() {
   const navApps = meta?.navApps || NAV_APPS[transport] || NAV_APPS.walking;
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen">
+    <div className="bg-[#faf6ed] min-h-screen">
 
       {/* ── Hero / Form Section ── */}
       <div className="bg-[#003580] text-white">
@@ -398,7 +401,7 @@ export default function Planner() {
                     <Navigation className="w-3.5 h-3.5" /> {formData.fromCity} → {formData.destination}
                   </p>
                 )}
-                <p className="text-white/60 text-sm mt-1">{itineraries.length} {t('plannerPage.results.daysWord')} · ${meta.budgetBreakdown.total.toLocaleString()} {t('plannerPage.results.budgetWord')}</p>
+                <p className="text-white/60 text-sm mt-1">{itineraries.length} {t('plannerPage.results.daysWord')} · {fmt(meta.budgetBreakdown.total)} {t('plannerPage.results.budgetWord')}</p>
               </div>
               {/* Save + PDF Download */}
               <div className="no-print flex items-center gap-2">
@@ -452,11 +455,11 @@ export default function Planner() {
               <div>
                 <p className={`text-[14px] font-black mb-0.5 ${budgetDiff >= 0 ? 'text-green-800' : 'text-amber-800'}`}>
                   {budgetDiff >= 0
-                    ? `✅ ${t('plannerPage.results.budgetFitOk')} $${budgetDiff.toLocaleString()}`
-                    : `⚠️ ${t('plannerPage.results.budgetFitOver')} $${Math.abs(budgetDiff).toLocaleString()}`}
+                    ? `✅ ${t('plannerPage.results.budgetFitOk')} ${fmt(budgetDiff)}`
+                    : `⚠️ ${t('plannerPage.results.budgetFitOver')} ${fmt(Math.abs(budgetDiff))}`}
                 </p>
                 <p className={`text-[12px] ${budgetDiff >= 0 ? 'text-green-700' : 'text-amber-700'}`}>
-                  {t('plannerPage.results.budgetYours')} ${userBudget.toLocaleString()} · {t('plannerPage.results.budgetPlanCost')} ${planTotal.toLocaleString()}
+                  {t('plannerPage.results.budgetYours')} {fmt(userBudget)} · {t('plannerPage.results.budgetPlanCost')} {fmt(planTotal)}
                   {budgetDiff < 0 && ` — ${t('plannerPage.results.budgetOverHint')}`}
                 </p>
               </div>
@@ -465,15 +468,15 @@ export default function Planner() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
             {/* Budget card */}
-            <div className="lg:col-span-2 bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft">
+            <div className="lg:col-span-2 bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft">
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1">{t('planner.results.budgetBreakdown')}</p>
-                  <p className="text-3xl font-black text-gradient">${meta.budgetBreakdown.total.toLocaleString()}</p>
-                  <p className="text-[#9ca3af] text-sm">{t('planner.results.totalCost')}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1">{t('planner.results.budgetBreakdown')}</p>
+                  <p className="text-3xl font-black text-gradient">{fmt(meta.budgetBreakdown.total)}</p>
+                  <p className="text-[#93876f] text-sm">{t('planner.results.totalCost')}</p>
                 </div>
-                <div className="bg-[#f8f9fa] rounded-xl p-3 text-center border border-[#e7e7e7]">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#9ca3af]">{t('plannerPage.results.stay')}</p>
+                <div className="bg-[#f6f1e4] rounded-xl p-3 text-center border border-[#e6dcc3]">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#93876f]">{t('plannerPage.results.stay')}</p>
                   <p className="text-[13px] font-bold text-[#1a1a1a]">{meta.budgetBreakdown.hotelName}</p>
                 </div>
               </div>
@@ -485,12 +488,12 @@ export default function Planner() {
             {/* Info cards */}
             <div className="flex flex-col gap-4">
               {/* Transport */}
-              <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5">
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Car className="w-4 h-4 text-[#0071c2]" />
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af]">{t('planner.results.transportSuggestion')}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#93876f]">{t('planner.results.transportSuggestion')}</p>
                 </div>
-                <p className="text-[13px] text-[#595959] leading-relaxed">{meta.transportSuggestion}</p>
+                <p className="text-[13px] text-[#5c5245] leading-relaxed">{meta.transportSuggestion}</p>
 
                 {/* Nav apps (always show for car) */}
                 {(transport === 'car' || navApps?.length > 0) && (
@@ -503,11 +506,11 @@ export default function Planner() {
                     {showNavApps && (
                       <div className="mt-3 flex flex-col gap-2">
                         {navApps.map(app => (
-                          <div key={app.name} className="flex items-start gap-2.5 p-2.5 bg-[#f8f9fa] rounded-lg border border-[#e7e7e7]">
+                          <div key={app.name} className="flex items-start gap-2.5 p-2.5 bg-[#f6f1e4] rounded-lg border border-[#e6dcc3]">
                             <span className="text-lg">{app.icon}</span>
                             <div>
                               <p className="text-[12px] font-bold text-[#1a1a1a]">{app.name}</p>
-                              <p className="text-[11px] text-[#9ca3af]">{app.reason}</p>
+                              <p className="text-[11px] text-[#93876f]">{app.reason}</p>
                             </div>
                           </div>
                         ))}
@@ -529,16 +532,16 @@ export default function Planner() {
               )}
 
               {/* Tips */}
-              <div className="bg-white border border-[#e7e7e7] rounded-2xl p-5 flex-1">
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 flex-1">
                 <div className="flex items-center gap-2 mb-3">
                   <Lightbulb className="w-4 h-4 text-yellow-500" />
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af]">{t('planner.results.tips')}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#93876f]">{t('planner.results.tips')}</p>
                 </div>
                 <ul className="space-y-2.5">
                   {(meta.travelTips || []).map((tip, i) => (
                     <li key={i} className="flex gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 text-[#0071c2] shrink-0 mt-0.5" />
-                      <span className="text-[12px] text-[#595959] leading-snug">{tip}</span>
+                      <span className="text-[12px] text-[#5c5245] leading-snug">{tip}</span>
                     </li>
                   ))}
                 </ul>
@@ -548,13 +551,13 @@ export default function Planner() {
 
           {/* Local apps — taxi, maps, translators that work in this city */}
           {localApps && (
-            <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 mb-6">
+            <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 mb-6">
               <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <Smartphone className="w-5 h-5 text-[#0071c2]" />
                 <h3 className="text-[16px] font-black text-[#1a1a1a]">{t('plannerPage.apps.title')}</h3>
-                <span className="text-[13px] font-bold text-[#595959]">· {localApps.country}</span>
+                <span className="text-[13px] font-bold text-[#5c5245]">· {localApps.country}</span>
               </div>
-              <p className="text-[12px] text-[#9ca3af] mb-4">
+              <p className="text-[12px] text-[#93876f] mb-4">
                 {t('plannerPage.apps.sub')}
               </p>
 
@@ -564,11 +567,11 @@ export default function Planner() {
                   <span className="text-[13px] font-black text-[#003580]">
                     💰 {t('plannerPage.apps.localCurrency')}: {currency.name} · {currency.code} {currency.symbol}
                   </span>
-                  <span className="text-[12px] font-bold text-[#595959]">
+                  <span className="text-[12px] font-bold text-[#5c5245]">
                     1 USD ≈ {formatLocal(currency.perUsd)} {currency.code}
                   </span>
                   {userBudget > 0 && (
-                    <span className="text-[12px] font-bold text-[#595959]">
+                    <span className="text-[12px] font-bold text-[#5c5245]">
                       {t('plannerPage.apps.yourBudget')} ${userBudget.toLocaleString()} ≈ {formatLocal(userBudget * currency.perUsd)} {currency.code}
                     </span>
                   )}
@@ -581,18 +584,18 @@ export default function Planner() {
                   { key: 'maps',       label: t('plannerPage.apps.maps'),       emoji: '🗺️', list: localApps.maps },
                   { key: 'translator', label: t('plannerPage.apps.translator'), emoji: '🌐', list: localApps.translator },
                 ].map(group => (
-                  <div key={group.key} className="bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl p-4">
+                  <div key={group.key} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-4">
                     <p className="text-[13px] font-black text-[#1a1a1a] mb-3">{group.emoji} {group.label}</p>
                     <div className="flex flex-col gap-2">
                       {group.list.map(app => (
                         <a key={app.name} href={app.link} target="_blank" rel="noopener noreferrer"
-                          className="flex items-start gap-2.5 p-2.5 bg-white rounded-lg border border-[#e7e7e7] hover:border-[#0071c2]/40 hover:shadow-sm transition-premium">
+                          className="flex items-start gap-2.5 p-2.5 bg-white rounded-lg border border-[#e6dcc3] hover:border-[#0071c2]/40 hover:shadow-sm transition-premium">
                           <span className="text-lg shrink-0">{app.icon}</span>
                           <div className="flex-1 min-w-0">
                             <p className="text-[12px] font-bold text-[#1a1a1a]">{app.name}</p>
-                            <p className="text-[11px] text-[#9ca3af] leading-snug">{app.reason}</p>
+                            <p className="text-[11px] text-[#93876f] leading-snug">{app.reason}</p>
                           </div>
-                          <ExternalLink className="w-3 h-3 text-[#9ca3af] shrink-0 mt-0.5" />
+                          <ExternalLink className="w-3 h-3 text-[#93876f] shrink-0 mt-0.5" />
                         </a>
                       ))}
                     </div>
@@ -617,16 +620,16 @@ export default function Planner() {
 
           {/* Packing checklist */}
           {packing && (
-            <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 mb-6">
+            <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 mb-6">
               <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <Briefcase className="w-5 h-5 text-[#0071c2]" />
                 <h3 className="text-[16px] font-black text-[#1a1a1a]">{t('plannerPage.packing.title')}</h3>
                 <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#0071c2]">{packing.seasonLabel}</span>
               </div>
-              <p className="text-[12px] text-[#9ca3af] mb-4">{t('plannerPage.packing.sub')}</p>
+              <p className="text-[12px] text-[#93876f] mb-4">{t('plannerPage.packing.sub')}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {packing.categories.map(cat => (
-                  <div key={cat.title} className="bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl p-4">
+                  <div key={cat.title} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-4">
                     <p className="text-[13px] font-black text-[#1a1a1a] mb-2.5">{cat.emoji} {cat.title}</p>
                     <div className="flex flex-col gap-1.5">
                       {cat.items.map((it, i) => {
@@ -636,11 +639,11 @@ export default function Planner() {
                           <button key={key} onClick={() => setPackChecked(p => ({ ...p, [key]: !p[key] }))}
                             className="flex items-start gap-2 text-left group">
                             <span className={`w-4 h-4 rounded border shrink-0 mt-0.5 flex items-center justify-center transition-premium ${
-                              checked ? 'bg-[#0071c2] border-[#0071c2]' : 'border-[#c9d1d9] group-hover:border-[#0071c2]'
+                              checked ? 'bg-[#0071c2] border-[#0071c2]' : 'border-[#d9c9a3] group-hover:border-[#0071c2]'
                             }`}>
                               {checked && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
                             </span>
-                            <span className={`text-[12px] leading-snug ${checked ? 'text-[#9ca3af] line-through' : 'text-[#595959]'}`}>{it}</span>
+                            <span className={`text-[12px] leading-snug ${checked ? 'text-[#93876f] line-through' : 'text-[#5c5245]'}`}>{it}</span>
                           </button>
                         );
                       })}
@@ -653,22 +656,22 @@ export default function Planner() {
 
           {/* Emergency contacts */}
           {emergency && (
-            <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 mb-6">
+            <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 mb-6">
               <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <Phone className="w-5 h-5 text-red-500" />
                 <h3 className="text-[16px] font-black text-[#1a1a1a]">{t('plannerPage.emergency.title')}</h3>
                 <span className="text-[15px]">{emergency.flag}</span>
-                <span className="text-[13px] font-bold text-[#595959]">{emergency.country}</span>
+                <span className="text-[13px] font-bold text-[#5c5245]">{emergency.country}</span>
               </div>
-              <p className="text-[12px] text-[#9ca3af] mb-4">{t('plannerPage.emergency.sub')}</p>
+              <p className="text-[12px] text-[#93876f] mb-4">{t('plannerPage.emergency.sub')}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {emergency.numbers.map((n, i) => (
                   <a key={i} href={`tel:${String(n.number).replace(/\s/g, '')}`}
-                    className="flex items-center gap-3 p-3 bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl hover:border-red-300 hover:bg-red-50 transition-premium">
+                    className="flex items-center gap-3 p-3 bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl hover:border-red-300 hover:bg-red-50 transition-premium">
                     <span className="text-xl shrink-0">{n.icon || '📞'}</span>
                     <div className="min-w-0 flex-1">
                       <p className="text-[13px] font-black text-[#1a1a1a] truncate">{n.service}</p>
-                      {n.note && <p className="text-[11px] text-[#9ca3af] truncate">{n.note}</p>}
+                      {n.note && <p className="text-[11px] text-[#93876f] truncate">{n.note}</p>}
                     </div>
                     <span className="text-[14px] font-black text-red-600 shrink-0">{n.number}</span>
                   </a>
@@ -677,7 +680,7 @@ export default function Planner() {
               {emergency.tips?.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {emergency.tips.map((tip, i) => (
-                    <span key={i} className="text-[11px] text-[#595959] bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1">💡 {tip}</span>
+                    <span key={i} className="text-[11px] text-[#5c5245] bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1">💡 {tip}</span>
                   ))}
                 </div>
               )}
@@ -685,27 +688,27 @@ export default function Planner() {
           )}
 
           {/* Budget summary table */}
-          <div className="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden mb-6">
-            <div className="px-6 py-4 border-b border-[#f0f0f0] flex items-center gap-2">
+          <div className="bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden mb-6">
+            <div className="px-6 py-4 border-b border-[#efe6d2] flex items-center gap-2">
               <Wallet className="w-4 h-4 text-[#0071c2]" />
               <p className="text-[13px] font-bold text-[#1a1a1a]">{t('plannerPage.results.estimatedSummary')}</p>
             </div>
-            <div className="divide-y divide-[#f0f0f0]">
+            <div className="divide-y divide-[#efe6d2]">
               {budgetRows.map(({ label, amount, icon: Icon, color }) => (
-                <div key={label} className="flex items-center justify-between px-6 py-3.5 hover:bg-[#f8f9fa] transition-premium">
+                <div key={label} className="flex items-center justify-between px-6 py-3.5 hover:bg-[#f6f1e4] transition-premium">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#f5f5f5] flex items-center justify-center">
-                      <Icon className="w-4 h-4 text-[#595959]" />
+                    <div className="w-8 h-8 rounded-lg bg-[#faf6ed] flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-[#5c5245]" />
                     </div>
-                    <span className="text-[14px] text-[#595959]">{label}</span>
+                    <span className="text-[14px] text-[#5c5245]">{label}</span>
                   </div>
-                  <span className="text-[14px] font-bold text-[#1a1a1a]">${amount.toLocaleString()}</span>
+                  <span className="text-[14px] font-bold text-[#1a1a1a]">{fmt(amount)}</span>
                 </div>
               ))}
             </div>
             <div className="flex items-center justify-between px-6 py-4 bg-[#003580]">
               <span className="text-[14px] font-black text-white uppercase tracking-wider">{t('plannerPage.results.totalBudget')}</span>
-              <span className="text-xl font-black text-white">${meta.budgetBreakdown.total.toLocaleString()}</span>
+              <span className="text-xl font-black text-white">{fmt(meta.budgetBreakdown.total)}</span>
             </div>
           </div>
 

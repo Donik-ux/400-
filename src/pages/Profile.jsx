@@ -14,9 +14,11 @@ import { useTranslation } from '../store/useLangStore';
 import { downloadPlanPdf } from '../utils/planPdf';
 import { heroFor } from '../utils/destinationImages';
 import { toast } from '../components/Toast';
+import { usePriceFormatter } from '../components/Price';
 
 export default function Profile() {
   const { t } = useTranslation();
+  const fmt = usePriceFormatter();
   const user        = useAuthStore(s => s.user);
   const getProfile  = useAuthStore(s => s.getProfile);
   const saveProfile = useAuthStore(s => s.saveProfile);
@@ -71,7 +73,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen -mt-[64px]">
+    <div className="bg-[#faf6ed] min-h-screen -mt-[64px]">
 
       {/* ── Hero header ── */}
       <section className="relative bg-gradient-to-br from-[#001026] via-[#002250] to-[#003580] text-white overflow-hidden pt-[100px] pb-16">
@@ -126,9 +128,9 @@ export default function Profile() {
         <div className="flex flex-col gap-5">
 
           {/* ── My AI Trip Plans ── */}
-          <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-float">
+          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-float">
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-              <h2 className="text-sm font-black uppercase tracking-widest text-[#9ca3af] flex items-center gap-2">
+              <h2 className="text-sm font-black uppercase tracking-widest text-[#93876f] flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-[#f5b942]" /> {t('profilePage.myPlans') || 'My AI Trip Plans'}
                 {plans.length > 0 && (
                   <span className="ml-1 px-2 py-0.5 bg-[#f0f5ff] text-[#0071c2] text-[11px] font-black rounded-full normal-case tracking-normal">{plans.length}</span>
@@ -148,7 +150,7 @@ export default function Profile() {
                   <Map className="w-7 h-7 text-white" />
                 </div>
                 <p className="text-[15px] font-black text-[#1a1a1a] mb-1">{t('profilePage.noPlansTitle') || 'No saved plans yet'}</p>
-                <p className="text-[13px] text-[#9ca3af] font-medium mb-5 max-w-sm mx-auto">
+                <p className="text-[13px] text-[#93876f] font-medium mb-5 max-w-sm mx-auto">
                   {t('profilePage.noPlansSub') || 'Generate a trip with our AI planner — it will be saved here automatically.'}
                 </p>
                 <button onClick={() => navigate('/planner')}
@@ -165,7 +167,7 @@ export default function Profile() {
                   const budget = Number(plan.formData?.budget) || 0;
                   const isAi   = plan.meta?.source === 'ai';
                   return (
-                    <div key={plan.id} className="group bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden shadow-soft hover:shadow-float lift flex flex-col">
+                    <div key={plan.id} className="group bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft hover:shadow-float lift flex flex-col">
                       <div className="relative h-28 bg-cover bg-center" style={{ backgroundImage: `url(${heroFor(dest)})` }}>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                         <span className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${isAi ? 'bg-[#f5b942] text-[#002250]' : 'bg-[#0071c2] text-white'}`}>
@@ -181,15 +183,15 @@ export default function Profile() {
                         </h3>
                       </div>
                       <div className="p-3.5 flex flex-col flex-1">
-                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-bold text-[#595959] mb-3">
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-bold text-[#5c5245] mb-3">
                           <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#0071c2]" /> {days} {t('profilePage.daysWord') || 'days'}</span>
-                          {budget > 0 && <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-[#0071c2]" /> ${budget.toLocaleString()}</span>}
-                          <span className="flex items-center gap-1 text-[#9ca3af]"><Clock className="w-3 h-3" /> {fmtDate(plan.savedAt)}</span>
+                          {budget > 0 && <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-[#0071c2]" /> {fmt(budget)}</span>}
+                          <span className="flex items-center gap-1 text-[#93876f]"><Clock className="w-3 h-3" /> {fmtDate(plan.savedAt)}</span>
                         </div>
-                        <div className="mt-auto flex items-center justify-between gap-2 pt-3 border-t border-[#f0f0f0]">
+                        <div className="mt-auto flex items-center justify-between gap-2 pt-3 border-t border-[#efe6d2]">
                           {total != null ? (
-                            <div className="text-[17px] font-black text-[#003580] leading-none">${Number(total).toLocaleString()}</div>
-                          ) : <span className="text-[11px] text-[#9ca3af] font-bold">{t('lists.plans.openToView') || 'Open to view'}</span>}
+                            <div className="text-[17px] font-black text-[#003580] leading-none">{fmt(total)}</div>
+                          ) : <span className="text-[11px] text-[#93876f] font-bold">{t('lists.plans.openToView') || 'Open to view'}</span>}
                           <div className="flex items-center gap-1.5">
                             <button onClick={() => downloadPlanPdf(plan)}
                               className="px-2.5 py-2 rounded-lg border-2 border-[#0071c2] text-[#0071c2] hover:bg-[#f0f5ff] text-[11px] font-black flex items-center gap-1 transition active:scale-95"
@@ -211,8 +213,8 @@ export default function Profile() {
           </div>
 
           {/* ── Personal Info ── */}
-          <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft hover:shadow-float transition">
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#9ca3af] mb-5 flex items-center gap-2">
+          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft hover:shadow-float transition">
+            <h2 className="text-sm font-black uppercase tracking-widest text-[#93876f] mb-5 flex items-center gap-2">
               <User className="w-4 h-4 text-[#f5b942]" /> {t('profilePage.personalInfo')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -225,13 +227,13 @@ export default function Profile() {
                 { k: 'address',   l: t('profilePage.address'),     type: 'text', ph: t('profilePage.phAddress'),     icon: Globe    },
               ].map(field => (
                 <div key={field.k}>
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1.5 flex items-center gap-1">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 flex items-center gap-1">
                     {field.l}
                   </label>
                   {editing ? (
                     <input type={field.type} placeholder={field.ph} value={form[field.k]}
                       onChange={e => f(field.k, e.target.value)}
-                      className="w-full bg-[#f8f9fa] border-2 border-[#e7e7e7] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#b0b0b0] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/15 transition"
+                      className="w-full bg-[#f6f1e4] border-2 border-[#e6dcc3] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#a89a7d] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/15 transition"
                     />
                   ) : (
                     <p className="text-sm text-[#1a1a1a] font-semibold py-3">{form[field.k] || <span className="text-[#c0c0c0] font-medium">{t('profilePage.notSet')}</span>}</p>
@@ -242,22 +244,22 @@ export default function Profile() {
           </div>
 
           {/* ── Passport / Travel Document ── */}
-          <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft hover:shadow-float transition">
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#9ca3af] mb-2 flex items-center gap-2">
+          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft hover:shadow-float transition">
+            <h2 className="text-sm font-black uppercase tracking-widest text-[#93876f] mb-2 flex items-center gap-2">
               <Shield className="w-4 h-4 text-[#f5b942]" /> {t('profilePage.passportSection')}
             </h2>
-            <p className="text-[#9ca3af] text-xs font-medium mb-5">
+            <p className="text-[#93876f] text-xs font-medium mb-5">
               {t('profilePage.passportHint')}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-[10px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1.5 block">{t('profilePage.passportNumber')}</label>
+                <label className="text-[10px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">{t('profilePage.passportNumber')}</label>
                 {editing ? (
                   <div className="relative">
-                    <CreditCard className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af]" />
+                    <CreditCard className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#93876f]" />
                     <input type="text" placeholder={t('profilePage.passportNumberPlaceholder')} value={form.passportNumber}
                       onChange={e => f('passportNumber', e.target.value.toUpperCase())}
-                      className="w-full bg-[#f8f9fa] border-2 border-[#e7e7e7] rounded-xl pl-10 pr-4 py-3 text-sm text-[#1a1a1a] font-mono placeholder:text-[#b0b0b0] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/15 transition uppercase"
+                      className="w-full bg-[#f6f1e4] border-2 border-[#e6dcc3] rounded-xl pl-10 pr-4 py-3 text-sm text-[#1a1a1a] font-mono placeholder:text-[#a89a7d] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/15 transition uppercase"
                     />
                   </div>
                 ) : (
@@ -271,11 +273,11 @@ export default function Profile() {
                 )}
               </div>
               <div>
-                <label className="text-[10px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1.5 block">{t('profilePage.passportExpiry')}</label>
+                <label className="text-[10px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">{t('profilePage.passportExpiry')}</label>
                 {editing ? (
                   <input type="date" value={form.passportExpiry} onChange={e => f('passportExpiry', e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full bg-[#f8f9fa] border-2 border-[#e7e7e7] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/15 transition"
+                    className="w-full bg-[#f6f1e4] border-2 border-[#e6dcc3] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/15 transition"
                   />
                 ) : (
                   <p className="text-sm text-[#1a1a1a] font-semibold py-3">
@@ -287,29 +289,29 @@ export default function Profile() {
 
             {!editing && !form.passportNumber && (
               <button onClick={() => setEditing(true)}
-                className="mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-[#d0d0d0] text-[#9ca3af] text-[11px] font-bold hover:border-[#0071c2] hover:text-[#0071c2] transition">
+                className="mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-[#d0d0d0] text-[#93876f] text-[11px] font-bold hover:border-[#0071c2] hover:text-[#0071c2] transition">
                 <CreditCard className="w-4 h-4" /> {t('profilePage.addPassport')}
               </button>
             )}
           </div>
 
           {/* ── Booking History ── */}
-          <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft hover:shadow-float transition">
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#9ca3af] mb-5 flex items-center gap-2">
+          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft hover:shadow-float transition">
+            <h2 className="text-sm font-black uppercase tracking-widest text-[#93876f] mb-5 flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-[#f5b942]" /> {t('profilePage.recentBookings')}
             </h2>
             {bookings.length === 0 ? (
-              <p className="text-[#9ca3af] text-sm text-center py-6 font-medium">{t('profilePage.noBookings')}</p>
+              <p className="text-[#93876f] text-sm text-center py-6 font-medium">{t('profilePage.noBookings')}</p>
             ) : (
               <div className="flex flex-col gap-1">
                 {[...bookings].slice(0, 5).map(b => (
-                  <div key={b.id} className="flex items-center justify-between py-3 border-b border-[#f0f0f0] last:border-0">
+                  <div key={b.id} className="flex items-center justify-between py-3 border-b border-[#efe6d2] last:border-0">
                     <div>
                       <p className="text-sm font-bold text-[#1a1a1a]">{b.itemName}</p>
-                      <p className="text-xs text-[#9ca3af]">{b.date ? new Date(b.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}</p>
+                      <p className="text-xs text-[#93876f]">{b.date ? new Date(b.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-black text-[#1a1a1a]">${b.total?.toLocaleString()}</p>
+                      <p className="text-sm font-black text-[#1a1a1a]">{fmt(b.total)}</p>
                       <span className={`text-[10px] font-black ${b.status === 'confirmed' ? 'text-[#008009]' : b.status === 'cancelled' ? 'text-red-500' : 'text-[#a45e00]'}`}>
                         {b.status}
                       </span>

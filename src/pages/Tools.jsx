@@ -51,7 +51,7 @@ const fmtMoney = (n) => {
 
 const CurrencySelect = ({ value, onChange }) => (
   <select value={value} onChange={e => onChange(e.target.value)}
-    className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition-premium">
+    className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition-premium">
     {CURRENCIES.map(c => (
       <option key={c.code} value={c.code}>{c.flag} {c.code} — {c.name}</option>
     ))}
@@ -94,7 +94,7 @@ function CurrencyConverter() {
   const swap = () => { setFrom(to); setTo(from); };
 
   return (
-    <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft lift">
+    <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft lift">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
           <RefreshCw className="w-5 h-5 text-[#0071c2]" />
@@ -111,13 +111,13 @@ function CurrencyConverter() {
           {status === 'live' ? t('toolsPage.converter.statusLive') : status === 'loading' ? t('toolsPage.converter.statusLoading') : t('toolsPage.converter.statusOffline')}
         </span>
       </div>
-      <p className="text-[12px] text-[#9ca3af] mb-4">{t('toolsPage.converter.sub')}</p>
+      <p className="text-[12px] text-[#93876f] mb-4">{t('toolsPage.converter.sub')}</p>
 
       <label className="block mb-3">
         <span className="text-[12px] font-bold text-[#1a1a1a] mb-1.5 block">{t('toolsPage.converter.amount')}</span>
         <input type="number" min="0" value={amount}
           onChange={e => setAmount(Math.max(0, Number(e.target.value)))}
-          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
+          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
       </label>
 
       <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2">
@@ -162,20 +162,20 @@ function TipCalculator() {
   const perHead  = total / Math.max(1, people);
 
   return (
-    <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft lift">
+    <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft lift">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
           <Receipt className="w-5 h-5 text-[#0071c2]" />
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.tip.title')}</h2>
       </div>
-      <p className="text-[12px] text-[#9ca3af] mb-4">{t('toolsPage.tip.sub')}</p>
+      <p className="text-[12px] text-[#93876f] mb-4">{t('toolsPage.tip.sub')}</p>
 
       <label className="block mb-3">
         <span className="text-[12px] font-bold text-[#1a1a1a] mb-1.5 block">{t('toolsPage.tip.bill')}</span>
         <input type="number" min="0" value={bill}
           onChange={e => setBill(Math.max(0, Number(e.target.value)))}
-          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
+          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
       </label>
 
       <span className="text-[12px] font-bold text-[#1a1a1a] mb-1.5 block">{t('toolsPage.tip.tipLabel')}</span>
@@ -183,14 +183,14 @@ function TipCalculator() {
         {[0, 5, 10, 15, 20].map(p => (
           <button key={p} onClick={() => setPct(p)}
             className={`px-3.5 py-1.5 rounded-lg text-[12px] font-black border transition-premium ${
-              pct === p ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#595959] border-[#e7e7e7] hover:border-[#0071c2] hover:text-[#003580]'
+              pct === p ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#003580]'
             }`}>{p}%</button>
         ))}
-        <div className="flex items-center gap-1 px-2 rounded-lg border border-[#e7e7e7] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/10 transition-premium">
+        <div className="flex items-center gap-1 px-2 rounded-lg border border-[#e6dcc3] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/10 transition-premium">
           <input type="number" min="0" max="100" value={pct}
             onChange={e => setPct(Math.min(100, Math.max(0, Number(e.target.value))))}
             className="w-12 text-[12px] font-black text-[#1a1a1a] outline-none py-1.5" />
-          <span className="text-[12px] font-bold text-[#9ca3af]">%</span>
+          <span className="text-[12px] font-bold text-[#93876f]">%</span>
         </div>
       </div>
 
@@ -200,20 +200,20 @@ function TipCalculator() {
         </span>
         <div className="flex items-center gap-3">
           <button onClick={() => setPeople(v => Math.max(1, v - 1))}
-            className="w-8 h-8 rounded-lg border border-[#e7e7e7] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
-            <Minus className="w-4 h-4 text-[#595959]" />
+            className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
+            <Minus className="w-4 h-4 text-[#5c5245]" />
           </button>
           <span className="text-[15px] font-black text-[#1a1a1a] w-6 text-center tabular-nums">{people}</span>
           <button onClick={() => setPeople(v => Math.min(50, v + 1))}
-            className="w-8 h-8 rounded-lg border border-[#e7e7e7] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
-            <Plus className="w-4 h-4 text-[#595959]" />
+            className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
+            <Plus className="w-4 h-4 text-[#5c5245]" />
           </button>
         </div>
       </div>
 
-      <div className="space-y-1.5 bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl p-4">
-        <div className="flex justify-between text-[13px]"><span className="text-[#595959]">{t('toolsPage.tip.tipRow')}</span><span className="font-black text-[#1a1a1a]">{fmtMoney(tip)}</span></div>
-        <div className="flex justify-between text-[13px]"><span className="text-[#595959]">{t('toolsPage.tip.totalRow')}</span><span className="font-black text-[#1a1a1a]">{fmtMoney(total)}</span></div>
+      <div className="space-y-1.5 bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-4">
+        <div className="flex justify-between text-[13px]"><span className="text-[#5c5245]">{t('toolsPage.tip.tipRow')}</span><span className="font-black text-[#1a1a1a]">{fmtMoney(tip)}</span></div>
+        <div className="flex justify-between text-[13px]"><span className="text-[#5c5245]">{t('toolsPage.tip.totalRow')}</span><span className="font-black text-[#1a1a1a]">{fmtMoney(total)}</span></div>
         <div className="hairline my-1" />
         <div className="flex justify-between text-[14px]">
           <span className="font-black text-[#003580]">{t('toolsPage.tip.perHead')}</span>
@@ -246,22 +246,22 @@ function WorldClock() {
   };
 
   return (
-    <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft lift">
+    <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft lift">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
           <Clock className="w-5 h-5 text-[#0071c2]" />
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.clock.title')}</h2>
       </div>
-      <p className="text-[12px] text-[#9ca3af] mb-4">{t('toolsPage.clock.sub')}</p>
+      <p className="text-[12px] text-[#93876f] mb-4">{t('toolsPage.clock.sub')}</p>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3">
         {CLOCK_CITIES.map(c => (
-          <div key={c.city} className="bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl p-3 text-center hover:border-[#0071c2]/40 hover:bg-white transition-premium">
+          <div key={c.city} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3 text-center hover:border-[#0071c2]/40 hover:bg-white transition-premium">
             <div className="text-[18px] leading-none mb-1">{c.flag}</div>
-            <div className="text-[12px] font-bold text-[#595959]">{c.city}</div>
+            <div className="text-[12px] font-bold text-[#5c5245]">{c.city}</div>
             <div className="text-[20px] font-black text-gradient leading-tight tabular-nums">{timeIn(c.tz)}</div>
-            <div className="text-[10px] text-[#9ca3af]">{dayIn(c.tz)}</div>
+            <div className="text-[10px] text-[#93876f]">{dayIn(c.tz)}</div>
           </div>
         ))}
       </div>
@@ -296,38 +296,38 @@ function UnitConverter() {
   };
 
   return (
-    <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft lift">
+    <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft lift">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
           <Ruler className="w-5 h-5 text-[#0071c2]" />
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.units.title')}</h2>
       </div>
-      <p className="text-[12px] text-[#9ca3af] mb-4">{t('toolsPage.units.sub')}</p>
+      <p className="text-[12px] text-[#93876f] mb-4">{t('toolsPage.units.sub')}</p>
 
       <div className="flex flex-wrap gap-1.5 mb-4">
         {UNIT_CATS.map(u => (
           <button key={u.key} onClick={() => pickCat(u.key)}
             className={`px-3.5 py-1.5 rounded-lg text-[12px] font-black border transition-premium ${
-              cat === u.key ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#595959] border-[#e7e7e7] hover:border-[#0071c2] hover:text-[#003580]'
+              cat === u.key ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#003580]'
             }`}>{u.emoji} {t(`toolsPage.units.${u.labelKey}`)}</button>
         ))}
       </div>
 
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
         <div>
-          <span className="text-[11px] font-bold text-[#9ca3af] mb-1 block">{fromU}</span>
+          <span className="text-[11px] font-bold text-[#93876f] mb-1 block">{fromU}</span>
           <input type="number" value={val}
             onChange={e => setVal(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e7e7e7] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
+            className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
         </div>
         <button onClick={() => setDir(d => !d)} title={t('toolsPage.units.flipTitle')}
           className="w-10 h-[42px] mt-5 rounded-xl bg-[#003580] text-white flex items-center justify-center hover:bg-[#0071c2] transition-premium active:scale-90 shadow-soft hover:shadow-float">
           <ArrowLeftRight className="w-4 h-4" />
         </button>
         <div>
-          <span className="text-[11px] font-bold text-[#9ca3af] mb-1 block">{toU}</span>
-          <div className="px-3 py-2.5 rounded-xl bg-gradient-to-br from-[#f0f5ff] to-[#f8f9fa] border-2 border-[#0071c2]/15 text-[18px] font-black text-gradient">
+          <span className="text-[11px] font-bold text-[#93876f] mb-1 block">{toU}</span>
+          <div className="px-3 py-2.5 rounded-xl bg-gradient-to-br from-[#f0f5ff] to-[#f6f1e4] border-2 border-[#0071c2]/15 text-[18px] font-black text-gradient">
             {result.toFixed(1)}
           </div>
         </div>
@@ -357,14 +357,14 @@ function Phrasebook() {
   };
 
   return (
-    <div className="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-soft">
+    <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
           <Languages className="w-5 h-5 text-[#0071c2]" />
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.phrasebook.title')}</h2>
       </div>
-      <p className="text-[12px] text-[#9ca3af] mb-4">
+      <p className="text-[12px] text-[#93876f] mb-4">
         {canSpeak ? t('toolsPage.phrasebook.subWithSpeak') : t('toolsPage.phrasebook.subNoSpeak')}
       </p>
 
@@ -372,7 +372,7 @@ function Phrasebook() {
         {LANGUAGES.map(l => (
           <button key={l.code} onClick={() => setCode(l.code)}
             className={`px-3.5 py-1.5 rounded-lg text-[12px] font-bold border transition-premium ${
-              code === l.code ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#595959] border-[#e7e7e7] hover:border-[#0071c2] hover:text-[#003580]'
+              code === l.code ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#003580]'
             }`}>{l.flag} {l.name}</button>
         ))}
       </div>
@@ -382,15 +382,15 @@ function Phrasebook() {
           const entry = lang.phrases[p.key];
           if (!entry) return null;
           return (
-            <div key={p.key} className="bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl p-3.5 flex items-start gap-2 hover:border-[#0071c2]/40 hover:bg-white hover:shadow-soft transition-premium">
+            <div key={p.key} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3.5 flex items-start gap-2 hover:border-[#0071c2]/40 hover:bg-white hover:shadow-soft transition-premium">
               <div className="flex-1 min-w-0">
-                <p className="text-[11px] text-[#9ca3af] font-medium mb-0.5">{p.ru}</p>
+                <p className="text-[11px] text-[#93876f] font-medium mb-0.5">{p.ru}</p>
                 <p className="text-[15px] font-black text-[#1a1a1a] leading-tight">{entry[0]}</p>
                 <p className="text-[12px] text-[#0071c2] font-semibold italic">[{entry[1]}]</p>
               </div>
               {canSpeak && (
                 <button onClick={() => speak(entry[0])} title={t('toolsPage.phrasebook.listen')}
-                  className="w-8 h-8 rounded-lg bg-white border border-[#e7e7e7] flex items-center justify-center text-[#0071c2] hover:bg-[#003580] hover:text-white hover:border-[#003580] transition-premium shrink-0 active:scale-90">
+                  className="w-8 h-8 rounded-lg bg-white border border-[#e6dcc3] flex items-center justify-center text-[#0071c2] hover:bg-[#003580] hover:text-white hover:border-[#003580] transition-premium shrink-0 active:scale-90">
                   <Volume2 className="w-4 h-4" />
                 </button>
               )}
@@ -412,7 +412,7 @@ export default function Tools() {
   });
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen">
+    <div className="bg-[#faf6ed] min-h-screen">
       {/* Hero */}
       <section className="relative bg-[#002250] text-white overflow-hidden">
         <div className="absolute inset-0 opacity-30 pointer-events-none animate-float"

@@ -9,8 +9,7 @@ import { heroFor } from '../utils/destinationImages';
 import SmartImage from '../components/SmartImage';
 import useSEO from '../hooks/useSEO';
 import { useTranslation } from '../store/useLangStore';
-
-const usd = (n) => '$' + Number(n || 0).toLocaleString();
+import { usePriceFormatter } from '../components/Price';
 
 /* Region values keep their original data strings (used for filtering the data
  * lists); `tKey` maps each to a translated display label. */
@@ -37,6 +36,7 @@ const VIBES = [
 function DestinationCard({ dest, days, budget }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const usd = usePriceFormatter();
 
   const handlePlan = () => {
     navigate('/planner', {
@@ -56,7 +56,7 @@ function DestinationCard({ dest, days, budget }) {
 
   return (
     <div className={`group bg-white border rounded-2xl overflow-hidden flex flex-col lift shadow-soft ${
-      dest.fits ? 'border-green-200' : 'border-[#e7e7e7] opacity-80 hover:opacity-100'
+      dest.fits ? 'border-green-200' : 'border-[#e6dcc3] opacity-80 hover:opacity-100'
     }`}>
       <div className="relative">
         <SmartImage src={heroFor(dest.city)} alt={dest.city} aspect="aspect-[16/10]" />
@@ -76,7 +76,7 @@ function DestinationCard({ dest, days, budget }) {
       </div>
 
       <div className="p-4 flex flex-col flex-1">
-        <p className="text-[12px] text-[#595959] leading-snug mb-3">{dest.blurb}</p>
+        <p className="text-[12px] text-[#5c5245] leading-snug mb-3">{dest.blurb}</p>
 
         <div className="flex flex-wrap gap-1.5 mb-3">
           {dest.tags.map(tag => (
@@ -85,7 +85,7 @@ function DestinationCard({ dest, days, budget }) {
         </div>
 
         {/* Cost breakdown */}
-        <div className="bg-[#f8f9fa] border border-[#e7e7e7] rounded-xl p-3 mb-3 text-[11px] font-bold text-[#595959]">
+        <div className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3 mb-3 text-[11px] font-bold text-[#5c5245]">
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-1.5"><Plane className="w-3 h-3 text-[#0071c2]" /> {t('whereToGo.card.flight')}</span>
             <span>{usd(dest.flight)}</span>
@@ -112,6 +112,7 @@ function DestinationCard({ dest, days, budget }) {
 
 export default function WhereToGo() {
   const { t } = useTranslation();
+  const usd = usePriceFormatter();
   const [budget, setBudget] = useState(1500);
   const [days, setDays]     = useState(7);
   const [region, setRegion] = useState(null);
@@ -138,7 +139,7 @@ export default function WhereToGo() {
   const filtersActive = region || vibe;
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen">
+    <div className="bg-[#faf6ed] min-h-screen">
 
       {/* Hero + search */}
       <section className="relative bg-[#002250] text-white overflow-hidden">
@@ -162,8 +163,8 @@ export default function WhereToGo() {
               <span className="flex items-center gap-1.5 text-[12px] font-black text-[#1a1a1a] mb-1.5">
                 <Wallet className="w-3.5 h-3.5 text-[#0071c2]" /> {t('whereToGo.hero.budgetLabel')}
               </span>
-              <div className="flex items-center gap-2 px-3.5 py-3 rounded-xl border-2 border-[#e7e7e7] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/10 transition-premium">
-                <span className="text-[16px] font-black text-[#595959]">$</span>
+              <div className="flex items-center gap-2 px-3.5 py-3 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/10 transition-premium">
+                <span className="text-[16px] font-black text-[#5c5245]">$</span>
                 <input type="number" min="0" step="100" value={budget}
                   onChange={e => setBudget(Math.max(0, Number(e.target.value)))}
                   className="flex-1 w-full text-[16px] font-black text-[#1a1a1a] outline-none" />
@@ -176,18 +177,18 @@ export default function WhereToGo() {
               </span>
               <div className="flex items-center gap-2">
                 <button onClick={() => setDays(v => Math.max(1, v - 1))}
-                  className="w-10 h-[46px] rounded-xl border-2 border-[#e7e7e7] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
-                  <Minus className="w-4 h-4 text-[#595959]" />
+                  className="w-10 h-[46px] rounded-xl border-2 border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
+                  <Minus className="w-4 h-4 text-[#5c5245]" />
                 </button>
                 <span className="text-[16px] font-black text-[#1a1a1a] w-8 text-center tabular-nums">{days}</span>
                 <button onClick={() => setDays(v => Math.min(30, v + 1))}
-                  className="w-10 h-[46px] rounded-xl border-2 border-[#e7e7e7] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
-                  <Plus className="w-4 h-4 text-[#595959]" />
+                  className="w-10 h-[46px] rounded-xl border-2 border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
+                  <Plus className="w-4 h-4 text-[#5c5245]" />
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 px-3.5 py-3 rounded-xl bg-[#f8f9fa] border border-[#e7e7e7] text-[12px] font-bold text-[#595959]">
+            <div className="flex items-center gap-1.5 px-3.5 py-3 rounded-xl bg-[#f6f1e4] border border-[#e6dcc3] text-[12px] font-bold text-[#5c5245]">
               <Plane className="w-3.5 h-3.5 text-[#0071c2] rotate-45" /> {t('whereToGo.hero.fromPrefix')} {ORIGIN.city} ({ORIGIN.code})
             </div>
           </div>
@@ -205,7 +206,7 @@ export default function WhereToGo() {
                 className={`px-3.5 py-1.5 rounded-full text-[12px] font-bold border transition-premium ${
                   vibe === v.key
                     ? 'bg-[#003580] text-white border-[#003580] shadow-float'
-                    : 'bg-white text-[#595959] border-[#e7e7e7] hover:border-[#0071c2] hover:text-[#003580] shadow-soft'
+                    : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#003580] shadow-soft'
                 }`}>
                 {v.emoji} {t(`whereToGo.vibes.${v.key}`)}
               </button>
@@ -217,7 +218,7 @@ export default function WhereToGo() {
                 className={`px-3.5 py-1.5 rounded-full text-[11px] font-bold border transition-premium ${
                   region === r.value
                     ? 'bg-[#0071c2] text-white border-[#0071c2] shadow-float'
-                    : 'bg-white text-[#9ca3af] border-[#e7e7e7] hover:border-[#0071c2] hover:text-[#0071c2]'
+                    : 'bg-white text-[#93876f] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#0071c2]'
                 }`}>
                 {t(`whereToGo.regions.${r.tKey}`)}
               </button>
@@ -237,7 +238,7 @@ export default function WhereToGo() {
               ? `${affordable.length} ${affordable.length === 1 ? t('whereToGo.results.headingOne') : t('whereToGo.results.headingMany')}`
               : t('whereToGo.results.headingNone')}
           </h2>
-          <span className="text-[13px] text-[#9ca3af] font-medium">· {budget ? usd(budget) : '—'} · {days} {t('whereToGo.results.daysSuffix')}</span>
+          <span className="text-[13px] text-[#93876f] font-medium">· {budget ? usd(budget) : '—'} · {days} {t('whereToGo.results.daysSuffix')}</span>
         </div>
 
         {affordable.length > 0 ? (
@@ -249,12 +250,12 @@ export default function WhereToGo() {
             ))}
           </div>
         ) : (
-          <div className="bg-white border border-[#e7e7e7] rounded-2xl p-10 text-center mb-8 shadow-soft">
+          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-10 text-center mb-8 shadow-soft">
             <div className="w-16 h-16 rounded-2xl bg-[#f0f5ff] flex items-center justify-center mx-auto mb-4">
               <Compass className="w-8 h-8 text-[#0071c2] animate-float" />
             </div>
             <p className="text-[15px] font-black text-[#1a1a1a] mb-1">{t('whereToGo.results.emptyTitle')}</p>
-            <p className="text-[13px] text-[#9ca3af]">{t('whereToGo.results.emptySub')}</p>
+            <p className="text-[13px] text-[#93876f]">{t('whereToGo.results.emptySub')}</p>
           </div>
         )}
 
@@ -262,7 +263,7 @@ export default function WhereToGo() {
         {nearMiss.length > 0 && (
           <>
             <h2 className="text-[18px] font-black text-[#1a1a1a] mt-10 mb-1">{t('whereToGo.results.nearMissTitle')}</h2>
-            <p className="text-[13px] text-[#9ca3af] mb-5">{t('whereToGo.results.nearMissSub')}</p>
+            <p className="text-[13px] text-[#93876f] mb-5">{t('whereToGo.results.nearMissSub')}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {nearMiss.map((dest, i) => (
                 <div key={dest.city} className="page-fade" style={{ animationDelay: `${Math.min(i, 8) * 0.05}s` }}>
@@ -273,7 +274,7 @@ export default function WhereToGo() {
           </>
         )}
 
-        <p className="flex items-center gap-1.5 text-[11px] text-[#9ca3af] mt-8">
+        <p className="flex items-center gap-1.5 text-[11px] text-[#93876f] mt-8">
           <CheckCircle2 className="w-3.5 h-3.5" />
           {t('whereToGo.results.disclaimer')}
         </p>

@@ -16,7 +16,7 @@ export default {
       // Header
       back: 'Back',
       freeBadge: 'Your trip plan · 100% free',
-      heroSub: 'A full day-by-day plan for ${total} — places to visit, where to eat, how to get around.',
+      heroSub: 'A full day-by-day plan for {total} — places to visit, where to eat, how to get around.',
       // Summary card
       sectionLabel: 'Travel Plan',
       routeMapLabel: 'Your route on the map',
@@ -30,12 +30,12 @@ export default {
       // Hero card meta
       categoryStandard: 'standard',
       // Includes
-      whatsCovered: "What's covered in your ${total}",
+      whatsCovered: "What's covered in your {total}",
       // Hotel card
       yourStay: 'Your stay',
       navigate: 'Navigate',
       // Budget
-      whereMoneyGoes: 'Where your ${total} goes',
+      whereMoneyGoes: 'Where your {total} goes',
       stat: {
         flight: 'Flights',
         accommodation: 'Stay',
@@ -53,11 +53,11 @@ export default {
       genericError: 'Could not build the detailed plan right now. Please try again.',
       retry: 'Retry',
       spendingPlan: 'Spending plan',
-      buffer: '✓ ${amount} buffer',
+      buffer: '✓ {amount} buffer',
       day: 'Day',
       dayLabel: '📅 Day {day}',
       dayMap: 'Day map',
-      estCost: 'est. ${cost}',
+      estCost: 'est. {cost}',
       location: 'Location:',
       cost: 'Cost:',
       free: 'Free',
@@ -150,7 +150,7 @@ export default {
         planTag: 'Plan',
         deletePlan: 'Delete plan',
         daysValue: '{days} days',
-        budgetValue: '${budget} budget',
+        budgetValue: '{budget} budget',
         planCost: 'Plan cost',
         openToView: 'Open to view',
         downloadPdf: 'Download PDF',
@@ -193,7 +193,7 @@ export default {
       // Header
       back: 'Orqaga',
       freeBadge: 'Sayohat rejangiz · 100% bepul',
-      heroSub: '${total} uchun to‘liq kunma-kun reja — qayerga borish, qayerda ovqatlanish va qanday yurish.',
+      heroSub: '{total} uchun to‘liq kunma-kun reja — qayerga borish, qayerda ovqatlanish va qanday yurish.',
       // Summary card
       sectionLabel: 'Sayohat rejasi',
       routeMapLabel: 'Marshrutingiz xaritada',
@@ -207,12 +207,12 @@ export default {
       // Hero card meta
       categoryStandard: 'standart',
       // Includes
-      whatsCovered: '${total} ichida nimalar bor',
+      whatsCovered: '{total} ichida nimalar bor',
       // Hotel card
       yourStay: 'Yashash joyingiz',
       navigate: 'Yo‘nalish',
       // Budget
-      whereMoneyGoes: '${total} qayerga sarflanadi',
+      whereMoneyGoes: '{total} qayerga sarflanadi',
       stat: {
         flight: 'Aviachiptalar',
         accommodation: 'Yashash',
@@ -230,11 +230,11 @@ export default {
       genericError: 'Hozircha batafsil rejani tuza olmadik. Iltimos, qayta urinib ko‘ring.',
       retry: 'Qayta urinish',
       spendingPlan: 'Xarajatlar rejasi',
-      buffer: '✓ ${amount} zaxira',
+      buffer: '✓ {amount} zaxira',
       day: 'Kun',
       dayLabel: '📅 {day}-kun',
       dayMap: 'Kun xaritasi',
-      estCost: 'taxm. ${cost}',
+      estCost: 'taxm. {cost}',
       location: 'Manzil:',
       cost: 'Narxi:',
       free: 'Bepul',
@@ -327,7 +327,7 @@ export default {
         planTag: 'Reja',
         deletePlan: 'Rejani o‘chirish',
         daysValue: '{days} kun',
-        budgetValue: '${budget} byudjet',
+        budgetValue: '{budget} byudjet',
         planCost: 'Reja narxi',
         openToView: 'Ko‘rish uchun oching',
         downloadPdf: 'PDF yuklab olish',

@@ -16,15 +16,15 @@ const BUDGET_TIERS = [
 
 const Field = ({ label, icon: Icon, children }) => (
   <div>
-    <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] block mb-1.5">{label}</label>
+    <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] block mb-1.5">{label}</label>
     <div className="relative">
-      <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af] pointer-events-none" />
+      <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#93876f] pointer-events-none" />
       {children}
     </div>
   </div>
 );
 
-const inputCls = "w-full bg-white border border-[#e7e7e7] rounded-xl pl-10 pr-4 py-3 text-[14px] text-[#1a1a1a] placeholder:text-[#c9d1d9] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 transition-premium";
+const inputCls = "w-full bg-white border border-[#e6dcc3] rounded-xl pl-10 pr-4 py-3 text-[14px] text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 transition-premium";
 
 /* ── Destination Preview Card ─────────────────────────────────────────────── */
 const DestPreview = ({ destination }) => {
@@ -34,7 +34,7 @@ const DestPreview = ({ destination }) => {
   const hero = entry.hero;
 
   return (
-    <div className="mt-2 rounded-xl overflow-hidden border border-[#e7e7e7] shadow-soft page-fade">
+    <div className="mt-2 rounded-xl overflow-hidden border border-[#e6dcc3] shadow-soft page-fade">
       {/* Mini hero */}
       <div className="relative h-20 w-full">
         <img src={hero} alt={entry.country} className="w-full h-full object-cover" />
@@ -74,11 +74,11 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-white border border-[#e7e7e7] rounded-2xl p-6 md:p-8 shadow-lift"
+      className="bg-white border border-[#e6dcc3] rounded-2xl p-6 md:p-8 shadow-lift"
     >
       {/* ── Route: From → To ── */}
       <div className="mb-5">
-        <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] block mb-2">{t('plannerPage.form.route')}</label>
+        <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] block mb-2">{t('plannerPage.form.route')}</label>
         <div className="flex items-center gap-2">
           <CityAutocomplete
             className="flex-1"
@@ -89,9 +89,9 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
             onChange={(val) => onChange({ ...formData, fromCity: val })}
           />
           <div className="flex flex-col items-center gap-0.5 px-1 shrink-0">
-            <div className="w-5 h-px bg-[#c9d1d9]" />
-            <span className="text-[11px] text-[#9ca3af] font-black">✈</span>
-            <div className="w-5 h-px bg-[#c9d1d9]" />
+            <div className="w-5 h-px bg-[#d9c9a3]" />
+            <span className="text-[11px] text-[#93876f] font-black">✈</span>
+            <div className="w-5 h-px bg-[#d9c9a3]" />
           </div>
           <CityAutocomplete
             className="flex-1"
@@ -159,7 +159,7 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
 
         {/* Budget tiers + input — full width */}
         <div className="sm:col-span-2">
-          <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] block mb-2">
+          <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] block mb-2">
             {t('plannerPage.form.budgetLevel')}
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-3">
@@ -173,11 +173,11 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
                   className={`flex flex-col items-center gap-1 px-2 py-3 rounded-xl border text-center transition-premium ${
                     active
                       ? 'bg-[#003580] border-[#003580] text-white shadow-float -translate-y-0.5'
-                      : 'bg-white border-[#e7e7e7] text-[#595959] hover:border-[#0071c2] hover:text-[#003580] hover:-translate-y-0.5 hover:shadow-soft'
+                      : 'bg-white border-[#e6dcc3] text-[#5c5245] hover:border-[#0071c2] hover:text-[#003580] hover:-translate-y-0.5 hover:shadow-soft'
                   }`}
                 >
                   <span className="text-[13px] font-black leading-tight">{t(`plannerPage.form.tiers.${tier.labelKey}`)}</span>
-                  <span className={`text-[10px] leading-tight ${active ? 'text-white/70' : 'text-[#9ca3af]'}`}>
+                  <span className={`text-[10px] leading-tight ${active ? 'text-white/70' : 'text-[#93876f]'}`}>
                     ~${tier.budget.toLocaleString()}
                   </span>
                 </button>

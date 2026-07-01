@@ -103,16 +103,16 @@ export default function NotificationWidget() {
       {/* Deal Toast */}
       {toast && (
         <div className="fixed top-6 right-4 z-[200] w-80 animate-slide-in-right">
-          <div className="bg-white border border-[#e7e7e7] rounded-2xl p-4 shadow-2xl flex items-start gap-3">
+          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-4 shadow-2xl flex items-start gap-3">
             <div className="text-2xl shrink-0">{toast.icon}</div>
             <div className="flex-1">
               <p className="text-sm font-black text-[#1a1a1a] mb-0.5">{toast.title}</p>
-              <p className="text-xs text-[#595959]">{toast.body}</p>
+              <p className="text-xs text-[#5c5245]">{toast.body}</p>
               <span className="inline-block mt-2 text-[9px] font-black px-2 py-0.5 rounded-full bg-[#0071c2]/10 text-[#0071c2] uppercase tracking-widest">
                 {toast.tag}
               </span>
             </div>
-            <button onClick={() => setToast(null)} className="text-[#c9d1d9] hover:text-[#595959] mt-0.5">
+            <button onClick={() => setToast(null)} className="text-[#d9c9a3] hover:text-[#5c5245] mt-0.5">
               <X className="w-4 h-4" />
             </button>
           </div>

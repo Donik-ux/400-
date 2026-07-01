@@ -10,10 +10,10 @@ export default {
       },
       hero: {
         badge: 'AI-powered · 10k+ travelers · 4.9 ★',
-        titleLead: 'Find your next',
-        titleHighlight: 'escape',
-        titleTail: 'flight or hot tour.',
-        subtitle: 'Search and compare flights, packages and AI-built trip plans — from Dubai to the Maldives in two clicks.',
+        titleLead: 'Your next unforgettable',
+        titleHighlight: 'journey',
+        titleTail: 'planned by MAFTRAVEL AI.',
+        subtitle: 'Compare flights and tours, or let our AI build your itinerary — from Dubai to the Maldives in two clicks.',
       },
       tabs: {
         tours: 'Tours',
@@ -22,6 +22,13 @@ export default {
         ai: 'AI Trip',
         cars: 'Cars',
         newBadge: 'New',
+        services: 'Services',
+      },
+      servicesDrawer: {
+        eyebrow: 'More on MAFTRAVEL',
+        heading: 'Travel Services',
+        sub: 'Everything else you need for the trip, in one place.',
+        cta: 'See all services',
       },
       search: {
         from: 'From',
@@ -175,10 +182,10 @@ export default {
       },
       hero: {
         badge: 'Sun’iy intellekt asosida · 10k+ sayohatchi · 4.9 ★',
-        titleLead: 'Keyingi',
-        titleHighlight: 'dam olishingizni',
-        titleTail: 'aviareys yoki qaynoq turni toping.',
-        subtitle: 'Aviareyslar, paketlar va sun’iy intellekt tuzgan sayohat rejalarini qidiring va solishtiring — Dubaydan Maldivgacha ikki bosishda.',
+        titleLead: 'Sizning navbatdagi unutilmas',
+        titleHighlight: 'sayohatingiz',
+        titleTail: 'MAFTRAVEL sun’iy intellekti bilan rejalashtiriladi.',
+        subtitle: 'Aviachiptalar va turlarni solishtiring yoki marshrutingizni sun’iy intellektimizga tuzdiring — Dubaydan Maldivgacha ikki bosishda.',
       },
       tabs: {
         tours: 'Turlar',
@@ -187,6 +194,13 @@ export default {
         ai: 'AI sayohat',
         cars: 'Avtomobillar',
         newBadge: 'Yangi',
+        services: 'Xizmatlar',
+      },
+      servicesDrawer: {
+        eyebrow: 'MAFTRAVEL’da yana',
+        heading: 'Sayohat xizmatlari',
+        sub: 'Sayohat uchun kerak bo‘lgan qolgan hamma narsa, bir joyda.',
+        cta: 'Barcha xizmatlarni ko‘rish',
       },
       search: {
         from: 'Qayerdan',

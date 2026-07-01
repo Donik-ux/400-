@@ -6,6 +6,7 @@ import useAuthStore  from '../../store/useAuthStore';
 import useWishlistStore from '../../store/useWishlistStore';
 import GlobalSearch from '../UI/GlobalSearch';
 import LanguageSwitcher from '../LanguageSwitcher';
+import CurrencySwitcher from '../CurrencySwitcher';
 
 export default function Navbar() {
   const [scrolled,   setScrolled]   = useState(false);
@@ -64,8 +65,8 @@ export default function Navbar() {
               <Compass className="relative w-[19px] h-[19px] text-[#002250]" strokeWidth={2.5} />
             </div>
             <div className="hidden sm:flex flex-col leading-none">
-              <span className="text-[15px] font-black tracking-tight bg-gradient-to-r from-white to-white/75 bg-clip-text text-transparent">MAFTRAVEL</span>
-              <span className="text-[9px] font-bold text-[#f5b942] tracking-[0.2em] uppercase mt-1">Travel Smarter</span>
+              <span className="text-[19px] font-black tracking-tight bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">MAFTRAVEL</span>
+              <span className="text-[9px] font-bold text-[#f5b942] tracking-[0.22em] uppercase mt-1">{t('footer.brandSub')}</span>
             </div>
           </button>
 
@@ -103,6 +104,11 @@ export default function Navbar() {
                 )}
               </button>
             )}
+
+            {/* Currency */}
+            <div className="hidden md:block">
+              <CurrencySwitcher align="right" />
+            </div>
 
             {/* Language */}
             <div className="hidden md:block">
@@ -212,7 +218,8 @@ export default function Navbar() {
               )}
             </>
           )}
-          <div className="mt-3">
+          <div className="mt-3 flex flex-col gap-2">
+            <CurrencySwitcher align="left" full />
             <LanguageSwitcher align="left" full />
           </div>
           <div className="mt-4 flex flex-col gap-2">

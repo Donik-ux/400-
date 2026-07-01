@@ -41,7 +41,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] grid lg:grid-cols-2">
+    <div className="min-h-screen bg-[#faf6ed] grid lg:grid-cols-2">
 
       {/* Brand panel */}
       <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#003580] via-[#00306f] to-[#002250] p-12 text-white">
@@ -88,9 +88,9 @@ export default function Login() {
           <span className="text-xl font-black text-[#003580]">MAFTRAVEL</span>
         </div>
 
-        <div className="bg-white border border-[#e7e7e7] rounded-2xl p-7 shadow-lift">
+        <div className="bg-white border border-[#e6dcc3] rounded-2xl p-7 shadow-lift">
           <h1 className="text-2xl font-black text-[#1a1a1a] mb-1">{t('auth.login.title')}</h1>
-          <p className="text-[#9ca3af] text-sm mb-6">{t('auth.login.sub')}</p>
+          <p className="text-[#93876f] text-sm mb-6">{t('auth.login.sub')}</p>
 
           {error && (
             <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-5">
@@ -101,33 +101,33 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1.5 block">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">
                 {t('auth.login.email')}
               </label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#c9d1d9]" />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#d9c9a3]" />
                 <input type="email" required value={form.email}
                   onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                   placeholder={t('auth.login.emailPlaceholder')}
-                  className="w-full bg-white border-[1.5px] border-[#e7e7e7] rounded-xl pl-10 pr-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#c9d1d9] focus:outline-none focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/10 transition-all"
+                  className="w-full bg-white border-[1.5px] border-[#e6dcc3] rounded-xl pl-10 pr-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/10 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1.5 block">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">
                 {t('auth.login.password')}
               </label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#c9d1d9]" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#d9c9a3]" />
                 <input type={show ? 'text' : 'password'} required value={form.password}
                   onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
                   placeholder={t('auth.login.passwordPlaceholder')}
-                  className="w-full bg-white border-[1.5px] border-[#e7e7e7] rounded-xl pl-10 pr-10 py-3 text-sm text-[#1a1a1a] placeholder:text-[#c9d1d9] focus:outline-none focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/10 transition-all"
+                  className="w-full bg-white border-[1.5px] border-[#e6dcc3] rounded-xl pl-10 pr-10 py-3 text-sm text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/10 transition-all"
                 />
                 <button type="button" onClick={() => setShow(v => !v)}
                   aria-label={show ? t('auth.login.hidePassword') : t('auth.login.showPassword')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#c9d1d9] hover:text-[#595959] transition-all">
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#d9c9a3] hover:text-[#5c5245] transition-all">
                   {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -143,13 +143,13 @@ export default function Login() {
             </button>
           </form>
 
-          <p className="text-center text-[#9ca3af] text-sm mt-5">
+          <p className="text-center text-[#93876f] text-sm mt-5">
             {t('auth.login.noAccount')}{' '}
             <Link to="/register" className="text-[#0071c2] hover:text-[#003580] font-bold transition-all">{t('auth.login.create')}</Link>
           </p>
 
           <button type="button" onClick={handleGuest}
-            className="w-full mt-3 py-3 rounded-xl border-[1.5px] border-[#e7e7e7] bg-white text-[#1a1a1a] text-[14px] font-bold hover:border-[#0071c2]/40 hover:bg-[#f8f9fa] transition-premium flex items-center justify-center gap-2">
+            className="w-full mt-3 py-3 rounded-xl border-[1.5px] border-[#e6dcc3] bg-white text-[#1a1a1a] text-[14px] font-bold hover:border-[#0071c2]/40 hover:bg-[#f6f1e4] transition-premium flex items-center justify-center gap-2">
             <UserCheck className="w-4 h-4 text-[#0071c2]" />
             {t('auth.login.guest')}
           </button>

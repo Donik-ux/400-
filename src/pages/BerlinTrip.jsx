@@ -9,6 +9,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useTranslation } from '../store/useLangStore';
+import { usePriceFormatter } from '../components/Price';
 
 // Fix leaflet default icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -156,6 +157,7 @@ const ITINERARY = [
 ];
 
 const BudgetBar = ({ label, amount, total, color, icon: Icon }) => {
+  const fmt = usePriceFormatter();
   const pct = total > 0 ? Math.round((amount / total) * 100) : 0;
   return (
     <div className="flex flex-col gap-2">
@@ -165,7 +167,7 @@ const BudgetBar = ({ label, amount, total, color, icon: Icon }) => {
           <span className="text-[11px] font-bold text-white/50 uppercase tracking-[0.12em]">{label}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[12px] font-black text-white">${amount.toLocaleString()}</span>
+          <span className="text-[12px] font-black text-white">{fmt(amount)}</span>
           <span className="text-[10px] text-white/25">{pct}%</span>
         </div>
       </div>
@@ -222,6 +224,7 @@ const DAY_COLOR_HEX = {
 const BerlinTrip = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const fmt = usePriceFormatter();
   const [copyStatus, setCopyStatus]   = useState('');
   const [activeTab, setActiveTab]     = useState('itinerary'); // 'itinerary' | 'map'
   const [filterDay, setFilterDay]     = useState(null);
@@ -490,7 +493,7 @@ const BerlinTrip = () => {
                         <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('berlin.budget')}</div>
                       </div>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-[36px] font-black text-gradient-gold leading-none">${BUDGET.total.toLocaleString()}</span>
+                        <span className="text-[36px] font-black text-gradient-gold leading-none">{fmt(BUDGET.total)}</span>
                         <span className="text-[13px] text-white/30">{t('berlin.estimated')}</span>
                       </div>
                     </div>
@@ -569,7 +572,7 @@ const BerlinTrip = () => {
                 </div>
                 <div>
                   <div className="text-[9px] font-black uppercase tracking-[0.2em] text-white/30">{t('berlin.totalCost')}</div>
-                  <div className="text-[26px] font-black text-gradient-gold leading-tight">~${BUDGET.total.toLocaleString()}</div>
+                  <div className="text-[26px] font-black text-gradient-gold leading-tight">~{fmt(BUDGET.total)}</div>
                 </div>
               </div>
             </div>

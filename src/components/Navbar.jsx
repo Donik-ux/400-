@@ -18,7 +18,7 @@ const Navbar = () => {
                     <span className="text-2xl font-black tracking-tighter text-[#1a1a1a]">
                         MAFTRAVEL
                     </span>
-                    <span className="text-[8px] font-bold text-[#9ca3af] uppercase tracking-widest leading-none">
+                    <span className="text-[8px] font-bold text-[#93876f] uppercase tracking-widest leading-none">
                         {t('footer.brandSub')}
                     </span>
                 </div>
@@ -49,7 +49,7 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 bg-[#f0f5ff] rounded-full p-1 border border-[#eef2f6]">
+                <div className="flex items-center gap-2 bg-[#f0f5ff] rounded-full p-1 border border-[#efe6d2]">
                     {Object.keys(langNames).map((l) => (
                         <button
                             key={l}
@@ -57,7 +57,7 @@ const Navbar = () => {
                             className={`px-3 py-1 rounded-full text-[10px] font-black transition-all ${
                                 lang === l 
                                 ? 'bg-[#0071c2] text-white shadow-md scale-105' 
-                                : 'text-[#9ca3af] hover:text-[#0071c2]'
+                                : 'text-[#93876f] hover:text-[#0071c2]'
                             }`}
                         >
                             {langNames[l]}

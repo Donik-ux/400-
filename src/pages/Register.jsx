@@ -39,10 +39,10 @@ export default function Register() {
     else setError(result.error);
   };
 
-  const inp = 'w-full bg-white border-[1.5px] border-[#e7e7e7] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#c9d1d9] focus:outline-none focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/10 transition-all';
+  const inp = 'w-full bg-white border-[1.5px] border-[#e6dcc3] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/10 transition-all';
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] grid lg:grid-cols-2">
+    <div className="min-h-screen bg-[#faf6ed] grid lg:grid-cols-2">
 
       {/* Brand panel */}
       <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#003580] via-[#00306f] to-[#002250] p-12 text-white">
@@ -89,9 +89,9 @@ export default function Register() {
           <span className="text-xl font-black text-[#003580]">MAFTRAVEL</span>
         </div>
 
-        <div className="bg-white border border-[#e7e7e7] rounded-2xl p-7 shadow-lift">
+        <div className="bg-white border border-[#e6dcc3] rounded-2xl p-7 shadow-lift">
           <h1 className="text-2xl font-black text-[#1a1a1a] mb-1">{t('auth.register.title')}</h1>
-          <p className="text-[#9ca3af] text-sm mb-6">{t('auth.register.sub')}</p>
+          <p className="text-[#93876f] text-sm mb-6">{t('auth.register.sub')}</p>
 
           {error && (
             <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-5">
@@ -102,9 +102,9 @@ export default function Register() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1.5 block">{t('auth.register.name')}</label>
+              <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">{t('auth.register.name')}</label>
               <div className="relative">
-                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#c9d1d9]" />
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#d9c9a3]" />
                 <input type="text" required minLength={2} value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder={t('auth.register.namePlaceholder')}
                   className={`${inp} pl-10`}
@@ -113,9 +113,9 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1.5 block">{t('auth.register.email')}</label>
+              <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">{t('auth.register.email')}</label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#c9d1d9]" />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#d9c9a3]" />
                 <input type="email" required value={form.email}
                   onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder={t('auth.register.emailPlaceholder')}
                   className={`${inp} pl-10`}
@@ -124,25 +124,25 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1.5 block">{t('auth.register.password')}</label>
+              <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">{t('auth.register.password')}</label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#c9d1d9]" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#d9c9a3]" />
                 <input type={show ? 'text' : 'password'} required value={form.password}
                   onChange={e => setForm(f => ({ ...f, password: e.target.value }))} placeholder={t('auth.register.passwordPlaceholder')}
                   className={`${inp} pl-10 pr-10`}
                 />
                 <button type="button" onClick={() => setShow(v => !v)}
                   aria-label={show ? t('auth.register.hidePassword') : t('auth.register.showPassword')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#c9d1d9] hover:text-[#595959] transition-all">
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#d9c9a3] hover:text-[#5c5245] transition-all">
                   {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-widest text-[#9ca3af] mb-1.5 block">{t('auth.register.confirm')}</label>
+              <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">{t('auth.register.confirm')}</label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#c9d1d9]" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#d9c9a3]" />
                 <input type={show ? 'text' : 'password'} required value={form.confirm}
                   onChange={e => setForm(f => ({ ...f, confirm: e.target.value }))} placeholder={t('auth.register.confirmPlaceholder')}
                   className={`${inp} pl-10`}
@@ -154,8 +154,8 @@ export default function Register() {
               <div className="flex flex-col gap-1.5">
                 {rules.map(r => (
                   <div key={r.label} className="flex items-center gap-2">
-                    <CheckCircle2 className={`w-3.5 h-3.5 ${r.ok ? 'text-green-500' : 'text-[#e7e7e7]'}`} />
-                    <span className={`text-xs ${r.ok ? 'text-green-700' : 'text-[#9ca3af]'}`}>{r.label}</span>
+                    <CheckCircle2 className={`w-3.5 h-3.5 ${r.ok ? 'text-green-500' : 'text-[#e6dcc3]'}`} />
+                    <span className={`text-xs ${r.ok ? 'text-green-700' : 'text-[#93876f]'}`}>{r.label}</span>
                   </div>
                 ))}
               </div>
@@ -171,7 +171,7 @@ export default function Register() {
             </button>
           </form>
 
-          <p className="text-center text-[#9ca3af] text-sm mt-5">
+          <p className="text-center text-[#93876f] text-sm mt-5">
             {t('auth.register.hasAccount')}{' '}
             <Link to="/login" className="text-[#0071c2] hover:text-[#003580] font-bold transition-all">{t('auth.register.signIn')}</Link>
           </p>

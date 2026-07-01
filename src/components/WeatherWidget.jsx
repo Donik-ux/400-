@@ -42,7 +42,7 @@ export default function WeatherWidget({ city }) {
 
   if (error) {
     return (
-      <div className="text-[11px] text-[#9ca3af] font-medium px-3 py-2">
+      <div className="text-[11px] text-[#93876f] font-medium px-3 py-2">
         Weather unavailable
       </div>
     );
@@ -50,7 +50,7 @@ export default function WeatherWidget({ city }) {
 
   if (!data) {
     return (
-      <div className="flex items-center gap-2 px-3 py-2 text-[11px] text-[#9ca3af] font-medium">
+      <div className="flex items-center gap-2 px-3 py-2 text-[11px] text-[#93876f] font-medium">
         <Loader2 className="w-3 h-3 animate-spin" /> Loading weather…
       </div>
     );
@@ -67,7 +67,7 @@ export default function WeatherWidget({ city }) {
         <Icon className="w-6 h-6 text-[#0071c2]" />
         <span className="text-[20px] font-black text-[#1a1a1a]">{Math.round(current.temperature)}°C</span>
       </div>
-      <div className="flex items-center gap-3 text-[11px] font-bold text-[#595959]">
+      <div className="flex items-center gap-3 text-[11px] font-bold text-[#5c5245]">
         {daily && daily.time?.slice(1).map((day, i) => (
           <span key={day} className="flex items-center gap-1">
             {new Date(day).toLocaleDateString('en', { weekday: 'short' })}

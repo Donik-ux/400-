@@ -4,6 +4,7 @@ import { useTranslation } from '../../store/useLangStore';
 import FlightBookingModal from '../../components/FlightBookingModal';
 import { officialUrlFor, airlineMetaOf } from '../../services/airlineLinks';
 import { formatFlightDate } from '../../services/flightService';
+import Price from '../../components/Price';
 
 export default function FlightCard({ flight, index, aiPriced }) {
   const { t }   = useTranslation();
@@ -25,7 +26,7 @@ export default function FlightCard({ flight, index, aiPriced }) {
   return (
     <>
       <div
-        className="group relative bg-white border border-[#ececf0] hover:border-[#0071c2]/45 shadow-soft hover:shadow-lift rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5 page-fade"
+        className="group relative bg-white border border-[#e6dcc3] hover:border-[#0071c2]/45 shadow-soft hover:shadow-lift rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5 page-fade"
         style={{ animationDelay: `${(index || 0) * 0.05}s` }}
         onClick={() => setOpen(true)}
       >
@@ -61,7 +62,7 @@ export default function FlightCard({ flight, index, aiPriced }) {
                 </div>
                 <div className="min-w-0">
                   <p className="text-[14px] font-extrabold text-[#1a1a1a] truncate tracking-tight">{flight.airline}</p>
-                  <p className="text-[11px] text-[#9ca3af] font-semibold">{flight.airlineCode} · {flight.cabin}</p>
+                  <p className="text-[11px] text-[#93876f] font-semibold">{flight.airlineCode} · {flight.cabin}</p>
                 </div>
               </div>
             )}
@@ -80,7 +81,7 @@ export default function FlightCard({ flight, index, aiPriced }) {
                     {!nonStop && (
                       <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#f5b942] border-2 border-white shadow-soft" />
                     )}
-                    <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white border border-[#ececf0] shadow-soft flex items-center justify-center">
+                    <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white border border-[#e6dcc3] shadow-soft flex items-center justify-center">
                       <Plane className="w-3 h-3 text-[#0071c2] fill-[#0071c2] -rotate-12" />
                     </span>
                   </div>
@@ -100,12 +101,12 @@ export default function FlightCard({ flight, index, aiPriced }) {
           </div>
 
           {/* ── Right: price + actions (tinted panel) ── */}
-          <div className="lg:w-[218px] shrink-0 bg-gradient-to-b from-[#fafbfc] to-[#f4f6f9] border-t lg:border-t-0 lg:border-l border-[#eef1f5] p-5 lg:p-6 flex flex-row lg:flex-col items-center lg:items-stretch justify-between gap-4">
+          <div className="lg:w-[218px] shrink-0 bg-gradient-to-b from-[#faf6ed] to-[#f6f1e4] border-t lg:border-t-0 lg:border-l border-[#efe6d2] p-5 lg:p-6 flex flex-row lg:flex-col items-center lg:items-stretch justify-between gap-4">
             <div className="text-left lg:text-center">
               <p className="text-[28px] font-extrabold text-gradient leading-none tabular-nums tracking-tight">
-                {!isRealPrice && <span className="text-[#9ca3af] text-[20px] font-bold">≈ </span>}${flight.price}
+                {!isRealPrice && <span className="text-[#93876f] text-[20px] font-bold">≈ </span>}<Price amount={flight.price} />
               </p>
-              <p className="text-[10.5px] text-[#9ca3af] font-bold mt-1.5">
+              <p className="text-[10.5px] text-[#93876f] font-bold mt-1.5">
                 {isRealPrice
                   ? (t('flights.results.perPerson') || 'per person')
                   : `${aiPriced ? '🤖 ' : ''}${t('flightsPage.card.approxPrice') || 'approx · per person'}`}
@@ -143,7 +144,7 @@ export default function FlightCard({ flight, index, aiPriced }) {
             </span>
           )}
           {flight.seats != null && (
-            <span className={`ml-auto text-[11px] font-bold flex items-center gap-1 ${seatsTight ? 'text-[#d92d20]' : 'text-[#9ca3af]'}`}>
+            <span className={`ml-auto text-[11px] font-bold flex items-center gap-1 ${seatsTight ? 'text-[#d92d20]' : 'text-[#93876f]'}`}>
               <Users className="w-3 h-3" />{flight.seats} {seatsTight ? t('flightsPage.card.left') : (t('flights.results.seats') || 'seats')}
             </span>
           )}

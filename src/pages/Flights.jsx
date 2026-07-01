@@ -16,6 +16,7 @@ import { useTranslation } from '../store/useLangStore';
 import useSEO from '../hooks/useSEO';
 import { heroFor } from '../utils/destinationImages';
 import { toast } from '../components/Toast';
+import { usePriceFormatter } from '../components/Price';
 
 /* ── External Booking Sites ── */
 const getBookingSites = (t) => [
@@ -42,6 +43,7 @@ export default function Flights() {
   const { t }      = useTranslation();
   const navigate   = useNavigate();
   const location   = useLocation();
+  const fmt        = usePriceFormatter();
   useSEO({
     title: 'Search Cheap Flights · Compare 6 Airlines',
     description: 'Find cheap flights from Dubai, Abu Dhabi, Doha and Istanbul to the Maldives, Bali, Seychelles, Mauritius and 100+ destinations. Smart filters, real-time prices.',
@@ -143,8 +145,8 @@ export default function Flights() {
         <div className="absolute -right-24 -bottom-12 w-80 h-80 rounded-full bg-[#febb02]/12 blur-3xl pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="max-w-2xl mb-7">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#febb02] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
-              <Plane className="w-3.5 h-3.5" /> {t('flights.badge') || t('flightsPage.hero.badge')}
+            <div className="badge-editorial px-3.5 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.14em] mb-4">
+              <Plane className="w-3.5 h-3.5 text-[#ffd76e]" /> {t('flights.badge') || t('flightsPage.hero.badge')}
             </div>
             <h1 className="font-display text-[40px] md:text-[62px] font-semibold tracking-[-0.03em] leading-[1.0] mb-3 [text-shadow:0_2px_30px_rgba(0,0,0,0.28)]">
               {t('flightsPage.hero.titleLine1')}<br className="hidden md:block" /> <span className="italic font-medium text-gradient-gold">{t('flightsPage.hero.titleLine2')}</span>
@@ -177,13 +179,13 @@ export default function Flights() {
             { icon: Headphones,   t: t('flightsPage.trust.support'),   s: t('flightsPage.trust.supportSub') },
             { icon: ThumbsUp,     t: t('flightsPage.trust.rating'),    s: t('flightsPage.trust.ratingSub') },
           ].map((f, i) => (
-            <div key={i} className="bg-white border border-[#ececf0] rounded-2xl p-4 flex items-center gap-3 hover:border-[#0071c2]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all duration-300">
+            <div key={i} className="bg-white border border-[#e6dcc3] rounded-2xl p-4 flex items-center gap-3 hover:border-[#0071c2]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all duration-300">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f0f5ff] to-[#dceaff] text-[#0071c2] flex items-center justify-center shrink-0 shadow-soft">
                 <f.icon className="w-5 h-5" />
               </div>
               <div className="min-w-0">
                 <div className="text-[13px] font-black text-[#1a1a1a] truncate">{f.t}</div>
-                <div className="text-[11px] font-semibold text-[#9ca3af] truncate">{f.s}</div>
+                <div className="text-[11px] font-semibold text-[#93876f] truncate">{f.s}</div>
               </div>
             </div>
           ))}
@@ -197,7 +199,7 @@ export default function Flights() {
           <div className="mt-2 space-y-3">
             <div className="h-6 w-48 rounded-md shimmer mb-3" />
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="bg-white border border-[#e7e7e7] shadow-soft rounded-2xl p-5">
+              <div key={i} className="bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-5">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl shimmer" />
                   <div className="flex-1 space-y-2">
@@ -216,9 +218,9 @@ export default function Flights() {
           <div className="grid lg:grid-cols-4 gap-6 mt-4">
             {/* Filters sidebar */}
             <aside className="lg:col-span-1 space-y-3 lg:sticky lg:top-[80px] self-start max-h-[80vh] overflow-auto pr-1">
-              <div className="bg-white border border-[#e7e7e7] shadow-soft rounded-2xl p-4">
+              <div className="bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-[13px] font-black uppercase tracking-widest text-[#9ca3af]">{t('flightsPage.filters.title')}</h3>
+                  <h3 className="text-[13px] font-black uppercase tracking-widest text-[#93876f]">{t('flightsPage.filters.title')}</h3>
                   {hasFilters && (
                     <button onClick={clearFilters} className="text-[11px] font-black text-red-500 hover:underline">{t('flightsPage.filters.clearAll')}</button>
                   )}
@@ -236,15 +238,15 @@ export default function Flights() {
                 </FilterGroup>
 
                 {/* Price */}
-                <FilterGroup title={`${t('flightsPage.filters.maxPrice')} · $${maxPrice ?? priceRange[1]}`}>
+                <FilterGroup title={`${t('flightsPage.filters.maxPrice')} · ${fmt(maxPrice ?? priceRange[1])}`}>
                   <input type="range"
                     min={priceRange[0]} max={priceRange[1]} step={10}
                     value={maxPrice ?? priceRange[1]}
                     onChange={e => setMaxPrice(Number(e.target.value))}
                     className="w-full accent-[#0071c2] cursor-pointer" />
-                  <div className="flex justify-between text-[10px] font-bold text-[#9ca3af] mt-1">
-                    <span>${priceRange[0]}</span>
-                    <span>${priceRange[1]}</span>
+                  <div className="flex justify-between text-[10px] font-bold text-[#93876f] mt-1">
+                    <span>{fmt(priceRange[0])}</span>
+                    <span>{fmt(priceRange[1])}</span>
                   </div>
                 </FilterGroup>
 
@@ -259,7 +261,7 @@ export default function Flights() {
                             airlineFilter === a ? 'bg-[#003580] text-white shadow-soft' : 'hover:bg-[#f0f5ff] text-[#1a1a1a]'
                           }`}>
                           <span className="truncate">{a}</span>
-                          <span className={airlineFilter === a ? 'text-white/80' : 'text-[#9ca3af]'}>${minP}</span>
+                          <span className={airlineFilter === a ? 'text-white/80' : 'text-[#93876f]'}>{fmt(minP)}</span>
                         </button>
                       );
                     })}
@@ -269,9 +271,9 @@ export default function Flights() {
 
               {/* Quick insights */}
               {cheapest != null && (
-                <div className="bg-white border border-[#ececf0] shadow-soft rounded-2xl p-4 space-y-2.5">
-                  <h3 className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-2">{t('flightsPage.highlights.title')}</h3>
-                  <Insight icon={<Wallet className="w-3.5 h-3.5" />} label={t('flightsPage.highlights.cheapest')} val={`$${cheapest}`} sub={flights.find(f => f.price === cheapest)?.airline} />
+                <div className="bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-4 space-y-2.5">
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">{t('flightsPage.highlights.title')}</h3>
+                  <Insight icon={<Wallet className="w-3.5 h-3.5" />} label={t('flightsPage.highlights.cheapest')} val={fmt(cheapest)} sub={flights.find(f => f.price === cheapest)?.airline} />
                   <Insight icon={<Plane className="w-3.5 h-3.5" />}  label={t('flightsPage.highlights.nonstop') || 'Non-stop'} val={`${flights.filter(f => f.stops === 0).length}`} sub={t('flights.results.direct') || 'direct'} />
                 </div>
               )}
@@ -282,9 +284,9 @@ export default function Flights() {
               <div className="flex items-end justify-between mb-4 flex-wrap gap-3">
                 <div>
                   <h2 className="text-[20px] font-black text-[#1a1a1a]">{formData.from} → {formData.to}</h2>
-                  <div className="text-[12px] text-[#595959] font-medium">
+                  <div className="text-[12px] text-[#5c5245] font-medium">
                     <strong>{filtered.length}</strong> {t('flightsPage.results.matchPrefix')} {flights.length} {t('flightsPage.results.matchSuffix')}
-                    {cheapest && <> · {t('flightsPage.results.from')} <strong className="text-[#003580]">${cheapest}</strong></>}
+                    {cheapest && <> · {t('flightsPage.results.from')} <strong className="text-[#003580]">{fmt(cheapest)}</strong></>}
                   </div>
                 </div>
                 <button
@@ -323,7 +325,7 @@ export default function Flights() {
                 <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#fff7e6] to-white border border-[#ffd76e] shadow-soft flex items-center gap-2.5">
                   <BadgeCheck className="w-4 h-4 text-[#a45e00] shrink-0" />
                   <div className="text-[12px] font-bold text-[#7c4a00] leading-snug">
-                    <strong>{t('flightsPage.banners.aiEstimateTitle')}</strong> · {t('flightsPage.banners.aiEstimateMedian')} <strong>${aiSource.median}</strong> · {t('flightsPage.banners.aiEstimateRange')} ${aiSource.low}–${aiSource.high}{aiSource.note ? ` · ${aiSource.note}` : ''}
+                    <strong>{t('flightsPage.banners.aiEstimateTitle')}</strong> · {t('flightsPage.banners.aiEstimateMedian')} <strong>{fmt(aiSource.median)}</strong> · {t('flightsPage.banners.aiEstimateRange')} {fmt(aiSource.low)}–{fmt(aiSource.high)}{aiSource.note ? ` · ${aiSource.note}` : ''}
                     <br/>
                     <span className="font-semibold text-[#a45e00]/85">{t('flightsPage.banners.aiEstimateNote')}</span>
                   </div>
@@ -338,10 +340,10 @@ export default function Flights() {
                     </motion.div>
                   ))
                 ) : (
-                  <div className="text-center py-12 bg-white rounded-2xl border border-[#e7e7e7] shadow-soft">
-                    <Filter className="w-10 h-10 mx-auto mb-3 text-[#c9d1d9]" />
+                  <div className="text-center py-12 bg-white rounded-2xl border border-[#e6dcc3] shadow-soft">
+                    <Filter className="w-10 h-10 mx-auto mb-3 text-[#d9c9a3]" />
                     <p className="text-[#1a1a1a] font-bold mb-1">{t('flightsPage.results.noMatchTitle')}</p>
-                    <p className="text-[#9ca3af] text-sm mb-4">{t('flightsPage.results.noMatchSub')}</p>
+                    <p className="text-[#93876f] text-sm mb-4">{t('flightsPage.results.noMatchSub')}</p>
                     <button onClick={clearFilters}
                       className="px-4 py-2 rounded-xl bg-[#0071c2] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft hover:shadow-float">
                       {t('flightsPage.results.clearFilters')}
@@ -374,7 +376,7 @@ export default function Flights() {
                       handleSearch({ formData: { from: r.from, to: r.to, date: '' } });
                       window.scrollTo({ top: 80, behavior: 'smooth' });
                     }}
-                    className="group relative aspect-[4/5] overflow-hidden rounded-3xl bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 border border-[#ececf0] transition-all duration-300 active:scale-[0.98]"
+                    className="group relative aspect-[4/5] overflow-hidden rounded-3xl bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 border border-[#e6dcc3] transition-all duration-300 active:scale-[0.98]"
                     style={{ backgroundImage: `url(${heroFor(r.city)})` }}>
                     <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url(${heroFor(r.city)})` }} />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
@@ -424,17 +426,17 @@ export default function Flights() {
             <BadgeCheck className="w-3.5 h-3.5" /> {t('flightsPage.direct.official')}
           </div>
           <h2 className="font-display text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flightsPage.direct.title')}</h2>
-          <p className="text-[#595959] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
+          <p className="text-[#5c5245] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
             {t('flightsPage.direct.sub')}
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {Object.values(AIRLINE_LINKS).map((al) => (
               <a key={al.name} href={al.homepage} target="_blank" rel="noopener noreferrer"
-                className="bg-white border border-[#ececf0] hover:border-[#008009]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 rounded-2xl p-4 flex flex-col gap-2 transition-all duration-300 group active:scale-[0.98]">
+                className="bg-white border border-[#e6dcc3] hover:border-[#008009]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 rounded-2xl p-4 flex flex-col gap-2 transition-all duration-300 group active:scale-[0.98]">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-[#f8f9fa] border border-[#e7e7e7] flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+                    <div className="w-10 h-10 rounded-xl bg-[#f6f1e4] border border-[#e6dcc3] flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
                       {al.flag}
                     </div>
                     <div className="min-w-0">
@@ -465,7 +467,7 @@ export default function Flights() {
             <Globe className="w-3.5 h-3.5" /> {t('flightsPage.aggregators.thirdParty')}
           </div>
           <h2 className="font-display text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flights.bookingSites') || 'Compare on aggregators'}</h2>
-          <p className="text-[#595959] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
+          <p className="text-[#5c5245] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
             {t('flights.bookingSub') || 'Open the platform with the best fare for your route. Sometimes 10–30% cheaper than the airline itself.'}
           </p>
 
@@ -473,7 +475,7 @@ export default function Flights() {
             {BOOKING_SITES.map((site) => (
               <a key={site.name} href={site.url} target="_blank" rel="noopener noreferrer"
                 style={{ '--brand': site.color }}
-                className="group relative bg-white border border-[#e7e7e7] shadow-soft rounded-2xl p-5 flex flex-col gap-3.5 overflow-hidden hover:border-[var(--brand)] hover:shadow-lift hover:-translate-y-1 transition-all duration-300">
+                className="group relative bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-5 flex flex-col gap-3.5 overflow-hidden hover:border-[var(--brand)] hover:shadow-lift hover:-translate-y-1 transition-all duration-300">
                 {/* brand glow on hover */}
                 <div className="absolute -top-14 -right-14 w-32 h-32 rounded-full opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-500 pointer-events-none"
                   style={{ background: site.color }} />
@@ -502,9 +504,9 @@ export default function Flights() {
                   <span className="text-[9px] font-black uppercase tracking-wider bg-[#febb02] text-[#1a1a1a] px-2 py-1 rounded-md shrink-0">{site.badge}</span>
                 </div>
 
-                <p className="relative text-[13px] text-[#595959] leading-relaxed flex-1">{site.desc}</p>
+                <p className="relative text-[13px] text-[#5c5245] leading-relaxed flex-1">{site.desc}</p>
 
-                <div className="relative flex items-center justify-between pt-3 border-t border-[#f0f0f0]">
+                <div className="relative flex items-center justify-between pt-3 border-t border-[#efe6d2]">
                   <span className="text-[12px] font-black" style={{ color: site.color }}>
                     {t('flights.searchOn') || 'Search on'} {site.name}
                   </span>
@@ -534,7 +536,7 @@ export default function Flights() {
 /* ── Subcomponents ── */
 const FilterGroup = ({ title, children }) => (
   <div className="mb-4 last:mb-0">
-    <p className="text-[10px] font-black uppercase tracking-widest text-[#9ca3af] mb-2">{title}</p>
+    <p className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">{title}</p>
     <div className="flex flex-wrap gap-1.5">{children}</div>
   </div>
 );
@@ -542,19 +544,19 @@ const FilterGroup = ({ title, children }) => (
 const FilterChip = ({ active, onClick, children }) => (
   <button onClick={onClick}
     className={`px-3 py-1.5 rounded-xl text-[12px] font-black border transition active:scale-95 ${
-      active ? 'bg-[#003580] text-white border-[#003580] shadow-soft' : 'bg-white border-[#e7e7e7] text-[#1a1a1a] hover:border-[#0071c2]'
+      active ? 'bg-[#003580] text-white border-[#003580] shadow-soft' : 'bg-white border-[#e6dcc3] text-[#1a1a1a] hover:border-[#0071c2]'
     }`}>
     {children}
   </button>
 );
 
 const Insight = ({ icon, label, val, sub }) => (
-  <div className="flex items-center gap-2.5 p-2 rounded-xl bg-[#f8f9fa] border border-[#eef2f6]">
+  <div className="flex items-center gap-2.5 p-2 rounded-xl bg-[#f6f1e4] border border-[#efe6d2]">
     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#f0f5ff] to-[#dceaff] flex items-center justify-center text-[#0071c2] shrink-0 shadow-soft">{icon}</div>
     <div className="min-w-0">
-      <div className="text-[9.5px] font-black uppercase tracking-widest text-[#9ca3af]">{label}</div>
+      <div className="text-[9.5px] font-black uppercase tracking-widest text-[#93876f]">{label}</div>
       <div className="text-[13px] font-black text-[#003580] leading-tight">{val}</div>
-      {sub && <div className="text-[10px] text-[#595959] font-semibold truncate">{sub}</div>}
+      {sub && <div className="text-[10px] text-[#5c5245] font-semibold truncate">{sub}</div>}
     </div>
   </div>
 );

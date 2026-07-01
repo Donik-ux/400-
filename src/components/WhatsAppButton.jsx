@@ -40,13 +40,13 @@ export default function WhatsAppButton() {
       </a>
 
       {showBubble && (
-        <div className="relative mb-1 max-w-[230px] bg-white rounded-2xl rounded-bl-sm shadow-float border border-[#e7e7e7] px-3.5 py-3 page-fade">
+        <div className="relative mb-1 max-w-[230px] bg-white rounded-2xl rounded-bl-sm shadow-float border border-[#e6dcc3] px-3.5 py-3 page-fade">
           <button onClick={dismiss} aria-label="Close"
             className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#1a1a1a] text-white flex items-center justify-center shadow-soft hover:scale-110 transition">
             <X className="w-3.5 h-3.5" />
           </button>
           <p className="text-[13px] font-black text-[#1a1a1a] leading-snug">{t('whatsapp.bubbleTitle')}</p>
-          <p className="text-[12px] text-[#595959] font-medium leading-snug mt-0.5">{t('whatsapp.bubbleBody')}</p>
+          <p className="text-[12px] text-[#5c5245] font-medium leading-snug mt-0.5">{t('whatsapp.bubbleBody')}</p>
         </div>
       )}
     </div>

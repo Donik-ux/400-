@@ -11,12 +11,14 @@ import { heroFor } from '../utils/destinationImages';
 import { downloadPlanPdf } from '../utils/planPdf';
 import { toast } from '../components/Toast';
 import SmartImage from '../components/SmartImage';
+import { usePriceFormatter } from '../components/Price';
 
 export default function MyPlans() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { plans, removePlan, clearPlans } = useSavedPlansStore();
   const { setItineraries, setItineraryMeta } = useStore();
+  const fmt = usePriceFormatter();
   const fill = (str, vars = {}) => String(str).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 
   useSEO({
@@ -48,7 +50,7 @@ export default function MyPlans() {
   };
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen -mt-[64px]">
+    <div className="bg-[#faf6ed] min-h-screen -mt-[64px]">
       {/* ── Hero header ── */}
       <section className="relative bg-gradient-to-br from-[#002250] via-[#002a63] to-[#003580] text-white overflow-hidden pt-[100px] pb-14">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
@@ -78,7 +80,7 @@ export default function MyPlans() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         {/* ── Empty state ── */}
         {plans.length === 0 && (
-          <div className="bg-white border border-[#e7e7e7] rounded-3xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
+          <div className="bg-white border border-[#e6dcc3] rounded-3xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
             <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#f5b942]/20 blur-3xl pointer-events-none animate-float" />
             <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#0071c2]/10 blur-3xl pointer-events-none" />
             <div className="relative">
@@ -86,7 +88,7 @@ export default function MyPlans() {
                 <Map className="w-10 h-10 text-white" />
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] mb-2">{t('lists.plans.emptyTitle')}</h2>
-              <p className="text-[14px] text-[#595959] font-medium mb-7 max-w-md mx-auto leading-relaxed">
+              <p className="text-[14px] text-[#5c5245] font-medium mb-7 max-w-md mx-auto leading-relaxed">
                 {t('lists.plans.emptySubA')} <strong>“{t('lists.plans.emptySubBtn')}”</strong>{t('lists.plans.emptySubB')}
               </p>
               <button onClick={() => navigate('/planner')}
@@ -108,7 +110,7 @@ export default function MyPlans() {
               const isAi   = plan.meta?.source === 'ai';
               return (
                 <div key={plan.id}
-                  className="group bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden shadow-soft lift flex flex-col">
+                  className="group bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft lift flex flex-col">
                   <div className="relative overflow-hidden">
                     <div className="transition-transform duration-500 ease-out group-hover:scale-[1.05]">
                       <SmartImage src={heroFor(dest)} alt={dest} aspect="aspect-[16/10]" />
@@ -130,21 +132,21 @@ export default function MyPlans() {
                   </div>
 
                   <div className="p-4 flex flex-col flex-1">
-                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] font-bold text-[#595959] mb-3">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] font-bold text-[#5c5245] mb-3">
                       <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#0071c2]" /> {fill(t('lists.plans.daysValue'), { days })}</span>
-                      {budget > 0 && <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-[#0071c2]" /> {fill(t('lists.plans.budgetValue'), { budget: budget.toLocaleString() })}</span>}
-                      <span className="flex items-center gap-1 text-[#9ca3af]"><Clock className="w-3 h-3" /> {fmtDate(plan.savedAt)}</span>
+                      {budget > 0 && <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-[#0071c2]" /> {fill(t('lists.plans.budgetValue'), { budget: fmt(budget) })}</span>}
+                      <span className="flex items-center gap-1 text-[#93876f]"><Clock className="w-3 h-3" /> {fmtDate(plan.savedAt)}</span>
                     </div>
 
-                    <div className="mt-auto flex items-end justify-between pt-3 border-t border-[#f0f0f0]">
+                    <div className="mt-auto flex items-end justify-between pt-3 border-t border-[#efe6d2]">
                       <div>
                         {total != null ? (
                           <>
-                            <div className="text-[10px] text-[#9ca3af] font-bold uppercase">{t('lists.plans.planCost')}</div>
-                            <div className="text-[20px] font-black text-[#003580] leading-none">${Number(total).toLocaleString()}</div>
+                            <div className="text-[10px] text-[#93876f] font-bold uppercase">{t('lists.plans.planCost')}</div>
+                            <div className="text-[20px] font-black text-[#003580] leading-none">{fmt(total)}</div>
                           </>
                         ) : (
-                          <div className="text-[12px] text-[#9ca3af] font-bold">{t('lists.plans.openToView')}</div>
+                          <div className="text-[12px] text-[#93876f] font-bold">{t('lists.plans.openToView')}</div>
                         )}
                       </div>
                       <div className="flex items-center gap-2">

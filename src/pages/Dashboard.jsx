@@ -38,19 +38,19 @@ export default function Dashboard() {
   if (!user) return null;
 
   const quickActions = [
-    { label: t('dashboard.searchFlights'), to: '/flights',       icon: Plane,     color: 'text-cyan-500'   },
-    { label: t('dashboard.planTrip'),      to: '/planner',       icon: Globe,     color: 'text-purple-500' },
-    { label: t('dashboard.berlinTrip'),    to: '/berlin-trip',   icon: Map,       color: 'text-blue-500'   },
-    { label: t('dashboard.exoticTours'),   to: '/exotic-tours',  icon: Sparkles,  color: 'text-orange-500' },
-    { label: t('dashboard.myBookings'),    to: '/my-bookings',   icon: Clock,     color: 'text-green-500'  },
-    { label: t('dashboard.wishlist'),      to: '/wishlist',      icon: Heart,     color: 'text-red-500'    },
+    { label: t('dashboard.searchFlights'), to: '/flights',       icon: Plane,     color: 'text-[#2d6a6f]' },
+    { label: t('dashboard.planTrip'),      to: '/planner',       icon: Globe,     color: 'text-[#7d5a8c]' },
+    { label: t('dashboard.berlinTrip'),    to: '/berlin-trip',   icon: Map,       color: 'text-[#3d6b8a]' },
+    { label: t('dashboard.exoticTours'),   to: '/exotic-tours',  icon: Sparkles,  color: 'text-[#c26d4a]' },
+    { label: t('dashboard.myBookings'),    to: '/my-bookings',   icon: Clock,     color: 'text-[#6b8f5e]' },
+    { label: t('dashboard.wishlist'),      to: '/wishlist',      icon: Heart,     color: 'text-[#b5495a]' },
   ];
 
   const statCards = [
-    { label: t('dashboard.totalSpent'),  value: fmt(stats.totalSpent), icon: DollarSign, color: 'text-green-600',  bg: 'bg-green-50'  },
-    { label: t('dashboard.confirmed'),   value: stats.confirmed,                          icon: Star,       color: 'text-amber-600',  bg: 'bg-amber-50'  },
-    { label: t('dashboard.pending'),     value: stats.pending,                            icon: Clock,      color: 'text-blue-600',   bg: 'bg-blue-50'   },
-    { label: t('dashboard.countries'),   value: stats.countries || 0,                     icon: MapPin,     color: 'text-purple-600', bg: 'bg-purple-50' },
+    { label: t('dashboard.totalSpent'),  value: fmt(stats.totalSpent), icon: DollarSign, color: 'text-[#5c7a4f]', bg: 'bg-[#eef3e7]' },
+    { label: t('dashboard.confirmed'),   value: stats.confirmed,                          icon: Star,       color: 'text-[#b8860b]', bg: 'bg-[#fdf6e3]' },
+    { label: t('dashboard.pending'),     value: stats.pending,                            icon: Clock,      color: 'text-[#0071c2]', bg: 'bg-[#f0f5ff]' },
+    { label: t('dashboard.countries'),   value: stats.countries || 0,                     icon: MapPin,     color: 'text-[#7d5a8c]', bg: 'bg-[#f5eef8]' },
   ];
 
   return (
@@ -126,8 +126,8 @@ export default function Dashboard() {
                       onClick={() => navigate('/my-bookings')}>
                       <div className="w-12 h-12 rounded-xl bg-white border border-[#efe6d2] flex items-center justify-center shrink-0">
                         {b.type === 'flight' ? <Plane className="w-6 h-6 text-[#0071c2]" /> :
-                         b.type === 'package' ? <Package className="w-6 h-6 text-purple-600" /> :
-                         <Hotel className="w-6 h-6 text-amber-600" />}
+                         b.type === 'package' ? <Package className="w-6 h-6 text-[#7d5a8c]" /> :
+                         <Hotel className="w-6 h-6 text-[#b8860b]" />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-black text-[#1a1a1a] truncate mb-0.5">{b.itemName}</p>
@@ -140,9 +140,9 @@ export default function Dashboard() {
                       <div className="text-right">
                         <p className="text-[15px] font-black text-[#1a1a1a] mb-0.5">{fmt(b.total)}</p>
                         <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${
-                          b.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                          b.status === 'pending' ? 'bg-amber-100 text-amber-700' :
-                          'bg-red-100 text-red-700'
+                          b.status === 'confirmed' ? 'bg-[#e8f5e9] text-[#008009]' :
+                          b.status === 'pending' ? 'bg-[#fff7e6] text-[#a45e00]' :
+                          'bg-red-50 text-red-600'
                         }`}>
                           {b.status === 'confirmed' ? t('dashboard.statusConfirmed') :
                            b.status === 'pending' ? t('dashboard.statusPending') :
@@ -199,10 +199,10 @@ export default function Dashboard() {
             </div>
 
             {/* Rewards */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-purple-600 to-indigo-700 rounded-3xl p-6 text-white shadow-lift">
-              <div className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full bg-white/10 blur-2xl animate-float" />
+            <div className="relative overflow-hidden bg-gradient-to-br from-[#5c3d6b] via-[#4a2f5c] to-[#1f1338] rounded-3xl p-6 text-white shadow-lift">
+              <div className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full bg-[#febb02]/15 blur-2xl animate-float" />
               <div className="relative w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
-                <Sparkles className="w-6 h-6 text-purple-200" />
+                <Sparkles className="w-6 h-6 text-[#e3c6f0]" />
               </div>
               <h3 className="relative text-lg font-black mb-2">{t('dashboard.rewardsTitle')}</h3>
               <p className="relative text-white/70 text-xs leading-relaxed mb-6">

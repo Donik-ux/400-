@@ -157,18 +157,18 @@ export default function TourDetail() {
                 <div className="text-[32px] leading-none mb-1">{tour.from.icon}</div>
                 <div className="text-[14px] font-black text-[#1a1a1a]">{tour.from.city}</div>
                 <div className="text-[12px] text-[#93876f]">{tour.from.country}</div>
-                <div className="mt-1 inline-block px-2.5 py-1 rounded-lg bg-orange-50 text-orange-600 text-[13px] font-black">{tour.from.temp}</div>
+                <div className="mt-1 inline-block px-2.5 py-1 rounded-lg bg-[#fdf1e8] text-[#c26d4a] text-[13px] font-black">{tour.from.temp}</div>
               </div>
               <div className="flex flex-col items-center gap-1 shrink-0">
                 <Plane className="w-5 h-5 text-[#0071c2] rotate-45" />
-                <div className="w-24 h-[3px] rounded-full bg-gradient-to-r from-orange-400 to-blue-400" />
+                <div className="w-24 h-[3px] rounded-full bg-gradient-to-r from-[#c9962f] to-[#2d6a6f]" />
                 <span className="text-[10px] font-bold text-[#93876f]">{tour.days} {t('tourDetail.contrastDays')}</span>
               </div>
               <div className="flex-1 text-center">
                 <div className="text-[32px] leading-none mb-1">{tour.to.icon}</div>
                 <div className="text-[14px] font-black text-[#1a1a1a]">{tour.to.city}</div>
                 <div className="text-[12px] text-[#93876f]">{tour.to.country}</div>
-                <div className="mt-1 inline-block px-2.5 py-1 rounded-lg bg-blue-50 text-blue-600 text-[13px] font-black">{tour.to.temp}</div>
+                <div className="mt-1 inline-block px-2.5 py-1 rounded-lg bg-[#eaf3f4] text-[#2d6a6f] text-[13px] font-black">{tour.to.temp}</div>
               </div>
             </div>
           </section>

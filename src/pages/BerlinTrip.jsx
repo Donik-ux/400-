@@ -54,15 +54,17 @@ const MAP_LOCATIONS = [
   { day: 1, name: 'Berlin Brandenburg Airport',          address: 'Willy-Brandt-Platz, 12529 Schönefeld',   price: 'Transfer ~€30–40',              lat: 52.3667, lng: 13.5033, emoji: '✈️' },
 ];
 
+/* Curated jewel-tone set — one per itinerary day, harmonized with the navy/gold
+   brand palette instead of default Tailwind swatches (blue-500, purple-500…). */
 const DAY_COLORS = {
-  1: 'bg-gray-500',
-  2: 'bg-blue-500',
-  3: 'bg-purple-500',
-  4: 'bg-amber-500',
-  5: 'bg-green-500',
-  6: 'bg-pink-500',
-  7: 'bg-cyan-500',
-  8: 'bg-orange-500',
+  1: 'bg-[#8a7a63]',
+  2: 'bg-[#3d6b8a]',
+  3: 'bg-[#7d5a8c]',
+  4: 'bg-[#c9962f]',
+  5: 'bg-[#6b8f5e]',
+  6: 'bg-[#b56576]',
+  7: 'bg-[#2d6a6f]',
+  8: 'bg-[#c26d4a]',
 };
 
 const ITINERARY = [
@@ -179,12 +181,12 @@ const BudgetBar = ({ label, amount, total, color, icon: Icon }) => {
 };
 
 const budgetRows = [
-  { label: 'Flight',        amount: BUDGET.flight,         icon: Plane,            color: 'bg-sky-400'    },
-  { label: 'Accommodation', amount: BUDGET.accommodation,  icon: Hotel,            color: 'bg-blue-400'   },
-  { label: 'Food',          amount: BUDGET.food,           icon: UtensilsCrossed,  color: 'bg-orange-400' },
-  { label: 'Transport',     amount: BUDGET.transport,      icon: Car,              color: 'bg-green-400'  },
-  { label: 'Attractions',   amount: BUDGET.activities,     icon: Activity,         color: 'bg-purple-400' },
-  { label: 'Shopping',      amount: BUDGET.shopping,       icon: Wallet,           color: 'bg-pink-400'   },
+  { label: 'Flight',        amount: BUDGET.flight,         icon: Plane,            color: 'bg-[#3d6b8a]' },
+  { label: 'Accommodation', amount: BUDGET.accommodation,  icon: Hotel,            color: 'bg-[#7d5a8c]' },
+  { label: 'Food',          amount: BUDGET.food,           icon: UtensilsCrossed,  color: 'bg-[#c26d4a]' },
+  { label: 'Transport',     amount: BUDGET.transport,      icon: Car,              color: 'bg-[#6b8f5e]' },
+  { label: 'Attractions',   amount: BUDGET.activities,     icon: Activity,         color: 'bg-[#c9962f]' },
+  { label: 'Shopping',      amount: BUDGET.shopping,       icon: Wallet,           color: 'bg-[#b56576]' },
 ];
 
 // Auto-fit map to markers
@@ -216,9 +218,10 @@ function createNumberedIcon(num, color = '#0071c2') {
   });
 }
 
+/* Mirrors DAY_COLORS above — same per-day jewel tones, as hex for the map pins. */
 const DAY_COLOR_HEX = {
-  1: '#6b7280', 2: '#3b82f6', 3: '#8b5cf6', 4: '#f59e0b',
-  5: '#10b981', 6: '#ec4899', 7: '#06b6d4', 8: '#f97316',
+  1: '#8a7a63', 2: '#3d6b8a', 3: '#7d5a8c', 4: '#c9962f',
+  5: '#6b8f5e', 6: '#b56576', 7: '#2d6a6f', 8: '#c26d4a',
 };
 
 const BerlinTrip = () => {
@@ -537,10 +540,10 @@ const BerlinTrip = () => {
                     key={dayPlan.day}
                     className="group relative bg-gradient-to-b from-[#141414] to-[#0f0f0f] border border-white/[0.07] rounded-2xl p-7 pl-8 shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.14] hover:shadow-[0_18px_48px_rgba(0,0,0,0.55)]"
                   >
-                    <span className={`absolute left-0 top-0 bottom-0 w-1 ${DAY_COLORS[dayPlan.day] || 'bg-gray-500'} opacity-70 group-hover:opacity-100 transition-opacity`} />
+                    <span className={`absolute left-0 top-0 bottom-0 w-1 ${DAY_COLORS[dayPlan.day] || 'bg-[#8a7a63]'} opacity-70 group-hover:opacity-100 transition-opacity`} />
                     <div className="flex flex-col gap-2 mb-5">
                       <div className="flex items-center gap-2.5">
-                        <span className={`flex items-center justify-center w-8 h-8 rounded-lg text-white text-[12px] font-black shrink-0 ${DAY_COLORS[dayPlan.day] || 'bg-gray-500'}`}>{dayPlan.day}</span>
+                        <span className={`flex items-center justify-center w-8 h-8 rounded-lg text-white text-[12px] font-black shrink-0 ${DAY_COLORS[dayPlan.day] || 'bg-[#8a7a63]'}`}>{dayPlan.day}</span>
                         <div className="text-[9px] font-black uppercase tracking-[0.18em] text-white/40">{t('berlinTrip.day')} {dayPlan.day}</div>
                       </div>
                       <div className="text-[13px] font-semibold text-white/70">{dayPlan.date}</div>

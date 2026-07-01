@@ -36,10 +36,18 @@
   text-rendering: optimizeLegibility;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
   scroll-behavior: smooth;
+  /* Deliberate body rhythm — Tailwind/browser defaults (leading-normal ≈ 1.5,
+     no tracking) read as unstyled at this font size; tuned by hand instead. */
+  line-height: 1.6;
+  letter-spacing: -0.011em;
 
   /* Editorial display serif for headings; Plus Jakarta Sans is the UI/body workhorse */
   --font-display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
 }
+
+/* p tags specifically get a touch more breathing room than UI chrome (labels,
+   buttons, badges) — those stay tighter via the :root default above. */
+p { line-height: 1.65; }
 
 body {
   margin: 0;

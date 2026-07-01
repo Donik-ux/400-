@@ -8,16 +8,16 @@ const Section = ({ num, title, children }) => (
       <span className="w-6 h-6 rounded-full bg-[#003580] text-white text-[11px] font-black flex items-center justify-center flex-shrink-0">{num}</span>
       {title}
     </h2>
-    <div className="text-[14px] text-gray-600 leading-relaxed pl-8">{children}</div>
+    <div className="text-[14px] text-[#5c5245] leading-[1.7] pl-8">{children}</div>
   </div>
 );
 
 export default function TermsOfUse() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen bg-gray-50 py-14 px-4">
+    <div className="min-h-screen bg-[#faf6ed] py-14 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-float border border-[#e6dcc3] overflow-hidden">
           <div className="bg-[#003580] px-8 py-10 text-white">
             <div className="flex items-center gap-3 mb-3">
               <Shield className="w-7 h-7" />

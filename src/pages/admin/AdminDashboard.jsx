@@ -80,7 +80,7 @@ export default function AdminDashboard() {
               <tb.icon className="w-4 h-4 flex-shrink-0" />
               <span className="flex-1">{tb.label}</span>
               {tb.badge > 0 && (
-                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full ${tab === tb.id ? 'bg-black/20 text-black' : 'bg-blue-400/20 text-blue-400'}`}>{tb.badge}</span>
+                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full ${tab === tb.id ? 'bg-black/20 text-black' : 'bg-[#5b93b8]/20 text-[#5b93b8]'}`}>{tb.badge}</span>
               )}
             </button>
           ))}
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
             className={`flex-1 py-3 flex flex-col items-center gap-1 text-[9px] font-black uppercase tracking-widest transition-premium ${tab === tb.id ? 'text-white' : 'text-white/30'}`}>
             <div className="relative">
               <tb.icon className="w-5 h-5" />
-              {tb.badge > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-blue-400 text-[7px] font-black flex items-center justify-center text-white">{tb.badge}</span>}
+              {tb.badge > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#5b93b8] text-[7px] font-black flex items-center justify-center text-white">{tb.badge}</span>}
             </div>
             {tb.label.slice(0,4)}
           </button>
@@ -143,12 +143,12 @@ function DashboardTab() {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        <StatCard icon={BookOpen}    label={t('admin.stats.total')}     value={stats.totalBookings}       color="text-blue-400"   trend={12} />
+        <StatCard icon={BookOpen}    label={t('admin.stats.total')}     value={stats.totalBookings}       color="text-[#5b93b8]"   trend={12} />
         <StatCard icon={CircleCheck} label={t('admin.stats.confirmed')}     value={stats.confirmedBookings}   color="text-green-400"  trend={5} />
         <StatCard icon={Clock}       label={t('admin.stats.pending')}       value={stats.pendingBookings}     color="text-yellow-400" trend={-2} />
         <StatCard icon={DollarSign}  label={t('admin.stats.revenue')}       value={`$${stats.totalRevenue.toLocaleString()}`} color="text-white" trend={8} />
-        <StatCard icon={Package}     label={t('admin.stats.packages')}      value={stats.totalPackages}       color="text-purple-400" />
-        <StatCard icon={Plane}       label={t('admin.stats.flights')}       value={stats.totalFlights}        color="text-cyan-400"   />
+        <StatCard icon={Package}     label={t('admin.stats.packages')}      value={stats.totalPackages}       color="text-[#a482b5]" />
+        <StatCard icon={Plane}       label={t('admin.stats.flights')}       value={stats.totalFlights}        color="text-[#4a9ba3]"   />
       </div>
 
       <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
@@ -185,7 +185,7 @@ function DashboardTab() {
                 </div>
                 <div className="h-3 rounded-full bg-white/5 overflow-hidden">
                   <div style={{ width: `${(usageChart.counts[index] / maxValue) * 100}%` }}
-                    className="h-full rounded-full bg-cyan-400 transition-all duration-300" />
+                    className="h-full rounded-full bg-[#4a9ba3] transition-all duration-300" />
                 </div>
               </div>
             ))}
@@ -230,14 +230,14 @@ function DashboardTab() {
                 <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                     <p className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">API Sync</p>
                     <div className="flex items-center gap-2">
-                        <CircleCheck className="w-4 h-4 text-cyan-400" />
+                        <CircleCheck className="w-4 h-4 text-[#4a9ba3]" />
                         <span className="text-[14px] font-black text-white">Synced</span>
                     </div>
                 </div>
                 <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                     <p className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">Database</p>
                     <div className="flex items-center gap-2">
-                        <Save className="w-4 h-4 text-purple-400" />
+                        <Save className="w-4 h-4 text-[#a482b5]" />
                         <span className="text-[14px] font-black text-white">Optimized</span>
                     </div>
                 </div>

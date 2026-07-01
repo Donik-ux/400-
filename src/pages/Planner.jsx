@@ -309,12 +309,12 @@ export default function Planner() {
   const budgetDiff = userBudget - planTotal;
 
   const budgetRows = meta ? [
-    { label: t('plannerPage.budgetRows.flights'),       amount: meta.budgetBreakdown.flight,        icon: Plane,           color: 'bg-blue-400'    },
-    { label: `${t('planner.results.accommodation')} (${meta.budgetBreakdown.nights || '—'} ${t('plannerPage.budgetRows.hotelNights')})`, amount: meta.budgetBreakdown.accommodation, icon: Hotel, color: 'bg-indigo-400' },
-    { label: t('plannerPage.budgetRows.food'),          amount: meta.budgetBreakdown.food,          icon: UtensilsCrossed, color: 'bg-orange-400'  },
-    { label: t('plannerPage.budgetRows.transport'),     amount: meta.budgetBreakdown.transport,     icon: Car,             color: 'bg-green-400'   },
-    { label: t('plannerPage.budgetRows.activities'),    amount: meta.budgetBreakdown.activities,    icon: Activity,        color: 'bg-purple-400'  },
-    { label: t('plannerPage.budgetRows.shopping'),      amount: meta.budgetBreakdown.shopping,      icon: ShoppingBag,     color: 'bg-pink-400'    },
+    { label: t('plannerPage.budgetRows.flights'),       amount: meta.budgetBreakdown.flight,        icon: Plane,           color: 'bg-[#3d6b8a]'   },
+    { label: `${t('planner.results.accommodation')} (${meta.budgetBreakdown.nights || '—'} ${t('plannerPage.budgetRows.hotelNights')})`, amount: meta.budgetBreakdown.accommodation, icon: Hotel, color: 'bg-[#7d5a8c]' },
+    { label: t('plannerPage.budgetRows.food'),          amount: meta.budgetBreakdown.food,          icon: UtensilsCrossed, color: 'bg-[#c26d4a]'   },
+    { label: t('plannerPage.budgetRows.transport'),     amount: meta.budgetBreakdown.transport,     icon: Car,             color: 'bg-[#6b8f5e]'   },
+    { label: t('plannerPage.budgetRows.activities'),    amount: meta.budgetBreakdown.activities,    icon: Activity,        color: 'bg-[#c9962f]'   },
+    { label: t('plannerPage.budgetRows.shopping'),      amount: meta.budgetBreakdown.shopping,      icon: ShoppingBag,     color: 'bg-[#b56576]'   },
   ] : [];
 
   const navApps = meta?.navApps || NAV_APPS[transport] || NAV_APPS.walking;
@@ -624,7 +624,7 @@ export default function Planner() {
               <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <Briefcase className="w-5 h-5 text-[#0071c2]" />
                 <h3 className="text-[16px] font-black text-[#1a1a1a]">{t('plannerPage.packing.title')}</h3>
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#0071c2]">{packing.seasonLabel}</span>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#f0f5ff] text-[#0071c2]">{packing.seasonLabel}</span>
               </div>
               <p className="text-[12px] text-[#93876f] mb-4">{t('plannerPage.packing.sub')}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

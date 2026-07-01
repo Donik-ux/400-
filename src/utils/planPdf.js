@@ -66,25 +66,25 @@ export function downloadPlanPdf(plan) {
 <title>${esc(dest)} — MAFTRAVEL plan</title>
 <style>
   *{box-sizing:border-box}
-  body{font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#1a1a1a;margin:0;background:#f5f5f5}
+  body{font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#1a1a1a;margin:0;background:#faf6ed}
   .wrap{max-width:760px;margin:0 auto;padding:28px}
   .hero{background:linear-gradient(135deg,#001026,#002250 55%,#003580);color:#fff;border-radius:18px;padding:26px 28px;margin-bottom:22px}
   .brand{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#f5b942;font-weight:800}
   .hero h1{margin:8px 0 12px;font-size:30px;line-height:1.05}
   .meta{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.88);font-weight:600}
   .summary{font-size:14px;color:#444;line-height:1.65;margin:0 4px 20px}
-  .day{background:#fff;border:1px solid #e7e7e7;border-radius:14px;padding:16px 18px;margin-bottom:14px;page-break-inside:avoid}
+  .day{background:#fff;border:1px solid #e6dcc3;border-radius:14px;padding:16px 18px;margin-bottom:14px;page-break-inside:avoid}
   .day h2{font-size:17px;margin:0 0 10px;display:flex;align-items:center;gap:10px}
   .num{display:inline-flex;width:26px;height:26px;border-radius:8px;background:#f5b942;color:#002250;align-items:center;justify-content:center;font-size:13px;font-weight:900}
   table{width:100%;border-collapse:collapse}
-  td{padding:6px 8px;font-size:13px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+  td{padding:6px 8px;font-size:13px;border-bottom:1px solid #efe6d2;vertical-align:top}
   td.t{white-space:nowrap;color:#0071c2;font-weight:700;width:60px}
   td.c{text-align:right;white-space:nowrap;font-weight:700;color:#003580;width:72px}
   .desc{color:#777;font-size:12px;margin-top:2px}
   .meals,.acc{font-size:12px;color:#555;margin-top:8px}
   .budget .total td{font-weight:900;color:#002250;border-top:2px solid #002250;border-bottom:0}
   .tips ul{margin:0;padding-left:18px}.tips li{font-size:13px;margin-bottom:5px}
-  .foot{margin-top:24px;text-align:center;font-size:11px;color:#9ca3af}
+  .foot{margin-top:24px;text-align:center;font-size:11px;color:#93876f}
   @media print{.no-print{display:none}body{background:#fff}.wrap{padding:0}}
 </style></head><body>
   <div class="wrap">

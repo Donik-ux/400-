@@ -44,7 +44,7 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
           ].map(({ v, l }) => (
             <button key={v} type="button" onClick={() => setTripType(v)}
               className={`px-3 py-1.5 rounded-md text-[12px] font-black transition ${
-                tripType === v ? 'bg-[#003580] text-white' : 'text-[#5c5245] hover:bg-gray-50'
+                tripType === v ? 'bg-[#003580] text-white' : 'text-[#5c5245] hover:bg-[#f6f1e4]'
               }`}>
               {l}
             </button>

@@ -82,7 +82,7 @@ export default function Checkout() {
   /* Price calculation */
   if (!item || !type) return (
     <div className="min-h-screen bg-[#faf6ed] flex items-center justify-center">
-      <div className="bg-white rounded-2xl border border-[#e6dcc3] p-8 max-w-md mx-4 text-center shadow-sm">
+      <div className="bg-white rounded-2xl border border-[#e6dcc3] p-8 max-w-md mx-4 text-center shadow-float">
         <AlertCircle className="w-10 h-10 text-[#febb02] mx-auto mb-3" />
         <p className="text-[#1a1a1a] font-bold mb-1">{t('checkout.noBooking') || 'No booking selected'}</p>
         <p className="text-[#5c5245] text-sm font-medium mb-5">Pick a flight or tour package to start checkout.</p>
@@ -264,7 +264,7 @@ export default function Checkout() {
 
             {/* ── STEP 1: Traveler Info ── */}
             {step === 1 && (
-              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 md:p-7 flex flex-col gap-5 shadow-sm">
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 md:p-7 flex flex-col gap-5 shadow-float">
                 <div className="flex items-start gap-3">
                   <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] flex items-center justify-center text-[#0071c2] shrink-0">
                     <User className="w-5 h-5" />
@@ -414,7 +414,7 @@ export default function Checkout() {
 
             {/* ── STEP 2: Payment ── */}
             {step === 2 && (
-              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 md:p-7 flex flex-col gap-5 shadow-sm">
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 md:p-7 flex flex-col gap-5 shadow-float">
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-xl bg-[#e8f5e9] flex items-center justify-center">
                     <Lock className="w-5 h-5 text-[#008009]" />
@@ -483,7 +483,7 @@ export default function Checkout() {
                 </div>
 
                 <button onClick={handlePayment} disabled={loading}
-                  className="w-full py-4 rounded-xl bg-[#febb02] hover:bg-[#ffb700] text-[#1a1a1a] text-[14px] font-black tracking-wide transition active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 shadow-sm">
+                  className="btn-gold w-full py-4 rounded-xl text-[14px] tracking-wide disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2.5">
                   {loading ? (
                     <><Loader2 className="w-4 h-4 animate-spin" />{t('checkout.processing') || 'Processing your payment…'}</>
                   ) : (
@@ -501,7 +501,7 @@ export default function Checkout() {
 
           {/* ── Right: Order Summary ── */}
           <div className="lg:col-span-1">
-            <div className="bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden sticky top-[80px] shadow-sm">
+            <div className="bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden sticky top-[80px] shadow-float">
 
               {/* Item preview with image */}
               {item.image && (
@@ -592,7 +592,7 @@ function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
   return (
     <div className="min-h-screen bg-[#faf6ed] flex items-center justify-center px-4 py-20">
       <div className="max-w-lg w-full page-fade">
-        <div className="bg-white border border-[#e6dcc3] rounded-3xl p-8 md:p-10 shadow-sm text-center">
+        <div className="bg-white border border-[#e6dcc3] rounded-3xl p-8 md:p-10 shadow-float text-center">
           <div className="relative mx-auto mb-5 w-20 h-20">
             <div className="absolute inset-0 rounded-full bg-[#008009]/10 animate-ping opacity-50" />
             <div className="relative w-20 h-20 rounded-full bg-[#e8f5e9] border-2 border-[#008009]/30 flex items-center justify-center">

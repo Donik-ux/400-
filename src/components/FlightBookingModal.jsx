@@ -70,37 +70,37 @@ function buildAggregators(flight, date, pax = 1) {
   const sites = [
     {
       name: 'Aviasales', logo: '✈️', tagline: 'Best prices for CIS routes',
-      badge: 'Recommended', badgeCls: 'bg-orange-100 text-orange-700', borderCls: 'border-orange-200 hover:border-orange-400',
+      badge: 'Recommended', badgeCls: 'bg-[#fff7e6] text-[#a45e00]', borderCls: 'border-[#ffe6a3] hover:border-[#f5b942]',
       url: d_as ? `https://www.aviasales.ru/search/${from}${d_as}${to}${d_as}${pax}` : `https://www.aviasales.ru`,
     },
     {
       name: 'Skyscanner', logo: '🔍', tagline: 'Compare 1000+ airlines worldwide',
-      badge: 'Most Popular', badgeCls: 'bg-blue-100 text-blue-700', borderCls: 'border-blue-200 hover:border-blue-400',
+      badge: 'Most Popular', badgeCls: 'bg-[#eaf2f7] text-[#3d6b8a]', borderCls: 'border-[#cfe0ea] hover:border-[#3d6b8a]',
       url: `https://www.skyscanner.com/transport/flights/${from}/${to}/${d_sc}/?adults=${pax}`,
     },
     {
       name: 'Google Flights', logo: '🌐', tagline: 'Free · Price alerts · Best date calendar',
-      badge: 'Free & Fast', badgeCls: 'bg-green-100 text-green-700', borderCls: 'border-green-200 hover:border-green-400',
+      badge: 'Free & Fast', badgeCls: 'bg-[#eef3e7] text-[#5c7a4f]', borderCls: 'border-[#d8e5cb] hover:border-[#6b8f5e]',
       url: `https://www.google.com/travel/flights?q=Flights+from+${encodeURIComponent(fromCity)}+to+${encodeURIComponent(toCity)}&hl=en&curr=USD`,
     },
     {
       name: 'Kayak', logo: '🛶', tagline: 'Price prediction & deal alerts',
-      badge: 'Price Alerts', badgeCls: 'bg-purple-100 text-purple-700', borderCls: 'border-purple-200 hover:border-purple-400',
+      badge: 'Price Alerts', badgeCls: 'bg-[#f5eef8] text-[#7d5a8c]', borderCls: 'border-[#e5d3ec] hover:border-[#7d5a8c]',
       url: `https://www.kayak.com/flights/${from}-${to}/${d_iso}/${pax}adults`,
     },
     {
       name: 'Trip.com', logo: '🗺️', tagline: 'Great Asia coverage · 24/7 support',
-      badge: 'Asia Routes', badgeCls: 'bg-cyan-100 text-cyan-700', borderCls: 'border-cyan-200 hover:border-cyan-400',
+      badge: 'Asia Routes', badgeCls: 'bg-[#eaf3f4] text-[#2d6a6f]', borderCls: 'border-[#cde3e4] hover:border-[#2d6a6f]',
       url: `https://www.trip.com/flights/${from.toLowerCase()}-to-${to.toLowerCase()}/?dcity=${from}&acity=${to}&ddate=${d_iso}&adult=${pax}`,
     },
     {
       name: 'Booking.com Flights', logo: '🟦', tagline: 'Bundle with hotel · Genius discounts',
-      badge: 'Bundle', badgeCls: 'bg-indigo-100 text-indigo-700', borderCls: 'border-indigo-200 hover:border-indigo-400',
+      badge: 'Bundle', badgeCls: 'bg-[#eef0fa] text-[#5a5a8c]', borderCls: 'border-[#dcdef0] hover:border-[#5a5a8c]',
       url: `https://flights.booking.com/?from=${from}&to=${to}&depart=${d_iso}&adults=${pax}`,
     },
     {
       name: 'Momondo', logo: '💡', tagline: 'Hidden deals from smaller carriers',
-      badge: 'Hidden Deals', badgeCls: 'bg-yellow-100 text-yellow-700', borderCls: 'border-yellow-200 hover:border-yellow-400',
+      badge: 'Hidden Deals', badgeCls: 'bg-[#fdf6e3] text-[#b8860b]', borderCls: 'border-[#f5e6b8] hover:border-[#c9962f]',
       url: `https://www.momondo.com/flight-search/${from}-${to}/${d_iso}`,
     },
     {

@@ -37,7 +37,7 @@ export default function GlobalSearch() {
     )).slice(0, 5).map(f => ({ type: 'flight', icon: Plane, title: `${f.from} → ${f.to}`, sub: `${f.airline} · ${f.cabin} · ${fmt(f.price)}`, action: () => navigate('/flights') })),
   ];
 
-  const TYPE_COLOR = { flight: 'bg-cyan-100 text-cyan-700' };
+  const TYPE_COLOR = { flight: 'bg-[#eaf3f4] text-[#2d6a6f]' };
 
   const handleSelect = (item) => { item.action(); setOpen(false); setQuery(''); };
 

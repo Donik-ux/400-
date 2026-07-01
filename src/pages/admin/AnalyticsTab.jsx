@@ -23,8 +23,8 @@ function buildByType(bookings) {
   const flights  = bookings.filter(b => b.type === 'flight').length;
   const packages = bookings.filter(b => b.type === 'package').length;
   return [
-    { label: 'Flights',  value: flights,  color: 'bg-cyan-400' },
-    { label: 'Packages', value: packages, color: 'bg-purple-400' },
+    { label: 'Flights',  value: flights,  color: 'bg-[#4a9ba3]' },
+    { label: 'Packages', value: packages, color: 'bg-[#a482b5]' },
   ];
 }
 
@@ -65,9 +65,9 @@ export default function AnalyticsTab() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { icon: DollarSign,  label: 'Total Revenue',    value: `$${totalRev.toLocaleString()}`, color: 'text-green-400' },
-          { icon: TrendingUp,  label: 'Avg Booking Value', value: `$${avgBooking.toLocaleString()}`, color: 'text-blue-400' },
-          { icon: BarChart3,   label: 'Conversion Rate',  value: `${convRate}%`,                  color: 'text-purple-400' },
-          { icon: Calendar,    label: 'Total Bookings',   value: bookings.length,                color: 'text-cyan-400' },
+          { icon: TrendingUp,  label: 'Avg Booking Value', value: `$${avgBooking.toLocaleString()}`, color: 'text-[#5b93b8]' },
+          { icon: BarChart3,   label: 'Conversion Rate',  value: `${convRate}%`,                  color: 'text-[#a482b5]' },
+          { icon: Calendar,    label: 'Total Bookings',   value: bookings.length,                color: 'text-[#4a9ba3]' },
         ].map(({ icon: Icon, label, value, color }) => (
           <div key={label} className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
             <div className="w-9 h-9 rounded-xl bg-white/[0.05] flex items-center justify-center mb-3">
@@ -104,11 +104,11 @@ export default function AnalyticsTab() {
                     </div>
                   )}
                   <div
-                    className={`w-full rounded-t-lg transition-all duration-500 ${isCurrentMonth ? 'bg-cyan-400' : 'bg-white/[0.12] group-hover:bg-white/20'}`}
+                    className={`w-full rounded-t-lg transition-all duration-500 ${isCurrentMonth ? 'bg-[#4a9ba3]' : 'bg-white/[0.12] group-hover:bg-white/20'}`}
                     style={{ height: `${Math.max(pct, m.total > 0 ? 4 : 0)}%` }}
                   />
                 </div>
-                <span className={`text-[9px] font-black uppercase tracking-wide ${isCurrentMonth ? 'text-cyan-400' : 'text-white/30'}`}>
+                <span className={`text-[9px] font-black uppercase tracking-wide ${isCurrentMonth ? 'text-[#4a9ba3]' : 'text-white/30'}`}>
                   {m.label}
                 </span>
               </div>
@@ -141,8 +141,8 @@ export default function AnalyticsTab() {
           <h3 className="text-sm font-black uppercase tracking-widest text-white/50 mb-4">Inventory Summary</h3>
           <div className="flex flex-col gap-3">
             {[
-              { label: 'Active Flights',  value: adminFlights.filter(f=>f.available).length, total: adminFlights.length, color: 'text-cyan-400' },
-              { label: 'Active Packages', value: packages.filter(p=>p.available).length, total: packages.length, color: 'text-purple-400' },
+              { label: 'Active Flights',  value: adminFlights.filter(f=>f.available).length, total: adminFlights.length, color: 'text-[#4a9ba3]' },
+              { label: 'Active Packages', value: packages.filter(p=>p.available).length, total: packages.length, color: 'text-[#a482b5]' },
             ].map(({ label, value, total, color }) => (
               <div key={label} className="flex items-center justify-between py-2.5 border-b border-white/[0.04] last:border-0">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-white/40">{label}</span>

@@ -9,13 +9,13 @@ const TYPE_ICON = {
 };
 
 const SEVERITY_STYLE = {
-  info:    'border-blue-400/20 bg-blue-400/[0.05]',
+  info:    'border-[#5b93b8]/20 bg-[#5b93b8]/[0.05]',
   warning: 'border-yellow-400/20 bg-yellow-400/[0.05]',
   error:   'border-red-400/20 bg-red-400/[0.05]',
 };
 
 const SEVERITY_DOT = {
-  info:    'bg-blue-400',
+  info:    'bg-[#5b93b8]',
   warning: 'bg-yellow-400',
   error:   'bg-red-400',
 };
@@ -48,7 +48,7 @@ export default function NotificationsTab() {
           <Bell className="w-4 h-4 text-white/40" />
           <span className="text-sm font-black text-white/60">{notifications.length} total</span>
           {unread > 0 && (
-            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-blue-400/20 text-blue-400 uppercase tracking-widest">
+            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[#5b93b8]/20 text-[#5b93b8] uppercase tracking-widest">
               {unread} unread
             </span>
           )}

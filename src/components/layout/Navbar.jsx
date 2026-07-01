@@ -90,6 +90,11 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
+            {/* Language (Mobile) — desktop gets the full switcher further right */}
+            <div className="md:hidden">
+              <LanguageSwitcher align="right" showName={false} />
+            </div>
+
             <div className="mr-1">
               <GlobalSearch />
             </div>
@@ -139,7 +144,7 @@ export default function Navbar() {
                       </button>
                     )}
                     <button onClick={() => { navigate('/dashboard'); setUserOpen(false); }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-semibold text-sky-300 hover:bg-white/[0.06] border-b border-white/10 transition-premium">
+                      className="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-semibold text-[#7fc4c9] hover:bg-white/[0.06] border-b border-white/10 transition-premium">
                       <LayoutDashboard className="w-4 h-4" /> {t('nav2.myDashboard')}
                     </button>
                     <button onClick={() => { navigate('/profile'); setUserOpen(false); }}

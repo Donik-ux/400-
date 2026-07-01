@@ -70,7 +70,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
               <div className="flex items-start gap-3">
                 {/* Time badge */}
                 <div className="shrink-0 mt-0.5">
-                  <span className="text-[10px] font-black text-[#0071c2] bg-blue-50 ring-1 ring-[#0071c2]/10 px-2 py-1 rounded-md whitespace-nowrap">
+                  <span className="text-[10px] font-black text-[#0071c2] bg-[#f0f5ff] ring-1 ring-[#0071c2]/10 px-2 py-1 rounded-md whitespace-nowrap">
                     {ev.time || '—'}
                   </span>
                 </div>
@@ -90,7 +90,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
 
                   {/* Address — prominent */}
                   {ev.address && (
-                    <div className="flex items-start gap-1.5 mt-1 bg-[#f0f7ff] border border-blue-100 rounded-lg px-2 py-1.5">
+                    <div className="flex items-start gap-1.5 mt-1 bg-[#f0f7ff] border border-[#dceaff] rounded-lg px-2 py-1.5">
                       <MapPin className="w-3 h-3 text-[#0071c2] shrink-0 mt-0.5" />
                       <p className="text-[11px] text-[#003580] leading-snug font-semibold">{ev.address}</p>
                     </div>

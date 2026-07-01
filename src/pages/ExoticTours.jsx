@@ -65,20 +65,20 @@ const TourCard = ({ tour, budget }) => {
 
       <div className="p-5 flex flex-col flex-1">
         {/* Temperature route */}
-        <div className="flex items-center gap-2 mb-4 p-2.5 rounded-xl bg-gradient-to-r from-orange-50 via-white to-blue-50 border border-[#efe6d2]">
+        <div className="flex items-center gap-2 mb-4 p-2.5 rounded-xl bg-gradient-to-r from-[#fdf1e8] via-white to-[#eaf3f4] border border-[#efe6d2]">
           <div className="text-center px-1 shrink-0">
             <div className="text-[18px] leading-none">{tour.from.icon}</div>
             <div className="text-[11px] font-black text-[#1a1a1a] mt-0.5">{tour.from.city}</div>
-            <div className="text-[10px] font-black text-orange-500">{tour.from.temp}</div>
+            <div className="text-[10px] font-black text-[#c26d4a]">{tour.from.temp}</div>
           </div>
           <div className="flex-1 flex items-center">
-            <div className="flex-1 h-[3px] rounded-full bg-gradient-to-r from-orange-400 to-blue-400" />
+            <div className="flex-1 h-[3px] rounded-full bg-gradient-to-r from-[#c9962f] to-[#2d6a6f]" />
             <Plane className="w-4 h-4 text-[#0071c2] mx-1 rotate-45 shrink-0" />
           </div>
           <div className="text-center px-1 shrink-0">
             <div className="text-[18px] leading-none">{tour.to.icon}</div>
             <div className="text-[11px] font-black text-[#1a1a1a] mt-0.5">{tour.to.city}</div>
-            <div className="text-[10px] font-black text-blue-500">{tour.to.temp}</div>
+            <div className="text-[10px] font-black text-[#2d6a6f]">{tour.to.temp}</div>
           </div>
         </div>
 
@@ -191,7 +191,7 @@ const ExoticTours = () => {
 
             <h1 className="text-[52px] md:text-[72px] font-black text-white leading-[0.95] tracking-tighter mb-6">
               {t('exotic.title1')}<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 to-blue-300">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffd76e] to-[#7fc4c9]">
                 {t('exotic.title2')}
               </span>
             </h1>

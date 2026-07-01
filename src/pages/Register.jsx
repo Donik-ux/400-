@@ -55,8 +55,9 @@ export default function Register() {
         </div>
 
         <div className="relative z-10 flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
-            <Compass className="w-5 h-5 text-[#febb02]" />
+          <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#ffd76e] via-[#f5b942] to-[#d99a2b] flex items-center justify-center shadow-[0_4px_16px_rgba(245,185,66,0.5)] ring-1 ring-white/30">
+            <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
+            <Compass className="relative w-5 h-5 text-[#002250]" strokeWidth={2.5} />
           </div>
           <span className="text-xl font-black tracking-tight">MAFTRAVEL</span>
         </div>
@@ -83,8 +84,9 @@ export default function Register() {
 
         {/* Logo */}
         <div className="flex items-center gap-2 justify-center mb-8 lg:hidden">
-          <div className="w-9 h-9 rounded-lg bg-[#003580] flex items-center justify-center">
-            <Compass className="w-5 h-5 text-white" />
+          <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#ffd76e] via-[#f5b942] to-[#d99a2b] flex items-center justify-center shadow-[0_4px_16px_rgba(245,185,66,0.5)] ring-1 ring-white/30">
+            <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
+            <Compass className="relative w-[18px] h-[18px] text-[#002250]" strokeWidth={2.5} />
           </div>
           <span className="text-xl font-black text-[#003580]">MAFTRAVEL</span>
         </div>

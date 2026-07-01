@@ -25,16 +25,21 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative w-full bg-gradient-to-b from-[#003580] to-[#002250] text-white mt-12">
+    <footer className="relative w-full bg-gradient-to-b from-[#003580] to-[#001427] text-white mt-12 overflow-hidden">
       {/* Gold hairline to echo the navbar accent */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5b942]/45 to-transparent" />
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-14">
+      {/* Ambient depth — same atmospheric language as the hero sections, kept subtle */}
+      <div className="pattern-lux" />
+      <div className="absolute -left-24 top-0 w-96 h-96 rounded-full bg-[#0071c2]/15 blur-3xl pointer-events-none" />
+      <div className="absolute -right-24 bottom-0 w-96 h-96 rounded-full bg-[#febb02]/10 blur-3xl pointer-events-none" />
+      <div className="relative max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-white/[0.12]">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-2.5 mb-4 cursor-pointer" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
-              <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
-                <Compass className="w-[18px] h-[18px] text-[#003580]" />
+            <div className="flex items-center gap-2.5 mb-4 cursor-pointer group" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
+              <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#ffd76e] via-[#f5b942] to-[#d99a2b] flex items-center justify-center shadow-[0_4px_16px_rgba(245,185,66,0.4)] ring-1 ring-white/30 group-hover:scale-105 group-hover:rotate-[8deg] transition-premium">
+                <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
+                <Compass className="relative w-[18px] h-[18px] text-[#002250]" strokeWidth={2.5} />
               </div>
               <div className="flex flex-col">
                 <span className="text-[17px] font-black tracking-tight leading-none">MAFTRAVEL</span>
@@ -96,7 +101,7 @@ export default function Footer() {
                   className="flex-1 bg-transparent px-2 text-[13px] text-white placeholder:text-white/30 focus:outline-none"
                 />
                 <button onClick={() => email && setJoined(true)}
-                  className="px-3 py-2 bg-white text-[#003580] rounded-lg font-black text-[11px] hover:bg-white/90 active:scale-95 transition-premium uppercase tracking-tighter">
+                  className="btn-gold px-3 py-2 text-[11px] uppercase tracking-tighter">
                   {t('footer.join')}
                 </button>
               </div>

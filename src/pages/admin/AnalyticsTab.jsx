@@ -23,8 +23,8 @@ function buildByType(bookings) {
   const flights  = bookings.filter(b => b.type === 'flight').length;
   const packages = bookings.filter(b => b.type === 'package').length;
   return [
-    { label: 'Flights',  value: flights,  color: 'bg-[#4a9ba3]' },
-    { label: 'Packages', value: packages, color: 'bg-[#a482b5]' },
+    { label: 'Flights',  value: flights,  color: 'bg-[#f5b942]' },
+    { label: 'Packages', value: packages, color: 'bg-[#7fb2e5]' },
   ];
 }
 
@@ -64,13 +64,13 @@ export default function AnalyticsTab() {
       {/* KPI row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { icon: DollarSign,  label: 'Total Revenue',    value: `$${totalRev.toLocaleString()}`, color: 'text-green-400' },
-          { icon: TrendingUp,  label: 'Avg Booking Value', value: `$${avgBooking.toLocaleString()}`, color: 'text-[#5b93b8]' },
-          { icon: BarChart3,   label: 'Conversion Rate',  value: `${convRate}%`,                  color: 'text-[#a482b5]' },
-          { icon: Calendar,    label: 'Total Bookings',   value: bookings.length,                color: 'text-[#4a9ba3]' },
+          { icon: DollarSign,  label: 'Total Revenue',    value: `$${totalRev.toLocaleString()}`, color: 'text-ok-n' },
+          { icon: TrendingUp,  label: 'Avg Booking Value', value: `$${avgBooking.toLocaleString()}`, color: 'text-[#7fb2e5]' },
+          { icon: BarChart3,   label: 'Conversion Rate',  value: `${convRate}%`,                  color: 'text-[#c8b48a]' },
+          { icon: Calendar,    label: 'Total Bookings',   value: bookings.length,                color: 'text-[#7cc4d9]' },
         ].map(({ icon: Icon, label, value, color }) => (
-          <div key={label} className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
-            <div className="w-9 h-9 rounded-xl bg-white/[0.05] flex items-center justify-center mb-3">
+          <div key={label} className="night-panel rounded-2xl p-5">
+            <div className="w-9 h-9 rounded-xl night-inset flex items-center justify-center mb-3">
               <Icon className={`w-4 h-4 ${color}`} />
             </div>
             <p className={`text-2xl font-black ${color}`}>{value}</p>
@@ -80,7 +80,7 @@ export default function AnalyticsTab() {
       </div>
 
       {/* Revenue Bar Chart */}
-      <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
+      <div className="night-panel rounded-2xl p-5">
         <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
           <div>
             <h3 className="text-sm font-black uppercase tracking-widest text-white/50">Monthly Revenue</h3>
@@ -104,11 +104,11 @@ export default function AnalyticsTab() {
                     </div>
                   )}
                   <div
-                    className={`w-full rounded-t-lg transition-all duration-500 ${isCurrentMonth ? 'bg-[#4a9ba3]' : 'bg-white/[0.12] group-hover:bg-white/20'}`}
+                    className={`w-full rounded-t-lg transition-all duration-500 ${isCurrentMonth ? 'bg-gradient-to-t from-[#d99a2b] to-[#ffd76e]' : 'bg-[#8fb4ff]/15 group-hover:bg-[#8fb4ff]/25'}`}
                     style={{ height: `${Math.max(pct, m.total > 0 ? 4 : 0)}%` }}
                   />
                 </div>
-                <span className={`text-[9px] font-black uppercase tracking-wide ${isCurrentMonth ? 'text-[#4a9ba3]' : 'text-white/30'}`}>
+                <span className={`text-[9px] font-black uppercase tracking-wide ${isCurrentMonth ? 'text-warn-n' : 'text-white/30'}`}>
                   {m.label}
                 </span>
               </div>
@@ -119,7 +119,7 @@ export default function AnalyticsTab() {
 
       {/* Booking by Type */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
+        <div className="night-panel rounded-2xl p-5">
           <h3 className="text-sm font-black uppercase tracking-widest text-white/50 mb-4">Bookings by Type</h3>
           <div className="flex flex-col gap-4">
             {byType.map(({ label, value, color }) => (
@@ -128,7 +128,7 @@ export default function AnalyticsTab() {
                   <span>{label}</span>
                   <span>{value} ({Math.round((value/totalItems)*100)}%)</span>
                 </div>
-                <div className="h-2.5 rounded-full bg-white/[0.05] overflow-hidden">
+                <div className="h-2.5 rounded-full bg-[#8fb4ff]/10 overflow-hidden">
                   <div className={`h-full rounded-full ${color} transition-all duration-700`}
                     style={{ width: `${(value / totalItems) * 100}%` }} />
                 </div>
@@ -137,12 +137,12 @@ export default function AnalyticsTab() {
           </div>
         </div>
 
-        <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
+        <div className="night-panel rounded-2xl p-5">
           <h3 className="text-sm font-black uppercase tracking-widest text-white/50 mb-4">Inventory Summary</h3>
           <div className="flex flex-col gap-3">
             {[
-              { label: 'Active Flights',  value: adminFlights.filter(f=>f.available).length, total: adminFlights.length, color: 'text-[#4a9ba3]' },
-              { label: 'Active Packages', value: packages.filter(p=>p.available).length, total: packages.length, color: 'text-[#a482b5]' },
+              { label: 'Active Flights',  value: adminFlights.filter(f=>f.available).length, total: adminFlights.length, color: 'text-warn-n' },
+              { label: 'Active Packages', value: packages.filter(p=>p.available).length, total: packages.length, color: 'text-[#7fb2e5]' },
             ].map(({ label, value, total, color }) => (
               <div key={label} className="flex items-center justify-between py-2.5 border-b border-white/[0.04] last:border-0">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-white/40">{label}</span>

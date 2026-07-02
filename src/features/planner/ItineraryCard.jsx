@@ -138,17 +138,17 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
 
       {/* Halal Restaurant */}
       {dayPlan.halalRestaurant && (
-        <div className="mx-4 mb-4 mt-2 bg-green-50 border border-green-200 rounded-xl p-3">
+        <div className="mx-4 mb-4 mt-2 note-ok rounded-xl p-3">
           <div className="flex items-start gap-2">
             <span className="text-[16px] shrink-0">🥩</span>
             <div className="min-w-0">
-              <p className="text-[12px] font-black text-green-800">{dayPlan.halalRestaurant.name}</p>
+              <p className="text-[12px] font-black text-[#24513a]">{dayPlan.halalRestaurant.name}</p>
               <div className="flex items-start gap-1 mt-0.5">
-                <MapPin className="w-3 h-3 text-green-600 shrink-0 mt-0.5" />
-                <p className="text-[11px] text-green-700 font-medium">{dayPlan.halalRestaurant.address}</p>
+                <MapPin className="w-3 h-3 text-[#2e7d4f] shrink-0 mt-0.5" />
+                <p className="text-[11px] text-ok font-medium">{dayPlan.halalRestaurant.address}</p>
               </div>
               {dayPlan.halalRestaurant.avgPrice && (
-                <p className="text-[10px] text-green-600 mt-0.5 font-bold">{t('plannerPage.card.avg')}: {dayPlan.halalRestaurant.avgPrice}</p>
+                <p className="text-[10px] text-[#2e7d4f] mt-0.5 font-bold">{t('plannerPage.card.avg')}: {dayPlan.halalRestaurant.avgPrice}</p>
               )}
             </div>
           </div>

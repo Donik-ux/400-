@@ -98,7 +98,7 @@ export default function RecommendedTrips() {
             <Navigation className="w-3.5 h-3.5" /> {t('tripRec.detected')}: {from}
           </p>
         )}
-        {locError && <p className="text-[12px] font-bold text-amber-700 mt-2">{locError}</p>}
+        {locError && <p className="text-[12px] font-bold text-warn mt-2">{locError}</p>}
       </div>
 
       {/* Destination recommendations */}

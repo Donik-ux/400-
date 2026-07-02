@@ -96,9 +96,9 @@ export default function Register() {
           <p className="text-[#93876f] text-sm mb-6">{t('auth.register.sub')}</p>
 
           {error && (
-            <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-5">
-              <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
-              <p className="text-red-600 text-sm">{error}</p>
+            <div className="flex items-center gap-2 note-danger rounded-xl px-4 py-3 mb-5">
+              <AlertCircle className="w-4 h-4 text-danger shrink-0" />
+              <p className="text-danger text-sm">{error}</p>
             </div>
           )}
 
@@ -156,8 +156,8 @@ export default function Register() {
               <div className="flex flex-col gap-1.5">
                 {rules.map(r => (
                   <div key={r.label} className="flex items-center gap-2">
-                    <CheckCircle2 className={`w-3.5 h-3.5 ${r.ok ? 'text-green-500' : 'text-[#e6dcc3]'}`} />
-                    <span className={`text-xs ${r.ok ? 'text-green-700' : 'text-[#93876f]'}`}>{r.label}</span>
+                    <CheckCircle2 className={`w-3.5 h-3.5 ${r.ok ? 'text-[#2e7d4f]' : 'text-[#e6dcc3]'}`} />
+                    <span className={`text-xs ${r.ok ? 'text-ok' : 'text-[#93876f]'}`}>{r.label}</span>
                   </div>
                 ))}
               </div>

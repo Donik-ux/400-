@@ -95,9 +95,9 @@ export default function Login() {
           <p className="text-[#93876f] text-sm mb-6">{t('auth.login.sub')}</p>
 
           {error && (
-            <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-5">
-              <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
-              <p className="text-red-600 text-sm">{error}</p>
+            <div className="flex items-center gap-2 note-danger rounded-xl px-4 py-3 mb-5">
+              <AlertCircle className="w-4 h-4 text-danger shrink-0" />
+              <p className="text-danger text-sm">{error}</p>
             </div>
           )}
 

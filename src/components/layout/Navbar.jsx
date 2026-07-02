@@ -164,7 +164,7 @@ export default function Navbar() {
                       <BookOpen className="w-4 h-4" /> {t('nav.myBookings')}
                     </button>
                     <button onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-semibold text-red-400 hover:bg-red-500/10 border-t border-white/10 transition-premium">
+                      className="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-semibold text-[#ff9c8a] hover:bg-[#ff9c8a]/10 border-t border-white/10 transition-premium">
                       <LogOut className="w-4 h-4" /> {t('nav.signOut')}
                     </button>
                   </div>
@@ -230,7 +230,7 @@ export default function Navbar() {
           <div className="mt-4 flex flex-col gap-2">
             {user ? (
               <button onClick={() => { handleLogout(); setMobileOpen(false); }}
-                className="w-full py-3 rounded-lg border border-red-400/30 text-red-400 text-[13px] font-semibold flex items-center justify-center gap-2">
+                className="w-full py-3 rounded-lg border border-[#ff9c8a]/30 text-[#ff9c8a] text-[13px] font-semibold flex items-center justify-center gap-2">
                 <LogOut className="w-4 h-4" /> {t('nav.signOut')}
               </button>
             ) : (

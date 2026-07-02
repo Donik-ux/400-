@@ -179,7 +179,7 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
           })}
           {(formData.from || formData.to || formData.date) && (
             <button type="button" onClick={reset}
-              className="ml-auto flex items-center gap-1 text-[11px] font-black text-[#93876f] hover:text-red-500 transition">
+              className="ml-auto flex items-center gap-1 text-[11px] font-black text-[#93876f] hover:text-danger transition">
               <RotateCcw className="w-3 h-3" /> {t('flightsPage.search.reset')}
             </button>
           )}

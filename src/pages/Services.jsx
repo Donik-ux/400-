@@ -59,7 +59,7 @@ const RunButton = ({ onClick, loading, disabled, label, loadingLabel }) => (
 );
 
 const ErrorNote = ({ children }) => (
-  <div className="flex items-start gap-2 text-[12px] font-bold text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5">
+  <div className="flex items-start gap-2 text-[12px] font-bold text-warn note-warn rounded-xl px-3 py-2.5">
     <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" /> <span>{children}</span>
   </div>
 );
@@ -67,8 +67,8 @@ const ErrorNote = ({ children }) => (
 const TrendBadge = ({ trend }) => {
   const { t } = useTranslation();
   const map = {
-    rising:  { icon: TrendingUp,   cls: 'text-red-600 bg-red-50',   label: t('servicesPage.trendRising') },
-    falling: { icon: TrendingDown, cls: 'text-green-600 bg-green-50', label: t('servicesPage.trendFalling') },
+    rising:  { icon: TrendingUp,   cls: 'text-danger bg-[#faeae6]',   label: t('servicesPage.trendRising') },
+    falling: { icon: TrendingDown, cls: 'text-ok bg-[#e9f3ea]', label: t('servicesPage.trendFalling') },
     stable:  { icon: Minus,        cls: 'text-[#0071c2] bg-[#f0f5ff]', label: t('servicesPage.trendStable') },
   };
   const m = map[trend] || map.stable;
@@ -119,10 +119,10 @@ function VisaChecker() {
   const ai = useAI((a) => checkVisa(a));
 
   const statusMap = {
-    visa_free:        { label: t('servicesPage.visa.statusFree'),     cls: 'bg-green-50 text-green-700 border-green-200' },
+    visa_free:        { label: t('servicesPage.visa.statusFree'),     cls: 'badge-ok' },
     visa_on_arrival:  { label: t('servicesPage.visa.statusArrival'),  cls: 'bg-[#f0f5ff] text-[#0071c2] border-[#bcd9ff]' },
     e_visa:           { label: t('servicesPage.visa.statusEvisa'),    cls: 'bg-[#f0f5ff] text-[#0071c2] border-[#bcd9ff]' },
-    visa_required:    { label: t('servicesPage.visa.statusRequired'), cls: 'bg-amber-50 text-amber-700 border-amber-200' },
+    visa_required:    { label: t('servicesPage.visa.statusRequired'), cls: 'badge-warn' },
     unknown:          { label: t('servicesPage.visa.statusUnknown'),  cls: 'bg-[#f6f1e4] text-[#5c5245] border-[#e6dcc3]' },
   };
   const d = ai.data;
@@ -252,7 +252,7 @@ function CheapestMonth() {
   const [destination, setDestination] = useState('');
   const ai = useAI((a) => cheapestMonth(a));
   const d = ai.data;
-  const levelCls = { low: 'bg-green-500', medium: 'bg-[#febb02]', high: 'bg-red-500' };
+  const levelCls = { low: 'bg-[#2e7d4f]', medium: 'bg-[#febb02]', high: 'bg-[#b3402e]' };
 
   return (
     <Shell icon={CalendarRange} title={t('servicesPage.cheapest.title')} desc={t('servicesPage.cheapest.desc')}>
@@ -397,22 +397,21 @@ export default function Services() {
     { icon: ShieldCheck, accent: 'bg-[#f0fdf4] text-[#008009]', title: t('servicesPage.insurance.title'), desc: t('servicesPage.insurance.desc'), message: 'Hi MAFTRAVEL! I want a travel insurance quote.' },
     { icon: Wifi,        accent: 'bg-[#f0f5ff] text-[#0071c2]', title: t('servicesPage.esim.title'),      desc: t('servicesPage.esim.desc'),      message: 'Hi MAFTRAVEL! I want a travel eSIM.' },
     { icon: Car,         accent: 'bg-[#fff7e6] text-[#b8860b]', title: t('servicesPage.transfer.title'),  desc: t('servicesPage.transfer.desc'),  message: 'Hi MAFTRAVEL! I want to book an airport transfer.' },
-    { icon: Armchair,    accent: 'bg-[#fdf2f8] text-[#be185d]', title: t('servicesPage.lounge.title'),    desc: t('servicesPage.lounge.desc'),    message: 'Hi MAFTRAVEL! I want an airport lounge pass.' },
+    { icon: Armchair,    accent: 'bg-[#fdf3dc] text-[#8a5c17]', title: t('servicesPage.lounge.title'),    desc: t('servicesPage.lounge.desc'),    message: 'Hi MAFTRAVEL! I want an airport lounge pass.' },
   ];
 
   return (
     <div className="bg-[#faf6ed] min-h-screen">
       {/* Hero */}
-      <section className="relative bg-[#002250] text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-30 pointer-events-none animate-float"
-          style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #0071c2 0%, transparent 45%), radial-gradient(circle at 80% 70%, #f5b942 0%, transparent 38%)' }} />
+      <section className="relative aurora-bg text-white overflow-hidden">
+        <div className="film-grain" />
         <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f5b942] text-[#002250] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
-            <Sparkles className="w-3.5 h-3.5" /> {t('servicesPage.hero.badge')}
+          <div className="badge-editorial inline-flex px-3.5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-[#ffd76e]" /> {t('servicesPage.hero.badge')}
           </div>
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-[1.05] mb-2">
-            {t('servicesPage.hero.title1')} <span className="text-gradient-gold">{t('servicesPage.hero.title2')}</span>
+          <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-[-0.03em] leading-[1.05] mb-2 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
+            {t('servicesPage.hero.title1')} <span className="italic font-medium text-gradient-gold gold-animate">{t('servicesPage.hero.title2')}</span>
           </h1>
           <p className="text-[14px] md:text-[15px] text-white/70 font-medium max-w-xl">{t('servicesPage.hero.sub')}</p>
         </div>

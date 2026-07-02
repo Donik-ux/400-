@@ -26,14 +26,14 @@ const Field = ({ label, icon: Icon, error, children, hint }) => (
       {Icon && <Icon className="w-3 h-3 text-[#0071c2]" />} {label}
     </label>
     {children}
-    {error && <p className="text-red-500 text-xs mt-1 flex items-center gap-1 font-semibold"><AlertCircle className="w-3 h-3" />{error}</p>}
+    {error && <p className="text-danger text-xs mt-1 flex items-center gap-1 font-semibold"><AlertCircle className="w-3 h-3" />{error}</p>}
     {hint && !error && <p className="text-[#93876f] text-xs mt-1 font-semibold">{hint}</p>}
   </div>
 );
 
 const INPUT_CLS = (err) =>
   `w-full bg-white border-2 rounded-xl px-4 py-3 text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none transition ${
-    err ? 'border-red-400 focus:border-red-500' : 'border-[#e6dcc3] hover:border-[#cbd5e1] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10'
+    err ? 'border-[#d98a75] focus:border-[#b3402e]' : 'border-[#e6dcc3] hover:border-[#cbd5e1] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10'
   }`;
 
 /* ─── Main Checkout ─── */
@@ -304,7 +304,7 @@ export default function Checkout() {
                         </div>
                       )}
                       {passState === 'invalid' && traveler.passport.length >= 6 && (
-                        <AlertCircle className="w-4 h-4 text-red-500" />
+                        <AlertCircle className="w-4 h-4 text-danger" />
                       )}
                     </div>
                   </div>

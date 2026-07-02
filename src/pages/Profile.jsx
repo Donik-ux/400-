@@ -174,9 +174,9 @@ export default function Profile() {
                           <Sparkles className="w-3 h-3" /> {isAi ? (t('lists.plans.aiPlanTag') || 'AI plan') : (t('lists.plans.planTag') || 'Plan')}
                         </span>
                         <button onClick={() => handleRemovePlan(plan.id, dest)}
-                          className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 flex items-center justify-center shadow hover:bg-red-50 hover:scale-110 transition"
+                          className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 flex items-center justify-center shadow hover:bg-[#faeae6] hover:scale-110 transition"
                           aria-label={t('lists.plans.deletePlan') || 'Delete plan'}>
-                          <Trash2 className="w-4 h-4 text-red-500" />
+                          <Trash2 className="w-4 h-4 text-danger" />
                         </button>
                         <h3 className="absolute bottom-2 left-3 right-3 text-white text-[16px] font-black flex items-center gap-1.5 drop-shadow">
                           <MapPin className="w-4 h-4" /> {dest}
@@ -312,7 +312,7 @@ export default function Profile() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-black text-[#1a1a1a]">{fmt(b.total)}</p>
-                      <span className={`text-[10px] font-black ${b.status === 'confirmed' ? 'text-[#008009]' : b.status === 'cancelled' ? 'text-red-500' : 'text-[#a45e00]'}`}>
+                      <span className={`text-[10px] font-black ${b.status === 'confirmed' ? 'text-ok' : b.status === 'cancelled' ? 'text-danger' : 'text-warn'}`}>
                         {b.status}
                       </span>
                     </div>

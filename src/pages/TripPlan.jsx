@@ -444,7 +444,7 @@ export default function TripPlan() {
               )}
 
               {error && (
-                <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-[13px] font-semibold flex items-center gap-2">
+                <div className="p-4 rounded-xl note-danger text-danger text-[13px] font-semibold flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" /> {error}
                   <button onClick={runGenerate} className="ml-auto text-[12px] font-black underline">{t('tripPlan.retry')}</button>
                 </div>
@@ -461,7 +461,7 @@ export default function TripPlan() {
                     <div className="flex-1 min-w-32">
                       <div className="h-2.5 bg-[#efe6d2] rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-700 ${totalDayCosts > Number(item.price) ? 'bg-red-500' : 'bg-gradient-to-r from-[#febb02] to-[#f5b942]'}`}
+                          className={`h-full rounded-full transition-all duration-700 ${totalDayCosts > Number(item.price) ? 'bg-[#b3402e]' : 'bg-gradient-to-r from-[#febb02] to-[#f5b942]'}`}
                           style={{ width: `${Math.min(100, (totalDayCosts / Math.max(1, Number(item.price))) * 100)}%` }}
                         />
                       </div>
@@ -611,7 +611,7 @@ export default function TripPlan() {
             {plan?.emergency && (
               <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-soft">
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
-                  <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600 shrink-0">
+                  <div className="w-9 h-9 rounded-xl bg-[#faeae6] flex items-center justify-center text-danger shrink-0">
                     <ShieldAlert className="w-5 h-5" />
                   </div>
                   <div className="min-w-0">
@@ -640,7 +640,7 @@ export default function TripPlan() {
                   ))}
                 </div>
                 {plan.emergency.tips?.length > 0 && (
-                  <div className="mt-3 p-3 rounded-xl bg-amber-50 border border-amber-200 text-[12px] text-[#7c4a00] font-semibold flex items-start gap-2">
+                  <div className="mt-3 p-3 rounded-xl note-warn text-[12px] text-[#7c4a00] font-semibold flex items-start gap-2">
                     <Lightbulb className="w-4 h-4 mt-0.5 shrink-0" />
                     <div className="space-y-1">
                       {plan.emergency.tips.map((t, i) => <p key={i}>{t}</p>)}

@@ -28,7 +28,7 @@ export default function DisclaimerModal() {
         {/* Header */}
         <div className="bg-[#003580] px-7 py-5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Shield className="w-6 h-6 text-yellow-300 shrink-0" />
+            <Shield className="w-6 h-6 text-[#ffd76e] shrink-0" />
             <div>
               <h2 className="text-white font-black text-[17px] leading-tight">MAFTRAVEL</h2>
               <p className="text-white/60 text-[11px] uppercase tracking-widest font-bold">{t('ui.disclaimer.eyebrow')}</p>
@@ -40,9 +40,9 @@ export default function DisclaimerModal() {
 
         {/* Body */}
         <div className="px-7 py-6 max-h-[60vh] overflow-y-auto">
-          <div className="flex items-start gap-3 mb-5 p-4 bg-amber-50 border border-amber-200 rounded-2xl">
-            <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-            <p className="text-[13px] font-bold text-amber-800">
+          <div className="flex items-start gap-3 mb-5 p-4 note-warn rounded-2xl">
+            <AlertTriangle className="w-5 h-5 text-[#c9962f] shrink-0 mt-0.5" />
+            <p className="text-[13px] font-bold text-warn">
               {t('ui.disclaimer.warning')}
             </p>
           </div>

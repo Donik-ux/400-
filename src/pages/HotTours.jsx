@@ -38,10 +38,10 @@ const buildHotDeals = (packages) => {
 };
 
 const STYLE_BADGE = {
-  economy:  { label: 'Economy',  cls: 'bg-[#e8f5e9] text-[#008009]' },
-  standard: { label: 'Standard', cls: 'bg-[#f0f5ff] text-[#0071c2]' },
-  comfort:  { label: 'Comfort',  cls: 'bg-[#fff7e6] text-[#a45e00]' },
-  luxury:   { label: 'Luxury',   cls: 'bg-[#fdf2ff] text-[#a020c4]' },
+  economy:  { label: 'Economy',  cls: 'badge-tier-economy' },
+  standard: { label: 'Standard', cls: 'badge-tier-standard' },
+  comfort:  { label: 'Comfort',  cls: 'badge-tier-comfort' },
+  luxury:   { label: 'Luxury',   cls: 'badge-tier-luxury' },
 };
 
 /* ── Page ─────────────────────────────────────────────────────────── */
@@ -214,9 +214,8 @@ const HotTours = () => {
     <div className="min-h-screen bg-[#faf6ed]">
 
       {/* ── HERO + STUDIO INPUTS ─────────────────────────────────── */}
-      <section className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#003580] text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage:'radial-gradient(circle at 18% 30%, #0071c2 0%, transparent 45%), radial-gradient(circle at 82% 70%, #febb02 0%, transparent 35%)' }} />
+      <section className="relative aurora-bg text-white overflow-hidden">
+        <div className="film-grain" />
         <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#febb02]/10 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
           <div className="grid lg:grid-cols-12 gap-8 items-center">
@@ -224,9 +223,9 @@ const HotTours = () => {
               <div className="badge-editorial px-3.5 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.14em] mb-4">
                 <Cpu className="w-3.5 h-3.5 text-[#ffd76e]" /> {t('hotTours.hero.badge')} · {aiAvailable ? t('hotTours.hero.poweredGrok') : t('hotTours.hero.smartMatch')}
               </div>
-              <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-[1.03] mb-3">
+              <h1 className="font-display text-4xl md:text-6xl font-semibold tracking-[-0.03em] leading-[1.03] mb-3 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
                 {t('hotTours.hero.title1')}{greeting}.<br className="hidden md:block" />
-                <span className="text-[#febb02]">{t('hotTours.hero.title2')}</span>
+                <span className="italic font-medium text-gradient-gold gold-animate">{t('hotTours.hero.title2')}</span>
               </h1>
               <p className="text-[15px] md:text-[17px] text-white/85 font-medium max-w-xl">
                 {t('hotTours.hero.sub')}
@@ -343,7 +342,7 @@ const HotTours = () => {
                         : (<><Sparkles className="w-5 h-5" /> {t('hotTours.form.pick4')} ${balance} · {days}d</>)}
                   </button>
 
-                  {error && <p className="text-[12px] text-red-500 font-bold text-center">{error}</p>}
+                  {error && <p className="text-[12px] text-danger font-bold text-center">{error}</p>}
                   <p className="text-[11px] text-[#93876f] font-semibold text-center">
                     {destInput
                       ? t('hotTours.form.directHint')
@@ -363,7 +362,7 @@ const HotTours = () => {
             <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-1">
               <Zap className="w-3.5 h-3.5" /> {t('hotTours.grid.curatedFor')} ${balance} · {days} {Number(days) === 1 ? t('hotTours.grid.daySingular') : t('hotTours.grid.dayPlural')}
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">
               {loading
                 ? `${t('hotTours.grid.building')} ${days}-${t('hotTours.grid.buildingMid')} $${balance}…`
                 : result?.packages?.length
@@ -406,7 +405,7 @@ const HotTours = () => {
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: i * 0.07, ease: [0.4, 0, 0.2, 1] }}
-                  className="group lift bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft flex flex-col"
+                  className="group lift card-sheen bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft flex flex-col"
                 >
                   <div className="relative h-44 overflow-hidden">
                     <img src={p.image} alt={`${p.destination}, ${p.country}`} loading="lazy" onError={handleImgError}
@@ -457,7 +456,7 @@ const HotTours = () => {
                     <ul className="space-y-1 mb-3">
                       {(p.includes || []).slice(0, 3).map((inc, k) => (
                         <li key={k} className="flex items-start gap-1.5 text-[11.5px] text-[#1a1a1a] font-semibold">
-                          <Check className="w-3 h-3 text-[#008009] mt-0.5 shrink-0" strokeWidth={3} /> {inc}
+                          <Check className="w-3 h-3 text-[#2e7d4f] mt-0.5 shrink-0" strokeWidth={3} /> {inc}
                         </li>
                       ))}
                     </ul>
@@ -483,10 +482,10 @@ const HotTours = () => {
                         </div>
                         <div className="text-right">
                           <div className="text-[10px] text-[#93876f] font-bold uppercase">{t('hotTours.grid.yourBalance')}</div>
-                          <div className="text-[12px] text-[#008009] font-black flex items-center justify-end gap-0.5">
+                          <div className="text-[12px] text-[#2e7d4f] font-black flex items-center justify-end gap-0.5">
                             <Check className="w-3 h-3" strokeWidth={3} /> {t('hotTours.grid.fits')}
                           </div>
-                          {p.saving > 0 && <div className="text-[10px] text-[#008009] font-black">{fmt(p.saving)} {t('hotTours.grid.left')}</div>}
+                          {p.saving > 0 && <div className="text-[10px] text-[#2e7d4f] font-black">{fmt(p.saving)} {t('hotTours.grid.left')}</div>}
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-1.5">
@@ -534,12 +533,12 @@ const HotTours = () => {
       </section>
 
       {/* ── BUDGET TIER SHORTCUTS ────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-6 reveal">
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f0f5ff] text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-3">
             <TrendingDown className="w-3.5 h-3.5" /> {t('hotTours.tiers.badge')}
           </div>
-          <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('hotTours.tiers.title')}</h2>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">{t('hotTours.tiers.title')}</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {[
@@ -550,7 +549,7 @@ const HotTours = () => {
             { lab: t('hotTours.tiers.luxurySignature'), min: 5000, max: 12000,  img: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=600&q=80' },
           ].map((b, i) => (
             <button key={i} onClick={() => { const v = Math.round((b.min + b.max) / 2); setBalance(v); runStudio(v); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group lift relative overflow-hidden rounded-2xl aspect-[4/5] shadow-soft border border-[#e6dcc3]">
+              className="group lift card-sheen relative overflow-hidden rounded-2xl aspect-[4/5] shadow-soft border border-[#e6dcc3]">
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" style={{ backgroundImage:`url(${b.img})` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               <div className="absolute inset-0 p-4 flex flex-col justify-end text-left text-white">
@@ -566,13 +565,13 @@ const HotTours = () => {
       </section>
 
       {/* ── HOT DEALS GRID (admin-seeded, with discounts) ────────── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-12 reveal">
         <div className="flex items-end justify-between mb-5">
           <div>
             <div className="inline-flex items-center gap-2 text-[#febb02] text-[11px] font-black uppercase tracking-widest mb-1">
               <Flame className="w-3.5 h-3.5" /> {t('hotTours.deals.badge')}
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('hotTours.deals.title')}</h2>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">{t('hotTours.deals.title')}</h2>
           </div>
         </div>
 
@@ -584,7 +583,7 @@ const HotTours = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.05, ease: [0.4, 0, 0.2, 1] }}
-              className="group lift bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft"
+              className="group lift card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft"
             >
               <div className="relative h-48 overflow-hidden">
                 <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
@@ -624,7 +623,7 @@ const HotTours = () => {
                 <div className="flex items-center gap-3 text-[12px] text-[#5c5245] mb-4">
                   <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{p.duration} {t('hotTours.deals.days')}</span>
                   <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 fill-[#febb02] text-[#febb02]" />{p.rating}</span>
-                  <span className="text-red-500 font-bold">{t('hotTours.deals.only')} {p.seatsLeft} {t('hotTours.deals.leftSuffix')}</span>
+                  <span className="text-danger font-bold">{t('hotTours.deals.only')} {p.seatsLeft} {t('hotTours.deals.leftSuffix')}</span>
                 </div>
                 <div className="flex items-end justify-between gap-3">
                   <div>

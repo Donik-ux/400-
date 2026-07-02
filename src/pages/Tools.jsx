@@ -6,6 +6,7 @@ import {
 import useSEO from '../hooks/useSEO';
 import { LANGUAGES, PHRASE_LABELS } from '../data/phrasebook';
 import { useTranslation } from '../store/useLangStore';
+import { currencyFlag, currencyNamer } from '../utils/currencyMeta';
 
 /* ── Currencies ── */
 const CURRENCIES = [
@@ -49,14 +50,20 @@ const fmtMoney = (n) => {
   return n >= 100 ? Math.round(n).toLocaleString() : n.toFixed(2);
 };
 
-const CurrencySelect = ({ value, onChange }) => (
-  <select value={value} onChange={e => onChange(e.target.value)}
-    className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition-premium">
-    {CURRENCIES.map(c => (
-      <option key={c.code} value={c.code}>{c.flag} {c.code} — {c.name}</option>
-    ))}
-  </select>
-);
+const CurrencySelect = ({ value, onChange, codes }) => {
+  const { lang } = useTranslation();
+  const nameFor = useMemo(() => currencyNamer(lang || 'en'), [lang]);
+  // Every currency the live feed knows; static list until rates arrive
+  const list = codes && codes.length ? codes : CURRENCIES.map(c => c.code);
+  return (
+    <select value={value} onChange={e => onChange(e.target.value)}
+      className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition-premium">
+      {list.map(code => (
+        <option key={code} value={code}>{currencyFlag(code)} {code} — {nameFor(code)}</option>
+      ))}
+    </select>
+  );
+};
 
 /* ─────────── Currency converter ─────────── */
 function CurrencyConverter() {
@@ -92,6 +99,7 @@ function CurrencyConverter() {
   }, [from, to, rates]);
 
   const swap = () => { setFrom(to); setTo(from); };
+  const allCodes = useMemo(() => Object.keys(rates).sort(), [rates]);
 
   return (
     <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft lift">
@@ -101,12 +109,12 @@ function CurrencyConverter() {
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.converter.title')}</h2>
         <span className={`ml-auto inline-flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-full ${
-          status === 'live' ? 'bg-green-50 text-green-700'
+          status === 'live' ? 'bg-[#e9f3ea] text-ok'
           : status === 'loading' ? 'bg-[#f0f5ff] text-[#0071c2]'
-          : 'bg-amber-50 text-amber-700'
+          : 'bg-[#fdf3dc] text-warn'
         }`}>
           <span className={`w-1.5 h-1.5 rounded-full ${
-            status === 'live' ? 'bg-green-500' : status === 'loading' ? 'bg-[#0071c2] animate-pulse' : 'bg-amber-500'
+            status === 'live' ? 'bg-[#2e7d4f]' : status === 'loading' ? 'bg-[#0071c2] animate-pulse' : 'bg-[#c9962f]'
           }`} />
           {status === 'live' ? t('toolsPage.converter.statusLive') : status === 'loading' ? t('toolsPage.converter.statusLoading') : t('toolsPage.converter.statusOffline')}
         </span>
@@ -123,7 +131,7 @@ function CurrencyConverter() {
       <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2">
         <label>
           <span className="text-[12px] font-bold text-[#1a1a1a] mb-1.5 block">{t('toolsPage.converter.from')}</span>
-          <CurrencySelect value={from} onChange={setFrom} />
+          <CurrencySelect value={from} onChange={setFrom} codes={allCodes} />
         </label>
         <button onClick={swap} title={t('toolsPage.converter.swap')}
           className="w-10 h-[42px] rounded-xl bg-[#003580] text-white flex items-center justify-center hover:bg-[#0071c2] transition-premium active:scale-90 shadow-soft hover:shadow-float">
@@ -131,7 +139,7 @@ function CurrencyConverter() {
         </button>
         <label>
           <span className="text-[12px] font-bold text-[#1a1a1a] mb-1.5 block">{t('toolsPage.converter.to')}</span>
-          <CurrencySelect value={to} onChange={setTo} />
+          <CurrencySelect value={to} onChange={setTo} codes={allCodes} />
         </label>
       </div>
 
@@ -414,16 +422,15 @@ export default function Tools() {
   return (
     <div className="bg-[#faf6ed] min-h-screen">
       {/* Hero */}
-      <section className="relative bg-[#002250] text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-30 pointer-events-none animate-float"
-             style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #0071c2 0%, transparent 45%), radial-gradient(circle at 80% 70%, #f5b942 0%, transparent 38%)' }} />
+      <section className="relative aurora-bg text-white overflow-hidden">
+        <div className="film-grain" />
         <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f5b942] text-[#002250] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
-            <Wrench className="w-3.5 h-3.5" /> {t('toolsPage.hero.badge')}
+          <div className="badge-editorial inline-flex px-3.5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest mb-4">
+            <Wrench className="w-3.5 h-3.5 text-[#ffd76e]" /> {t('toolsPage.hero.badge')}
           </div>
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-[1.05] mb-2">
-            {t('toolsPage.hero.title1')} <span className="text-gradient-gold">{t('toolsPage.hero.title2')}</span>
+          <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-[-0.03em] leading-[1.05] mb-2 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
+            {t('toolsPage.hero.title1')} <span className="italic font-medium text-gradient-gold gold-animate">{t('toolsPage.hero.title2')}</span>
           </h1>
           <p className="text-[14px] md:text-[15px] text-white/70 font-medium max-w-xl">
             {t('toolsPage.hero.sub')}

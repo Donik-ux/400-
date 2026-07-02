@@ -17,6 +17,22 @@
   --color-gold:        #febb02;
   --color-gold-deep:   #f5b942;
 
+  /* Brand-tuned status families — moss / saffron / terracotta instead of
+     default Tailwind green/amber/red, so alerts stay inside the palette */
+  --color-ok:            #2e7d4f;
+  --color-ok-soft:       #e9f3ea;
+  --color-ok-border:     #cfe3d2;
+  --color-warn:          #8a5c17;
+  --color-warn-soft:     #fdf3dc;
+  --color-warn-border:   #f0dfb4;
+  --color-danger:        #b3402e;
+  --color-danger-soft:   #faeae6;
+  --color-danger-border: #eccfc7;
+
+  /* Admin "Nightdesk" — the brand at night: deep navy, not neutral black */
+  --color-night:   #00112b;
+  --color-night-2: #001c47;
+
   /* Premium elevation scale — three-layer recipe (contact + direct + ambient) for physically-grounded depth */
   --shadow-soft:  0 1px 1px rgba(16,24,40,0.03), 0 2px 5px rgba(16,24,40,0.05), 0 8px 20px -8px rgba(16,24,40,0.08);
   --shadow-float: 0 2px 6px rgba(16,24,40,0.05), 0 10px 24px -8px rgba(16,24,40,0.14), 0 28px 52px -18px rgba(16,24,40,0.16);
@@ -207,6 +223,21 @@ button, a, input, select, textarea {
 @keyframes frameGoldShift {
   0%, 100% { background-position: 0% 50%; }
   50%      { background-position: 100% 50%; }
+}
+
+/* ── Mouse-parallax layer — reads --mx/--my (set by the hero's onMouseMove)
+   and drifts by --depth px; --pscale over-scales full-bleed photos so their
+   edges never peek out while drifting ── */
+.parallax-layer {
+  transform: translate3d(calc(var(--mx, 0) * var(--depth, 16) * 1px), calc(var(--my, 0) * var(--depth, 12) * 1px), 0) scale(var(--pscale, 1));
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
+/* Animated shift for gold gradient text — hero highlight only, spend sparingly */
+.gold-animate {
+  background-size: 220% 220%;
+  animation: frameGoldShift 6s ease-in-out infinite;
 }
 
 /* Hairline dividers */
@@ -429,6 +460,99 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   #print-plan { position: fixed; top: 0; left: 0; width: 100%; background: white; padding: 20px; }
   .no-print { display: none !important; }
 }
+
+/* ── Brand status badges & notes (light theme) — color/border only, layout
+   classes (px/py/rounded) stay on the element ── */
+.badge-ok     { background: #e9f3ea; color: #2e7d4f; border: 1px solid #cfe3d2; }
+.badge-warn   { background: #fdf3dc; color: #8a5c17; border: 1px solid #f0dfb4; }
+.badge-danger { background: #faeae6; color: #a13a2a; border: 1px solid #eccfc7; }
+.note-warn    { background: linear-gradient(135deg, #fdf3dc, #fffdf6); border: 1px solid #f0dfb4; }
+.note-danger  { background: linear-gradient(135deg, #faeae6, #fffdfb); border: 1px solid #eccfc7; }
+.note-ok      { background: linear-gradient(135deg, #e9f3ea, #fbfdf9); border: 1px solid #cfe3d2; }
+.text-ok      { color: #2e7d4f; }
+.text-warn    { color: #8a5c17; }
+.text-danger  { color: #b3402e; }
+
+/* ── Tour tier badges — luxury reads navy+gold, not magenta ── */
+.badge-tier-economy  { background: #e9f3ea; color: #2e6b3a; }
+.badge-tier-standard { background: #eaf1fb; color: #003580; }
+.badge-tier-comfort  { background: #fdf3dc; color: #8a5c17; }
+.badge-tier-luxury   {
+  background: linear-gradient(135deg, #00112b, #002a5e);
+  color: #ffd76e;
+  border: 1px solid rgba(245, 185, 66, 0.45);
+}
+
+/* ── Admin "Nightdesk" surfaces — brand navy night with faint blue/gold air ── */
+.night-bg {
+  background:
+    radial-gradient(60rem 40rem at 12% -10%, rgba(0, 113, 194, 0.14), transparent 60%),
+    radial-gradient(50rem 36rem at 95% 0%, rgba(245, 185, 66, 0.05), transparent 55%),
+    #00112b;
+}
+.night-side  { background: #000d22; border-color: rgba(143, 180, 255, 0.10); }
+.night-panel {
+  background: linear-gradient(180deg, #001c47, #001536);
+  border: 1px solid rgba(143, 180, 255, 0.10);
+}
+.night-panel-hover:hover { border-color: rgba(254, 187, 2, 0.28); }
+.night-inset { background: rgba(143, 180, 255, 0.05); border: 1px solid rgba(143, 180, 255, 0.08); }
+.inp-night {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(143, 180, 255, 0.15);
+  color: #fff;
+}
+.inp-night::placeholder { color: rgba(255, 255, 255, 0.35); }
+.inp-night:focus {
+  outline: none;
+  border-color: rgba(254, 187, 2, 0.55);
+  box-shadow: 0 0 0 3px rgba(254, 187, 2, 0.12);
+}
+.badge-ok-night     { color: #86d29a; background: rgba(134, 210, 154, 0.10); border: 1px solid rgba(134, 210, 154, 0.22); }
+.badge-warn-night   { color: #ffd76e; background: rgba(254, 187, 2, 0.10);  border: 1px solid rgba(254, 187, 2, 0.25); }
+.badge-danger-night { color: #ff9c8a; background: rgba(255, 156, 138, 0.10); border: 1px solid rgba(255, 156, 138, 0.22); }
+.text-ok-n     { color: #86d29a; }
+.text-warn-n   { color: #ffd76e; }
+.text-danger-n { color: #ff9c8a; }
+
+/* ── Photo-card light sweep on hover — decorative ::after, transform/opacity only ── */
+.card-sheen { position: relative; overflow: hidden; }
+.card-sheen::after {
+  content: '';
+  position: absolute;
+  top: -20%; bottom: -20%; left: -30%;
+  width: 45%;
+  background: linear-gradient(75deg, transparent, rgba(255, 255, 255, 0.30), transparent);
+  transform: translateX(-160%) skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.card-sheen:hover::after { animation: cardSheen 0.9s var(--ease-premium) forwards; }
+@keyframes cardSheen {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(360%) skewX(-18deg); }
+}
+
+/* ── Scroll-driven section entrance — progressive enhancement: browsers
+   without animation-timeline (or with reduced motion) render fully visible ── */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: revealUp both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 42%;
+    }
+  }
+}
+
+/* Balanced multi-line headlines */
+.text-balance { text-wrap: balance; }
 
 /* ── Respect reduced-motion preference ── */
 @media (prefers-reduced-motion: reduce) {

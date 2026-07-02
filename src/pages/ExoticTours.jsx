@@ -27,10 +27,10 @@ const TourCard = ({ tour, budget }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20, transition: { duration: 0.15 } }}
       transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
-      className={`group lift bg-white rounded-2xl border overflow-hidden shadow-soft flex flex-col ${
+      className={`group lift card-sheen bg-white rounded-2xl border overflow-hidden shadow-soft flex flex-col ${
         hasBudget && !fits
           ? 'border-[#e6dcc3] opacity-65 hover:opacity-100'
-          : fits ? 'border-green-300' : 'border-[#e6dcc3]'
+          : fits ? 'border-[#cfe3d2]' : 'border-[#e6dcc3]'
       }`}
     >
       {/* Image */}
@@ -50,7 +50,7 @@ const TourCard = ({ tour, budget }) => {
         {/* Budget-fit badge */}
         {hasBudget && (
           <div className={`absolute top-4 right-4 px-2.5 py-1 rounded-full text-[10px] font-black shadow-lg ${
-            fits ? 'bg-green-500 text-white' : 'bg-gradient-to-r from-[#febb02] to-[#f5b942] text-[#1a1a1a]'
+            fits ? 'bg-[#2e7d4f] text-white' : 'bg-gradient-to-r from-[#febb02] to-[#f5b942] text-[#1a1a1a]'
           }`}>
             {fits ? `✓ ${t('exoticTours.inBudget')}` : `+${fmt(over)}`}
           </div>
@@ -254,7 +254,7 @@ const ExoticTours = () => {
           </div>
           {budget > 0 && (
             <span className={`text-[13px] font-black px-3 py-1.5 rounded-lg shrink-0 ${
-              affordableCount > 0 ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
+              affordableCount > 0 ? 'bg-[#e9f3ea] text-ok' : 'bg-[#fdf3dc] text-warn'
             }`}>
               {affordableCount > 0
                 ? `✓ ${affordableCount} ${affordableCount === 1 ? t('exoticTours.tourSingular') : t('exoticTours.tourPlural')} ${t('exoticTours.inBudgetSuffix')}`

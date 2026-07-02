@@ -323,16 +323,16 @@ export default function Planner() {
     <div className="bg-[#faf6ed] min-h-screen">
 
       {/* ── Hero / Form Section ── */}
-      <div className="bg-[#003580] text-white">
+      <div className="relative aurora-bg text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-14">
           <div className="max-w-2xl mb-8 page-fade">
-            <div className="inline-flex items-center gap-2 bg-white/[0.12] rounded-full px-3 py-1 mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-              <span className="text-[11px] font-bold uppercase tracking-widest text-white/70">{t('planner.badge')}</span>
+            <div className="badge-editorial inline-flex rounded-full px-3.5 py-1.5 mb-4">
+              <Sparkles className="w-3.5 h-3.5 text-[#ffd76e]" />
+              <span className="text-[11px] font-black uppercase tracking-widest">{t('planner.badge')}</span>
             </div>
-            <h1 className="text-[36px] md:text-[52px] font-black leading-tight mb-3">
+            <h1 className="font-display text-[36px] md:text-[52px] font-semibold tracking-[-0.03em] leading-tight mb-3 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
               {t('planner.title1')}<br />
-              <span className="text-white/60">{t('planner.title2')}</span>
+              <span className="italic font-medium text-gradient-gold gold-animate">{t('planner.title2')}</span>
             </h1>
             <p className="text-white/55 text-[15px] leading-relaxed">{t('planner.sub')}</p>
           </div>
@@ -378,7 +378,7 @@ export default function Planner() {
 
           <div className="max-w-3xl">
             <PlannerForm formData={formData} onChange={setFormData} onSubmit={handleSubmit} loading={loading} />
-            {error && <p className="mt-3 text-red-300 text-sm bg-red-500/10 border border-red-400/20 rounded-lg px-4 py-2.5">{error}</p>}
+            {error && <p className="mt-3 text-[#ffb3a3] text-sm bg-[#b3402e]/15 border border-[#e98871]/25 rounded-lg px-4 py-2.5">{error}</p>}
           </div>
         </div>
       </div>
@@ -409,7 +409,7 @@ export default function Planner() {
                   onClick={handleSavePlan}
                   className={`flex items-center gap-2 px-4 py-2.5 text-[13px] font-bold ${
                     saved
-                      ? 'rounded-xl bg-green-500 text-white cursor-default shadow-float transition-premium'
+                      ? 'rounded-xl bg-[#2e7d4f] text-white cursor-default shadow-float transition-premium'
                       : 'btn-gold'
                   }`}>
                   {saved
@@ -429,14 +429,14 @@ export default function Planner() {
           {(() => {
             const vi = getVisaInfo(formData.destination);
             return vi ? (
-              <div className="mb-5 flex items-start gap-3 p-4 bg-amber-50 border-2 border-amber-300 rounded-2xl">
-                <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+              <div className="mb-5 flex items-start gap-3 p-4 note-warn rounded-2xl">
+                <AlertTriangle className="w-5 h-5 text-[#c9962f] shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-[14px] font-black text-amber-800 mb-1">
+                  <p className="text-[14px] font-black text-warn mb-1">
                     ⚠️ {t('plannerPage.results.visaTitle')} {vi.country}
                   </p>
-                  <p className="text-[12px] text-amber-700 leading-snug">{vi.text}</p>
-                  <p className="text-[11px] text-amber-600 mt-1 font-medium">
+                  <p className="text-[12px] text-[#8a5c17]/90 leading-snug">{vi.text}</p>
+                  <p className="text-[11px] text-[#8a5c17]/75 mt-1 font-medium">
                     📌 {t('plannerPage.results.visaNote')}
                   </p>
                 </div>
@@ -447,18 +447,18 @@ export default function Planner() {
           {/* Budget fit check */}
           {userBudget > 0 && (
             <div className={`mb-5 flex items-start gap-3 p-4 rounded-2xl border-2 ${
-              budgetDiff >= 0 ? 'bg-green-50 border-green-300' : 'bg-amber-50 border-amber-300'
+              budgetDiff >= 0 ? 'bg-[#e9f3ea] border-[#cfe3d2]' : 'bg-[#fdf3dc] border-[#f0dfb4]'
             }`}>
               {budgetDiff >= 0
-                ? <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
-                : <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />}
+                ? <CheckCircle2 className="w-5 h-5 text-[#2e7d4f] shrink-0 mt-0.5" />
+                : <AlertTriangle className="w-5 h-5 text-[#c9962f] shrink-0 mt-0.5" />}
               <div>
-                <p className={`text-[14px] font-black mb-0.5 ${budgetDiff >= 0 ? 'text-green-800' : 'text-amber-800'}`}>
+                <p className={`text-[14px] font-black mb-0.5 ${budgetDiff >= 0 ? 'text-[#24513a]' : 'text-warn'}`}>
                   {budgetDiff >= 0
                     ? `✅ ${t('plannerPage.results.budgetFitOk')} ${fmt(budgetDiff)}`
                     : `⚠️ ${t('plannerPage.results.budgetFitOver')} ${fmt(Math.abs(budgetDiff))}`}
                 </p>
-                <p className={`text-[12px] ${budgetDiff >= 0 ? 'text-green-700' : 'text-amber-700'}`}>
+                <p className={`text-[12px] ${budgetDiff >= 0 ? 'text-ok' : 'text-[#8a5c17]/90'}`}>
                   {t('plannerPage.results.budgetYours')} {fmt(userBudget)} · {t('plannerPage.results.budgetPlanCost')} {fmt(planTotal)}
                   {budgetDiff < 0 && ` — ${t('plannerPage.results.budgetOverHint')}`}
                 </p>
@@ -522,19 +522,19 @@ export default function Planner() {
 
               {/* Halal food guide */}
               {meta.halalFoodGuide && (
-                <div className="bg-green-50 border border-green-100 rounded-2xl p-5">
+                <div className="note-ok rounded-2xl p-5">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-lg">🕌</span>
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-green-700">{t('plannerPage.results.halalGuide')}</p>
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-ok">{t('plannerPage.results.halalGuide')}</p>
                   </div>
-                  <p className="text-[13px] text-green-800 leading-relaxed">{meta.halalFoodGuide}</p>
+                  <p className="text-[13px] text-[#24513a] leading-relaxed">{meta.halalFoodGuide}</p>
                 </div>
               )}
 
               {/* Tips */}
               <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 flex-1">
                 <div className="flex items-center gap-2 mb-3">
-                  <Lightbulb className="w-4 h-4 text-yellow-500" />
+                  <Lightbulb className="w-4 h-4 text-[#d99a2b]" />
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#93876f]">{t('planner.results.tips')}</p>
                 </div>
                 <ul className="space-y-2.5">
@@ -658,7 +658,7 @@ export default function Planner() {
           {emergency && (
             <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 mb-6">
               <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <Phone className="w-5 h-5 text-red-500" />
+                <Phone className="w-5 h-5 text-danger" />
                 <h3 className="text-[16px] font-black text-[#1a1a1a]">{t('plannerPage.emergency.title')}</h3>
                 <span className="text-[15px]">{emergency.flag}</span>
                 <span className="text-[13px] font-bold text-[#5c5245]">{emergency.country}</span>
@@ -667,20 +667,20 @@ export default function Planner() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {emergency.numbers.map((n, i) => (
                   <a key={i} href={`tel:${String(n.number).replace(/\s/g, '')}`}
-                    className="flex items-center gap-3 p-3 bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl hover:border-red-300 hover:bg-red-50 transition-premium">
+                    className="flex items-center gap-3 p-3 bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl hover:border-[#e0b1a6] hover:bg-[#faeae6] transition-premium">
                     <span className="text-xl shrink-0">{n.icon || '📞'}</span>
                     <div className="min-w-0 flex-1">
                       <p className="text-[13px] font-black text-[#1a1a1a] truncate">{n.service}</p>
                       {n.note && <p className="text-[11px] text-[#93876f] truncate">{n.note}</p>}
                     </div>
-                    <span className="text-[14px] font-black text-red-600 shrink-0">{n.number}</span>
+                    <span className="text-[14px] font-black text-danger shrink-0">{n.number}</span>
                   </a>
                 ))}
               </div>
               {emergency.tips?.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {emergency.tips.map((tip, i) => (
-                    <span key={i} className="text-[11px] text-[#5c5245] bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1">💡 {tip}</span>
+                    <span key={i} className="text-[11px] text-[#5c5245] bg-[#fdf3dc] border border-[#f0dfb4] rounded-lg px-2.5 py-1">💡 {tip}</span>
                   ))}
                 </div>
               )}

@@ -183,7 +183,7 @@ export default function Wishlist() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.18 } }}
                   transition={{ duration: 0.28, delay: i * 0.04 }}
-                  className="group bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft lift flex flex-col"
+                  className="group card-sheen bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft lift flex flex-col"
                 >
                   <div className="relative overflow-hidden">
                     <div className="transition-transform duration-500 ease-out group-hover:scale-[1.05]">

@@ -122,9 +122,9 @@ export default function MyPlans() {
                       <Sparkles className="w-3 h-3" /> {isAi ? t('lists.plans.aiPlanTag') : t('lists.plans.planTag')}
                     </span>
                     <button onClick={() => handleRemove(plan.id, dest)}
-                      className="absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow hover:bg-red-50 hover:scale-110 transition"
+                      className="absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow hover:bg-[#faeae6] hover:scale-110 transition"
                       aria-label={t('lists.plans.deletePlan')}>
-                      <Trash2 className="w-4 h-4 text-red-500" />
+                      <Trash2 className="w-4 h-4 text-danger" />
                     </button>
                     <h3 className="absolute bottom-2.5 left-3 right-3 text-white text-[18px] font-black flex items-center gap-1.5 drop-shadow">
                       <MapPin className="w-4 h-4" /> {dest}

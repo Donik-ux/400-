@@ -55,8 +55,8 @@ function DestinationCard({ dest, days, budget }) {
   };
 
   return (
-    <div className={`group bg-white border rounded-2xl overflow-hidden flex flex-col lift shadow-soft ${
-      dest.fits ? 'border-green-200' : 'border-[#e6dcc3] opacity-80 hover:opacity-100'
+    <div className={`group card-sheen bg-white border rounded-2xl overflow-hidden flex flex-col lift shadow-soft ${
+      dest.fits ? 'border-[#cfe3d2]' : 'border-[#e6dcc3] opacity-80 hover:opacity-100'
     }`}>
       <div className="relative">
         <SmartImage src={heroFor(dest.city)} alt={dest.city} aspect="aspect-[16/10]" />
@@ -65,7 +65,7 @@ function DestinationCard({ dest, days, budget }) {
           {dest.region}
         </span>
         <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-black shadow-float ${
-          dest.fits ? 'bg-green-500 text-white' : 'bg-[#febb02] text-[#1a1a1a]'
+          dest.fits ? 'bg-[#2e7d4f] text-white' : 'bg-[#febb02] text-[#1a1a1a]'
         }`}>
           {dest.fits ? t('whereToGo.card.fits') : `+${usd(Math.abs(dest.spare))}`}
         </span>
@@ -225,7 +225,7 @@ export default function WhereToGo() {
             ))}
             {filtersActive && (
               <button onClick={() => { setRegion(null); setVibe(null); }}
-                className="px-3.5 py-1.5 rounded-full text-[11px] font-black text-red-500 hover:bg-red-50 transition-premium">
+                className="px-3.5 py-1.5 rounded-full text-[11px] font-black text-danger hover:bg-[#faeae6] transition-premium">
                 ✕ {t('whereToGo.filters.reset')}
               </button>
             )}

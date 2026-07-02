@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -23,6 +23,8 @@ import CityAutocomplete from '../features/flights/CityAutocomplete';
 import WeatherWidget from '../components/WeatherWidget';
 import DestinationMap from '../components/DestinationMap';
 import RecommendedTrips from '../components/RecommendedTrips';
+import GlobePoints from '../components/fx/GlobePoints';
+import Tilt3D from '../components/fx/Tilt3D';
 import { detectCurrentLocation } from '../services/geolocation';
 
 /* ── Static showcases ─────────────────────────────────────────────── */
@@ -117,6 +119,22 @@ const Home = () => {
     setDeparture: setCheckin, setReturn: setCheckout, setDays: setToursDays,
   });
 
+  // Mouse-parallax for the hero: writes normalized cursor coords into CSS vars
+  // that the .parallax-layer children read. Purely decorative.
+  const heroRef = useRef(null);
+  const heroRaf = useRef(0);
+  const onHeroMove = (e) => {
+    const el = heroRef.current;
+    if (!el) return;
+    const { clientX, clientY } = e;
+    cancelAnimationFrame(heroRaf.current);
+    heroRaf.current = requestAnimationFrame(() => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', ((clientX - r.left) / r.width - 0.5).toFixed(3));
+      el.style.setProperty('--my', ((clientY - r.top) / r.height - 0.5).toFixed(3));
+    });
+  };
+
   const submit = (e) => {
     e?.preventDefault?.();
     if (tab === 'tours') navigate('/hot-tours');
@@ -186,15 +204,23 @@ const Home = () => {
     <div className="min-h-screen bg-[#faf6ed] -mt-[64px]">
 
       {/* ─── HERO + SEARCH (Editorial luxe) ───────────────────── */}
-      <section className="relative aurora-bg pt-[100px] pb-32 md:pb-40 overflow-hidden">
+      <section ref={heroRef} onMouseMove={onHeroMove} className="relative aurora-bg pt-[100px] pb-32 md:pb-40 overflow-hidden">
         {/* destination photograph, warm-graded for an editorial travel-journal feel */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.16] mix-blend-soft-light"
-             style={{ backgroundImage:'url("https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1800&q=80")', backgroundSize:'cover', backgroundPosition:'center', filter:'saturate(1.15) sepia(0.12)' }} />
+        <div className="absolute inset-0 pointer-events-none opacity-[0.16] mix-blend-soft-light parallax-layer"
+             style={{ backgroundImage:'url("https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1800&q=80")', backgroundSize:'cover', backgroundPosition:'center', filter:'saturate(1.15) sepia(0.12)', '--depth': -14, '--pscale': 1.06 }} />
         <div className="film-grain" />
         <div className="pattern-lux" />
         <div className="absolute inset-0 sheen-top pointer-events-none" />
-        <div className="absolute -left-32 top-10 w-96 h-96 rounded-full bg-[#0071c2]/30 blur-3xl pointer-events-none animate-float" />
-        <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#febb02]/15 blur-3xl pointer-events-none" />
+        <div className="absolute -left-32 top-10 w-96 h-96 rounded-full bg-[#0071c2]/30 blur-3xl pointer-events-none parallax-layer" style={{ '--depth': 26 }} />
+        <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#febb02]/15 blur-3xl pointer-events-none parallax-layer" style={{ '--depth': 18 }} />
+
+        {/* 3D point globe — the world drawn in gold + ice-blue dots, live flight
+            arcs pulsing between MAFTRAVEL destinations */}
+        <div className="hidden lg:block absolute right-[1%] xl:right-[4%] top-[54px] w-[460px] h-[460px] parallax-layer" style={{ '--depth': 34 }}>
+          <div className="absolute inset-10 rounded-full bg-[#0071c2]/25 blur-3xl" />
+          <div className="absolute inset-16 rounded-full bg-[#febb02]/10 blur-3xl" />
+          <GlobePoints className="absolute inset-0" />
+        </div>
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <motion.div
@@ -206,7 +232,7 @@ const Home = () => {
               <Sparkles className="w-3.5 h-3.5 text-[#ffd76e]" /> {t('homePage.hero.badge')}
             </div>
             <h1 className="font-display text-[46px] md:text-[76px] font-semibold tracking-[-0.035em] leading-[0.98] mb-5 [text-shadow:0_2px_30px_rgba(0,0,0,0.30)]">
-              {t('homePage.hero.titleLead')} <span className="italic font-medium text-gradient-gold">{t('homePage.hero.titleHighlight')}</span>,<br className="hidden md:block" /> {t('homePage.hero.titleTail')}
+              {t('homePage.hero.titleLead')} <span className="italic font-medium text-gradient-gold gold-animate">{t('homePage.hero.titleHighlight')}</span>,<br className="hidden md:block" /> {t('homePage.hero.titleTail')}
             </h1>
             <p className="text-[15px] md:text-[19px] text-white/75 font-medium max-w-xl mb-8 leading-relaxed">
               {t('homePage.hero.subtitle')}
@@ -223,12 +249,15 @@ const Home = () => {
           {/* ambient gold glow behind the card */}
           <div className="absolute inset-x-8 md:inset-x-12 -top-6 bottom-0 bg-gradient-to-b from-[#febb02]/35 via-[#febb02]/12 to-transparent rounded-[28px] blur-2xl pointer-events-none" aria-hidden="true" />
           <div className="frame-lux relative bg-white rounded-2xl shadow-lift">
-            <div className="flex items-center gap-1 px-2 pt-2 overflow-x-auto">
-              <Tab active={tab === 'tours'}    onClick={() => setTab('tours')}    icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.tours')} />
-              <Tab active={tab === 'flights'} onClick={() => setTab('flights')} icon={<Globe className="w-4 h-4" />} label={t('homePage.tabs.flights')} />
-              <Tab active={tab === 'ai'}       onClick={() => setTab('ai')}       icon={<Sparkles className="w-4 h-4" />} label={t('homePage.tabs.ai')} highlight newLabel={t('homePage.tabs.newBadge')} />
+            <div className="flex items-center gap-1 px-2 pt-2">
+              <div className="flex items-center gap-1 overflow-x-auto min-w-0">
+                <Tab active={tab === 'tours'}    onClick={() => setTab('tours')}    icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.tours')} />
+                <Tab active={tab === 'flights'} onClick={() => setTab('flights')} icon={<Globe className="w-4 h-4" />} label={t('homePage.tabs.flights')} />
+                <Tab active={tab === 'ai'}       onClick={() => setTab('ai')}       icon={<Sparkles className="w-4 h-4" />} label={t('homePage.tabs.ai')} highlight newLabel={t('homePage.tabs.newBadge')} />
+              </div>
+              {/* Kept outside the scroll area so it's always reachable, not scrolled off on mobile */}
               <button type="button" onClick={() => setServicesOpen(true)}
-                className="ml-auto shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-t-xl text-[13px] font-black whitespace-nowrap transition text-[#5c5245] hover:bg-[#f0f5ff] hover:text-[#0071c2]">
+                className="ml-auto shrink-0 flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-t-xl text-[13px] font-black whitespace-nowrap transition text-[#5c5245] hover:bg-[#f0f5ff] hover:text-[#0071c2]">
                 <LayoutGrid className="w-4 h-4" />
                 <span className="hidden sm:inline">{t('homePage.tabs.services')}</span>
               </button>
@@ -657,13 +686,13 @@ const Home = () => {
             const discount = [42, 35, 28, 22][i] || 20;
             const original = Math.round(p.price / (1 - discount / 100));
             return (
+              <Tilt3D key={p.id} max={7} className="rounded-2xl">
               <motion.div
-                key={p.id}
                 initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
-                className="group bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft lift cursor-pointer"
+                className="group bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft cursor-pointer h-full"
                 onClick={() => navigate('/hot-tours')}
               >
                 <div className="relative h-44 overflow-hidden">
@@ -705,6 +734,7 @@ const Home = () => {
                   </div>
                 </div>
               </motion.div>
+              </Tilt3D>
             );
           })}
         </div>
@@ -722,6 +752,7 @@ const Home = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.35 }}
           className="relative overflow-hidden bg-gradient-to-r from-[#002250] via-[#0058b1] to-[#0071c2] rounded-3xl p-7 md:p-12 text-white shadow-float">
+          <div className="pattern-lux" />
           <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#febb02]/30 blur-3xl pointer-events-none animate-float" />
           <div className="absolute -left-24 -bottom-24 w-72 h-72 rounded-full bg-[#0071c2]/40 blur-3xl pointer-events-none" />
           <div className="relative grid md:grid-cols-2 gap-8 items-center">
@@ -828,24 +859,25 @@ const Home = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {TRENDING.map((d, i) => (
-            <motion.button
-              key={i}
-              onClick={() => navigate('/flights')}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
-              className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-soft transition hover:-translate-y-1.5 hover:shadow-lift">
-              <SmartImage src={d.img} alt={d.city} wrapperClassName="absolute inset-0" className="group-hover:scale-110 transition-transform duration-[600ms]" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
-              <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end text-left text-white">
-                <div className="text-[16px] md:text-[18px] font-black leading-tight">{d.city}</div>
-                <div className="text-[11px] text-white/75 font-semibold mb-1.5">{d.country}</div>
-                <div className="text-[11px] inline-flex items-center gap-1 bg-white/95 text-[#003580] font-black px-2 py-0.5 rounded-md w-fit shadow-float group-hover:bg-[#febb02] group-hover:text-[#1a1a1a] transition-colors">
-                  <Plane className="w-3 h-3" /> {t('homePage.common.from')} <Price amount={d.from} />
+            <Tilt3D key={i} max={9} className="aspect-[4/3] rounded-2xl shadow-soft">
+              <motion.button
+                onClick={() => navigate('/flights')}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
+                className="group absolute inset-0 overflow-hidden rounded-2xl text-left">
+                <SmartImage src={d.img} alt={d.city} wrapperClassName="absolute inset-0" className="group-hover:scale-110 transition-transform duration-[600ms]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end text-left text-white">
+                  <div className="text-[16px] md:text-[18px] font-black leading-tight">{d.city}</div>
+                  <div className="text-[11px] text-white/75 font-semibold mb-1.5">{d.country}</div>
+                  <div className="text-[11px] inline-flex items-center gap-1 bg-white/95 text-[#003580] font-black px-2 py-0.5 rounded-md w-fit shadow-float group-hover:bg-[#febb02] group-hover:text-[#1a1a1a] transition-colors">
+                    <Plane className="w-3 h-3" /> {t('homePage.common.from')} <Price amount={d.from} />
+                  </div>
                 </div>
-              </div>
-            </motion.button>
+              </motion.button>
+            </Tilt3D>
           ))}
         </div>
       </section>
@@ -962,7 +994,8 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: i * 0.08 }}
-                className="bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] shadow-soft p-5 lift">
+                className="relative bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] shadow-soft p-5 lift">
+                <span className="absolute top-2 right-4 font-display text-[56px] leading-none text-[#d99a2b]/25 select-none pointer-events-none" aria-hidden="true">”</span>
                 <div className="flex items-center gap-1 mb-2 text-[#febb02]">
                   {Array.from({ length: r.rating }).map((_, k) => <Star key={k} className="w-3.5 h-3.5 fill-[#febb02]" />)}
                 </div>
@@ -990,6 +1023,7 @@ const Home = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.35 }}
           className="bg-gradient-to-br from-[#002250] to-[#003580] rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-float">
+          <div className="pattern-lux" />
           <div className="absolute right-0 top-0 w-72 h-72 rounded-full bg-[#febb02]/20 blur-3xl pointer-events-none animate-float" />
           <div className="absolute -left-16 bottom-0 w-64 h-64 rounded-full bg-[#0071c2]/30 blur-3xl pointer-events-none" />
           <div className="relative grid md:grid-cols-2 gap-8 items-center">

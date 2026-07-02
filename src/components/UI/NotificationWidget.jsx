@@ -77,7 +77,7 @@ export default function NotificationWidget() {
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] w-full max-w-sm mx-4 animate-slide-up">
           <div className="bg-[#003580] text-white rounded-2xl p-4 shadow-2xl flex items-start gap-3">
             <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-              <BellRing className="w-4 h-4 text-yellow-300" />
+              <BellRing className="w-4 h-4 text-[#ffd76e]" />
             </div>
             <div className="flex-1">
               <p className="text-sm font-bold mb-0.5">{t('ui.notify.title')}</p>

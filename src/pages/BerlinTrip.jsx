@@ -325,7 +325,7 @@ const BerlinTrip = () => {
                 {t('berlin.download')}
               </button>
               {copyStatus && (
-                <span className="text-[12px] font-bold text-green-300">{copyStatus}</span>
+                <span className="text-[12px] font-bold text-[#86d29a]">{copyStatus}</span>
               )}
             </div>
           </div>
@@ -467,7 +467,7 @@ const BerlinTrip = () => {
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/[0.07] text-white/50">
                             {t('berlinTrip.day')} {loc.day}
                           </span>
-                          <span className="text-[10px] text-green-400">{loc.price}</span>
+                          <span className="text-[10px] text-[#86d29a]">{loc.price}</span>
                         </div>
                       </div>
                     </div>
@@ -521,7 +521,7 @@ const BerlinTrip = () => {
                 <ul className="space-y-3">
                   {TIPS.map((tip, i) => (
                     <li key={i} className="flex gap-2.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-green-400/60 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#86d29a]/60 shrink-0 mt-0.5" />
                       <span className="text-[12px] text-white/50 leading-snug">{tip}</span>
                     </li>
                   ))}

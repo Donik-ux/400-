@@ -21,22 +21,22 @@ export default function TranslationProgress() {
   if (error && !running && error !== dismissedError && lang !== 'en') {
     const rateLimited = /429|rate limit|quota|RESOURCE_EXHAUSTED/i.test(error);
     return (
-      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[10050] flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-red-950/95 border border-red-500/40 shadow-2xl max-w-[90vw] page-fade">
-        <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
-        <span className="text-[12px] font-semibold text-red-100">
+      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[10050] flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-[#33100a]/95 border border-[#b3402e]/40 shadow-2xl max-w-[90vw] page-fade">
+        <AlertTriangle className="w-4 h-4 text-[#ff9c8a] shrink-0" />
+        <span className="text-[12px] font-semibold text-[#ffe0d9]">
           {rateLimited
             ? 'Gemini daily limit reached — partial translation. Try again later or use a paid key.'
             : 'Translation unavailable — showing English.'}
         </span>
         <button
           onClick={() => { setDismissedError(null); retranslate(lang); }}
-          className="flex items-center gap-1 text-[12px] font-bold text-white bg-red-500/30 hover:bg-red-500/50 rounded-lg px-2 py-1 transition"
+          className="flex items-center gap-1 text-[12px] font-bold text-white bg-[#b3402e]/40 hover:bg-[#b3402e]/60 rounded-lg px-2 py-1 transition"
         >
           <RotateCw className="w-3.5 h-3.5" /> Retry
         </button>
         <button
           onClick={() => setDismissedError(error)}
-          className="text-red-300 hover:text-white text-[12px] font-bold px-1.5"
+          className="text-[#ffb3a3] hover:text-white text-[12px] font-bold px-1.5"
         >
           ✕
         </button>

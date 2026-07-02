@@ -24,8 +24,8 @@ export const toast = {
 };
 
 const STYLE = {
-  success: { icon: CheckCircle, bar: 'bg-[#008009]',  iconCls: 'text-[#008009]', tint: 'bg-[#e8f5e9]'  },
-  error:   { icon: AlertCircle, bar: 'bg-red-500',    iconCls: 'text-red-500',   tint: 'bg-red-50'     },
+  success: { icon: CheckCircle, bar: 'bg-[#2e7d4f]',  iconCls: 'text-[#2e7d4f]', tint: 'bg-[#e9f3ea]'  },
+  error:   { icon: AlertCircle, bar: 'bg-[#b3402e]',  iconCls: 'text-danger',    tint: 'bg-[#faeae6]'  },
   info:    { icon: Info,        bar: 'bg-[#0071c2]',  iconCls: 'text-[#0071c2]', tint: 'bg-[#f0f5ff]'  },
   ai:      { icon: Sparkles,    bar: 'bg-[#febb02]',  iconCls: 'text-[#a45e00]', tint: 'bg-[#fff7e6]'  },
 };

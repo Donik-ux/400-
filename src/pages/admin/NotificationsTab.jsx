@@ -9,15 +9,15 @@ const TYPE_ICON = {
 };
 
 const SEVERITY_STYLE = {
-  info:    'border-[#5b93b8]/20 bg-[#5b93b8]/[0.05]',
-  warning: 'border-yellow-400/20 bg-yellow-400/[0.05]',
-  error:   'border-red-400/20 bg-red-400/[0.05]',
+  info:    'border-[#7fb2e5]/20 bg-[#7fb2e5]/[0.05]',
+  warning: 'border-[#febb02]/25 bg-[#febb02]/[0.06]',
+  error:   'border-[#ff9c8a]/25 bg-[#ff9c8a]/[0.06]',
 };
 
 const SEVERITY_DOT = {
-  info:    'bg-[#5b93b8]',
-  warning: 'bg-yellow-400',
-  error:   'bg-red-400',
+  info:    'bg-[#7fb2e5]',
+  warning: 'bg-[#ffd76e]',
+  error:   'bg-[#ff9c8a]',
 };
 
 export default function NotificationsTab() {
@@ -32,7 +32,7 @@ export default function NotificationsTab() {
   if (notifications.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-4">
-        <div className="w-16 h-16 rounded-full bg-white/[0.04] flex items-center justify-center">
+        <div className="w-16 h-16 rounded-full night-inset flex items-center justify-center">
           <Bell className="w-7 h-7 text-white/20" />
         </div>
         <p className="text-white/25 text-sm font-bold uppercase tracking-widest">No notifications</p>
@@ -48,7 +48,7 @@ export default function NotificationsTab() {
           <Bell className="w-4 h-4 text-white/40" />
           <span className="text-sm font-black text-white/60">{notifications.length} total</span>
           {unread > 0 && (
-            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[#5b93b8]/20 text-[#5b93b8] uppercase tracking-widest">
+            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[#febb02]/15 text-[#ffd76e] uppercase tracking-widest">
               {unread} unread
             </span>
           )}
@@ -61,7 +61,7 @@ export default function NotificationsTab() {
             </button>
           )}
           <button onClick={clearAllNotifications}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-red-400/20 text-red-400/70 text-[10px] font-black uppercase tracking-widest hover:bg-red-400/[0.06] transition-all">
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[#ff9c8a]/20 text-[#ff9c8a]/70 text-[10px] font-black uppercase tracking-widest hover:bg-[#ff9c8a]/[0.06] transition-all">
             <Trash2 className="w-3.5 h-3.5" /> Clear all
           </button>
         </div>
@@ -78,11 +78,11 @@ export default function NotificationsTab() {
               className={`flex items-start gap-4 p-4 rounded-2xl border transition-all ${n.read ? 'border-white/[0.04] bg-transparent' : `${SEVERITY_STYLE[severity]}`}`}
             >
               <div className="relative flex-shrink-0">
-                <div className="w-9 h-9 rounded-xl bg-white/[0.05] flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl night-inset flex items-center justify-center">
                   <Icon className="w-4 h-4 text-white/40" />
                 </div>
                 {!n.read && (
-                  <span className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ${SEVERITY_DOT[severity]} border-2 border-[#0A0A0A]`} />
+                  <span className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ${SEVERITY_DOT[severity]} border-2 border-[#00112b]`} />
                 )}
               </div>
               <div className="flex-1 min-w-0">
@@ -100,7 +100,7 @@ export default function NotificationsTab() {
                   </button>
                 )}
                 <button onClick={() => deleteNotification(n.id)}
-                  className="p-1.5 rounded-lg hover:bg-red-400/10 text-white/30 hover:text-red-400 transition-all">
+                  className="p-1.5 rounded-lg hover:bg-[#ff9c8a]/10 text-white/30 hover:text-[#ff9c8a] transition-all">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </div>

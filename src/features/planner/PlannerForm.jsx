@@ -44,11 +44,11 @@ const DestPreview = ({ destination }) => {
           <div>
             <p className="text-white font-black text-[14px] leading-tight">{entry.country}</p>
             {entry.visa ? (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-amber-400/90 text-amber-900 rounded-full px-2 py-0.5 mt-0.5">
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#f5b942]/95 text-[#5c3d0e] rounded-full px-2 py-0.5 mt-0.5">
                 <AlertTriangle className="w-2.5 h-2.5" /> {t('plannerPage.form.visaRequiredBadge')}
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-green-400/90 text-green-900 rounded-full px-2 py-0.5 mt-0.5">
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#8fce9f]/95 text-[#1d4a2a] rounded-full px-2 py-0.5 mt-0.5">
                 <CheckCircle2 className="w-2.5 h-2.5" /> {t('plannerPage.form.noVisaBadge')}
               </span>
             )}
@@ -118,14 +118,14 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
 
       {/* ── Visa Warning (detailed) ── */}
       {visaInfo && (
-        <div className="mb-5 flex items-start gap-3 p-4 bg-amber-50 border border-amber-300 rounded-xl">
-          <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+        <div className="mb-5 flex items-start gap-3 p-4 note-warn rounded-xl">
+          <AlertTriangle className="w-5 h-5 text-[#c9962f] shrink-0 mt-0.5" />
           <div>
-            <p className="text-[13px] font-black text-amber-800 mb-1">
+            <p className="text-[13px] font-black text-warn mb-1">
               ⚠️ {t('plannerPage.form.visaTitle')} {visaInfo.country}
             </p>
-            <p className="text-[12px] text-amber-700 leading-snug">{visaInfo.text}</p>
-            <p className="text-[11px] text-amber-600 mt-1.5 font-medium">
+            <p className="text-[12px] text-[#8a5c17]/90 leading-snug">{visaInfo.text}</p>
+            <p className="text-[11px] text-[#8a5c17]/75 mt-1.5 font-medium">
               📌 {t('plannerPage.form.visaNote')}
             </p>
           </div>

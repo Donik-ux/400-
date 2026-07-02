@@ -22,25 +22,25 @@ const getTabs = (t, unreadCount) => [
 ];
 
 const STATUS_STYLES = {
-  confirmed: 'text-green-400 bg-green-400/10 border-green-400/20',
-  pending:   'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
-  cancelled: 'text-red-400 bg-red-400/10 border-red-400/20',
+  confirmed: 'badge-ok-night',
+  pending:   'badge-warn-night',
+  cancelled: 'badge-danger-night',
 };
 
 /* ─── Shared components ─── */
 const Badge = ({ status }) => (
-  <span className={`inline-flex items-center px-2.5 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest ${STATUS_STYLES[status] || STATUS_STYLES.pending}`}>
+  <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${STATUS_STYLES[status] || STATUS_STYLES.pending}`}>
     {status === 'confirmed' ? <CircleCheck className="w-3 h-3 mr-1" /> : status === 'cancelled' ? <CircleX className="w-3 h-3 mr-1" /> : <Clock className="w-3 h-3 mr-1" />}
     {status}
   </span>
 );
 
 const StatCard = ({ icon: Icon, label, value, sub, color = 'text-white', trend = null }) => (
-  <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5 hover:border-white/[0.12] transition-premium group">
+  <div className="night-panel night-panel-hover rounded-2xl p-5 transition-premium group">
     <div className="flex items-start justify-between mb-4">
-      <div className="w-10 h-10 rounded-xl bg-white/[0.05] flex items-center justify-center group-hover:bg-white/[0.08] transition-premium"><Icon className={`w-5 h-5 ${color}`} /></div>
+      <div className="w-10 h-10 rounded-xl night-inset flex items-center justify-center group-hover:bg-[#8fb4ff]/10 transition-premium"><Icon className={`w-5 h-5 ${color}`} /></div>
       {trend && (
-        <div className={`flex items-center gap-1 text-[10px] font-black px-2 py-1 rounded-lg ${trend > 0 ? 'text-green-400 bg-green-400/10' : 'text-red-400 bg-red-400/10'}`}>
+        <div className={`flex items-center gap-1 text-[10px] font-black px-2 py-1 rounded-lg ${trend > 0 ? 'text-ok-n bg-[#86d29a]/10' : 'text-danger-n bg-[#ff9c8a]/10'}`}>
           {trend > 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
           {Math.abs(trend)}%
         </div>
@@ -66,41 +66,41 @@ export default function AdminDashboard() {
   const handleLogout = () => { logout(); navigate('/login'); };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex">
+    <div className="min-h-screen night-bg flex">
       {/* Sidebar */}
-      <aside className="w-64 min-h-screen bg-[#0D0D0D] border-r border-white/[0.06] flex flex-col fixed left-0 top-0 bottom-0 z-30 hidden md:flex">
-        <div className="px-6 py-5 border-b border-white/[0.06]">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0071c2] mb-0.5">MAFTRAVEL</p>
+      <aside className="w-64 min-h-screen night-side border-r flex flex-col fixed left-0 top-0 bottom-0 z-30 hidden md:flex">
+        <div className="px-6 py-5 border-b border-[#8fb4ff]/10">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gradient-gold mb-0.5">MAFTRAVEL</p>
           <p className="text-sm font-black text-white">{t('admin.title')}</p>
         </div>
         <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
           {TABS.map(tb => (
             <button key={tb.id} onClick={() => setTab(tb.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-[12px] font-bold uppercase tracking-[0.1em] transition-premium ${tab === tb.id ? 'bg-white text-[#0A0A0A]' : 'text-white/40 hover:text-white hover:bg-white/[0.04]'}`}>
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-[12px] font-bold uppercase tracking-[0.1em] transition-premium ${tab === tb.id ? 'bg-gradient-to-r from-[#ffd76e] to-[#f5b942] text-[#00112b] shadow-soft' : 'text-white/40 hover:text-white hover:bg-white/[0.04]'}`}>
               <tb.icon className="w-4 h-4 flex-shrink-0" />
               <span className="flex-1">{tb.label}</span>
               {tb.badge > 0 && (
-                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full ${tab === tb.id ? 'bg-black/20 text-black' : 'bg-[#5b93b8]/20 text-[#5b93b8]'}`}>{tb.badge}</span>
+                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full ${tab === tb.id ? 'bg-[#00112b]/20 text-[#00112b]' : 'bg-[#febb02]/15 text-[#ffd76e]'}`}>{tb.badge}</span>
               )}
             </button>
           ))}
         </nav>
-        <div className="px-3 py-4 border-t border-white/[0.06]">
+        <div className="px-3 py-4 border-t border-[#8fb4ff]/10">
           <button onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em] text-red-400/80 hover:text-red-400 hover:bg-red-400/[0.06] transition-premium">
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em] text-[#ff9c8a]/80 hover:text-[#ff9c8a] hover:bg-[#ff9c8a]/[0.06] transition-premium">
             <LogOut className="w-4 h-4" /> {t('admin.signOut')}
           </button>
         </div>
       </aside>
 
       {/* Mobile tab bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-[#0D0D0D] border-t border-white/[0.06] flex">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 night-side border-t flex">
         {TABS.map(tb => (
           <button key={tb.id} onClick={() => setTab(tb.id)}
-            className={`flex-1 py-3 flex flex-col items-center gap-1 text-[9px] font-black uppercase tracking-widest transition-premium ${tab === tb.id ? 'text-white' : 'text-white/30'}`}>
+            className={`flex-1 py-3 flex flex-col items-center gap-1 text-[9px] font-black uppercase tracking-widest transition-premium ${tab === tb.id ? 'text-[#ffd76e]' : 'text-white/30'}`}>
             <div className="relative">
               <tb.icon className="w-5 h-5" />
-              {tb.badge > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#5b93b8] text-[7px] font-black flex items-center justify-center text-white">{tb.badge}</span>}
+              {tb.badge > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#febb02] text-[7px] font-black flex items-center justify-center text-[#00112b]">{tb.badge}</span>}
             </div>
             {tb.label.slice(0,4)}
           </button>
@@ -143,15 +143,15 @@ function DashboardTab() {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        <StatCard icon={BookOpen}    label={t('admin.stats.total')}     value={stats.totalBookings}       color="text-[#5b93b8]"   trend={12} />
-        <StatCard icon={CircleCheck} label={t('admin.stats.confirmed')}     value={stats.confirmedBookings}   color="text-green-400"  trend={5} />
-        <StatCard icon={Clock}       label={t('admin.stats.pending')}       value={stats.pendingBookings}     color="text-yellow-400" trend={-2} />
+        <StatCard icon={BookOpen}    label={t('admin.stats.total')}     value={stats.totalBookings}       color="text-[#7fb2e5]"   trend={12} />
+        <StatCard icon={CircleCheck} label={t('admin.stats.confirmed')}     value={stats.confirmedBookings}   color="text-ok-n"  trend={5} />
+        <StatCard icon={Clock}       label={t('admin.stats.pending')}       value={stats.pendingBookings}     color="text-warn-n" trend={-2} />
         <StatCard icon={DollarSign}  label={t('admin.stats.revenue')}       value={`$${stats.totalRevenue.toLocaleString()}`} color="text-white" trend={8} />
-        <StatCard icon={Package}     label={t('admin.stats.packages')}      value={stats.totalPackages}       color="text-[#a482b5]" />
-        <StatCard icon={Plane}       label={t('admin.stats.flights')}       value={stats.totalFlights}        color="text-[#4a9ba3]"   />
+        <StatCard icon={Package}     label={t('admin.stats.packages')}      value={stats.totalPackages}       color="text-[#c8b48a]" />
+        <StatCard icon={Plane}       label={t('admin.stats.flights')}       value={stats.totalFlights}        color="text-[#7cc4d9]"   />
       </div>
 
-      <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
+      <div className="night-panel rounded-2xl p-5">
         <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="text-sm font-black uppercase tracking-widest text-white/50">{t('admin.activity.title')}</h3>
@@ -160,7 +160,7 @@ function DashboardTab() {
           <div className="flex flex-wrap gap-2">
             {['week', 'month'].map(rangeOption => (
               <button key={rangeOption} type="button" onClick={() => setActivityRange(rangeOption)}
-                className={`px-3 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition ${activityRange === rangeOption ? 'bg-white text-[#0A0A0A]' : 'bg-white/5 text-white/60 hover:bg-white/10'}`}>
+                className={`px-3 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition ${activityRange === rangeOption ? 'bg-[#febb02] text-[#00112b]' : 'night-inset text-white/60 hover:bg-[#8fb4ff]/10'}`}>
                 {t(`admin.activity.range.${rangeOption}`)}
               </button>
             ))}
@@ -183,9 +183,9 @@ function DashboardTab() {
                   <span>{label}</span>
                   <span>{usageChart.counts[index]}</span>
                 </div>
-                <div className="h-3 rounded-full bg-white/5 overflow-hidden">
+                <div className="h-3 rounded-full bg-[#8fb4ff]/10 overflow-hidden">
                   <div style={{ width: `${(usageChart.counts[index] / maxValue) * 100}%` }}
-                    className="h-full rounded-full bg-[#4a9ba3] transition-all duration-300" />
+                    className="h-full rounded-full bg-gradient-to-r from-[#d99a2b] to-[#ffd76e] transition-all duration-300" />
                 </div>
               </div>
             ))}
@@ -194,7 +194,7 @@ function DashboardTab() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
+        <div className="night-panel rounded-2xl p-5">
             <h3 className="text-sm font-black uppercase tracking-widest text-white/50 mb-5">Popular Packages</h3>
             <div className="space-y-4">
                 {packages.slice(0, 3).map(p => (
@@ -210,41 +210,41 @@ function DashboardTab() {
                         </div>
                         <div className="text-right">
                             <p className="text-[13px] font-black text-white">${p.price}</p>
-                            <p className="text-[10px] text-green-400 font-bold uppercase tracking-tighter">Active</p>
+                            <p className="text-[10px] text-ok-n font-bold uppercase tracking-tighter">Active</p>
                         </div>
                     </div>
                 ))}
             </div>
         </div>
 
-        <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
+        <div className="night-panel rounded-2xl p-5">
             <h3 className="text-sm font-black uppercase tracking-widest text-white/50 mb-5">System Health</h3>
             <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <div className="p-4 rounded-xl night-inset">
                     <p className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">Server Status</p>
                     <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <div className="w-2 h-2 rounded-full bg-[#86d29a] animate-pulse" />
                         <span className="text-[14px] font-black text-white">Online</span>
                     </div>
                 </div>
-                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <div className="p-4 rounded-xl night-inset">
                     <p className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">API Sync</p>
                     <div className="flex items-center gap-2">
-                        <CircleCheck className="w-4 h-4 text-[#4a9ba3]" />
+                        <CircleCheck className="w-4 h-4 text-[#7cc4d9]" />
                         <span className="text-[14px] font-black text-white">Synced</span>
                     </div>
                 </div>
-                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <div className="p-4 rounded-xl night-inset">
                     <p className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">Database</p>
                     <div className="flex items-center gap-2">
-                        <Save className="w-4 h-4 text-[#a482b5]" />
+                        <Save className="w-4 h-4 text-[#c8b48a]" />
                         <span className="text-[14px] font-black text-white">Optimized</span>
                     </div>
                 </div>
-                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <div className="p-4 rounded-xl night-inset">
                     <p className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">Security</p>
                     <div className="flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-green-400" />
+                        <TrendingUp className="w-4 h-4 text-ok-n" />
                         <span className="text-[14px] font-black text-white">Shielded</span>
                     </div>
                 </div>
@@ -252,7 +252,7 @@ function DashboardTab() {
         </div>
       </div>
 
-      <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-5">
+      <div className="night-panel rounded-2xl p-5">
         <h3 className="text-sm font-black uppercase tracking-widest text-white/50 mb-5">{t('admin.recent.title')}</h3>
         <div className="flex flex-col gap-3">
           {recent.length === 0 ? (
@@ -365,13 +365,13 @@ function PackagesTab() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex justify-end">
-        <button onClick={startAdd} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-[#0A0A0A] text-[11px] font-black uppercase tracking-widest transition-premium hover:bg-white/90">
+        <button onClick={startAdd} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#ffd76e] to-[#f5b942] text-[#00112b] text-[11px] font-black uppercase tracking-widest transition-premium hover:brightness-110 shadow-soft">
           <Plus className="w-4 h-4" /> {t('admin.packagesTab.add')}
         </button>
       </div>
 
       {showForm && (
-        <div className="bg-[#111111] border border-white/[0.08] rounded-2xl p-6">
+        <div className="night-panel rounded-2xl p-6">
           <h3 className="text-sm font-black uppercase tracking-widest text-white/50 mb-5">{editing ? 'Edit Package' : 'Add New Package'}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
@@ -384,38 +384,38 @@ function PackagesTab() {
               <div key={field.k}>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">{field.l}</label>
                 <input type={field.type} placeholder={field.ph} value={form[field.k]} onChange={e => setForm(p => ({ ...p, [field.k]: e.target.value }))}
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/20 transition-premium"
+                  className="w-full inp-night rounded-xl px-3 py-2.5 text-sm transition-premium"
                 />
               </div>
             ))}
             <div>
               <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">Category</label>
               <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))}
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none transition-premium">
+                className="w-full inp-night rounded-xl px-3 py-2.5 text-sm transition-premium">
                 {['luxury', 'beach', 'cultural', 'adventure', 'family'].map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
               </select>
             </div>
             <div className="sm:col-span-2">
               <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">Description</label>
               <textarea rows={3} placeholder="Package description…" value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))}
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/20 transition-premium resize-none"
+                className="w-full inp-night rounded-xl px-3 py-2.5 text-sm transition-premium resize-none"
               />
             </div>
             <div>
               <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">Includes (one per line)</label>
               <textarea rows={4} placeholder="Round-trip flights&#10;4★ hotel&#10;Tours" value={form.includes} onChange={e => setForm(p => ({ ...p, includes: e.target.value }))}
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/20 transition-premium resize-none"
+                className="w-full inp-night rounded-xl px-3 py-2.5 text-sm transition-premium resize-none"
               />
             </div>
             <div>
               <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">Highlights (one per line)</label>
               <textarea rows={4} placeholder="Burj Khalifa visit&#10;Desert safari&#10;Dhow cruise" value={form.highlights} onChange={e => setForm(p => ({ ...p, highlights: e.target.value }))}
-                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/20 transition-premium resize-none"
+                className="w-full inp-night rounded-xl px-3 py-2.5 text-sm transition-premium resize-none"
               />
             </div>
           </div>
           <div className="flex items-center gap-3 mt-5">
-            <button onClick={handleSave} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#0A0A0A] text-[11px] font-black uppercase tracking-widest transition-premium hover:bg-white/90">
+            <button onClick={handleSave} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#ffd76e] to-[#f5b942] text-[#00112b] text-[11px] font-black uppercase tracking-widest transition-premium hover:brightness-110 shadow-soft">
               <Save className="w-4 h-4" /> Save
             </button>
             <button onClick={() => setShowForm(false)} className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/[0.08] text-white/60 text-[11px] font-black uppercase tracking-widest hover:bg-white/[0.04] transition-premium">
@@ -427,7 +427,7 @@ function PackagesTab() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {packages.map(p => (
-          <div key={p.id} className="bg-[#111111] border border-white/[0.06] rounded-2xl overflow-hidden">
+          <div key={p.id} className="night-panel rounded-2xl overflow-hidden">
             {p.image && <img src={p.image} alt={p.name} className="h-36 w-full object-cover" />}
             <div className="p-4">
               <p className="font-black text-white text-sm mb-0.5">{p.name}</p>
@@ -436,7 +436,7 @@ function PackagesTab() {
                 <button onClick={() => startEdit(p)} className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border border-white/[0.1] text-white/60 text-[11px] font-black uppercase tracking-widest hover:bg-white/[0.04] transition-premium">
                   <Edit2 className="w-3.5 h-3.5" /> Edit
                 </button>
-                <button onClick={() => setConfirm(p.id)} className="p-2 rounded-xl hover:bg-red-400/10 text-white/30 hover:text-red-400 transition-premium">
+                <button onClick={() => setConfirm(p.id)} className="p-2 rounded-xl hover:bg-[#ff9c8a]/10 text-white/30 hover:text-[#ff9c8a] transition-premium">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
@@ -457,16 +457,16 @@ function ConfirmModal({ msg, sub, onConfirm, onCancel }) {
   const { t } = useTranslation();
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#111111] border border-white/[0.1] rounded-2xl p-6 max-w-xs w-full mx-4 page-fade text-center">
-        <div className="w-12 h-12 rounded-full bg-red-400/10 flex items-center justify-center mx-auto mb-4">
-          <CircleAlert className="w-6 h-6 text-red-400" />
+      <div className="night-panel rounded-2xl p-6 max-w-xs w-full mx-4 page-fade text-center">
+        <div className="w-12 h-12 rounded-full bg-[#ff9c8a]/10 flex items-center justify-center mx-auto mb-4">
+          <CircleAlert className="w-6 h-6 text-danger-n" />
         </div>
         <p className="font-black text-white mb-1">{msg}</p>
         {sub && <p className="text-white/35 text-[10px] font-bold uppercase tracking-widest mt-1 mb-5">{sub}</p>}
         {!sub && <div className="mb-5" />}
         <div className="flex gap-3">
           <button onClick={onCancel} className="flex-1 py-2.5 rounded-xl border border-white/[0.1] text-white/60 text-[10px] font-black uppercase tracking-widest hover:bg-white/[0.04] transition-premium">{t('admin.common.cancel')}</button>
-          <button onClick={onConfirm} className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-red-400 transition-premium">{t('admin.common.delete')}</button>
+          <button onClick={onConfirm} className="flex-1 py-2.5 rounded-xl bg-[#b3402e] text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#c4523f] transition-premium">{t('admin.common.delete')}</button>
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ const Input = ({ label, icon: Icon, className, wrapperClassName, ...props }) => 
           'text-white font-medium text-sm placeholder:text-white/25',
           'transition-premium hover:border-white/[0.16] hover:bg-white/[0.07]',
           'focus:border-[#0071c2]/70 focus:bg-white/[0.08] focus:ring-2 focus:ring-[#0071c2]/25',
-          'aria-[invalid=true]:border-red-400/70 aria-[invalid=true]:focus:border-red-400 aria-[invalid=true]:focus:ring-red-400/25',
+          'aria-[invalid=true]:border-[#e98871]/70 aria-[invalid=true]:focus:border-[#e98871] aria-[invalid=true]:focus:ring-[#e98871]/25',
           className
         )}
         {...props}

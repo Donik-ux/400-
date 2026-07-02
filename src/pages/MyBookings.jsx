@@ -15,9 +15,9 @@ import { usePriceFormatter } from '../components/Price';
 
 const STATUS_META = (t) => ({
   saved:     { cls: 'bg-[#f0f5ff] text-[#0071c2] border-[#dceaff]',  icon: BookOpen,    label: t('lists.bookings.statusSaved') },
-  confirmed: { cls: 'bg-[#e8f5e9] text-[#008009] border-[#bbf7d0]',  icon: CheckCircle, label: t('bookings.status.confirmed') || 'Confirmed' },
-  pending:   { cls: 'bg-[#fff7e6] text-[#a45e00] border-[#ffd76e]',  icon: Clock,       label: t('bookings.status.pending')   || 'Pending'   },
-  cancelled: { cls: 'bg-red-50 text-red-600 border-red-200',          icon: XCircle,     label: t('bookings.status.cancelled') || 'Cancelled' },
+  confirmed: { cls: 'badge-ok',     icon: CheckCircle, label: t('bookings.status.confirmed') || 'Confirmed' },
+  pending:   { cls: 'badge-warn',   icon: Clock,       label: t('bookings.status.pending')   || 'Pending'   },
+  cancelled: { cls: 'badge-danger', icon: XCircle,     label: t('bookings.status.cancelled') || 'Cancelled' },
 });
 
 // Pull a destination name out of a bookings record so we can fetch a hero image

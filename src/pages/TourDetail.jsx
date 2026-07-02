@@ -190,7 +190,7 @@ export default function TourDetail() {
                     {i + 1}
                   </span>
                   <span className="text-[14px] font-semibold text-[#1a1a1a]">{h}</span>
-                  <Check className="w-4 h-4 text-green-600 ml-auto shrink-0" strokeWidth={3} />
+                  <Check className="w-4 h-4 text-[#2e7d4f] ml-auto shrink-0" strokeWidth={3} />
                 </motion.div>
               ))}
             </div>
@@ -307,25 +307,25 @@ export default function TourDetail() {
 
             {/* Fit banner */}
             <div className={`p-3.5 rounded-xl border-2 mb-4 ${
-              fits ? 'bg-green-50 border-green-300' : 'bg-amber-50 border-amber-300'
+              fits ? 'bg-[#e9f3ea] border-[#cfe3d2]' : 'bg-[#fdf3dc] border-[#f0dfb4]'
             }`}>
               <div className="flex items-start gap-2.5">
                 {fits
-                  ? <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
-                  : <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />}
+                  ? <CheckCircle2 className="w-5 h-5 text-[#2e7d4f] shrink-0 mt-0.5" />
+                  : <AlertTriangle className="w-5 h-5 text-[#c9962f] shrink-0 mt-0.5" />}
                 <div className="flex-1">
-                  <p className={`text-[13px] font-black ${fits ? 'text-green-800' : 'text-amber-800'}`}>
+                  <p className={`text-[13px] font-black ${fits ? 'text-[#24513a]' : 'text-warn'}`}>
                     {fits
                       ? `${t('tourDetail.budgetEnoughPrefix')} ${fmt(diff)} ${t('tourDetail.budgetEnoughSuffix')}`
                       : `${t('tourDetail.budgetShortPrefix')} ${fmt(Math.abs(diff))}`}
                   </p>
-                  <p className={`text-[11px] ${fits ? 'text-green-700' : 'text-amber-700'}`}>
+                  <p className={`text-[11px] ${fits ? 'text-ok' : 'text-[#8a5c17]/90'}`}>
                     {t('tourDetail.tourLineLabel')} {fmt(pricePer)} × {travelers} = <b>{fmt(tourTotal)}</b>
                   </p>
                 </div>
               </div>
               <div className="mt-2.5 h-2 rounded-full bg-white/70 overflow-hidden">
-                <div className={`h-full rounded-full transition-all duration-500 ${fits ? 'bg-green-500' : 'bg-amber-400'}`}
+                <div className={`h-full rounded-full transition-all duration-500 ${fits ? 'bg-[#2e7d4f]' : 'bg-[#e0a435]'}`}
                   style={{ width: `${progress}%` }} />
               </div>
             </div>

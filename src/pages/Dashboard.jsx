@@ -140,9 +140,9 @@ export default function Dashboard() {
                       <div className="text-right">
                         <p className="text-[15px] font-black text-[#1a1a1a] mb-0.5">{fmt(b.total)}</p>
                         <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${
-                          b.status === 'confirmed' ? 'bg-[#e8f5e9] text-[#008009]' :
-                          b.status === 'pending' ? 'bg-[#fff7e6] text-[#a45e00]' :
-                          'bg-red-50 text-red-600'
+                          b.status === 'confirmed' ? 'bg-[#e9f3ea] text-ok' :
+                          b.status === 'pending' ? 'bg-[#fdf3dc] text-warn' :
+                          'bg-[#faeae6] text-danger'
                         }`}>
                           {b.status === 'confirmed' ? t('dashboard.statusConfirmed') :
                            b.status === 'pending' ? t('dashboard.statusPending') :

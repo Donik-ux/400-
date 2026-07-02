@@ -23,6 +23,7 @@ const SEED_FLIGHTS = [
 ];
 
 const SEED_PACKAGES = [
+  { id:'pkg7', name:'Antarctica Expedition Cruise', destination:'Antarctica', duration:10, price:8990, rating:5.0, reviews:87, category:'adventure', image:'https://images.unsplash.com/photo-1516569422572-d9e0514b9598?w=800&q=80', includes:['Flights to Ushuaia','Expedition ship cabin','All meals on board','Zodiac landings','Polar parka & boots rental'], highlights:['Cross the Drake Passage','Penguin colonies up close','Iceberg-filled Lemaire Channel','Whale watching','Polar plunge (optional)'], description:'Set foot on the White Continent — the rarest journey on Earth.', available:true, featured:true },
   { id:'pkg1', name:'Dubai Luxury Escape',   destination:'Dubai, UAE',    duration:7,  price:2499, rating:4.9, reviews:412, category:'luxury',    image:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80', includes:['Round-trip flights','5★ hotel','Desert safari','City tours','Airport transfers'], highlights:['Burj Khalifa visit','Dubai Mall & fountain show','Desert dune bashing','Dhow cruise dinner','Gold & Spice Souk'], description:'An ultra-luxurious escape to the City of Gold.', available:true, featured:true },
   { id:'pkg2', name:'Bali Tropical Paradise', destination:'Bali, Indonesia', duration:10, price:1899, rating:4.8, reviews:638, category:'beach',     image:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80', includes:['Round-trip flights','4★ resort','Rice terrace tours','Temple visits','Spa day'], highlights:['Tegallalang Rice Terraces','Tanah Lot Temple','Ubud Monkey Forest'], description:'Discover the Island of Gods.', available:true, featured:true },
   { id:'pkg3', name:'Istanbul Cultural Journey', destination:'Istanbul, Turkey', duration:6, price:1299, rating:4.7, reviews:287, category:'cultural', image:'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800&q=80', includes:['Round-trip flights','4★ hotel','Guided city tours'], highlights:['Hagia Sophia & Blue Mosque','Grand Bazaar shopping'], description:'Walk through centuries of history.', available:true, featured:false },
@@ -58,7 +59,17 @@ const SEED_SETTINGS = {
 };
 
 const initFlights       = () => { const d = load(S_FLIGHTS,  null); if (!d) { save(S_FLIGHTS,  SEED_FLIGHTS);  return SEED_FLIGHTS;  } return d; };
-const initPackages      = () => { const d = load(S_PACKAGES, null); if (!d) { save(S_PACKAGES, SEED_PACKAGES); return SEED_PACKAGES; } return d; };
+const initPackages      = () => {
+  const d = load(S_PACKAGES, null);
+  if (!d) { save(S_PACKAGES, SEED_PACKAGES); return SEED_PACKAGES; }
+  // Migration: users seeded before the Antarctica launch get it injected once
+  if (!d.some(p => p.id === 'pkg7' || /antarctica/i.test(p.destination || ''))) {
+    const next = [SEED_PACKAGES[0], ...d];
+    save(S_PACKAGES, next);
+    return next;
+  }
+  return d;
+};
 const initBookings      = () => { const d = load(S_BOOKINGS, null); if (!d) { save(S_BOOKINGS, SEED_BOOKINGS); return SEED_BOOKINGS; } return d; };
 const initHotels        = () => { const d = load(S_HOTELS,   null); if (!d) { save(S_HOTELS,   SEED_HOTELS);   return SEED_HOTELS;   } return d; };
 const initNotifications = () => load(S_NOTIFICATIONS, []);

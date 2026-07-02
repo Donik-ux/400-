@@ -11,6 +11,7 @@ import Services        from './pages/Services';
 import Flights         from './pages/Flights';
 import BerlinTrip      from './pages/BerlinTrip';
 import ExoticTours     from './pages/ExoticTours';
+import Antarctica      from './pages/Antarctica';
 import TourDetail      from './pages/TourDetail';
 import HotTours        from './pages/HotTours';
 import Wishlist        from './pages/Wishlist';
@@ -40,6 +41,7 @@ function App() {
           <Route path="/flights"     element={<Flights />} />
           <Route path="/berlin-trip" element={<BerlinTrip />} />
           <Route path="/exotic-tours" element={<ExoticTours />} />
+          <Route path="/antarctica"  element={<Antarctica />} />
           <Route path="/exotic-tours/:id" element={<TourDetail />} />
           <Route path="/hot-tours"   element={<HotTours />} />
           <Route path="/login"    element={<GuestRoute><Login /></GuestRoute>} />

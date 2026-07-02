@@ -20,8 +20,9 @@ import account from './account';
 import chrome from './chrome';
 import manual from './manual';
 import services from './services';
+import antarctica from './antarctica';
 
-const modules = [home, flights, tours, discovery, trip, account, chrome, manual, services];
+const modules = [home, flights, tours, discovery, trip, account, chrome, manual, services, antarctica];
 
 const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v);
 

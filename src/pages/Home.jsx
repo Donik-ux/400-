@@ -6,7 +6,7 @@ import {
   Flame, Sparkles, Star, Shield, Headphones, BadgePercent, Globe,
   TrendingUp, Heart, Mountain, Waves, Building2, Compass, Clock, Wand2, Wallet,
   ChevronRight, Award, ThumbsUp, Check, Mail, FileText, Download,
-  FileCheck, ShieldCheck, Wifi, Car, Navigation, Loader2, LayoutGrid, X,
+  FileCheck, ShieldCheck, Wifi, Car, Navigation, Loader2, LayoutGrid, X, Snowflake,
 } from 'lucide-react';
 import useAdminStore from '../store/useAdminStore';
 import { useTranslation } from '../store/useLangStore';
@@ -37,7 +37,7 @@ const TRENDING = [
   { city: 'Paris',     country: 'France',      from: 410, img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80' },
   { city: 'Bangkok',   country: 'Thailand',    from: 380, img: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=900&q=80' },
   { city: 'Barcelona', country: 'Spain',       from: 360, img: 'https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=900&q=80' },
-  { city: 'Antarctica',country: 'White Continent', from: 4200, img: 'https://images.unsplash.com/photo-1519659528534-7fd733a832a0?auto=format&fit=crop&w=900&q=80' },
+  { city: 'Antarctica',country: 'White Continent', from: 4200, img: 'https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?auto=format&fit=crop&w=900&q=80' },
   { city: 'Rome',      country: 'Italy',       from: 340, img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=900&q=80' },
   { city: 'London',    country: 'United Kingdom', from: 450, img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80' },
   { city: 'Singapore', country: 'Singapore',   from: 610, img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=900&q=80' },
@@ -255,6 +255,12 @@ const Home = () => {
                 <Tab active={tab === 'flights'} onClick={() => setTab('flights')} icon={<Globe className="w-4 h-4" />} label={t('homePage.tabs.flights')} />
                 <Tab active={tab === 'ai'}       onClick={() => setTab('ai')}       icon={<Sparkles className="w-4 h-4" />} label={t('homePage.tabs.ai')} highlight newLabel={t('homePage.tabs.newBadge')} />
               </div>
+              {/* Antarctica spotlight — deep-link to the dedicated expedition page */}
+              <button type="button" onClick={() => navigate('/antarctica')}
+                className="ml-auto shrink-0 flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-t-xl text-[13px] font-black whitespace-nowrap transition text-[#0071c2] hover:bg-[#eaf6fb] hover:text-[#003580]">
+                <Snowflake className="w-4 h-4 text-[#4aa3c0]" />
+                <span className="hidden sm:inline">Antarctica</span>
+              </button>
               {/* Kept outside the scroll area so it's always reachable, not scrolled off on mobile */}
               <button type="button" onClick={() => setServicesOpen(true)}
                 className="ml-auto shrink-0 flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-t-xl text-[13px] font-black whitespace-nowrap transition text-[#5c5245] hover:bg-[#f0f5ff] hover:text-[#0071c2]">
@@ -861,7 +867,7 @@ const Home = () => {
           {TRENDING.map((d, i) => (
             <Tilt3D key={i} max={9} className="aspect-[4/3] rounded-2xl shadow-soft">
               <motion.button
-                onClick={() => navigate('/flights')}
+                onClick={() => navigate(d.city === 'Antarctica' ? '/antarctica' : '/flights')}
                 initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

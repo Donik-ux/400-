@@ -37,6 +37,7 @@ export default function DisclaimerModal() {
           <LanguageSwitcher align="right" />
 
         </div>
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#f5b942]/70 to-transparent" aria-hidden="true" />
 
         {/* Body */}
         <div className="px-7 py-6 max-h-[60vh] overflow-y-auto">

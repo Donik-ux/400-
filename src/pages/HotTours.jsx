@@ -22,6 +22,7 @@ import { useDateDaysSync } from '../hooks/useDateDaysSync';
 import BudgetAdvisory from '../components/BudgetAdvisory';
 import CityAutocomplete from '../features/flights/CityAutocomplete';
 import Price, { usePriceFormatter } from '../components/Price';
+import GoldDust from '../components/fx/GoldDust';
 
 const PREFS_KEY = 'maf_ai_prefs';
 const loadPrefs = () => { try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; } catch { return {}; } };
@@ -92,9 +93,10 @@ const HotTours = () => {
   const [openPkg, setOpenPkg] = useState(null);
   const [planFor, setPlanFor] = useState({});
 
-  // Run AI on first mount so the page feels alive
+  // Run AI on first mount so the page feels alive — without stealing the
+  // scroll position: visitors should land on the hero, not the result grid.
   useEffect(() => {
-    runStudio(initialBalance, initialDays, initialVibe);
+    runStudio(initialBalance, initialDays, initialVibe, undefined, { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -134,14 +136,17 @@ const HotTours = () => {
     runStudio();
   };
 
-  const runStudio = async (b = balance, d = days, v = vibe, f = from) => {
+  const runStudio = async (b = balance, d = days, v = vibe, f = from, { scroll = true } = {}) => {
     setError(null); setResult(null); setOpenPkg(null); setPlanFor({});
     setLoading(true);
-    // Scroll the result strip into view so the user sees something happen.
-    setTimeout(() => {
-      const el = document.getElementById('ai-packages-grid');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 80);
+    // Scroll the result strip into view so the user sees something happen —
+    // but never on the mount-time auto-run, which must leave the hero visible.
+    if (scroll) {
+      setTimeout(() => {
+        const el = document.getElementById('ai-packages-grid');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
     try {
       const r = await generateAiPackages({
         balance: Number(b),
@@ -216,6 +221,7 @@ const HotTours = () => {
       {/* ── HERO + STUDIO INPUTS ─────────────────────────────────── */}
       <section className="relative aurora-bg text-white overflow-hidden">
         <div className="film-grain" />
+        <GoldDust className="absolute inset-0" density={0.55} />
         <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#febb02]/10 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
           <div className="grid lg:grid-cols-12 gap-8 items-center">

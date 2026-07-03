@@ -361,10 +361,10 @@ export default function Flights() {
             <section className="mt-10 reveal">
               <div className="flex items-end justify-between mb-6">
                 <div>
-                  <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-[0.2em] mb-2">
+                  <div className="eyebrow-lux mb-2">
                     <TrendingDown className="w-3.5 h-3.5" /> {t('flightsPage.inspiration.eyebrow')}
                   </div>
-                  <h2 className="font-display text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flightsPage.inspiration.title')}</h2>
+                  <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flightsPage.inspiration.title')}</h2>
                 </div>
               </div>
 
@@ -402,7 +402,7 @@ export default function Flights() {
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#febb02] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-3">
                       <Sparkles className="w-3.5 h-3.5" /> {t('flightsPage.aiCta.badge')}
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight mb-2">
+                    <h2 className="h-editorial text-2xl md:text-[34px] mb-2">
                       {t('flightsPage.aiCta.title')}
                     </h2>
                     <p className="text-[14px] text-white/85 font-medium">
@@ -422,10 +422,10 @@ export default function Flights() {
 
         {/* ── Official airlines · book direct ── */}
         <section className="mt-12 reveal">
-          <div className="inline-flex items-center gap-2 text-[#2e7d4f] text-[11px] font-black uppercase tracking-[0.2em] mb-2">
+          <div className="eyebrow-lux mb-2">
             <BadgeCheck className="w-3.5 h-3.5" /> {t('flightsPage.direct.official')}
           </div>
-          <h2 className="font-display text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flightsPage.direct.title')}</h2>
+          <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flightsPage.direct.title')}</h2>
           <p className="text-[#5c5245] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
             {t('flightsPage.direct.sub')}
           </p>
@@ -463,10 +463,10 @@ export default function Flights() {
 
         {/* ── Aggregators · compare prices ── */}
         <section className="mt-12 reveal">
-          <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-[0.2em] mb-2">
+          <div className="eyebrow-lux mb-2">
             <Globe className="w-3.5 h-3.5" /> {t('flightsPage.aggregators.thirdParty')}
           </div>
-          <h2 className="font-display text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flights.bookingSites') || 'Compare on aggregators'}</h2>
+          <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flights.bookingSites') || 'Compare on aggregators'}</h2>
           <p className="text-[#5c5245] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
             {t('flights.bookingSub') || 'Open the platform with the best fare for your route. Sometimes 10–30% cheaper than the airline itself.'}
           </p>

@@ -90,8 +90,8 @@ export default function Login() {
           <span className="text-xl font-black text-[#003580]">MAFTRAVEL</span>
         </div>
 
-        <div className="bg-white border border-[#e6dcc3] rounded-2xl p-7 shadow-lift">
-          <h1 className="text-2xl font-black text-[#1a1a1a] mb-1">{t('auth.login.title')}</h1>
+        <div className="corner-gilt bg-white border border-[#e6dcc3] rounded-2xl p-7 shadow-vitrine">
+          <h1 className="font-display text-engraved text-[26px] font-bold text-[#1a1a1a] mb-1">{t('auth.login.title')}</h1>
           <p className="text-[#93876f] text-sm mb-6">{t('auth.login.sub')}</p>
 
           {error && (

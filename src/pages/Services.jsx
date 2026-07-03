@@ -420,10 +420,10 @@ export default function Services() {
       {/* AI tools */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 pt-8 page-fade">
         <div className="mb-5">
-          <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-1">
+          <div className="eyebrow-lux mb-1">
             <Sparkles className="w-3.5 h-3.5" /> {t('servicesPage.aiSection')}
           </div>
-          <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('servicesPage.aiSectionSub')}</h2>
+          <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('servicesPage.aiSectionSub')}</h2>
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           <VisaChecker />
@@ -437,10 +437,10 @@ export default function Services() {
       {/* Bookable services */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
         <div className="mb-5">
-          <div className="inline-flex items-center gap-2 text-[#febb02] text-[11px] font-black uppercase tracking-widest mb-1">
+          <div className="eyebrow-lux mb-1">
             <TrendingUp className="w-3.5 h-3.5" /> {t('servicesPage.bookSection')}
           </div>
-          <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('servicesPage.bookSectionSub')}</h2>
+          <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('servicesPage.bookSectionSub')}</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {bookables.map((b, i) => <BookableCard key={i} {...b} />)}

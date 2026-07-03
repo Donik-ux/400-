@@ -23,6 +23,7 @@ import { getCurrencyInfo, formatLocal } from '../services/currencyByCountry';
 import { toast } from '../components/Toast';
 import useSEO from '../hooks/useSEO';
 import { usePriceFormatter } from '../components/Price';
+import GoldDust from '../components/fx/GoldDust';
 
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80';
 
@@ -324,7 +325,8 @@ export default function Planner() {
 
       {/* ── Hero / Form Section ── */}
       <div className="relative aurora-bg text-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-14">
+        <GoldDust className="absolute inset-0" density={0.55} />
+        <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-14">
           <div className="max-w-2xl mb-8 page-fade">
             <div className="badge-editorial inline-flex rounded-full px-3.5 py-1.5 mb-4">
               <Sparkles className="w-3.5 h-3.5 text-[#ffd76e]" />

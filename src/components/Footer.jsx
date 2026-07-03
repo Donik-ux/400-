@@ -123,11 +123,11 @@ export default function Footer() {
               {t('footer.powered')}
             </p>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-white/30 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+          <div className="flex items-center gap-3">
+            <div className="label-gold text-[9.5px] whitespace-nowrap bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#f5b942]/20">
               <span>✈️ {t('footer.smartFlights')}</span>
             </div>
-            <div className="flex items-center gap-2 text-[10px] font-bold text-white/30 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+            <div className="label-gold text-[9.5px] whitespace-nowrap bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#f5b942]/20">
               <span>🧠 {t('footer.aiPlanning')}</span>
             </div>
           </div>

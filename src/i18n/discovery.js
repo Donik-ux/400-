@@ -169,6 +169,8 @@ export default {
       },
       form: {
         route: 'Route',
+        fromLabel: 'From',
+        toLabel: 'To',
         fromPlaceholder: 'From (departure city)',
         budgetLevel: 'Budget level',
         visaRequiredBadge: 'Visa required',
@@ -359,6 +361,8 @@ export default {
       },
       form: {
         route: 'Marshrut',
+        fromLabel: 'Qayerdan',
+        toLabel: 'Qayerga',
         fromPlaceholder: 'Qayerdan (uchish shahri)',
         budgetLevel: 'Byudjet darajasi',
         visaRequiredBadge: 'Viza talab qilinadi',

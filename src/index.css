@@ -76,6 +76,19 @@ body {
   overflow-anchor: none;
 }
 
+/* Lamplight vignette — the ivory reads as expensive paper under warm light:
+   a faint gold wash from above, the merest cool navy settle at the foot. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(245, 185, 66, 0.05), transparent 60%),
+    radial-gradient(120% 50% at 50% 110%, rgba(0, 34, 80, 0.035), transparent 60%);
+}
+
 /* Whisper-soft global grain for tactile depth (doesn't touch component colors) */
 body::before {
   content: '';
@@ -122,7 +135,7 @@ button, a, input, select, textarea {
 }
 
 /* Thin, brand-toned scrollbar in Firefox to match the WebKit rules below */
-* { scrollbar-width: thin; scrollbar-color: #d9c9a3 transparent; }
+* { scrollbar-width: thin; scrollbar-color: #cfa040 transparent; }
 
 /* ── Transitions ── */
 .transition-premium {
@@ -385,11 +398,15 @@ button, a, input, select, textarea {
   box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 8px 24px -8px rgba(0,0,0,0.35);
 }
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; }
+/* ── Scrollbar — a thread of gold along the page edge ── */
+::-webkit-scrollbar { width: 7px; }
 ::-webkit-scrollbar-track { background: #faf6ed; }
-::-webkit-scrollbar-thumb { background: #d9c9a3; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #c2ac78; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #e8c26a, #cfa040 50%, #b3841f);
+  border-radius: 10px;
+  border: 1px solid rgba(250, 246, 237, 0.6);
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #f2cf7a, #d9ab48 50%, #bd8e29); }
 
 /* ── Date input ── */
 input[type='date']::-webkit-calendar-picker-indicator {

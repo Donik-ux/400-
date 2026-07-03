@@ -172,6 +172,16 @@ export default {
       itemDescOnBudget: ' on a ',
       itemDescBudgetSuffix: ' budget.',
       tripPurpose: 'Tourism and cultural exploration',
+      antarctica: {
+        eyebrow: 'The 7th continent · Expeditions 2026–2027',
+        title1: 'This year, set foot on',
+        title2: 'Antarctica',
+        sub: 'Fewer people visit Antarctica in a year than climb Everest base camp. Penguin colonies, cathedral-sized icebergs, the Drake Passage — and our AI plans the whole expedition around your budget.',
+        statContinent: 'The last continent',
+        statSeason: 'Season: Nov – Mar',
+        statFrom: 'Expeditions from',
+        cta: 'Open the expedition',
+      },
     },
   },
   uz: {
@@ -344,6 +354,16 @@ export default {
       itemDescOnBudget: ', byudjet ',
       itemDescBudgetSuffix: '.',
       tripPurpose: 'Sayyohlik va madaniy sayohat',
+      antarctica: {
+        eyebrow: '7-qit’a · 2026–2027 ekspeditsiyalari',
+        title1: 'Bu yil qadam qo‘ying —',
+        title2: 'Antarktidaga',
+        sub: 'Antarktidaga bir yilda Everest bazasiga chiqqanlardan ham kam odam boradi. Pingvin koloniyalari, sobor kattaligidagi aysberglar, Dreyk bo‘g‘ozi — va bizning AI butun ekspeditsiyani byudjetingizga moslab rejalashtiradi.',
+        statContinent: 'So‘nggi qit’a',
+        statSeason: 'Mavsum: Noy – Mart',
+        statFrom: 'Ekspeditsiyalar',
+        cta: 'Ekspeditsiyani ochish',
+      },
     },
   },
 };

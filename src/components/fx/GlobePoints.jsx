@@ -13,8 +13,9 @@ const CITIES = [
   { lat: 4.2,  lon: 73.5 },   // Maldives
   { lat: -8.4, lon: 115.2 },  // Bali
   { lat: 1.35, lon: 103.8 },  // Singapore
+  { lat: -72, lon: 45 },      // Antarctica — the flagship expedition gets its own arc
 ];
-const ROUTES = [[0, 1], [1, 5], [2, 3], [1, 4], [7, 6], [0, 2]];
+const ROUTES = [[0, 1], [1, 5], [2, 3], [1, 4], [7, 6], [0, 2], [1, 8]];
 
 const toVec = (lat, lon) => {
   const phi = ((90 - lat) * Math.PI) / 180;

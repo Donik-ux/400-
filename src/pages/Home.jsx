@@ -752,6 +752,52 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ─── ANTARCTICA SPOTLIGHT — the rarest journey, one tap away ── */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-8 reveal">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          onClick={() => navigate('/antarctica')}
+          className="group relative overflow-hidden rounded-3xl shadow-float cursor-pointer">
+          <img
+            src="https://images.unsplash.com/photo-1516569422572-d9e0514b9598?auto=format&fit=crop&w=1800&q=80"
+            alt="Antarctica" loading="lazy" onError={handleImgError}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#001026]/95 via-[#001c47]/75 to-[#00295c]/30 pointer-events-none" />
+          <div className="film-grain" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#7cc4d9]/60 to-transparent pointer-events-none" />
+
+          <div className="relative p-7 md:p-12 max-w-2xl text-white">
+            <div className="badge-editorial px-3.5 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.16em] mb-4">
+              <Snowflake className="w-3.5 h-3.5 text-[#7cc4d9]" /> {t('homePage.antarctica.eyebrow')}
+            </div>
+            <h2 className="font-display text-[30px] md:text-[46px] font-semibold tracking-[-0.03em] leading-[1.02] text-balance mb-3 [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]">
+              {t('homePage.antarctica.title1')} <span className="italic font-medium text-gradient-gold gold-animate">{t('homePage.antarctica.title2')}</span>
+            </h2>
+            <p className="text-[14px] md:text-[15px] text-white/80 font-medium leading-relaxed max-w-xl mb-5">
+              {t('homePage.antarctica.sub')}
+            </p>
+            <div className="flex flex-wrap items-center gap-2 mb-6">
+              {[
+                t('homePage.antarctica.statContinent'),
+                t('homePage.antarctica.statSeason'),
+              ].map((s, i) => (
+                <span key={i} className="px-3 py-1.5 rounded-full bg-white/[0.08] border border-[#7cc4d9]/30 text-[11.5px] font-bold text-[#cfeaf4]">{s}</span>
+              ))}
+              <span className="px-3 py-1.5 rounded-full bg-[#febb02]/15 border border-[#febb02]/40 text-[11.5px] font-black text-[#ffd76e]">
+                {t('homePage.antarctica.statFrom')} <Price amount={8990} />
+              </span>
+            </div>
+            <button onClick={() => navigate('/antarctica')}
+              className="btn-gold px-6 py-3 rounded-xl text-[#1a1a1a] font-black text-[14px] inline-flex items-center gap-2 active:scale-95 transition">
+              <Snowflake className="w-4 h-4" /> {t('homePage.antarctica.cta')} <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          </div>
+        </motion.div>
+      </section>
+
       {/* ─── AI BUDGET CTA STRIP ─────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         <motion.div

@@ -474,7 +474,7 @@ const Home = () => {
               {tab !== 'flights' && (
                 <div className="flex items-center flex-wrap gap-1.5 pt-3 px-1">
                   <span className="text-[11px] font-black uppercase tracking-widest text-[#93876f]">{t('homePage.search.popular')}</span>
-                  {['Dubai', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Berlin', 'Paris'].map(c => {
+                  {['Dubai', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Berlin', 'Paris', 'Antarctica'].map(c => {
                     const currentValue = tab === 'ai' ? aiDest : dest;
                     const active = String(currentValue || '').toLowerCase() === c.toLowerCase();
                     return (
@@ -488,7 +488,7 @@ const Home = () => {
                         className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition active:scale-95 ${
                           active ? 'bg-[#003580] text-white shadow-md' : 'bg-[#f0f5ff] text-[#0071c2] hover:bg-[#dceaff]'
                         }`}
-                      >{c}</button>
+                      >{c === 'Antarctica' ? '❄ Antarctica' : c}</button>
                     );
                   })}
                 </div>

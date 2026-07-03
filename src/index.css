@@ -291,6 +291,24 @@ button, a, input, select, textarea {
   .will-change-transform, .lift, .parallax-layer, .light-shaft {
     will-change: auto !important;
   }
+
+  /* Pinch-zoom stability: Safari 26 ships scroll-driven animations, and a
+     pinch gesture replays their timelines — sections strobe in and out.
+     Always-on giant paint layers (animated aurora mesh, fixed grain/vignette,
+     shifting gold gradients) also force full re-rasters mid-gesture. All of
+     it is desktop jewelry; on touch the page holds perfectly still. */
+  .reveal, .depth-up, .depth-down {
+    animation: none !important;
+  }
+  .aurora-bg, .gold-animate {
+    animation: none !important;
+  }
+  .frame-lux::before {
+    animation: none !important;
+  }
+  body::before, body::after {
+    display: none;
+  }
 }
 
 /* Dark glass (navy surfaces) */

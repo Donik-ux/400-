@@ -68,12 +68,20 @@ export default function GoldDust({ className = '', density = 1 }) {
     ro.observe(wrap);
 
     let io = null;
+    let visible = false;
+    let zoomed = false;
+    const sync = () => ((visible && !zoomed) ? start() : stop());
+    // Freeze the loop while the user pinch-zooms — mid-gesture canvas repaints
+    // make iOS Safari flicker.
+    const vv = window.visualViewport;
+    const onVv = () => { zoomed = (vv?.scale || 1) > 1.02; sync(); };
     if (reduced) draw(0);
     else {
-      io = new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop()), { threshold: 0.05 });
+      io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; sync(); }, { threshold: 0.05 });
       io.observe(wrap);
+      vv?.addEventListener('resize', onVv);
     }
-    return () => { stop(); ro.disconnect(); if (io) io.disconnect(); };
+    return () => { stop(); ro.disconnect(); if (io) io.disconnect(); vv?.removeEventListener('resize', onVv); };
   }, [density]);
 
   return (

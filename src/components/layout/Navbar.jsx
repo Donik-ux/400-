@@ -49,9 +49,12 @@ export default function Navbar() {
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-premium ${
         scrolled
-          ? 'bg-[#00112b]/80 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,8,24,0.55)] border-b border-white/10'
-          : 'bg-gradient-to-r from-[#001026] via-[#002250] to-[#001a3d] border-b border-white/[0.06]'
+          ? 'shadow-[0_10px_40px_rgba(0,8,24,0.55)] border-b border-white/10'
+          : 'border-b border-white/[0.06]'
       }`}>
+        {/* Background lives on an absolute child, not the fixed nav itself —
+            iOS Safari whites out the page on pinch-zoom otherwise */}
+        <div aria-hidden="true" className={`absolute inset-0 -z-10 transition-premium ${scrolled ? 'nav-veil--scrolled' : 'nav-veil'}`} />
         {/* ambient gold glow */}
         <div className="pointer-events-none absolute -top-12 left-1/3 w-80 h-24 bg-[#f5b942]/10 blur-3xl rounded-full" />
         {/* Gold hairline accent */}

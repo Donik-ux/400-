@@ -261,6 +261,38 @@ button, a, input, select, textarea {
 .hairline       { height: 1px; background: linear-gradient(to right, transparent, rgba(16,24,40,0.10), transparent); }
 .hairline-gold  { height: 1px; background: linear-gradient(to right, transparent, rgba(245,185,66,0.45), transparent); }
 
+/* ── Navbar glass layers — kept on an ABSOLUTE CHILD of the fixed nav, never
+   on the fixed element itself: iOS Safari (esp. the Liquid Glass builds)
+   whites out the page while pinch-zooming when a fixed header carries
+   backdrop-filter/background directly. ── */
+.nav-veil {
+  background: linear-gradient(to right, #001026, #002250, #001a3d);
+}
+.nav-veil--scrolled {
+  background: rgba(0, 17, 43, 0.80);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+
+/* ── Touch devices: backdrop-filter on fixed/overlay chrome is the classic
+   iOS pinch-zoom whiteout trigger, and stacked will-change layers compound
+   it. Solid fills keep the look; the wow stays on desktop. ── */
+@media (pointer: coarse) {
+  .nav-veil--scrolled {
+    background: rgba(0, 17, 43, 0.96);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .backdrop-blur, .backdrop-blur-sm, .backdrop-blur-xl, .backdrop-blur-2xl,
+  .glass, .glass-dark, .badge-editorial {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .will-change-transform, .lift, .parallax-layer, .light-shaft {
+    will-change: auto !important;
+  }
+}
+
 /* Dark glass (navy surfaces) */
 .glass-dark {
   background: rgba(0, 34, 80, 0.72);

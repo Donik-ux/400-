@@ -49,7 +49,7 @@ export default function SmartImage({
         decoding="async"
         sizes={sizes}
         srcSet={srcSet}
-        fetchpriority={fetchPriority}
+        fetchPriority={fetchPriority}
         onLoad={(e) => { setLoaded(true); onLoaded?.(e); }}
         onError={(e) => { handleImgError(e); setLoaded(true); }}
         className={`w-full h-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}

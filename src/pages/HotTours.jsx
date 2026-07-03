@@ -233,7 +233,7 @@ const HotTours = () => {
             </div>
 
             <div className="frame-lux lg:col-span-6 rounded-2xl">
-              <div className="bg-white text-[#1a1a1a] rounded-2xl shadow-lift overflow-hidden">
+              <div className="bg-white text-[#1a1a1a] rounded-2xl shadow-vitrine overflow-hidden">
                 <div className="bg-[#febb02] text-[#1a1a1a] px-5 py-2.5 flex items-center justify-between">
                   <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest">
                     <Wand2 className="w-3.5 h-3.5" /> {t('hotTours.form.buildTitle')}
@@ -359,7 +359,7 @@ const HotTours = () => {
       <section id="ai-packages-grid" className="max-w-7xl mx-auto px-4 md:px-8 py-10 scroll-mt-6">
         <div className="flex items-end justify-between mb-5 flex-wrap gap-3">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-1">
+            <div className="eyebrow-lux mb-1">
               <Zap className="w-3.5 h-3.5" /> {t('hotTours.grid.curatedFor')} ${balance} · {days} {Number(days) === 1 ? t('hotTours.grid.daySingular') : t('hotTours.grid.dayPlural')}
             </div>
             <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">
@@ -535,7 +535,7 @@ const HotTours = () => {
       {/* ── BUDGET TIER SHORTCUTS ────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-6 reveal">
         <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f0f5ff] text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-3">
+          <div className="eyebrow-lux mb-3">
             <TrendingDown className="w-3.5 h-3.5" /> {t('hotTours.tiers.badge')}
           </div>
           <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">{t('hotTours.tiers.title')}</h2>
@@ -568,7 +568,7 @@ const HotTours = () => {
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-12 reveal">
         <div className="flex items-end justify-between mb-5">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#febb02] text-[11px] font-black uppercase tracking-widest mb-1">
+            <div className="eyebrow-lux mb-1">
               <Flame className="w-3.5 h-3.5" /> {t('hotTours.deals.badge')}
             </div>
             <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">{t('hotTours.deals.title')}</h2>

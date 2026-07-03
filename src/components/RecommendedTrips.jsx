@@ -63,10 +63,10 @@ export default function RecommendedTrips() {
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
       <div className="mb-5">
-        <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-1">
+        <div className="eyebrow-lux mb-1">
           <Sparkles className="w-3.5 h-3.5" /> {t('tripRec.eyebrow')}
         </div>
-        <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('tripRec.heading')}</h2>
+        <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('tripRec.heading')}</h2>
         <p className="text-[14px] text-[#5c5245] font-medium max-w-xl mt-1">{t('tripRec.subtitle')}</p>
       </div>
 

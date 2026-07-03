@@ -24,6 +24,7 @@ import WeatherWidget from '../components/WeatherWidget';
 import DestinationMap from '../components/DestinationMap';
 import RecommendedTrips from '../components/RecommendedTrips';
 import GlobePoints from '../components/fx/GlobePoints';
+import GoldDust from '../components/fx/GoldDust';
 import Tilt3D from '../components/fx/Tilt3D';
 import { detectCurrentLocation } from '../services/geolocation';
 
@@ -47,7 +48,7 @@ const THEMES = [
   { id: 'beach',    labelKey: 'themes.beach',     icon: Waves,    img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80' },
   { id: 'city',     labelKey: 'themes.city',      icon: Building2,img: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=700&q=80' },
   { id: 'mountain', labelKey: 'themes.mountain', icon: Mountain, img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80' },
-  { id: 'culture',  labelKey: 'themes.culture',  icon: Globe,    img: 'https://images.unsplash.com/photo-1539020140153-e479b8c7d486?auto=format&fit=crop&w=700&q=80' },
+  { id: 'culture',  labelKey: 'themes.culture',  icon: Globe,    img: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=700&q=80' },
   { id: 'family',   labelKey: 'themes.family',    icon: Heart,    img: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=700&q=80' },
   { id: 'luxury',   labelKey: 'themes.luxury',    icon: Award,    img: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=700&q=80' },
 ];
@@ -210,6 +211,7 @@ const Home = () => {
              style={{ backgroundImage:'url("https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1800&q=80")', backgroundSize:'cover', backgroundPosition:'center', filter:'saturate(1.15) sepia(0.12)', '--depth': -14, '--pscale': 1.06 }} />
         <div className="film-grain" />
         <div className="pattern-lux" />
+        <GoldDust className="absolute inset-0" />
         <div className="absolute inset-0 sheen-top pointer-events-none" />
         <div className="absolute -left-32 top-10 w-96 h-96 rounded-full bg-[#0071c2]/30 blur-3xl pointer-events-none parallax-layer" style={{ '--depth': 26 }} />
         <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#febb02]/15 blur-3xl pointer-events-none parallax-layer" style={{ '--depth': 18 }} />
@@ -228,10 +230,10 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
             className="text-white max-w-3xl">
-            <div className="badge-editorial px-4 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.16em] mb-7">
+            <div className="badge-editorial px-4 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.16em] mb-5">
               <Sparkles className="w-3.5 h-3.5 text-[#ffd76e]" /> {t('homePage.hero.badge')}
             </div>
-            <h1 className="font-display text-[46px] md:text-[76px] font-semibold tracking-[-0.035em] leading-[0.98] mb-5 [text-shadow:0_2px_30px_rgba(0,0,0,0.30)]">
+            <h1 className="font-display text-[clamp(40px,6.6vw,84px)] font-semibold tracking-[-0.045em] leading-[0.95] text-balance break-words mb-5 [text-shadow:0_2px_30px_rgba(0,0,0,0.30)]">
               {t('homePage.hero.titleLead')} <span className="italic font-medium text-gradient-gold gold-animate">{t('homePage.hero.titleHighlight')}</span>,<br className="hidden md:block" /> {t('homePage.hero.titleTail')}
             </h1>
             <p className="text-[15px] md:text-[19px] text-white/75 font-medium max-w-xl mb-8 leading-relaxed">
@@ -248,7 +250,7 @@ const Home = () => {
           className="relative max-w-6xl mx-auto px-4 md:px-8 -mb-24 md:-mb-28">
           {/* ambient gold glow behind the card */}
           <div className="absolute inset-x-8 md:inset-x-12 -top-6 bottom-0 bg-gradient-to-b from-[#febb02]/35 via-[#febb02]/12 to-transparent rounded-[28px] blur-2xl pointer-events-none" aria-hidden="true" />
-          <div className="frame-lux relative bg-white rounded-2xl shadow-lift">
+          <div className="frame-lux relative bg-white rounded-2xl shadow-vitrine">
             <div className="flex items-center gap-1 px-2 pt-2">
               <div className="flex items-center gap-1 overflow-x-auto min-w-0">
                 <Tab active={tab === 'tours'}    onClick={() => setTab('tours')}    icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.tours')} />
@@ -536,8 +538,8 @@ const Home = () => {
           {[
             { icon: Users,        value: '10,000+', label: t('homeStats.travelers') },
             { icon: Globe,        value: '50+',     label: t('homeStats.countries') },
-            { icon: Sparkles,     value: t('homeStats.ai'),     label: t('homeStats.aiSub') },
-            { icon: BadgePercent, value: t('homeStats.prices'), label: t('homeStats.pricesSub') },
+            { icon: Sparkles,     value: t('homeStats.ai'),     label: t('homeStats.aiSub'),     small: true },
+            { icon: BadgePercent, value: t('homeStats.prices'), label: t('homeStats.pricesSub'), small: true },
           ].map((s, i) => (
             <motion.div
               key={i}
@@ -551,7 +553,7 @@ const Home = () => {
               <div className="relative w-10 h-10 mx-auto rounded-xl bg-[#f5b942]/12 text-[#ffd76e] flex items-center justify-center mb-2 ring-1 ring-[#f5b942]/25">
                 <s.icon className="w-5 h-5" />
               </div>
-              <div className="relative font-display text-[24px] md:text-[28px] font-semibold text-gradient-gold leading-none">{s.value}</div>
+              <div className={`relative font-display font-semibold text-gradient-gold ${s.small ? 'text-[16px] md:text-[19px] leading-tight text-balance' : 'text-[24px] md:text-[28px] leading-none'}`}>{s.value}</div>
               <div className="relative text-[11px] md:text-[12px] font-bold text-white/50 mt-1.5">{s.label}</div>
             </motion.div>
           ))}
@@ -578,7 +580,7 @@ const Home = () => {
                 <f.icon className="w-5 h-5" />
               </div>
               <div className="min-w-0">
-                <div className="text-[13px] font-black text-[#1a1a1a] truncate">{f.title}</div>
+                <div className="text-[13px] font-black text-[#1a1a1a] leading-snug line-clamp-2">{f.title}</div>
                 <div className="text-[11px] font-semibold text-[#93876f] truncate">{f.sub}</div>
               </div>
             </motion.div>
@@ -591,10 +593,10 @@ const Home = () => {
         <div className="grid lg:grid-cols-2 gap-6 items-stretch">
           {/* Left: copy + feature cards */}
           <div className="flex flex-col justify-center">
-            <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-2">
+            <div className="eyebrow-lux mb-2">
               <Sparkles className="w-3.5 h-3.5" /> {t('homePage.valueProps.eyebrow')}
             </div>
-            <h2 className="text-2xl md:text-[34px] font-black text-[#1a1a1a] tracking-tight leading-tight mb-2">
+            <h2 className="h-editorial text-engraved text-[28px] md:text-[40px] text-[#1a1a1a] mb-2">
               {t('homePage.valueProps.heading')}
             </h2>
             <p className="text-[14px] md:text-[15px] text-[#5c5245] font-medium leading-relaxed mb-6 max-w-xl">
@@ -636,12 +638,12 @@ const Home = () => {
             transition={{ duration: 0.4 }}
             className="relative flex items-center justify-center">
             <div className="absolute inset-0 bg-gradient-to-br from-[#0071c2]/10 to-[#febb02]/10 rounded-3xl blur-2xl pointer-events-none" />
-            <div className="relative w-full max-w-md bg-white rounded-2xl shadow-float border border-[#e6dcc3] overflow-hidden">
+            <div className="corner-gilt relative w-full max-w-md bg-white rounded-2xl shadow-float border border-[#e6dcc3] overflow-hidden">
               <span className="absolute top-4 right-4 z-10 inline-flex items-center gap-1 bg-[#febb02] text-[#1a1a1a] text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-float">
                 <FileText className="w-3.5 h-3.5" /> {t('homePage.valueProps.pdfBadge')}
               </span>
               <div className="bg-gradient-to-br from-[#001026] via-[#002250] to-[#003580] text-white p-6">
-                <div className="text-[10px] tracking-[0.22em] uppercase text-[#febb02] font-black">✦ {t('homePage.valueProps.pdfPreviewBrand')}</div>
+                <div className="label-gold">✦ {t('homePage.valueProps.pdfPreviewBrand')}</div>
                 <div className="text-[22px] font-black mt-2 leading-tight">{t('homePage.valueProps.pdfPreviewTitle')}</div>
                 <div className="text-[12px] text-white/80 font-semibold mt-1">{t('homePage.valueProps.pdfPreviewMeta')}</div>
               </div>
@@ -670,17 +672,17 @@ const Home = () => {
       </section>
 
       <div className="divider-lux max-w-7xl mx-auto px-4 md:px-8 py-2">
-        <span className="text-[#febb02] text-[13px]">◆</span>
+        <span className="lux-gem" aria-hidden="true" />
       </div>
 
       {/* ─── HOT TOURS TEASER ────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         <div className="flex items-end justify-between mb-5">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#febb02] text-[11px] font-black uppercase tracking-widest mb-1">
+            <div className="eyebrow-lux mb-1">
               <Flame className="w-3.5 h-3.5" /> {t('homePage.hotTours.eyebrow')}
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('homePage.hotTours.heading')}</h2>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.hotTours.heading')}</h2>
           </div>
           <button onClick={() => navigate('/hot-tours')} className="group hidden md:flex items-center gap-1 text-[13px] font-bold text-[#0071c2] hover:underline">
             {t('homePage.hotTours.viewAll')} <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -698,7 +700,7 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
-                className="group bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft cursor-pointer h-full"
+                className="group card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft cursor-pointer h-full"
                 onClick={() => navigate('/hot-tours')}
               >
                 <div className="relative h-44 overflow-hidden">
@@ -757,16 +759,16 @@ const Home = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.35 }}
-          className="relative overflow-hidden bg-gradient-to-r from-[#002250] via-[#0058b1] to-[#0071c2] rounded-3xl p-7 md:p-12 text-white shadow-float">
+          className="panel-inlay relative overflow-hidden bg-gradient-to-r from-[#002250] via-[#0058b1] to-[#0071c2] rounded-3xl p-7 md:p-12 text-white shadow-float">
           <div className="pattern-lux" />
-          <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#febb02]/30 blur-3xl pointer-events-none animate-float" />
-          <div className="absolute -left-24 -bottom-24 w-72 h-72 rounded-full bg-[#0071c2]/40 blur-3xl pointer-events-none" />
+          <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#febb02]/30 blur-3xl pointer-events-none depth-up" />
+          <div className="absolute -left-24 -bottom-24 w-72 h-72 rounded-full bg-[#0071c2]/40 blur-3xl pointer-events-none depth-down" />
           <div className="relative grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#febb02] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
                 <Wand2 className="w-3.5 h-3.5" /> {t('homePage.aiCta.badge')}
               </div>
-              <h2 className="text-3xl md:text-4xl font-black tracking-tight leading-tight mb-3">
+              <h2 className="h-editorial text-3xl md:text-[40px] mb-3">
                 {t('homePage.aiCta.heading')}
               </h2>
               <p className="text-[15px] text-white/85 font-medium mb-6 max-w-md">
@@ -811,10 +813,10 @@ const Home = () => {
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         <div className="flex items-end justify-between mb-5">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-1">
+            <div className="eyebrow-lux mb-1">
               <Sparkles className="w-3.5 h-3.5" /> {t('servicesHome.eyebrow')}
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('servicesHome.heading')}</h2>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('servicesHome.heading')}</h2>
             <p className="text-[14px] text-[#5c5245] font-medium max-w-xl mt-1">{t('servicesHome.subtitle')}</p>
           </div>
           <button onClick={() => navigate('/services')} className="group hidden md:flex items-center gap-1 text-[13px] font-bold text-[#0071c2] hover:underline">
@@ -856,16 +858,16 @@ const Home = () => {
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
         <div className="flex items-end justify-between mb-5">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-1">
+            <div className="eyebrow-lux mb-1">
               <TrendingUp className="w-3.5 h-3.5" /> {t('homePage.trending.eyebrow')}
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('homePage.trending.heading')}</h2>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.trending.heading')}</h2>
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {TRENDING.map((d, i) => (
-            <Tilt3D key={i} max={9} className="aspect-[4/3] rounded-2xl shadow-soft">
+            <Tilt3D key={i} max={9} className="card-sheen aspect-[4/3] rounded-2xl shadow-soft">
               <motion.button
                 onClick={() => navigate(d.city === 'Antarctica' ? '/antarctica' : '/flights')}
                 initial={{ opacity: 0, y: 14 }}
@@ -892,18 +894,22 @@ const Home = () => {
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
         <div className="flex items-end justify-between mb-5">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-widest mb-1">
+            <div className="eyebrow-lux mb-1">
               <Globe className="w-3.5 h-3.5" /> {t('homePage.map.eyebrow') || 'Explore'}
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('homePage.map.heading') || 'Destinations worldwide'}</h2>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.map.heading') || 'Destinations worldwide'}</h2>
           </div>
         </div>
-        <DestinationMap destinations={TRENDING} className="shadow-float" />
+        <DestinationMap destinations={TRENDING} className="edge-gilded" />
       </section>
+
+      <div className="divider-lux max-w-7xl mx-auto px-4 md:px-8 py-2">
+        <span className="lux-gem" aria-hidden="true" />
+      </div>
 
       {/* ─── BROWSE BY THEME ─────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
-        <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight mb-1">{t('homePage.themesSection.heading')}</h2>
+        <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a] mb-1">{t('homePage.themesSection.heading')}</h2>
         <p className="text-[14px] text-[#5c5245] font-medium mb-6">{t('homePage.themesSection.subtitle')}</p>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
@@ -932,7 +938,7 @@ const Home = () => {
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
         <div className="flex items-end justify-between mb-5">
           <div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] tracking-tight">{t('homePage.recommended.heading')}</h2>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.recommended.heading')}</h2>
             <p className="text-[14px] text-[#5c5245] font-medium">{t('homePage.recommended.subtitle')}</p>
           </div>
         </div>
@@ -945,7 +951,7 @@ const Home = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
-              className="bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft lift group cursor-pointer"
+              className="card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft lift group cursor-pointer"
               onClick={() => navigate('/hot-tours')}>
               <div className="relative h-44 overflow-hidden">
                 <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
@@ -978,13 +984,13 @@ const Home = () => {
       </section>
 
       {/* ─── REVIEWS ─────────────────────────────────────────────── */}
-      <section className="bg-white border-y border-[#e6dcc3]">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+      <section className="paper-linen bg-white border-y border-[#e6dcc3]">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-1 text-[#febb02] mb-2">
               {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-[#febb02]" />)}
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a]">{t('homePage.reviews.heading')}</h2>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.reviews.heading')}</h2>
             <p className="text-[14px] text-[#5c5245] font-medium">{t('homePage.reviews.subtitle')}</p>
           </div>
 
@@ -1000,12 +1006,11 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: i * 0.08 }}
-                className="relative bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] shadow-soft p-5 lift">
-                <span className="absolute top-2 right-4 font-display text-[56px] leading-none text-[#d99a2b]/25 select-none pointer-events-none" aria-hidden="true">”</span>
+                className="quote-lux relative bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] shadow-soft p-5 pt-9 lift">
                 <div className="flex items-center gap-1 mb-2 text-[#febb02]">
                   {Array.from({ length: r.rating }).map((_, k) => <Star key={k} className="w-3.5 h-3.5 fill-[#febb02]" />)}
                 </div>
-                <p className="text-[14px] text-[#1a1a1a] font-medium leading-relaxed mb-3">{r.text}</p>
+                <p className="font-display italic text-[16px] text-[#1a1a1a] leading-relaxed mb-3">{r.text}</p>
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-[#003580] text-white text-[11px] font-black flex items-center justify-center shadow-soft">
                     {r.name.charAt(0)}
@@ -1030,18 +1035,18 @@ const Home = () => {
           transition={{ duration: 0.35 }}
           className="bg-gradient-to-br from-[#002250] to-[#003580] rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-float">
           <div className="pattern-lux" />
-          <div className="absolute right-0 top-0 w-72 h-72 rounded-full bg-[#febb02]/20 blur-3xl pointer-events-none animate-float" />
-          <div className="absolute -left-16 bottom-0 w-64 h-64 rounded-full bg-[#0071c2]/30 blur-3xl pointer-events-none" />
+          <div className="absolute right-0 top-0 w-72 h-72 rounded-full bg-[#febb02]/20 blur-3xl pointer-events-none depth-up" />
+          <div className="absolute -left-16 bottom-0 w-64 h-64 rounded-full bg-[#0071c2]/30 blur-3xl pointer-events-none depth-down" />
           <div className="relative grid md:grid-cols-2 gap-8 items-center">
             <div>
               <Mail className="w-8 h-8 text-[#febb02] mb-3" />
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-2">{t('homePage.newsletter.heading')}</h2>
+              <h2 className="h-editorial text-[26px] md:text-[34px] mb-2">{t('homePage.newsletter.heading')}</h2>
               <p className="text-[14px] text-white/80 font-medium">{t('homePage.newsletter.body')}</p>
             </div>
             <form onSubmit={e => { e.preventDefault(); toast.success(t('homePage.newsletter.toastTitle'), t('homePage.newsletter.toastBody')); }}
               className="flex gap-2 bg-white/10 backdrop-blur rounded-xl p-1.5 border border-white/15 focus-within:border-white/40 transition">
-              <input type="email" required placeholder="you@email.com" className="flex-1 bg-transparent px-3 py-3 text-[14px] font-bold placeholder:text-white/50 outline-none" />
-              <button className="btn-gold px-5 py-3 rounded-lg text-[#1a1a1a] font-black text-[13px] uppercase tracking-wider">
+              <input type="email" required placeholder={t('footer.emailPlaceholder')} className="flex-1 min-w-0 bg-transparent px-3 py-3 text-[14px] font-bold placeholder:text-white/50 outline-none" />
+              <button className="btn-gold shrink-0 px-4 sm:px-5 py-3 rounded-lg text-[#1a1a1a] font-black text-[12px] sm:text-[13px] uppercase tracking-wider whitespace-nowrap">
                 {t('homePage.newsletter.subscribe')}
               </button>
             </form>

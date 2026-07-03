@@ -10,6 +10,7 @@ import useSEO from '../hooks/useSEO';
 import { whatsappLink } from '../config/contact';
 import { handleImgError } from '../utils/imageFallback';
 import Price from '../components/Price';
+import GoldDust from '../components/fx/GoldDust';
 
 const HERO_IMG = 'https://images.unsplash.com/photo-1516569422572-d9e0514b9598?auto=format&fit=crop&w=1800&q=80';
 
@@ -92,6 +93,7 @@ export default function Antarctica() {
              style={{ backgroundImage: `url(${HERO_IMG})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'saturate(0.9)' }} />
         <div className="film-grain" />
         <div className="absolute inset-0 sheen-top pointer-events-none" />
+        <GoldDust className="absolute inset-0" density={0.8} />
         <div className="absolute -left-32 top-10 w-96 h-96 rounded-full bg-[#7cc4d9]/25 blur-3xl pointer-events-none animate-float" />
         <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#febb02]/12 blur-3xl pointer-events-none" />
 
@@ -101,10 +103,10 @@ export default function Antarctica() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
             className="max-w-3xl">
-            <div className="badge-editorial px-4 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.16em] mb-7">
+            <div className="badge-editorial px-4 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.16em] mb-5">
               <Snowflake className="w-3.5 h-3.5 text-[#7cc4d9]" /> {t('antarctica.hero.badge')}
             </div>
-            <h1 className="font-display text-[44px] md:text-[72px] font-semibold tracking-[-0.035em] leading-[0.98] mb-5 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.35)]">
+            <h1 className="font-display text-[clamp(40px,6.6vw,80px)] font-semibold tracking-[-0.045em] leading-[0.95] mb-5 text-balance break-words [text-shadow:0_2px_30px_rgba(0,0,0,0.35)]">
               {t('antarctica.hero.titleLead')} <span className="italic font-medium text-gradient-gold gold-animate">{t('antarctica.hero.titleHighlight')}</span> —<br className="hidden md:block" /> {t('antarctica.hero.titleTail')}
             </h1>
             <p className="text-[15px] md:text-[18px] text-white/80 font-medium max-w-xl mb-8 leading-relaxed">
@@ -144,10 +146,10 @@ export default function Antarctica() {
 
       {/* ─── ROUTES / EXPEDITIONS ────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-12 reveal">
-        <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-[0.2em] mb-2">
+        <div className="eyebrow-lux mb-2">
           <Compass className="w-3.5 h-3.5" /> {t('antarctica.routes.eyebrow')}
         </div>
-        <h2 className="font-display text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('antarctica.routes.heading')}</h2>
+        <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('antarctica.routes.heading')}</h2>
         <p className="text-[14px] text-[#5c5245] font-medium max-w-2xl mt-2 mb-7">{t('antarctica.routes.sub')}</p>
 
         <div className="grid md:grid-cols-3 gap-4">
@@ -155,7 +157,7 @@ export default function Antarctica() {
             <motion.div key={i}
               initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.06 }}
-              className="group lift card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft flex flex-col">
+              className={`group lift card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] flex flex-col ${i === 2 ? 'edge-gilded' : 'shadow-soft'}`}>
               <div className="relative h-44 overflow-hidden">
                 <img src={r.img} alt={r.title} loading="lazy" onError={handleImgError}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -190,7 +192,7 @@ export default function Antarctica() {
           <div className="pattern-lux" />
           <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#7cc4d9]/20 blur-3xl pointer-events-none" />
           <div className="relative">
-            <div className="inline-flex items-center gap-2 text-[#ffd76e] text-[11px] font-black uppercase tracking-[0.2em] mb-2">
+            <div className="eyebrow-lux eyebrow-lux--light mb-2">
               <Calendar className="w-3.5 h-3.5" /> {t('antarctica.season.eyebrow')}
             </div>
             <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-6">{t('antarctica.season.heading')}</h2>
@@ -211,10 +213,10 @@ export default function Antarctica() {
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-12 reveal">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#0071c2] text-[11px] font-black uppercase tracking-[0.2em] mb-2">
+            <div className="eyebrow-lux mb-2">
               <Check className="w-3.5 h-3.5" /> {t('antarctica.included.eyebrow')}
             </div>
-            <h2 className="font-display text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight mb-2">{t('antarctica.included.heading')}</h2>
+            <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight mb-2">{t('antarctica.included.heading')}</h2>
             <p className="text-[14px] text-[#5c5245] font-medium mb-6 max-w-xl">{t('antarctica.included.sub')}</p>
             <div className="grid sm:grid-cols-2 gap-2.5">
               {included.map((line, i) => (
@@ -243,7 +245,7 @@ export default function Antarctica() {
 
       {/* ─── FINAL CTA ───────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 pb-14 reveal">
-        <div className="relative overflow-hidden aurora-bg rounded-3xl p-8 md:p-12 text-white shadow-float text-center">
+        <div className="panel-inlay relative overflow-hidden aurora-bg rounded-3xl p-8 md:p-12 text-white shadow-float text-center">
           <div className="film-grain" />
           <div className="relative max-w-2xl mx-auto">
             <Snowflake className="w-8 h-8 text-[#7cc4d9] mx-auto mb-4 animate-float" />

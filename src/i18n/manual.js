@@ -21,10 +21,10 @@ export default {
       home: 'Главная', planner: 'Планировщик', flights: 'Авиабилеты', packages: 'Пакеты',
       book: 'Забронировать', adminPanel: 'Админ-панель', myProfile: 'Мой профиль',
       myBookings: 'Мои брони', signOut: 'Выйти', signIn: 'Войти', register: 'Регистрация',
-      registerFree: 'Бесплатная регистрация', berlin: 'Поездка в Берлин', exotic: '🌍 Экзотические туры',
+      registerFree: 'Бесплатная регистрация', berlin: 'Поездка в Берлин', exotic: '🌍 Экзотика',
     },
     nav2: {
-      whereToGo: '🧭 Куда поехать', hotTours: '🔥 Горящие туры', myDashboard: 'Мой кабинет',
+      whereToGo: '🧭 Куда поехать', hotTours: '🔥 Горящие', myDashboard: 'Мой кабинет',
       myTripPlans: 'Мои маршруты', myWishlist: 'Избранное', whereToGoFooter: 'Куда поехать',
       tools: 'Инструменты', termsOfUse: 'Условия использования', privacyPolicy: 'Политика конфиденциальности',
       cookiePolicy: 'Политика cookie',
@@ -59,6 +59,41 @@ export default {
         allow: 'Разрешить', notNow: 'Не сейчас',
       },
       toast: { dismiss: 'Закрыть' },
+    },
+    /* Hand-tuned display copy — the auto-translation stumbles on grammar in
+       the biggest headlines, which undercuts the editorial look. */
+    homePage: {
+      hero: {
+        titleLead: 'Ваше следующее незабываемое',
+        titleHighlight: 'путешествие',
+        titleTail: 'которое спланирует MAFTRAVEL AI.',
+        subtitle: 'Сравнивайте авиабилеты и туры — или доверьте маршрут нашему ИИ: от Дубая до Антарктиды в два клика.',
+      },
+    },
+    homeStats: {
+      ai: 'Работает на ИИ',
+      prices: 'Честные цены',
+    },
+    footer: {
+      join: 'Подписка',
+    },
+    antarctica: {
+      hero: {
+        badge: '7-й континент · Экспедиции 2026–2027',
+        titleLead: 'Ступите на землю',
+        titleHighlight: 'Антарктиды',
+        titleTail: 'самое редкое путешествие на Земле.',
+        ctaPlan: 'Собрать мой план',
+        ctaExpert: 'Поговорить с полярным экспертом',
+      },
+      routes: {
+        fromLabel: 'от',
+        daysLabel: 'дней',
+      },
+      cta: {
+        btnPlan: 'Собрать бесплатный AI-план',
+        btnWhatsApp: 'Спросить эксперта в WhatsApp',
+      },
     },
   },
 

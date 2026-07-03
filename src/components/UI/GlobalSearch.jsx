@@ -47,7 +47,8 @@ export default function GlobalSearch() {
       <button onClick={() => setOpen(true)}
         className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/15 bg-white/[0.07] hover:bg-white/15 hover:border-[#f5b942]/40 transition-all text-white/55 text-sm">
         <Search className="w-4 h-4" />
-        <span className="hidden sm:block text-[12px]">{t('ui.search.trigger')}</span>
+        {/* Full label only on very wide screens — long-locale nav rows need the room */}
+        <span className="hidden 2xl:block text-[12px]">{t('ui.search.trigger')}</span>
       </button>
 
       {/* Modal Overlay */}

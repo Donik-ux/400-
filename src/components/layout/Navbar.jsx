@@ -57,7 +57,7 @@ export default function Navbar() {
         {/* Gold hairline accent */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5b942]/55 to-transparent" />
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 h-[64px] flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-[64px] flex items-center justify-between gap-2">
           {/* Logo */}
           <button onClick={() => navigate('/')} className="flex items-center gap-2.5 group shrink-0">
             <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#ffd76e] via-[#f5b942] to-[#d99a2b] flex items-center justify-center shadow-[0_4px_16px_rgba(245,185,66,0.5)] ring-1 ring-white/30 group-hover:scale-105 group-hover:rotate-[8deg] transition-premium">
@@ -70,12 +70,13 @@ export default function Navbar() {
             </div>
           </button>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-0.5">
+          {/* Desktop links — tighter at lg so long-locale labels never push the
+              auth buttons off-screen; full padding returns at xl */}
+          <div className="hidden xl:flex items-center gap-0 shrink-0">
             {links.map(({ to, label }) => (
               <NavLink key={to} to={to}
                 className={({ isActive }) =>
-                  `px-3.5 py-2 rounded-lg text-[13px] font-semibold transition-premium ${isActive ? 'text-[#f5b942] bg-[#f5b942]/10' : 'text-white/65 hover:text-white hover:bg-white/[0.07]'}`
+                  `px-2 2xl:px-3.5 py-2 rounded-lg text-[12.5px] 2xl:text-[13px] font-semibold whitespace-nowrap transition-premium ${isActive ? 'text-[#f5b942] bg-[#f5b942]/10' : 'text-white/65 hover:text-white hover:bg-white/[0.07]'}`
                 }
               >
                 {({ isActive }) => (
@@ -115,9 +116,9 @@ export default function Navbar() {
               <CurrencySwitcher align="right" />
             </div>
 
-            {/* Language */}
+            {/* Language — compact (flag + code) so long-locale nav rows fit */}
             <div className="hidden md:block">
-              <LanguageSwitcher align="right" />
+              <LanguageSwitcher align="right" showName={false} />
             </div>
 
             {/* Auth */}
@@ -171,20 +172,20 @@ export default function Navbar() {
                 )}
               </div>
             ) : (
-              <div className="hidden md:flex items-center gap-2">
+              <div className="hidden md:flex items-center gap-2 shrink-0">
                 <button onClick={() => navigate('/login')}
-                  className="px-4 py-2 text-[13px] font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-premium">
+                  className="px-3 xl:px-4 py-2 text-[13px] font-semibold whitespace-nowrap text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-premium">
                   {t('nav.signIn')}
                 </button>
                 <button onClick={() => navigate('/register')}
-                  className="px-4 py-2 text-[13px] font-black text-[#002250] bg-gradient-to-br from-[#f5b942] to-[#e0a435] hover:shadow-[0_6px_20px_rgba(245,185,66,0.45)] hover:-translate-y-px rounded-lg shadow-sm transition-premium">
+                  className="shrink-0 px-3 xl:px-4 py-2 text-[13px] font-black whitespace-nowrap text-[#002250] bg-gradient-to-br from-[#f5b942] to-[#e0a435] hover:shadow-[0_6px_20px_rgba(245,185,66,0.45)] hover:-translate-y-px rounded-lg shadow-sm transition-premium">
                   {t('nav.register')}
                 </button>
               </div>
             )}
 
-            {/* Mobile burger */}
-            <button className="md:hidden p-2 rounded-lg border border-white/15 text-white hover:bg-white/10 transition-premium"
+            {/* Burger — also serves md–lg widths where long-locale link rows can't fit */}
+            <button className="xl:hidden p-2 rounded-lg border border-white/15 text-white hover:bg-white/10 transition-premium"
               onClick={() => setMobileOpen(v => !v)}>
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -194,7 +195,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="fixed inset-0 top-[64px] z-40 bg-[#002250] flex flex-col px-4 pt-4 pb-8 gap-1 md:hidden overflow-y-auto page-fade">
+        <div className="fixed inset-0 top-[64px] z-40 bg-[#002250] flex flex-col px-4 pt-4 pb-8 gap-1 xl:hidden overflow-y-auto page-fade">
           {links.map(({ to, label }) => (
             <NavLink key={to} to={to} onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>

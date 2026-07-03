@@ -32,7 +32,8 @@ export default function Footer() {
       <div className="pattern-lux" />
       <div className="absolute -left-24 top-0 w-96 h-96 rounded-full bg-[#0071c2]/15 blur-3xl pointer-events-none" />
       <div className="absolute -right-24 bottom-0 w-96 h-96 rounded-full bg-[#febb02]/10 blur-3xl pointer-events-none" />
-      <div className="relative max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-14">
+      <div aria-hidden="true" className="masthead-ghost">MAFTRAVEL</div>
+      <div className="relative max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-14 pb-24 md:pb-28">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-white/[0.12]">
           {/* Brand */}
           <div className="lg:col-span-1">
@@ -67,7 +68,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <p className="text-[11px] font-black uppercase tracking-widest text-white/40 mb-4">{t('footer.platform')}</p>
+            <p className="label-gold mb-4">{t('footer.platform')}</p>
             <div className="flex flex-col gap-3">
               {nav.map(n => (
                 <NavLink key={n.to} to={n.to} className="text-[13px] text-white/65 hover:text-white transition-premium font-medium">{n.label}</NavLink>
@@ -77,7 +78,7 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <p className="text-[11px] font-black uppercase tracking-widest text-white/40 mb-4">{t('footer.company')}</p>
+            <p className="label-gold mb-4">{t('footer.company')}</p>
             <div className="flex flex-col gap-3">
                 {support.map(s => s.to === '#' ? (
                     <span key={s.label} className="text-[13px] text-white/65 hover:text-white cursor-pointer transition-premium font-medium">{s.label}</span>
@@ -89,7 +90,7 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <p className="text-[11px] font-black uppercase tracking-widest text-white/40 mb-2">{t('footer.newsletter')}</p>
+            <p className="label-gold mb-2">{t('footer.newsletter')}</p>
             <p className="text-[12px] text-white/50 mb-4 leading-relaxed">{t('footer.newsletterSub')}</p>
             {joined ? (
               <div className="bg-white/10 rounded-lg p-3 border border-white/20 animate-pulse">
@@ -98,10 +99,10 @@ export default function Footer() {
             ) : (
               <div className="flex gap-2 p-1.5 bg-white/[0.08] border border-white/[0.15] rounded-xl focus-within:border-white/30 transition-all">
                 <input type="email" placeholder={t('footer.emailPlaceholder')} value={email} onChange={e => setEmail(e.target.value)}
-                  className="flex-1 bg-transparent px-2 text-[13px] text-white placeholder:text-white/30 focus:outline-none"
+                  className="flex-1 min-w-0 bg-transparent px-2 text-[13px] text-white placeholder:text-white/30 focus:outline-none"
                 />
                 <button onClick={() => email && setJoined(true)}
-                  className="btn-gold px-3 py-2 text-[11px] uppercase tracking-tighter">
+                  className="btn-gold shrink-0 max-w-[55%] px-3 py-2 text-[11px] uppercase tracking-tighter truncate">
                   {t('footer.join')}
                 </button>
               </div>
@@ -109,9 +110,13 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="divider-lux pt-8" aria-hidden="true">
+          <span className="seal-gold text-[13px]">✦</span>
+        </div>
+
+        <div className="pt-5 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-1">
-            <p className="text-[11px] text-white/35 font-bold uppercase tracking-widest">
+            <p className="font-display italic text-[12px] text-white/40">
               {t('footer.copy')}
             </p>
             <p className="text-[10px] text-white/20 font-medium">

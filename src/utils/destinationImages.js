@@ -83,10 +83,10 @@ const HEROES = {
   tashkent:    'https://images.unsplash.com/photo-1573108724029-4c46571d6490?auto=format&fit=crop&w=1400&q=80',
   samarkand:   'https://images.unsplash.com/photo-1604608672516-9656d6678f86?auto=format&fit=crop&w=1400&q=80',
   bukhara:     'https://images.unsplash.com/photo-1567606404787-b54fab06f5e0?auto=format&fit=crop&w=1400&q=80',
-  almaty:      'https://images.unsplash.com/photo-1602002418082-a4443e081dd1?auto=format&fit=crop&w=1400&q=80',
+  almaty:      'https://images.unsplash.com/photo-1548588681-adf41d474533?auto=format&fit=crop&w=1400&q=80',
   moscow:      'https://images.unsplash.com/photo-1547448415-e9f5b28e570d?auto=format&fit=crop&w=1400&q=80',
   baku:        'https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?auto=format&fit=crop&w=1400&q=80',
-  tbilisi:     'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?auto=format&fit=crop&w=1400&q=80',
+  tbilisi:     'https://images.unsplash.com/photo-1565008576549-57569a49371d?auto=format&fit=crop&w=1400&q=80',
   batumi:      'https://images.unsplash.com/photo-1611521648571-4f8ad5b30b0c?auto=format&fit=crop&w=1400&q=80',
   yerevan:     'https://images.unsplash.com/photo-1611689342806-0863700ce1e4?auto=format&fit=crop&w=1400&q=80',
 };

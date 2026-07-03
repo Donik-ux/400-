@@ -46,7 +46,7 @@ export default function Layout({ children }) {
       <main className={!isAdmin && !isAuth ? 'pt-[64px]' : ''}>{children}</main>
       {!isAdmin && !isAuth && <Footer />}
       {!isAdmin && !isAuth && <WhatsAppButton />}
-      <NotificationWidget />
+      {!isAdmin && !isAuth && <NotificationWidget />}
       <ToastContainer />
       <TranslationProgress />
     </div>

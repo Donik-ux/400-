@@ -12,6 +12,13 @@ const DEALS = [
 
 const PERM_KEY = 'maf_notif_permission';
 const SHOWN_KEY = 'maf_notif_shown';
+const SNOOZE_KEY = 'maf_notif_snooze';
+const SNOOZE_MS = 24 * 60 * 60 * 1000; // a dismissed prompt stays away for a day
+
+const isSnoozed = () => {
+  const ts = Number(localStorage.getItem(SNOOZE_KEY) || 0);
+  return ts && Date.now() - ts < SNOOZE_MS;
+};
 
 function getShown() { try { return JSON.parse(localStorage.getItem(SHOWN_KEY)) || []; } catch { return []; } }
 function markShown(id) {
@@ -25,12 +32,16 @@ export default function NotificationWidget() {
   const [toast, setToast] = useState(null);
   const [showBanner, setShowBanner] = useState(false);
 
-  // Ask permission banner after 5 seconds
+  // Ask permission banner — delayed, snoozable, and self-collapsing so it
+  // never squats over a third of a phone screen.
   useEffect(() => {
-    if (permission === 'default') {
-      const t = setTimeout(() => setShowBanner(true), 5000);
-      return () => clearTimeout(t);
-    }
+    if (permission !== 'default' || isSnoozed()) return undefined;
+    const show = setTimeout(() => setShowBanner(true), 12000);
+    const hide = setTimeout(() => {
+      setShowBanner(false);
+      localStorage.setItem(SNOOZE_KEY, String(Date.now()));
+    }, 26000);
+    return () => { clearTimeout(show); clearTimeout(hide); };
   }, [permission]);
 
   // Show a random deal notification if permission granted
@@ -70,30 +81,35 @@ export default function NotificationWidget() {
     localStorage.setItem(PERM_KEY, 'denied');
   };
 
+  const snooze = () => {
+    setShowBanner(false);
+    localStorage.setItem(SNOOZE_KEY, String(Date.now()));
+  };
+
   return (
     <>
       {/* Permission Banner */}
       {showBanner && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] w-full max-w-sm mx-4 animate-slide-up">
-          <div className="bg-[#003580] text-white rounded-2xl p-4 shadow-2xl flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+        <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-[200] w-[calc(100%-24px)] max-w-sm animate-slide-up">
+          <div className="bg-[#003580] text-white rounded-2xl px-3.5 py-3 sm:p-4 shadow-2xl flex items-center sm:items-start gap-3 border border-[#f5b942]/25">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
               <BellRing className="w-4 h-4 text-[#ffd76e]" />
             </div>
-            <div className="flex-1">
-              <p className="text-sm font-bold mb-0.5">{t('ui.notify.title')}</p>
-              <p className="text-white/60 text-xs">{t('ui.notify.body')}</p>
-              <div className="flex gap-2 mt-3">
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] sm:text-sm font-bold leading-snug">{t('ui.notify.title')}</p>
+              <p className="hidden sm:block text-white/60 text-xs">{t('ui.notify.body')}</p>
+              <div className="flex gap-2 mt-2 sm:mt-3">
                 <button onClick={requestPermission}
-                  className="px-4 py-1.5 rounded-lg bg-white text-[#003580] text-xs font-black uppercase tracking-widest hover:bg-white/90 transition-all">
+                  className="px-3.5 py-1.5 rounded-lg bg-white text-[#003580] text-[11px] sm:text-xs font-black uppercase tracking-widest hover:bg-white/90 transition-all">
                   {t('ui.notify.allow')}
                 </button>
                 <button onClick={deny}
-                  className="px-4 py-1.5 rounded-lg border border-white/20 text-white/60 text-xs font-bold hover:bg-white/10 transition-all">
+                  className="px-3.5 py-1.5 rounded-lg border border-white/20 text-white/60 text-[11px] sm:text-xs font-bold hover:bg-white/10 transition-all">
                   {t('ui.notify.notNow')}
                 </button>
               </div>
             </div>
-            <button onClick={() => setShowBanner(false)} className="text-white/30 hover:text-white">
+            <button onClick={snooze} className="self-start text-white/30 hover:text-white" aria-label="Close">
               <X className="w-4 h-4" />
             </button>
           </div>

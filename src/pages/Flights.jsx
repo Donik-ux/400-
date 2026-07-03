@@ -184,8 +184,8 @@ export default function Flights() {
                 <f.icon className="w-5 h-5" />
               </div>
               <div className="min-w-0">
-                <div className="text-[13px] font-black text-[#1a1a1a] truncate">{f.t}</div>
-                <div className="text-[11px] font-semibold text-[#93876f] truncate">{f.s}</div>
+                <div className="text-[13px] font-black text-[#1a1a1a] leading-snug line-clamp-2">{f.t}</div>
+                <div className="text-[11px] font-semibold text-[#93876f] leading-snug line-clamp-2">{f.s}</div>
               </div>
             </div>
           ))}
@@ -440,7 +440,7 @@ export default function Flights() {
                       {al.flag}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[13px] font-black text-[#1a1a1a] truncate leading-tight">{al.name}</p>
+                      <p className="text-[13px] font-black text-[#1a1a1a] leading-tight line-clamp-2">{al.name}</p>
                       <p className="text-[10.5px] text-[#0071c2] font-bold truncate">{al.domain}</p>
                     </div>
                   </div>

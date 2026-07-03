@@ -28,7 +28,7 @@ export default function DestinationMap({ destinations = [], className = '' }) {
   if (!markers.length) return null;
 
   return (
-    <div className={`rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft ${className}`}>
+    <div className={`relative z-0 [isolation:isolate] rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft ${className}`}>
       <MapContainer
         center={DEFAULT_CENTER}
         zoom={DEFAULT_ZOOM}

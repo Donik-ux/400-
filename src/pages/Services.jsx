@@ -195,8 +195,10 @@ function BudgetOptimizer() {
     <Shell icon={Wallet} title={t('servicesPage.budget.title')} desc={t('servicesPage.budget.desc')}>
       <div className="space-y-2.5">
         <Field label={t('servicesPage.budget.destination')} value={destination} onChange={setDestination} placeholder="Dubai" />
-        <div className="grid grid-cols-3 gap-2">
-          <Field label={t('servicesPage.budget.budget')} value={budget} onChange={setBudget} type="number" min="100" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 items-end">
+          <div className="col-span-2 sm:col-span-1">
+            <Field label={t('servicesPage.budget.budget')} value={budget} onChange={setBudget} type="number" min="100" />
+          </div>
           <Field label={t('servicesPage.budget.days')} value={days} onChange={setDays} type="number" min="1" />
           <Field label={t('servicesPage.budget.travelers')} value={travelers} onChange={setTravelers} type="number" min="1" />
         </div>

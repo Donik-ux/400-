@@ -12,7 +12,7 @@ const RECOMMENDED = [
   { city: 'Miami',        country: 'USA',          from: 480, img: 'https://images.unsplash.com/photo-1535498730771-e735b998cd64?auto=format&fit=crop&w=900&q=80' },
   { city: 'Lauterbrunnen',country: 'Switzerland',  from: 620, img: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=900&q=80' },
   { city: 'Paris',        country: 'France',       from: 410, img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80' },
-  { city: 'Monaco',       country: 'Monaco',       from: 580, img: 'https://images.unsplash.com/photo-1559564484-e48b3e040ff4?auto=format&fit=crop&w=900&q=80' },
+  { city: 'Monaco',       country: 'Monaco',       from: 580, img: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=900&q=80' },
   { city: 'Dubai',        country: 'UAE',          from: 280, img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80' },
 ];
 

@@ -119,7 +119,7 @@ export default function Footer() {
             <p className="font-display italic text-[12px] text-white/40">
               {t('footer.copy')}
             </p>
-            <p className="text-[10px] text-white/20 font-medium">
+            <p className="text-[10px] text-white/20 font-medium max-w-full break-words text-center md:text-left">
               {t('footer.powered')}
             </p>
           </div>

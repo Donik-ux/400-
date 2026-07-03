@@ -189,7 +189,7 @@ const ExoticTours = () => {
               </span>
             </div>
 
-            <h1 className="text-[52px] md:text-[72px] font-black text-white leading-[0.95] tracking-tighter mb-6">
+            <h1 className="font-display text-[clamp(38px,10vw,72px)] font-semibold text-white leading-[0.95] tracking-[-0.03em] text-balance break-words mb-6">
               {t('exotic.title1')}<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffd76e] to-[#7fc4c9]">
                 {t('exotic.title2')}

@@ -272,11 +272,11 @@ const HotTours = () => {
                     <div className="flex items-center gap-2 bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl px-3 py-2">
                       <span className="text-[10px] font-black uppercase tracking-widest text-[#93876f]">{t('hotTours.form.customLabel')}</span>
                       <button type="button" onClick={() => sync.onChangeDays(Math.max(1, Number(days) - 1))}
-                        className="w-7 h-7 rounded-md bg-white border border-[#e6dcc3] text-[#0071c2] text-[16px] font-black hover:border-[#0071c2] active:scale-95 transition">−</button>
+                        className="w-10 h-10 rounded-lg bg-white border border-[#e6dcc3] text-[#0071c2] text-[18px] font-black hover:border-[#0071c2] active:scale-95 transition">−</button>
                       <input type="number" min="1" max="21" value={days} onChange={e => sync.onChangeDays(e.target.value)}
                         className="w-12 bg-transparent outline-none text-[16px] font-black text-[#003580] text-center" />
                       <button type="button" onClick={() => sync.onChangeDays(Math.min(21, Number(days) + 1))}
-                        className="w-7 h-7 rounded-md bg-white border border-[#e6dcc3] text-[#0071c2] text-[16px] font-black hover:border-[#0071c2] active:scale-95 transition">+</button>
+                        className="w-10 h-10 rounded-lg bg-white border border-[#e6dcc3] text-[#0071c2] text-[18px] font-black hover:border-[#0071c2] active:scale-95 transition">+</button>
                       <span className="text-[11px] text-[#93876f] font-bold ml-auto">{t('hotTours.form.daysUnit')}</span>
                     </div>
                   </div>
@@ -333,7 +333,7 @@ const HotTours = () => {
                     <span className="text-[10px] font-black uppercase tracking-widest text-[#93876f] self-center">{t('hotTours.form.quickBalance')}</span>
                     {[500, 1000, 2000, 3500, 6000].map(v => (
                       <button key={v} type="button" onClick={() => setBalance(v)}
-                        className={`px-2.5 py-1 rounded-full text-[11px] font-black transition ${Number(balance) === v ? 'bg-[#003580] text-white' : 'bg-[#f0f5ff] text-[#0071c2] hover:bg-[#dceaff]'}`}>
+                        className={`px-3.5 py-2 rounded-full text-[12px] font-black transition active:scale-95 ${Number(balance) === v ? 'bg-[#003580] text-white' : 'bg-[#f0f5ff] text-[#0071c2] hover:bg-[#dceaff]'}`}>
                         ${v}
                       </button>
                     ))}

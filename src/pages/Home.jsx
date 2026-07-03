@@ -252,7 +252,7 @@ const Home = () => {
           <div className="absolute inset-x-8 md:inset-x-12 -top-6 bottom-0 bg-gradient-to-b from-[#febb02]/35 via-[#febb02]/12 to-transparent rounded-[28px] blur-2xl pointer-events-none" aria-hidden="true" />
           <div className="frame-lux relative bg-white rounded-2xl shadow-vitrine">
             <div className="flex items-center gap-1 px-2 pt-2">
-              <div className="flex items-center gap-1 overflow-x-auto min-w-0">
+              <div className="flex items-center gap-1 overflow-x-auto min-w-0 max-sm:[mask-image:linear-gradient(to_right,#000_88%,transparent)]">
                 <Tab active={tab === 'tours'}    onClick={() => setTab('tours')}    icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.tours')} />
                 <Tab active={tab === 'flights'} onClick={() => setTab('flights')} icon={<Globe className="w-4 h-4" />} label={t('homePage.tabs.flights')} />
                 <Tab active={tab === 'ai'}       onClick={() => setTab('ai')}       icon={<Sparkles className="w-4 h-4" />} label={t('homePage.tabs.ai')} highlight newLabel={t('homePage.tabs.newBadge')} />
@@ -581,7 +581,7 @@ const Home = () => {
               </div>
               <div className="min-w-0">
                 <div className="text-[13px] font-black text-[#1a1a1a] leading-snug line-clamp-2">{f.title}</div>
-                <div className="text-[11px] font-semibold text-[#93876f] truncate">{f.sub}</div>
+                <div className="text-[11px] font-semibold text-[#93876f] leading-snug line-clamp-2">{f.sub}</div>
               </div>
             </motion.div>
           ))}

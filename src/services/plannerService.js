@@ -244,6 +244,7 @@ const universalTips = [
 export const generateItinerary = async ({
   destination   = 'Your Destination',
   fromCity      = '',
+  returnCity    = '',
   days          = 5,
   budget        = 2000,
   startDate,
@@ -394,7 +395,7 @@ export const generateItinerary = async ({
       if (isGeneric) synthesizedEvents = buildArrivalEvents(destination, fromCity, style);
     } else if (i === numDays - 1) {
       template = departureTemplate;
-      if (isGeneric) synthesizedEvents = buildDepartureEvents(destination, fromCity);
+      if (isGeneric) synthesizedEvents = buildDepartureEvents(destination, returnCity || fromCity);
     } else {
       const idx = (i - 1) % (sortedMiddle.length || 1);
       template = sortedMiddle[idx] || middleTemplates[0] || genericSchedules[1];
@@ -438,7 +439,7 @@ export const generateItinerary = async ({
   const dateRange = startD && lastD
     ? `${MONTH_LONG[startD.getMonth()]} ${startD.getDate()} – ${MONTH_LONG[lastD.getMonth()]} ${lastD.getDate()}, ${lastD.getFullYear()}`
     : `${numDays} days`;
-  const route = fromCity ? `${fromCity} → ${destination} → ${fromCity}` : destination;
+  const route = fromCity ? `${fromCity} → ${destination} → ${returnCity || fromCity}` : destination;
   const header = {
     title:   `Travel Plan – ${destination}`,
     dates:   dateRange,

@@ -252,17 +252,18 @@ const Home = () => {
           <div className="absolute inset-x-8 md:inset-x-12 -top-6 bottom-0 bg-gradient-to-b from-[#febb02]/35 via-[#febb02]/12 to-transparent rounded-[28px] blur-2xl pointer-events-none" aria-hidden="true" />
           <div className="frame-lux relative bg-white rounded-2xl shadow-vitrine">
             <div className="flex items-center gap-1 px-2 pt-2">
-              <div className="flex items-center gap-1 overflow-x-auto min-w-0 max-sm:[mask-image:linear-gradient(to_right,#000_88%,transparent)]">
+              <div className="flex items-center gap-0.5 sm:gap-1 overflow-x-auto min-w-0">
                 <Tab active={tab === 'tours'}    onClick={() => setTab('tours')}    icon={<Plane className="w-4 h-4" />} label={t('homePage.tabs.tours')} />
                 <Tab active={tab === 'flights'} onClick={() => setTab('flights')} icon={<Globe className="w-4 h-4" />} label={t('homePage.tabs.flights')} />
                 <Tab active={tab === 'ai'}       onClick={() => setTab('ai')}       icon={<Sparkles className="w-4 h-4" />} label={t('homePage.tabs.ai')} highlight newLabel={t('homePage.tabs.newBadge')} />
+                {/* Antarctica spotlight — sits right next to AI Trip, label always
+                    visible (mobile included) so nobody has to scroll to find it */}
+                <button type="button" onClick={() => navigate('/antarctica')}
+                  className="shrink-0 flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-4 py-2.5 rounded-t-xl text-[12px] sm:text-[13px] font-black whitespace-nowrap transition active:scale-95 text-[#0071c2] bg-[#eaf6fb]/70 hover:bg-[#eaf6fb] hover:text-[#003580]">
+                  <Snowflake className="w-4 h-4 text-[#4aa3c0]" />
+                  Antarctica
+                </button>
               </div>
-              {/* Antarctica spotlight — deep-link to the dedicated expedition page */}
-              <button type="button" onClick={() => navigate('/antarctica')}
-                className="ml-auto shrink-0 flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-t-xl text-[13px] font-black whitespace-nowrap transition text-[#0071c2] hover:bg-[#eaf6fb] hover:text-[#003580]">
-                <Snowflake className="w-4 h-4 text-[#4aa3c0]" />
-                <span className="hidden sm:inline">Antarctica</span>
-              </button>
               {/* Kept outside the scroll area so it's always reachable, not scrolled off on mobile */}
               <button type="button" onClick={() => setServicesOpen(true)}
                 className="ml-auto shrink-0 flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-t-xl text-[13px] font-black whitespace-nowrap transition text-[#5c5245] hover:bg-[#f0f5ff] hover:text-[#0071c2]">
@@ -1108,13 +1109,14 @@ const Home = () => {
 /* ── Reusable subcomponents ───────────────────────────────────────── */
 const Tab = ({ active, onClick, icon, label, highlight, newLabel }) => (
   <button type="button" onClick={onClick}
-    className={`flex items-center gap-1.5 px-4 py-2.5 rounded-t-xl text-[13px] font-black whitespace-nowrap transition active:scale-95 ${
+    className={`shrink-0 flex items-center gap-1.5 px-1.5 sm:px-4 py-2.5 rounded-t-xl text-[12px] sm:text-[13px] font-black whitespace-nowrap transition active:scale-95 ${
       active
         ? 'bg-white text-[#003580] shadow-[0_-3px_0_#0071c2_inset]'
         : 'text-[#5c5245] hover:bg-[#f0f5ff] hover:text-[#0071c2]'
     }`}>
-    {icon}{label}
-    {highlight && !active && <span className="ml-1 px-1.5 py-0.5 rounded bg-[#febb02] text-[#1a1a1a] text-[9px] font-black uppercase animate-pulse">{newLabel}</span>}
+    {/* On phones the icons go — four labelled tabs have to fit with no scrolling */}
+    <span className="hidden sm:inline-flex">{icon}</span>{label}
+    {highlight && !active && <span className="ml-1 px-1 sm:px-1.5 py-0.5 rounded bg-[#febb02] text-[#1a1a1a] text-[9px] font-black uppercase animate-pulse">{newLabel}</span>}
   </button>
 );
 

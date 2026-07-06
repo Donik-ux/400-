@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Snowflake, Ship, Plane, Crown, Compass, Calendar, Check, Sparkles,
-  MessageCircle, ArrowRight, Globe, Users, Sun, Binoculars, Lightbulb,
+  ArrowRight, Globe, Users, Sun, Binoculars, Lightbulb,
+  PlaneTakeoff, PlaneLanding, CalendarDays,
 } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 import useSEO from '../hooks/useSEO';
-import { whatsappLink } from '../config/contact';
 import { handleImgError } from '../utils/imageFallback';
-import Price from '../components/Price';
+import { useCompactPriceFormatter } from '../components/Price';
+import CityAutocomplete from '../features/flights/CityAutocomplete';
 import GoldDust from '../components/fx/GoldDust';
 
 const HERO_IMG = 'https://images.unsplash.com/photo-1516569422572-d9e0514b9598?auto=format&fit=crop&w=1800&q=80';
@@ -20,12 +21,30 @@ const ROUTE_IMGS = [
   'https://images.unsplash.com/photo-1551986782-d0169b3f8fa7?auto=format&fit=crop&w=900&q=80',
 ];
 
+/* Base fare per person by expedition length; the departure-date factor is
+   applied on top (last-minute flights cost more, mid-window sailings less). */
+const BASE_BY_DAYS = { 8: 8990, 9: 9490, 10: 9990 };
+const DURATIONS = [8, 9, 10];
+const DATE_OFFSETS = [
+  { off: 0,  factor: 1.18 },
+  { off: 2,  factor: 1.04 },
+  { off: 5,  factor: 0.99 },
+  { off: 9,  factor: 0.95 },
+  { off: 14, factor: 0.90 },
+  { off: 21, factor: 0.93 },
+];
+
+const cleanCity = (s) => String(s || '').replace(/\s*\([^)]*\)\s*/g, '').trim();
+const toIso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const fareFor = (days, factor) => Math.round((BASE_BY_DAYS[days] || BASE_BY_DAYS[10]) * factor / 10) * 10;
+
 /* Dedicated landing for travelers dreaming of the White Continent.
    CTAs reuse the existing flows: the AI planner deep-link (same shape the
    Home AI tab builds) and the WhatsApp expert channel. */
 export default function Antarctica() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const fmtCompact = useCompactPriceFormatter();
 
   useSEO({
     title: t('antarctica.seo.title'),
@@ -34,27 +53,83 @@ export default function Antarctica() {
     keywords: ['Antarctica cruise', 'Antarctica expedition', 'Drake Passage', 'Ushuaia', 'polar travel', 'white continent'],
   });
 
-  // Same direct-mode deep-link the Home AI tab produces, prefilled for Antarctica
-  const buildPlan = () => {
-    const days = 10;
-    const balance = 9000;
-    const qs = new URLSearchParams({ to: 'Antarctica', days: String(days), balance: String(balance), from: 'Dubai' });
+  /* ── Expedition builder state ── */
+  const [fromCity, setFromCity]     = useState('');   // stays empty until the traveler picks
+  const [returnCity, setReturnCity] = useState('');   // empty → same as departure
+  const [days, setDays]             = useState(10);
+
+  const dateOptions = useMemo(() => {
+    const now = new Date();
+    return DATE_OFFSETS.map(({ off, factor }) => {
+      const d = new Date(now);
+      d.setDate(d.getDate() + off);
+      return { off, factor, iso: toIso(d), date: d };
+    });
+  }, []);
+  const cheapestIdx = useMemo(
+    () => dateOptions.reduce((best, o, i) => (o.factor < dateOptions[best].factor ? i : best), 0),
+    [dateOptions],
+  );
+  const [dateIdx, setDateIdx] = useState(cheapestIdx);
+
+  const fmtDay = (d, opts) => {
+    try { return d.toLocaleDateString(lang || 'en', opts); }
+    catch { return d.toLocaleDateString('en', opts); }
+  };
+
+  const selected   = dateOptions[dateIdx];
+  const total      = fareFor(days, selected.factor);
+  const todayFare  = fareFor(days, dateOptions[0].factor);
+  const fromClean  = cleanCity(fromCity);
+  const backClean  = cleanCity(returnCity) || fromClean;
+  const returnDateObj = useMemo(() => {
+    const d = new Date(selected.date);
+    d.setDate(d.getDate() + days);
+    return d;
+  }, [selected, days]);
+
+  const scrollToBuilder = () =>
+    document.getElementById('expedition-builder')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Same direct-mode deep-link the Home AI tab produces, prefilled with the
+  // builder selections (route cards override days/price with their own).
+  const buildPlan = (overrides = {}) => {
+    if (!fromClean) {
+      // No departure city yet — bring the traveler to the empty field instead
+      // of silently planning from a city they never chose.
+      scrollToBuilder();
+      setTimeout(() => document.querySelector('#expedition-builder input')?.focus(), 350);
+      return;
+    }
+    const d = overrides.days ?? days;
+    const balance = overrides.price ?? fareFor(d, selected.factor);
+    const backDate = (() => {
+      const dt = new Date(selected.date);
+      dt.setDate(dt.getDate() + d);
+      return toIso(dt);
+    })();
+    const qs = new URLSearchParams({
+      to: 'Antarctica', days: String(d), balance: String(balance),
+      from: fromClean, start: selected.iso, return: backDate,
+      ...(backClean !== fromClean ? { returnTo: backClean } : {}),
+    });
     navigate(`/trip-plan?${qs.toString()}`, {
       state: {
         item: {
           id: `direct-${Date.now()}`,
-          name: `${days}-day trip to Antarctica`,
+          name: `${d}-day trip to Antarctica`,
           destination: 'Antarctica',
-          duration: days,
+          duration: d,
           price: balance,
           category: 'adventure',
           image: HERO_IMG,
-          description: `A ${days}-day expedition plan for Antarctica on a $${balance} budget.`,
+          description: `A ${d}-day expedition plan for Antarctica on a $${balance} budget, departing ${fromClean}${backClean !== fromClean ? ` and returning to ${backClean}` : ''}.`,
         },
         type: 'package',
-        fromCity: 'Dubai',
-        startDate: '',
-        returnDate: '',
+        fromCity: fromClean,
+        returnCity: backClean !== fromClean ? backClean : '',
+        startDate: selected.iso,
+        returnDate: backDate,
         purpose: 'Polar expedition',
       },
     });
@@ -113,13 +188,9 @@ export default function Antarctica() {
               {t('antarctica.hero.subtitle')}
             </p>
             <div className="flex flex-wrap gap-3">
-              <button onClick={buildPlan} className="btn-gold px-7 py-3.5 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
+              <button onClick={scrollToBuilder} className="btn-gold px-7 py-3.5 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
                 <Sparkles className="w-4 h-4" /> {t('antarctica.hero.ctaPlan')}
               </button>
-              <a href={whatsappLink(t('antarctica.cta.whatsappPrefill'))} target="_blank" rel="noopener noreferrer"
-                className="px-7 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
-                <MessageCircle className="w-4 h-4" /> {t('antarctica.hero.ctaExpert')}
-              </a>
             </div>
           </motion.div>
         </div>
@@ -141,6 +212,135 @@ export default function Antarctica() {
               <div className="relative text-[11px] md:text-[12px] font-bold text-white/50 mt-1.5">{s.label}</div>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* ─── EXPEDITION BUILDER ──────────────────────────────────── */}
+      <section id="expedition-builder" className="max-w-7xl mx-auto px-4 md:px-8 pt-12 scroll-mt-24 reveal">
+        <div className="relative overflow-hidden bg-white rounded-3xl border border-[#e6dcc3] shadow-float">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#7cc4d9] via-[#febb02] to-[#7cc4d9]" />
+          <div className="p-5 md:p-8">
+            <div className="eyebrow-lux mb-2">
+              <Compass className="w-3.5 h-3.5" /> {t('antarctica.builder.eyebrow')}
+            </div>
+            <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('antarctica.builder.heading')}</h2>
+            <p className="text-[14px] text-[#5c5245] font-medium max-w-2xl mt-2 mb-6">{t('antarctica.builder.sub')}</p>
+
+            {/* From / return cities */}
+            <div className="grid md:grid-cols-2 gap-3 mb-5">
+              <CityAutocomplete
+                icon={<PlaneTakeoff className="w-3.5 h-3.5" />}
+                label={t('antarctica.builder.fromLabel')}
+                placeholder={t('antarctica.builder.fromPh')}
+                value={fromCity}
+                onChange={setFromCity}
+              />
+              <CityAutocomplete
+                icon={<PlaneLanding className="w-3.5 h-3.5" />}
+                label={t('antarctica.builder.returnLabel')}
+                placeholder={t('antarctica.builder.returnPh')}
+                value={returnCity}
+                onChange={setReturnCity}
+              />
+            </div>
+
+            {/* Duration 8 / 9 / 10 days */}
+            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">
+              <Calendar className="w-3.5 h-3.5 text-[#0071c2]" /> {t('antarctica.builder.durationLabel')}
+            </div>
+            <div className="grid grid-cols-3 gap-2 md:gap-3 mb-6">
+              {DURATIONS.map((d) => (
+                <button key={d} type="button" onClick={() => setDays(d)}
+                  className={`rounded-xl border-2 px-3 py-3 text-left transition active:scale-[0.98] ${
+                    days === d
+                      ? 'border-[#0071c2] bg-[#f0f5ff] ring-4 ring-[#0071c2]/10 shadow-soft'
+                      : 'border-[#e6dcc3] bg-white hover:border-[#0071c2]/50'
+                  }`}>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="font-display text-[26px] font-bold text-[#003580] leading-none">{d}</span>
+                    <span className="text-[11px] font-black uppercase tracking-wider text-[#93876f]">{t('antarctica.builder.daysWord')}</span>
+                  </div>
+                  <div className="text-[11px] font-bold text-[#5c5245] mt-1 leading-snug">{t(`antarctica.builder.d${d}`)}</div>
+                </button>
+              ))}
+            </div>
+
+            {/* Departure dates — fare calendar */}
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+              <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f]">
+                <CalendarDays className="w-3.5 h-3.5 text-[#0071c2]" /> {t('antarctica.builder.datesLabel')}
+              </div>
+              <span className="text-[11px] font-bold text-[#93876f]">{t('antarctica.builder.datesHint')}</span>
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 snap-x">
+              {dateOptions.map((o, i) => {
+                const fare = fareFor(days, o.factor);
+                const saving = todayFare - fare;
+                const isSel = i === dateIdx;
+                return (
+                  <button key={o.iso} type="button" onClick={() => setDateIdx(i)}
+                    className={`relative shrink-0 snap-start w-[136px] rounded-xl border-2 px-3 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
+                      isSel
+                        ? 'border-[#0071c2] bg-[#f0f5ff] ring-4 ring-[#0071c2]/10 shadow-soft'
+                        : 'border-[#e6dcc3] bg-white hover:border-[#0071c2]/50'
+                    }`}>
+                    {i === cheapestIdx && (
+                      <span className="absolute -top-2 left-2 bg-[#2e7d4f] text-white text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft">
+                        {t('antarctica.builder.bestPrice')}
+                      </span>
+                    )}
+                    <div className="text-[10px] font-black uppercase tracking-wider text-[#0071c2]">
+                      {o.off === 0 ? t('antarctica.builder.today') : t('antarctica.builder.inDays').replace('{n}', String(o.off))}
+                    </div>
+                    <div className="text-[15px] font-black text-[#1a1a1a] mt-0.5">
+                      {fmtDay(o.date, { day: 'numeric', month: 'short' })}
+                      <span className="text-[11px] font-bold text-[#93876f] ml-1">{fmtDay(o.date, { weekday: 'short' })}</span>
+                    </div>
+                    <div className="text-[15px] font-black text-[#003580] mt-1 whitespace-nowrap">{fmtCompact(fare)}</div>
+                    {saving > 0 && (
+                      <>
+                        <div className="text-[10.5px] font-black text-[#2e7d4f] mt-0.5 whitespace-nowrap">−{fmtCompact(saving)}</div>
+                        <div className="text-[9.5px] font-bold text-[#93876f] leading-tight">{t('antarctica.builder.saveVsToday')}</div>
+                      </>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Summary + CTA */}
+            <div className="mt-5 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#00214f] to-[#001427] text-white p-5 md:p-6 shadow-float">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#7cc4d9]/70 to-transparent" />
+              <div className="relative flex flex-col md:flex-row md:items-center gap-5 justify-between">
+                <div className="min-w-0">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#7cc4d9] mb-1.5">{t('antarctica.builder.summaryLabel')}</div>
+                  <div className="flex items-center gap-2 text-[15px] md:text-[17px] font-black flex-wrap">
+                    <span className={fromClean ? '' : 'text-white/40'}>{fromClean || t('antarctica.builder.yourCity')}</span>
+                    <ArrowRight className="w-4 h-4 text-[#febb02] shrink-0" />
+                    <span className="text-gradient-gold">Antarctica</span>
+                    <ArrowRight className="w-4 h-4 text-[#febb02] shrink-0" />
+                    <span className={backClean ? '' : 'text-white/40'}>{backClean || t('antarctica.builder.yourCity')}</span>
+                  </div>
+                  <div className="text-[12px] font-bold text-white/60 mt-1.5">
+                    {fmtDay(selected.date, { day: 'numeric', month: 'short' })} — {fmtDay(returnDateObj, { day: 'numeric', month: 'short' })} · {days} {t('antarctica.builder.daysWord')}
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 shrink-0">
+                  <div className="text-left sm:text-right">
+                    <div className="text-[10px] font-black uppercase tracking-widest text-white/50">{t('antarctica.builder.totalLabel')}</div>
+                    <div className="font-display text-[30px] font-semibold text-gradient-gold leading-tight whitespace-nowrap">{fmtCompact(total)}</div>
+                    <div className="text-[10.5px] font-bold text-white/50 max-w-[220px]">{t('antarctica.builder.perPerson')}</div>
+                  </div>
+                  <div className="flex flex-col items-stretch gap-1.5">
+                    <button onClick={() => buildPlan()} className="btn-gold px-6 py-3.5 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center justify-center gap-2 active:scale-95 transition">
+                      <Sparkles className="w-4 h-4" /> {t('antarctica.builder.cta')}
+                    </button>
+                    <span className="text-[10.5px] font-bold text-white/50 text-center">{t('antarctica.builder.ctaHint')}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -173,9 +373,9 @@ export default function Antarctica() {
                 <div className="flex items-end justify-between border-t border-[#efe6d2] pt-3 mt-4">
                   <div>
                     <div className="text-[10px] text-[#93876f] font-bold uppercase">{r.days} {t('antarctica.routes.daysLabel')} · {t('antarctica.routes.fromLabel')}</div>
-                    <div className="text-[20px] font-black text-[#003580]"><Price amount={r.price} /></div>
+                    <div className="text-[20px] font-black text-[#003580] whitespace-nowrap">{fmtCompact(r.price)}</div>
                   </div>
-                  <button onClick={buildPlan}
+                  <button onClick={() => buildPlan({ days: r.days, price: r.price })}
                     className="text-[12px] font-black text-white bg-[#0071c2] hover:bg-[#005fa3] px-3 py-2 rounded-lg transition shadow-soft flex items-center gap-1 active:scale-95">
                     {t('antarctica.hero.ctaPlan').split(' ')[0]} <ArrowRight className="w-3 h-3" />
                   </button>
@@ -252,13 +452,9 @@ export default function Antarctica() {
             <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-[-0.02em] mb-3 text-balance">{t('antarctica.cta.heading')}</h2>
             <p className="text-[14px] md:text-[15px] text-white/80 font-medium mb-7 leading-relaxed">{t('antarctica.cta.body')}</p>
             <div className="flex flex-wrap justify-center gap-3">
-              <button onClick={buildPlan} className="btn-gold px-7 py-3.5 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
+              <button onClick={() => buildPlan()} className="btn-gold px-7 py-3.5 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
                 <Sparkles className="w-4 h-4" /> {t('antarctica.cta.btnPlan')}
               </button>
-              <a href={whatsappLink(t('antarctica.cta.whatsappPrefill'))} target="_blank" rel="noopener noreferrer"
-                className="px-7 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
-                <MessageCircle className="w-4 h-4" /> {t('antarctica.cta.btnWhatsApp')}
-              </a>
             </div>
           </div>
         </div>

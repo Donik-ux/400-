@@ -1,6 +1,6 @@
 import React from 'react';
 import useCurrencyStore from '../store/useCurrencyStore';
-import { formatPrice } from '../utils/formatPrice';
+import { formatPrice, formatPriceCompact } from '../utils/formatPrice';
 
 // Renders a USD base amount converted + formatted into the user's selected currency.
 // Drop-in replacement for `${amount}` wherever a price is displayed.
@@ -17,4 +17,11 @@ export const usePriceFormatter = () => {
   const currency = useCurrencyStore((s) => s.currency);
   const rates = useCurrencyStore((s) => s.rates);
   return (amountUsd) => formatPrice(amountUsd, currency, rates);
+};
+
+// Compact variant for tight UI (fare chips): big converted amounts become "UZS 139.9M".
+export const useCompactPriceFormatter = () => {
+  const currency = useCurrencyStore((s) => s.currency);
+  const rates = useCurrencyStore((s) => s.rates);
+  return (amountUsd) => formatPriceCompact(amountUsd, currency, rates);
 };

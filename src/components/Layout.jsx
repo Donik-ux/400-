@@ -5,7 +5,6 @@ import Footer from './Footer';
 import NotificationWidget from './UI/NotificationWidget';
 import ToastContainer from './Toast';
 import TranslationProgress from './TranslationProgress';
-import WhatsAppButton from './WhatsAppButton';
 import ScrollProgress from './fx/ScrollProgress';
 
 const ADMIN_PATHS = ['/admin'];
@@ -45,7 +44,6 @@ export default function Layout({ children }) {
       {!isAdmin && !isAuth && <Navbar />}
       <main className={!isAdmin && !isAuth ? 'pt-[64px]' : ''}>{children}</main>
       {!isAdmin && !isAuth && <Footer />}
-      {!isAdmin && !isAuth && <WhatsAppButton />}
       {!isAdmin && !isAuth && <NotificationWidget />}
       <ToastContainer />
       <TranslationProgress />

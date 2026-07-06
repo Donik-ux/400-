@@ -86,6 +86,8 @@ export default function TripPlan() {
   const fromCityState  = location.state?.fromCity   || searchParams.get('from')   || '';
   const startDateState = location.state?.startDate  || searchParams.get('start')  || '';
   const purposeState   = location.state?.purpose    || searchParams.get('purpose')|| '';
+  // Optional different arrival city for the way back (e.g. Dubai → Antarctica → Tashkent)
+  const returnToState  = location.state?.returnCity || searchParams.get('returnTo') || '';
 
   const [travelers,  setTravelers]  = useState(2);
   const [travelDate, setTravelDate] = useState(startDateState || '');
@@ -111,6 +113,7 @@ export default function TripPlan() {
       if (fromCityState)  next.set('from',  fromCityState);
       if (startDateState) next.set('start', startDateState);
       if (purposeState)   next.set('purpose', purposeState);
+      if (returnToState)  next.set('returnTo', returnToState);
       setSearchParams(next, { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,6 +139,7 @@ export default function TripPlan() {
       const params = {
         destination: itemWithHero.destination || itemWithHero.name,
         fromCity,
+        returnCity:  returnToState,
         days:        Number(itemWithHero.duration) || 5,
         budget:      Number(itemWithHero.price)    || 1500,
         style:       itemWithHero.category || itemWithHero.style || 'standard',
@@ -165,7 +169,7 @@ export default function TripPlan() {
         result.header = {
           title:   `Travel Plan – ${itemWithHero.destination || itemWithHero.name}`,
           dates:   travelDate ? new Date(travelDate).toDateString() : `${params.days} days`,
-          route:   fromCity ? `${fromCity} → ${itemWithHero.destination || itemWithHero.name} → ${fromCity}` : (itemWithHero.destination || itemWithHero.name),
+          route:   fromCity ? `${fromCity} → ${itemWithHero.destination || itemWithHero.name} → ${returnToState || fromCity}` : (itemWithHero.destination || itemWithHero.name),
           purpose,
         };
       }
@@ -297,7 +301,7 @@ export default function TripPlan() {
                 <HeaderStat icon={<Calendar className="w-3.5 h-3.5" />} label={t('tripPlan.travelDates')}
                   value={plan?.header?.dates || (travelDate ? fmtDate(travelDate) : fill(t('tripPlan.daysValue'), { days: item.duration }))} />
                 <HeaderStat icon={<Plane className="w-3.5 h-3.5" />} label={t('tripPlan.route')}
-                  value={plan?.header?.route || (fromCity ? `${fromCity} → ${item.destination || item.name} → ${fromCity}` : '—')} />
+                  value={plan?.header?.route || (fromCity ? `${fromCity} → ${item.destination || item.name} → ${returnToState || fromCity}` : '—')} />
                 <HeaderStat icon={<Sparkles className="w-3.5 h-3.5" />} label={t('tripPlan.purpose')}
                   value={plan?.header?.purpose || purpose} />
               </div>
@@ -327,9 +331,11 @@ export default function TripPlan() {
               const cleanCity = (s) => String(s || '').replace(/\s*\([^)]*\)\s*/g, '').trim();
               const destCity = cleanCity(item.destination || item.name);
               const fromClean = cleanCity(fromCity);
+              const backClean = cleanCity(returnToState);
               const mapPoints = [
                 fromClean && getCoords(fromClean) ? { city: fromClean } : null,
                 getCoords(destCity) ? { city: destCity } : null,
+                backClean && backClean !== fromClean && getCoords(backClean) ? { city: backClean } : null,
               ].filter(Boolean);
               if (!mapPoints.length) return null;
               return (

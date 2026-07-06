@@ -21,3 +21,24 @@ export const formatPrice = (amountUsd, currencyCode = 'USD', rates) => {
     return `${Math.round(converted).toLocaleString('en-US')} ${code}`;
   }
 };
+
+// Same conversion, but large amounts collapse to compact notation ("UZS 139.9M")
+// so weak-currency prices fit in tight UI like fare-calendar chips. Small
+// amounts keep the full format — "$9,990" is already short.
+export const formatPriceCompact = (amountUsd, currencyCode = 'USD', rates) => {
+  const table = rates || useCurrencyStore.getState().rates;
+  const code = table[currencyCode] ? currencyCode : 'USD';
+  const converted = (Number(amountUsd) || 0) * (table[code] ?? 1);
+  if (converted < 100000) return formatPrice(amountUsd, currencyCode, rates);
+  try {
+    return new Intl.NumberFormat('en', {
+      style: 'currency',
+      currency: code,
+      currencyDisplay: 'narrowSymbol',
+      notation: 'compact',
+      maximumFractionDigits: 1,
+    }).format(converted);
+  } catch {
+    return `${Math.round(converted).toLocaleString('en-US')} ${code}`;
+  }
+};

@@ -57,7 +57,7 @@ const formatDateLong  = (d) => `${WEEKDAY_LONG[d.getDay()]}, ${MONTH_LONG[d.getM
 const formatDateShort = (d) => `${MONTH_LONG[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 
 /* ── Validate & patch AI response so the UI never breaks ── */
-const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination, fromCity, purpose }) => {
+const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose }) => {
   const rawDays = Array.isArray(parsed?.days) ? parsed.days : [];
 
   const days = [];
@@ -156,7 +156,7 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
   const dateRange = startD && lastD
     ? `${MONTH_LONG[startD.getMonth()]} ${startD.getDate()} – ${MONTH_LONG[lastD.getMonth()]} ${lastD.getDate()}, ${lastD.getFullYear()}`
     : `${numDays} days`;
-  const route = fromCity ? `${fromCity} → ${destination} → ${fromCity}` : destination;
+  const route = fromCity ? `${fromCity} → ${destination} → ${returnCity || fromCity}` : destination;
 
   const header = parsed?.header && typeof parsed.header === 'object'
     ? {
@@ -189,6 +189,7 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
 export const generateAiItinerary = async ({
   destination = 'Your Destination',
   fromCity = '',
+  returnCity = '',
   days = 5,
   budget = 2000,
   startDate,
@@ -240,7 +241,7 @@ Write ALL human-readable text VALUES in ${langName}: every "title", "label", "tr
     : 'Traveler is on foot or uses walking + occasional taxi. Keep destinations within walkable clusters.';
 
   const routeNote = fromCity
-    ? `Route: ${fromCity} → ${destination}. Day 1 must include departure from ${fromCity} with realistic flight/train duration and cost.`
+    ? `Route: ${fromCity} → ${destination} → ${returnCity || fromCity}. Day 1 must include departure from ${fromCity} with realistic flight/train duration and cost.${returnCity && returnCity !== fromCity ? ` The trip ends in ${returnCity}: the final day's departure flight goes to ${returnCity}, not back to ${fromCity}.` : ''}`
     : '';
 
   const startStr = startDate ? new Date(startDate).toDateString() : 'as soon as practical';
@@ -280,7 +281,7 @@ CRITICAL RULES — FOLLOW EXACTLY:
 4. ALL food recommendations must be 100% HALAL CERTIFIED real restaurants in ${destination}. Add "🥩 Halal" in the name. Halal restaurant entries also need full address.
 5. Include a top-level "hotel" object with: name (real hotel), address (full street + postal), area (district), pricePerNight (local currency), stars. The traveler must know exactly where they sleep.
 6. For each event include: time (HH:MM 24-hour), duration ("1.5 hours"), price in LOCAL currency ("€15", "₺200", "AED 50", "Free"), and type (one of: flight, transport, hotel, attraction, museum, food, nature, shopping, leisure, rest).
-7. Day 1 = arrival flight from ${fromCity || 'home city'}, airport transfer to hotel (with real airport name + hotel name + transport cost), hotel check-in, light dinner. Day ${numDays} = packing + transfer to airport + departure flight.
+7. Day 1 = arrival flight from ${fromCity || 'home city'}, airport transfer to hotel (with real airport name + hotel name + transport cost), hotel check-in, light dinner. Day ${numDays} = packing + transfer to airport + departure flight to ${returnCity || fromCity || 'home city'}.
 8. Middle days = 6–8 events each (more places to visit). If special day, add label like "(Shopping Day)", "(Day Trip to X)", "(Free Day)".
 9. Respect budget: daily ~$${dailyBudget}, food ~$${mealBudget}/day. Choose ${style}-tier experiences. Every individual event price MUST fit the tier above. Sum of all event prices for a day SHOULD NOT exceed daily budget.
 10. Return ONLY a single valid JSON object — no markdown, no code fences, no commentary.
@@ -297,7 +298,7 @@ Return EXACTLY this JSON shape:
   "header": {
     "title":   "Travel Plan – ${destination}",
     "dates":   "Month D – Month D, YYYY",
-    "route":   "${fromCity || 'Home'} → ${destination} → ${fromCity || 'Home'}",
+    "route":   "${fromCity || 'Home'} → ${destination} → ${returnCity || fromCity || 'Home'}",
     "purpose": "${purpose}"
   },
   "hotel": {
@@ -351,7 +352,7 @@ Every event MUST have "address" (real street+postal) and "transportToNext" (exce
   try {
     const rawText = await askGrok(prompt, { apiKey, model, temperature: 0.7, json: true });
     const parsed = extractJson(rawText);
-    const normalized = normalizeAiPlan(parsed, { numDays, dailyBudget, startDate, destination, fromCity, purpose });
+    const normalized = normalizeAiPlan(parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose });
 
     return {
       header:              normalized.header,

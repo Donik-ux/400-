@@ -5,7 +5,7 @@ import {
   Plane, Filter, TrendingDown, ExternalLink, Search, Star, Globe,
   ArrowRight, Sparkles, Shield, BadgePercent, Headphones, ThumbsUp, MapPin,
   X, Wallet, BadgeCheck,
-  Telescope, Compass, Map,
+  Telescope, Compass, Map, Wand2,
 } from 'lucide-react';
 import FlightSearch from '../features/flights/FlightSearch';
 import FlightCard from '../features/flights/FlightCard';
@@ -17,6 +17,9 @@ import useSEO from '../hooks/useSEO';
 import { heroFor } from '../utils/destinationImages';
 import { toast } from '../components/Toast';
 import { usePriceFormatter } from '../components/Price';
+import { getWeatherForDates } from '../services/weatherForecast';
+import { pickBestValueIndex } from '../utils/dateFareCalendar';
+import { wmoInfo } from '../utils/wmoWeatherCodes';
 
 /* ── External Booking Sites ── */
 const getBookingSites = (t) => [
@@ -27,6 +30,9 @@ const getBookingSites = (t) => [
   { name: 'Trip.com',       icon: Map,       color: '#287dfa', url: 'https://trip.com',           desc: t('flights.sites.trip.desc'),       badge: t('flights.sites.trip.badge'),       rating: 4.5 },
   { name: 'Momondo',        icon: Sparkles,  color: '#e6007e', url: 'https://momondo.com',        desc: t('flights.sites.momondo.desc'),    badge: t('flights.sites.momondo.badge'),    rating: 4.5 },
 ];
+
+// Offsets (days) around the searched date for the "smarter dates" strip.
+const ALT_DATE_OFFSETS = [-3, -1, 0, 1, 3, 7];
 
 const POPULAR_ROUTES = [
   { from: 'Dubai (DXB)',     to: 'Maldives (MLE)',    city: 'Maldives',   country: 'Maldives',    from$: 410 },
@@ -40,7 +46,7 @@ const POPULAR_ROUTES = [
 ];
 
 export default function Flights() {
-  const { t }      = useTranslation();
+  const { t, lang } = useTranslation();
   const navigate   = useNavigate();
   const location   = useLocation();
   const fmt        = usePriceFormatter();
@@ -117,6 +123,41 @@ export default function Flights() {
 
   const clearFilters = () => { setFilter('all'); setAirlineFilter(null); setMaxPrice(null); };
   const hasFilters = filter !== 'all' || airlineFilter || maxPrice != null;
+
+  /* ── Smarter dates: real weather + the fare actually found, for a few days
+     around the searched date. There's no live per-day fare feed, so nearby
+     days reuse the searched date's real price with only the well-known
+     weekend surcharge — clearly labelled as an estimate — while the weather
+     side is always real data. This is what lets the "fly a different day"
+     suggestion react to actual conditions instead of a fixed rule. */
+  const altDates = useMemo(() => {
+    if (!formData.date || !cheapest) return [];
+    const base = new Date(`${formData.date}T00:00:00`);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    return ALT_DATE_OFFSETS
+      .map((off) => { const d = new Date(base); d.setDate(d.getDate() + off); return { off, date: d }; })
+      .filter(({ date }) => date >= today)
+      .map(({ off, date }) => {
+        const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        const isWeekend = [0, 5, 6].includes(date.getDay());
+        const price = Math.round(cheapest * (off === 0 ? 1 : isWeekend ? 1.08 : 0.97) / 5) * 5;
+        return { off, date, iso, price };
+      });
+  }, [formData.date, cheapest]);
+
+  const [altWeather, setAltWeather] = useState({});
+  useEffect(() => {
+    if (!altDates.length || !formData.to) { setAltWeather({}); return; }
+    let cancelled = false;
+    getWeatherForDates(formData.to, altDates.map((d) => d.iso)).then((map) => { if (!cancelled) setAltWeather(map); });
+    return () => { cancelled = true; };
+  }, [altDates, formData.to]);
+
+  const altBestIdx = useMemo(() => {
+    if (!altDates.length) return -1;
+    const candidates = altDates.map((d) => ({ price: d.price, weather: altWeather[d.iso] || null }));
+    return pickBestValueIndex(candidates);
+  }, [altDates, altWeather]);
 
   return (
     <div className="relative bg-[#faf6ed] min-h-screen -mt-[64px] overflow-hidden">
@@ -329,6 +370,54 @@ export default function Flights() {
                     <br/>
                     <span className="font-semibold text-[#a45e00]/85">{t('flightsPage.banners.aiEstimateNote')}</span>
                   </div>
+                </div>
+              )}
+
+              {altDates.length > 1 && (
+                <div className="mb-4 bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-4">
+                  <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-3">
+                    <Wand2 className="w-3.5 h-3.5 text-[#0071c2]" /> {t('flightsPage.smartDates.title')}
+                  </div>
+                  <div className="flex gap-2 overflow-x-auto pt-2 pb-1 -mx-1 px-1 snap-x">
+                    {altDates.map((d, i) => {
+                      const weather = altWeather[d.iso];
+                      const wmo = weather ? wmoInfo(weather.code) : null;
+                      const WeatherIcon = wmo?.icon;
+                      const isToday = d.off === 0;
+                      return (
+                        <button key={d.iso} type="button"
+                          disabled={isToday}
+                          onClick={() => handleSearch({ formData: { ...formData, date: d.iso } })}
+                          className={`relative shrink-0 snap-start w-[110px] rounded-xl border-2 px-2.5 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
+                            isToday
+                              ? 'border-[#0071c2] bg-[#f0f5ff] ring-4 ring-[#0071c2]/10'
+                              : 'border-[#e6dcc3] bg-white hover:border-[#0071c2]/50'
+                          }`}>
+                          {i === altBestIdx && !isToday && (
+                            <span className="absolute -top-2 left-2 bg-[#7cc4d9] text-[#00214f] text-[8.5px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft">
+                              {t('flightsPage.smartDates.aiPick')}
+                            </span>
+                          )}
+                          <div className="flex items-center justify-between gap-1">
+                            <div className="text-[9.5px] font-black uppercase tracking-wider text-[#0071c2]">
+                              {isToday ? t('flightsPage.smartDates.searched') : d.date.toLocaleDateString(lang || 'en', { weekday: 'short' })}
+                            </div>
+                            {WeatherIcon && (
+                              <div className="flex items-center gap-0.5 text-[#5c5245]" title={wmo.label}>
+                                <WeatherIcon className="w-3 h-3" />
+                                <span className="text-[9.5px] font-bold">{Math.round(weather.tempMax)}°</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-[13px] font-black text-[#1a1a1a] mt-0.5">
+                            {d.date.toLocaleDateString(lang || 'en', { day: 'numeric', month: 'short' })}
+                          </div>
+                          <div className="text-[13px] font-black text-[#003580] mt-1 whitespace-nowrap">~{fmt(d.price)}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="text-[10.5px] font-semibold text-[#93876f] mt-2.5 leading-snug">{t('flightsPage.smartDates.disclaimer')}</p>
                 </div>
               )}
 

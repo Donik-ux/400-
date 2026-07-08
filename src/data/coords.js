@@ -49,13 +49,41 @@ const COORDS = {
   'Amsterdam':    { lat: 52.3676,  lng: 4.9041 },
   'Brussels':     { lat: 50.8503,  lng: 4.3517 },
   'Seychelles':   { lat: -4.6796,  lng: 55.4920 },
-  'Antarctica':   { lat: -75.2509, lng: -0.0713 },
+  'Mauritius':    { lat: -20.3484, lng: 57.5522 },
+  // South Shetland Islands / northern Antarctic Peninsula — where expedition
+  // cruises actually land (Half Moon Island area), not the polar plateau.
+  'Antarctica':   { lat: -62.60,   lng: -59.92 },
+};
+
+// The flight-search autocomplete (src/data/airports.js, neighborhoods.js)
+// stores the *airport/area* name in "City (CODE)" — e.g. "Male City (MLE)" —
+// which rarely matches the tourism-style destination names above ("Maldives").
+// When the plain-name lookup misses, fall back to the IATA code so weather
+// still resolves for the airports behind our own popular routes.
+const CODE_ALIASES = {
+  DXB: 'Dubai', AUH: 'Abu Dhabi', IST: 'Istanbul', SVO: 'Moscow',
+  LHR: 'London', CDG: 'Paris', BER: 'Berlin', FCO: 'Rome', MAD: 'Madrid',
+  BCN: 'Barcelona', HND: 'Tokyo', ICN: 'Seoul', PEK: 'Beijing',
+  BKK: 'Bangkok', HKT: 'Phuket', DPS: 'Bali', SIN: 'Singapore',
+  KUL: 'Kuala Lumpur', MLE: 'Maldives', DEL: 'New Delhi', BOM: 'Mumbai',
+  CAI: 'Cairo', CMN: 'Casablanca', CPT: 'Cape Town', JFK: 'New York',
+  LAX: 'Los Angeles', SYD: 'Sydney', AYT: 'Antalya', GYD: 'Baku',
+  TBS: 'Tbilisi', EVN: 'Yerevan', MXP: 'Milan', VIE: 'Vienna',
+  PRG: 'Prague', BUD: 'Budapest', WAW: 'Warsaw', ARN: 'Stockholm',
+  OSL: 'Oslo', HEL: 'Helsinki', ZRH: 'Zurich', AMS: 'Amsterdam',
+  BRU: 'Brussels', SEZ: 'Seychelles', MRU: 'Mauritius', USH: 'Antarctica',
+  TAS: 'Tashkent', SKD: 'Samarkand', BHK: 'Bukhara', FRU: 'Bishkek',
+  ALA: 'Almaty', NQZ: 'Astana',
 };
 
 export function getCoords(city) {
   if (!city) return null;
   const clean = city.split('(')[0].trim();
-  return COORDS[clean] || null;
+  if (COORDS[clean]) return COORDS[clean];
+
+  const codeMatch = /\(([A-Z]{3})\)/.exec(city);
+  const alias = codeMatch && CODE_ALIASES[codeMatch[1]];
+  return alias ? COORDS[alias] : null;
 }
 
 export { COORDS };

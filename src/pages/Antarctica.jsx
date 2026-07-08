@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Snowflake, Ship, Plane, Crown, Compass, Calendar, Check, Sparkles,
   ArrowRight, Globe, Users, Sun, Binoculars, Lightbulb,
-  PlaneTakeoff, PlaneLanding, CalendarDays,
+  PlaneTakeoff, PlaneLanding, CalendarDays, Wand2,
 } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 import useSEO from '../hooks/useSEO';
@@ -12,6 +12,10 @@ import { handleImgError } from '../utils/imageFallback';
 import { useCompactPriceFormatter } from '../components/Price';
 import CityAutocomplete from '../features/flights/CityAutocomplete';
 import GoldDust from '../components/fx/GoldDust';
+import { getWeatherForDates } from '../services/weatherForecast';
+import { pickBestValueIndex } from '../utils/dateFareCalendar';
+import { wmoInfo } from '../utils/wmoWeatherCodes';
+import { predictFlightPrice } from '../services/travelServicesService';
 
 const HERO_IMG = 'https://images.unsplash.com/photo-1516569422572-d9e0514b9598?auto=format&fit=crop&w=1800&q=80';
 
@@ -71,10 +75,64 @@ export default function Antarctica() {
     [dateOptions],
   );
   const [dateIdx, setDateIdx] = useState(cheapestIdx);
+  const userPickedDate = useRef(false);
+
+  // Real weather (Open-Meteo forecast, or a 3-year same-day average once past
+  // the forecast horizon) for every candidate departure date — this is what
+  // makes the "best" date shift with actual conditions instead of a fixed offset.
+  const [weatherByDate, setWeatherByDate] = useState({});
+  useEffect(() => {
+    let cancelled = false;
+    getWeatherForDates('Antarctica', dateOptions.map((o) => o.iso)).then((map) => {
+      if (!cancelled) setWeatherByDate(map);
+    });
+    return () => { cancelled = true; };
+  }, [dateOptions]);
+
+  const valueCandidates = useMemo(
+    () => dateOptions.map((o) => ({ price: fareFor(days, o.factor), weather: weatherByDate[o.iso] || null })),
+    [dateOptions, weatherByDate, days],
+  );
+  const bestValueIdx = useMemo(() => pickBestValueIndex(valueCandidates), [valueCandidates]);
+
+  // Auto-select the best weather+price pick as soon as it's known — but only
+  // until the traveler manually taps a different date card.
+  useEffect(() => {
+    if (!userPickedDate.current) setDateIdx(bestValueIdx);
+  }, [bestValueIdx]);
+
+  // One AI-authored line about the fare trend for this exact route/month
+  // (Gemini) — real per-date price/weather math above stays authoritative;
+  // this is supporting market color, and quietly disappears if it fails.
+  const [aiFareNote, setAiFareNote] = useState(null);
+  useEffect(() => {
+    const fromClean = cleanCity(fromCity);
+    if (!fromClean) { setAiFareNote(null); return; }
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      const month = dateOptions[bestValueIdx]?.date?.toLocaleDateString('en', { month: 'long', year: 'numeric' });
+      predictFlightPrice({ from: fromClean, to: 'Ushuaia, Argentina (Antarctica gateway)', month, lang })
+        .then((r) => { if (!cancelled) setAiFareNote(r); })
+        .catch(() => { if (!cancelled) setAiFareNote(null); });
+    }, 600);
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [fromCity, bestValueIdx, dateOptions, lang]);
 
   const fmtDay = (d, opts) => {
     try { return d.toLocaleDateString(lang || 'en', opts); }
     catch { return d.toLocaleDateString('en', opts); }
+  };
+
+  /* "In {n} days" needs numeral declension in some languages (ru: 2 дня / 5
+     дней / 21 день). Dictionaries may provide per-category overrides as
+     `inDays_<category>`; anything missing falls back to the base template. */
+  const inDaysLabel = (n) => {
+    let cat = 'other';
+    try { cat = new Intl.PluralRules(lang || 'en').select(n); } catch { /* keep 'other' */ }
+    const catKey = `antarctica.builder.inDays_${cat}`;
+    const catVal = t(catKey);
+    const tpl = (typeof catVal === 'string' && catVal !== catKey) ? catVal : t('antarctica.builder.inDays');
+    return String(tpl).replace('{n}', String(n));
   };
 
   const selected   = dateOptions[dateIdx];
@@ -272,25 +330,43 @@ export default function Antarctica() {
               </div>
               <span className="text-[11px] font-bold text-[#93876f]">{t('antarctica.builder.datesHint')}</span>
             </div>
-            <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 snap-x">
+            {/* pt-2.5 keeps the floating "best price" badge (-top-2) from being
+                clipped by the overflow-x scroll container */}
+            <div className="flex gap-2 overflow-x-auto pt-2.5 pb-2 -mx-1 px-1 snap-x">
               {dateOptions.map((o, i) => {
                 const fare = fareFor(days, o.factor);
                 const saving = todayFare - fare;
                 const isSel = i === dateIdx;
+                const weather = weatherByDate[o.iso];
+                const wmo = weather ? wmoInfo(weather.code) : null;
+                const WeatherIcon = wmo?.icon;
                 return (
-                  <button key={o.iso} type="button" onClick={() => setDateIdx(i)}
+                  <button key={o.iso} type="button"
+                    onClick={() => { userPickedDate.current = true; setDateIdx(i); }}
                     className={`relative shrink-0 snap-start w-[136px] rounded-xl border-2 px-3 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
                       isSel
                         ? 'border-[#0071c2] bg-[#f0f5ff] ring-4 ring-[#0071c2]/10 shadow-soft'
                         : 'border-[#e6dcc3] bg-white hover:border-[#0071c2]/50'
                     }`}>
-                    {i === cheapestIdx && (
+                    {i === bestValueIdx ? (
+                      <span className="absolute -top-2 left-2 bg-[#7cc4d9] text-[#00214f] text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft flex items-center gap-0.5">
+                        <Wand2 className="w-2.5 h-2.5" /> {t('antarctica.builder.bestValue')}
+                      </span>
+                    ) : i === cheapestIdx && (
                       <span className="absolute -top-2 left-2 bg-[#2e7d4f] text-white text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft">
                         {t('antarctica.builder.bestPrice')}
                       </span>
                     )}
-                    <div className="text-[10px] font-black uppercase tracking-wider text-[#0071c2]">
-                      {o.off === 0 ? t('antarctica.builder.today') : t('antarctica.builder.inDays').replace('{n}', String(o.off))}
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="text-[10px] font-black uppercase tracking-wider text-[#0071c2]">
+                        {o.off === 0 ? t('antarctica.builder.today') : inDaysLabel(o.off)}
+                      </div>
+                      {WeatherIcon && (
+                        <div className="flex items-center gap-0.5 text-[#5c5245]" title={wmo.label}>
+                          <WeatherIcon className="w-3 h-3" />
+                          <span className="text-[10px] font-bold">{Math.round(weather.tempMax)}°</span>
+                        </div>
+                      )}
                     </div>
                     <div className="text-[15px] font-black text-[#1a1a1a] mt-0.5">
                       {fmtDay(o.date, { day: 'numeric', month: 'short' })}
@@ -307,6 +383,32 @@ export default function Antarctica() {
                 );
               })}
             </div>
+
+            {/* Nudge back to the recommended date whenever the traveler has
+                picked a different one — mirrors what "best value" means: better
+                weather and/or a lower fare than the date currently selected. */}
+            {dateIdx !== bestValueIdx && (() => {
+              const recSave = fareFor(days, selected.factor) - fareFor(days, dateOptions[bestValueIdx].factor);
+              const recDate = fmtDay(dateOptions[bestValueIdx].date, { day: 'numeric', month: 'short' });
+              const msg = recSave > 0
+                ? t('antarctica.builder.suggestSwitchSaving').replace('{date}', recDate).replace('{save}', fmtCompact(recSave))
+                : t('antarctica.builder.suggestSwitchWeather').replace('{date}', recDate);
+              return (
+                <button type="button"
+                  onClick={() => { userPickedDate.current = false; setDateIdx(bestValueIdx); }}
+                  className="mt-3 w-full flex items-center gap-2.5 rounded-xl border border-[#7cc4d9]/50 bg-[#f0f9fb] px-3.5 py-2.5 text-left hover:bg-[#e3f3f7] transition">
+                  <Wand2 className="w-4 h-4 text-[#0071c2] shrink-0" />
+                  <span className="text-[12px] font-bold text-[#00435c] leading-snug">{msg}</span>
+                </button>
+              );
+            })()}
+
+            {aiFareNote?.advice && (
+              <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#fff7e6] border border-[#ffd76e]/60 px-3.5 py-2.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#a45e00] shrink-0 mt-0.5" />
+                <span className="text-[11.5px] font-semibold text-[#7c4a00] leading-snug">{aiFareNote.advice}</span>
+              </div>
+            )}
 
             {/* Summary + CTA */}
             <div className="mt-5 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#00214f] to-[#001427] text-white p-5 md:p-6 shadow-float">

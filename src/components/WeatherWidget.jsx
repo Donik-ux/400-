@@ -1,25 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Cloud, Sun, CloudRain, CloudSnow, CloudLightning, CloudDrizzle, Wind, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { getCoords } from '../data/coords';
-
-const WMO_CODES = {
-  0:  { icon: Sun,        label: 'Clear' },
-  1:  { icon: Sun,        label: 'Mainly clear' },
-  2:  { icon: Cloud,      label: 'Partly cloudy' },
-  3:  { icon: Cloud,      label: 'Overcast' },
-  45: { icon: Wind,       label: 'Foggy' },
-  48: { icon: Wind,       label: 'Depositing rime fog' },
-  51: { icon: CloudDrizzle, label: 'Light drizzle' },
-  53: { icon: CloudDrizzle, label: 'Moderate drizzle' },
-  55: { icon: CloudDrizzle, label: 'Dense drizzle' },
-  61: { icon: CloudRain,  label: 'Slight rain' },
-  63: { icon: CloudRain,  label: 'Moderate rain' },
-  65: { icon: CloudRain,  label: 'Heavy rain' },
-  71: { icon: CloudSnow,  label: 'Slight snow' },
-  73: { icon: CloudSnow,  label: 'Moderate snow' },
-  75: { icon: CloudSnow,  label: 'Heavy snow' },
-  95: { icon: CloudLightning, label: 'Thunderstorm' },
-};
+import { wmoInfo } from '../utils/wmoWeatherCodes';
 
 export default function WeatherWidget({ city }) {
   const [data, setData] = useState(null);
@@ -58,7 +40,7 @@ export default function WeatherWidget({ city }) {
 
   const current = data.current_weather;
   const daily   = data.daily;
-  const wmo     = WMO_CODES[current.weathercode] || { icon: Cloud, label: 'Unknown' };
+  const wmo     = wmoInfo(current.weathercode);
   const Icon    = wmo.icon;
 
   return (

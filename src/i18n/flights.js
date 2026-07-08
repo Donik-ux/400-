@@ -45,6 +45,12 @@ export default {
         cheapest: 'Cheapest',
         fastest: 'Fastest',
       },
+      smartDates: {
+        title: 'Smarter dates nearby',
+        aiPick: 'AI pick',
+        searched: 'Searched',
+        disclaimer: 'Weather is real; nearby-day fares are an estimate based on your searched price — tap a day to search it for real.',
+      },
       results: {
         matchPrefix: 'of',
         matchSuffix: 'flights match your filters',
@@ -169,6 +175,12 @@ export default {
         title: 'Asosiy ko‘rsatkichlar',
         cheapest: 'Eng arzon',
         fastest: 'Eng tez',
+      },
+      smartDates: {
+        title: 'Yaqin sanalar bo‘yicha aqlliroq tanlov',
+        aiPick: 'AI tanlovi',
+        searched: 'Qidirilgan',
+        disclaimer: 'Ob-havo — real ma’lumot; yaqin kunlar narxi qidirgan narxingiz asosidagi taxmin — real qidirish uchun kunni bosing.',
       },
       results: {
         matchPrefix: '/',

@@ -29,7 +29,7 @@ export default function Login() {
     setError('');
     setLoading(true);
     await new Promise(r => setTimeout(r, 500));
-    const result = login(form.email, form.password);
+    const result = await login(form.email, form.password);
     setLoading(false);
     if (result.success) navigate(from, { replace: true });
     else setError(result.error);

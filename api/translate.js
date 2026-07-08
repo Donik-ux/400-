@@ -7,6 +7,8 @@
 // Works on Vercel (default export handler) and under `npm run dev`
 // (named `translateStrings` is used by the Vite middleware in vite.config.js).
 
+import { checkRateLimit, sendRateLimited } from './_rateLimit.js';
+
 // Map our language codes → Google Translate codes where they differ.
 const GCODE = {
   'zh-CN': 'zh-CN', 'zh-TW': 'zh-TW', yue: 'zh-TW', fil: 'tl', he: 'iw',
@@ -79,6 +81,10 @@ export default async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(obj));
   };
+  // Free but not infinite — Google will start throttling/blocking our IP if
+  // this gets used as an open translation proxy for unrelated traffic.
+  const rl = checkRateLimit(req, { limit: 60, windowMs: 5 * 60_000, bucket: 'translate' });
+  if (!rl.allowed) return sendRateLimited(res, rl.retryAfterSec);
   try {
     let body = req.body;
     if (typeof body === 'string') body = JSON.parse(body || '{}');

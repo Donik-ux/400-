@@ -2,7 +2,6 @@ import { create } from 'zustand';
 
 const ADMIN      = { id: 'admin_1', name: 'Admin', email: 'admin@maftravel.com', role: 'admin', avatar: 'A' };
 const GUEST      = { id: 'guest_1', name: 'Guest User', email: 'guest@maftravel.com', role: 'guest', avatar: 'G' };
-const ADMIN_PASS = 'Admin@2026';
 const S_USERS    = 'maf_users';
 const S_SESSION  = 'maf_session';
 const S_PROFILES = 'maf_profiles'; // passport / travel data per user
@@ -19,12 +18,30 @@ const useAuthStore = create((set, get) => ({
   get isLoggedIn() { return !!get().user; },
   get isAdmin()    { return get().user?.role === 'admin'; },
 
-  /* ── Auth ── */
-  login: (email, password) => {
-    if (email === ADMIN.email && password === ADMIN_PASS) {
-      localStorage.setItem(S_SESSION, JSON.stringify(ADMIN));
-      set({ user: ADMIN });
-      return { success: true };
+  /* ── Auth ──
+     Admin sign-in is verified server-side (api/adminAuth.js) — the password
+     lives only in the server's ADMIN_PASSWORD env var and a successful login
+     returns a signed session token. Everyday user accounts stay local/mock
+     (no real backend for those yet), so only the single high-value admin
+     credential is protected this way. */
+  login: async (email, password) => {
+    if (email === ADMIN.email) {
+      try {
+        const base = (import.meta.env?.BASE_URL || '/');
+        const res = await fetch(`${base}api/adminAuth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'login', password }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.token) return { success: false, error: data.error || 'Invalid email or password' };
+        const session = { ...ADMIN, token: data.token };
+        localStorage.setItem(S_SESSION, JSON.stringify(session));
+        set({ user: session });
+        return { success: true };
+      } catch {
+        return { success: false, error: 'Could not reach the server — try again.' };
+      }
     }
     const users = loadUsers();
     const found = users.find(u => u.email === email && u.password === password);
@@ -59,6 +76,29 @@ const useAuthStore = create((set, get) => ({
   logout: () => {
     localStorage.removeItem(S_SESSION);
     set({ user: null });
+  },
+
+  /* Re-checks the current session's admin token against the server on every
+     /admin visit. Forging `{role:'admin'}` in localStorage alone (the old
+     bypass) no longer works — the signature can't be produced without the
+     server-only ADMIN_TOKEN_SECRET. */
+  verifyAdmin: async () => {
+    const user = get().user;
+    if (!user || user.role !== 'admin') return false;
+    try {
+      const base = (import.meta.env?.BASE_URL || '/');
+      const res = await fetch(`${base}api/adminAuth`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'verify', token: user.token }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!data.valid) { get().logout(); return false; }
+      return true;
+    } catch {
+      // Server unreachable — fail closed rather than trusting local state.
+      return false;
+    }
   },
 
   /* ── Passport / Travel Profile ── */

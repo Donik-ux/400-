@@ -15,6 +15,7 @@
 // (named `searchAmadeus` is kept for the Vite middleware; `searchFlightsApi`
 // is the new combined entry).
 import { searchKiwi } from './scrapers/kiwiClient.js';
+import { checkRateLimit, sendRateLimited } from './_rateLimit.js';
 const AMADEUS_HOSTS = {
   test: 'https://test.api.amadeus.com',
   production: 'https://api.amadeus.com',
@@ -244,6 +245,11 @@ export async function searchFlightsApi(params = {}) {
 
 // Vercel serverless entrypoint
 export default async function handler(req, res) {
+  // Real fares cost real quota (Amadeus free tier: 2000 searches/month) —
+  // cap per-IP so one script can't burn the month's quota in minutes.
+  const rl = checkRateLimit(req, { limit: 30, windowMs: 5 * 60_000, bucket: 'flights' });
+  if (!rl.allowed) return sendRateLimited(res, rl.retryAfterSec);
+
   res.setHeader?.('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
   const { from, to, date, adults = 1, cabin = 'ECONOMY' } = req.query || {};
   const { status, body } = await searchFlightsApi({ from, to, date, adults, cabin });

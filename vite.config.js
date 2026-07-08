@@ -59,6 +59,54 @@ function translateDevApi() {
   };
 }
 
+// Dev-only middleware for /api/aiAsk (Gemini proxy — keeps the key server-side,
+// mirrors translateDevApi's shape).
+function aiAskDevApi() {
+  return {
+    name: 'ai-ask-dev-api',
+    configureServer(server) {
+      server.middlewares.use('/api/aiAsk', async (req, res) => {
+        const send = (status, obj) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          let raw = ''; for await (const c of req) raw += c;
+          const body = raw ? JSON.parse(raw) : {};
+          const mod = await server.ssrLoadModule('/api/aiAsk.js');
+          const text = await mod.askGeminiServer(body);
+          send(200, { text });
+        } catch (err) {
+          send(err.status || 500, { error: String(err?.message || err) });
+        }
+      });
+    },
+  };
+}
+
+// Dev-only middleware for /api/adminAuth (real, server-verified admin login —
+// replaces the old client-only "type any role into localStorage" check).
+function adminAuthDevApi() {
+  return {
+    name: 'admin-auth-dev-api',
+    configureServer(server) {
+      server.middlewares.use('/api/adminAuth', async (req, res) => {
+        try {
+          let raw = ''; for await (const c of req) raw += c;
+          const mod = await server.ssrLoadModule('/api/adminAuth.js');
+          const fakeReq = { method: req.method, headers: req.headers, socket: req.socket, body: raw };
+          await mod.default(fakeReq, res);
+        } catch (err) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: String(err?.message || err) }));
+        }
+      });
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // loadEnv with '' prefix loads ALL vars (incl. non-VITE_) for server-side use.
@@ -68,6 +116,10 @@ export default defineConfig(({ mode }) => {
   process.env.AMADEUS_CLIENT_ID     = env.AMADEUS_CLIENT_ID     || process.env.AMADEUS_CLIENT_ID;
   process.env.AMADEUS_CLIENT_SECRET = env.AMADEUS_CLIENT_SECRET || process.env.AMADEUS_CLIENT_SECRET;
   process.env.AMADEUS_ENV           = env.AMADEUS_ENV           || process.env.AMADEUS_ENV;
+  process.env.GEMINI_API_KEY        = env.GEMINI_API_KEY        || process.env.GEMINI_API_KEY;
+  process.env.GEMINI_MODEL          = env.GEMINI_MODEL          || process.env.GEMINI_MODEL;
+  process.env.ADMIN_PASSWORD        = env.ADMIN_PASSWORD        || process.env.ADMIN_PASSWORD;
+  process.env.ADMIN_TOKEN_SECRET    = env.ADMIN_TOKEN_SECRET    || process.env.ADMIN_TOKEN_SECRET;
 
   return {
     plugins: [
@@ -75,6 +127,8 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       amadeusDevApi(),
       translateDevApi(),
+      aiAskDevApi(),
+      adminAuthDevApi(),
     ],
   };
 });

@@ -223,7 +223,8 @@ export const translations = {
       copy: '© 2026 MAFTRAVEL. All rights reserved.',
       powered: 'Powered by MAFTRAVEL — focused on innovative tourism solutions.',
       smartFlights: 'Smart Flights',
-      aiPlanning: 'AI Planning'
+      aiPlanning: 'AI Planning',
+      questions: 'Have a question? Write to us:'
     },
     admin: {
       title: 'Admin Panel',
@@ -911,7 +912,8 @@ export const translations = {
       copy: '© 2026 MAFTRAVEL. Barcha huquqlar himoyalangan.',
       powered: 'MAFTRAVEL tomonidan — innovatsion turizm yechimlari.',
       smartFlights: 'Aqlli parvozlar',
-      aiPlanning: 'AI Rejalashtirish'
+      aiPlanning: 'AI Rejalashtirish',
+      questions: "Savolingiz bormi? Bizga yozing:"
     },
     admin: {
       title: 'Admin Paneli',

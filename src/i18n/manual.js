@@ -106,6 +106,7 @@ export default {
       powered: 'Сделано MAFTRAVEL — инновационные решения для путешествий.',
       smartFlights: 'Умные рейсы',
       aiPlanning: 'AI-планирование',
+      questions: 'Есть вопросы? Напишите нам:',
     },
     auth: {
       login: {

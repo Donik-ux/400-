@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Compass, Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Compass, Mail } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 
 export default function Footer() {
@@ -50,20 +50,6 @@ export default function Footer() {
             <p className="text-[13px] text-white/55 leading-relaxed mb-6 font-medium">
               {t('footer.desc')}
             </p>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2.5 text-white/50 text-[12px] group cursor-pointer hover:text-white/80 transition-colors">
-                <Mail className="w-3.5 h-3.5" /> 
-                <span className="font-semibold">support@maftravel.com</span>
-              </div>
-              <div className="flex items-center gap-2.5 text-white/50 text-[12px] group cursor-pointer hover:text-white/80 transition-colors">
-                <Mail className="w-3.5 h-3.5" /> 
-                <span>maftravel@gmail.com</span>
-              </div>
-              <div className="flex items-center gap-2.5 text-white/50 text-[12px]">
-                <Phone className="w-3.5 h-3.5" /> 
-                <span>{t('home.contact.liveSub')}</span>
-              </div>
-            </div>
           </div>
 
           {/* Navigation */}
@@ -114,7 +100,16 @@ export default function Footer() {
           <span className="seal-gold text-[13px]">✦</span>
         </div>
 
-        <div className="pt-5 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="pt-8 pb-2 flex flex-col items-center gap-2 text-center">
+          <p className="text-[13px] text-white/60 font-medium">{t('footer.questions')}</p>
+          <a href="mailto:supportmaftravel@gmail.com"
+            className="inline-flex items-center gap-2 text-[14px] font-bold text-[#f5b942] hover:text-[#ffd76e] transition-colors">
+            <Mail className="w-4 h-4" />
+            supportmaftravel@gmail.com
+          </a>
+        </div>
+
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-1">
             <p className="font-display italic text-[12px] text-white/40">
               {t('footer.copy')}

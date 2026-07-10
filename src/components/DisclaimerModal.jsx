@@ -11,12 +11,12 @@ export default function DisclaimerModal() {
   const [read, setRead] = useState(false);
 
   useEffect(() => {
-    const accepted = localStorage.getItem(DISCLAIMER_KEY);
+    const accepted = sessionStorage.getItem(DISCLAIMER_KEY);
     if (!accepted) setVisible(true);
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem(DISCLAIMER_KEY, '1');
+    sessionStorage.setItem(DISCLAIMER_KEY, '1');
     setVisible(false);
   };
 

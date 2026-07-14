@@ -31,6 +31,7 @@ export default function Register() {
     setError('');
     if (form.password !== form.confirm) { setError(t('auth.register.errMatch')); return; }
     if (form.password.length < 8) { setError(t('auth.register.errShort')); return; }
+    if (!/\d/.test(form.password)) { setError(t('auth.register.errDigit') || 'Password must contain a number'); return; }
     setLoading(true);
     await new Promise(r => setTimeout(r, 600));
     const result = register(form.name.trim(), form.email.trim(), form.password);

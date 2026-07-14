@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { MapPin, Calendar, Clock, DollarSign, Sparkles, AlertTriangle, Navigation, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from '../../store/useLangStore';
-import { getVisaInfo, lookupDestination, getDestinationHero } from '../../services/destinationLookup';
+import { getVisaInfo, lookupDestination } from '../../services/destinationLookup';
 import CityAutocomplete from '../flights/CityAutocomplete';
 
 /* ── Budget tiers ─────────────────────────────────────────────────────────── */
@@ -14,6 +14,7 @@ const BUDGET_TIERS = [
   { id: 'minimalist', labelKey: 'minimalistLabel', descKey: 'minimalistDesc', budget: 200  },
 ];
 
+ 
 const Field = ({ label, icon: Icon, children }) => (
   <div>
     <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] block mb-1.5">{label}</label>

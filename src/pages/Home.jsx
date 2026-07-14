@@ -138,7 +138,14 @@ const Home = () => {
 
   const submit = (e) => {
     e?.preventDefault?.();
-    if (tab === 'tours') navigate('/hot-tours');
+    if (tab === 'tours') {
+      const qs = new URLSearchParams({
+        ...(dest.trim() ? { to: dest.trim() } : {}),
+        days: String(Math.max(1, Math.min(21, Number(toursDays) || 7))),
+        ...(checkin ? { start: checkin } : {}),
+      });
+      navigate(`/hot-tours?${qs.toString()}`);
+    }
     else if (tab === 'flights') {
       navigate('/flights', {
         state: {
@@ -523,7 +530,7 @@ const Home = () => {
 
             {(tab === 'ai' && aiDest) || (tab === 'tours' && dest) || (tab === 'flights' && flightTo) ? (
               <div className="border-t border-[#e6dcc3] mt-2 pt-2">
-                <WeatherWidget city={tab === 'ai' ? aiDest : dest} />
+                <WeatherWidget city={tab === 'ai' ? aiDest : tab === 'flights' ? flightTo : dest} />
               </div>
             ) : null}
           </div>
@@ -916,7 +923,9 @@ const Home = () => {
           {TRENDING.map((d, i) => (
             <Tilt3D key={i} max={9} className="card-sheen aspect-[4/3] rounded-2xl shadow-soft">
               <motion.button
-                onClick={() => navigate(d.city === 'Antarctica' ? '/antarctica' : '/flights')}
+                onClick={() => navigate(d.city === 'Antarctica' ? '/antarctica' : '/flights', {
+                  state: d.city === 'Antarctica' ? undefined : { formData: { from: '', to: d.city, date: '', returnDate: '' } },
+                })}
                 initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

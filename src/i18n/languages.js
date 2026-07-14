@@ -72,8 +72,6 @@ export const LANGUAGES = [
   { code: 'km',    name: 'Khmer',                native: 'ខ្មែរ',              flag: '🇰🇭', target: 'Khmer' },
   { code: 'lo',    name: 'Lao',                  native: 'ລາວ',                flag: '🇱🇦', target: 'Lao' },
   { code: 'mn',    name: 'Mongolian',            native: 'Монгол',             flag: '🇲🇳', target: 'Mongolian (Cyrillic)' },
-
-  // ── Europe ────────────────────────────────────────────────────────────
   { code: 'nl',    name: 'Dutch',                native: 'Nederlands',         flag: '🇳🇱', static: true, target: 'Dutch' },
   { code: 'pl',    name: 'Polish',               native: 'Polski',             flag: '🇵🇱', static: true, target: 'Polish' },
   { code: 'uk',    name: 'Ukrainian',            native: 'Українська',         flag: '🇺🇦', static: true, target: 'Ukrainian' },

@@ -73,15 +73,6 @@ const HALAL_RESTAURANTS = {
     { name: 'Naritaya Halal Ramen',      address: '2-7-9 Asakusa, Taitō-ku, Tokyo',       avgPrice: '~¥900–1400' },
     { name: 'TOKYO HALAL RESTAURANT',    address: '1-17-7 Kabukicho, Shinjuku, Tokyo',     avgPrice: '~¥1200–2000' },
   ],
-  bishkek: [
-    { name: 'Arzu Restaurant',           address: 'Chui Ave 114, Bishkek',                 avgPrice: '~400–700 som' },
-    { name: 'Navat Restaurant',          address: '136 Moskovskaya St, Bishkek',            avgPrice: '~350–600 som' },
-    { name: 'Navigator Coffee & Halal',  address: 'Manas Ave 36, Bishkek',                 avgPrice: '~300–500 som' },
-  ],
-  almaty: [
-    { name: 'Navat Almaty',              address: 'ul. Panfilova 36, Almaty',              avgPrice: '~1500–2500 ₸' },
-    { name: 'Shanyrak',                  address: 'ul. Dostyk 87, Almaty',                 avgPrice: '~1200–2000 ₸' },
-  ],
   tashkent: [
     { name: 'Caravan Restaurant',        address: 'ul. Yunusabad 2, Tashkent',             avgPrice: '~50 000–90 000 sum' },
     { name: 'Milliy Taomlar',            address: 'ul. Navoi 8, Tashkent',                 avgPrice: '~40 000–70 000 sum' },

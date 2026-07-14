@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Compass, Mail } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
+import { SUPPORT_EMAIL } from '../config/contact';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -17,8 +18,8 @@ export default function Footer() {
   ];
 
   const support = [
-    { label: t('footer.supportLinks.support'), to: '#'        },
-    { label: t('footer.supportLinks.contact'), to: '#'        },
+    { label: t('footer.supportLinks.support'), href: `mailto:${SUPPORT_EMAIL}` },
+    { label: t('footer.supportLinks.contact'), href: `mailto:${SUPPORT_EMAIL}` },
     { label: t('nav2.termsOfUse'),             to: '/terms'   },
     { label: t('nav2.privacyPolicy'),          to: '/privacy' },
     { label: t('nav2.cookiePolicy'),           to: '/cookies' },
@@ -66,8 +67,8 @@ export default function Footer() {
           <div>
             <p className="label-gold mb-4">{t('footer.company')}</p>
             <div className="flex flex-col gap-3">
-                {support.map(s => s.to === '#' ? (
-                    <span key={s.label} className="text-[13px] text-white/65 hover:text-white cursor-pointer transition-premium font-medium">{s.label}</span>
+                {support.map(s => s.href ? (
+                    <a key={s.label} href={s.href} className="text-[13px] text-white/65 hover:text-white transition-premium font-medium">{s.label}</a>
                 ) : (
                     <NavLink key={s.label} to={s.to} className="text-[13px] text-white/65 hover:text-white transition-premium font-medium">{s.label}</NavLink>
                 ))}
@@ -102,10 +103,10 @@ export default function Footer() {
 
         <div className="pt-8 pb-2 flex flex-col items-center gap-2 text-center">
           <p className="text-[13px] text-white/60 font-medium">{t('footer.questions')}</p>
-          <a href="mailto:supportmaftravel@gmail.com"
+          <a href={`mailto:${SUPPORT_EMAIL}`}
             className="inline-flex items-center gap-2 text-[14px] font-bold text-[#f5b942] hover:text-[#ffd76e] transition-colors">
             <Mail className="w-4 h-4" />
-            supportmaftravel@gmail.com
+            {SUPPORT_EMAIL}
           </a>
         </div>
 
@@ -118,11 +119,11 @@ export default function Footer() {
               {t('footer.powered')}
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="label-gold text-[9.5px] whitespace-nowrap bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#f5b942]/20">
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="label-gold text-[9.5px] bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#f5b942]/20">
               <span>✈️ {t('footer.smartFlights')}</span>
             </div>
-            <div className="label-gold text-[9.5px] whitespace-nowrap bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#f5b942]/20">
+            <div className="label-gold text-[9.5px] bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#f5b942]/20">
               <span>🧠 {t('footer.aiPlanning')}</span>
             </div>
           </div>

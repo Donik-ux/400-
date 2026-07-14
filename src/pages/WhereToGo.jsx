@@ -37,6 +37,8 @@ function DestinationCard({ dest, days, budget }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const usd = usePriceFormatter();
+  const regionTKey = REGIONS.find(r => r.value === dest.region)?.tKey;
+  const regionLabel = regionTKey ? t(`whereToGo.regions.${regionTKey}`) : dest.region;
 
   const handlePlan = () => {
     navigate('/planner', {
@@ -62,7 +64,7 @@ function DestinationCard({ dest, days, budget }) {
         <SmartImage src={heroFor(dest.city)} alt={dest.city} aspect="aspect-[16/10]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-transparent pointer-events-none" />
         <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[10px] font-black text-[#003580] shadow-soft">
-          {dest.region}
+          {regionLabel}
         </span>
         <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-black shadow-float ${
           dest.fits ? 'bg-[#2e7d4f] text-white' : 'bg-[#febb02] text-[#1a1a1a]'
@@ -119,9 +121,9 @@ export default function WhereToGo() {
   const [vibe, setVibe]     = useState(null);
 
   useSEO({
-    title: 'Куда полететь на ваш бюджет — подбор направлений',
-    description: 'Введите бюджет и срок поездки — покажем, в какие страны вы можете полететь из Бишкека, с оценкой стоимости и AI-планом.',
-    keywords: ['куда полететь', 'подбор тура по бюджету', 'дешёвые направления из Бишкека'],
+    title: t('whereToGo.seo.title'),
+    description: t('whereToGo.seo.description'),
+    keywords: t('whereToGo.seo.keywords'),
   });
 
   const results = useMemo(() => {

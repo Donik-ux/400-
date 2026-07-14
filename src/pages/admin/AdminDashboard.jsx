@@ -35,6 +35,7 @@ const Badge = ({ status }) => (
   </span>
 );
 
+ 
 const StatCard = ({ icon: Icon, label, value, sub, color = 'text-white', trend = null }) => (
   <div className="night-panel night-panel-hover rounded-2xl p-5 transition-premium group">
     <div className="flex items-start justify-between mb-4">

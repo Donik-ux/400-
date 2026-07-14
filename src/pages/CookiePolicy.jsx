@@ -1,6 +1,7 @@
 import React from 'react';
 import { Cookie } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
+import { SUPPORT_EMAIL } from '../config/contact';
 
 const Section = ({ num, title, children }) => (
   <div className="mb-8">
@@ -80,8 +81,8 @@ export default function CookiePolicy() {
 
             <Section num="8" title={t('legal.cookies.s8Title')}>
               <p>
-                <a href="mailto:support@maftravel.com" className="text-[#003580] font-semibold hover:underline">
-                  support@maftravel.com
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="text-[#003580] font-semibold hover:underline">
+                  {SUPPORT_EMAIL}
                 </a>
               </p>
             </Section>

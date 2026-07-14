@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, X, Plane, Package, Hotel, ArrowRight } from 'lucide-react';
+import { Search, X, Plane, Package, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import useAdminStore from '../../store/useAdminStore';
 import { useTranslation } from '../../store/useLangStore';
@@ -10,24 +10,22 @@ export default function GlobalSearch() {
   const fmt = usePriceFormatter();
   const [open, setOpen]   = useState(false);
   const [query, setQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0);
   const inputRef          = useRef(null);
   const navigate          = useNavigate();
 
   const adminFlights = useAdminStore(s => s.adminFlights);
   const packages     = useAdminStore(s => s.packages);
-  const hotels       = useAdminStore(s => s.hotels);
 
   // Keyboard shortcut: Ctrl+K / Cmd+K
   useEffect(() => {
     const handler = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setOpen(v => !v); }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setQuery(''); setOpen(v => !v); }
       if (e.key === 'Escape') setOpen(false);
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, []);
-
-  useEffect(() => { if (open) { setQuery(''); setTimeout(() => inputRef.current?.focus(), 50); } }, [open]);
 
   const q = query.toLowerCase().trim();
 
@@ -35,16 +33,25 @@ export default function GlobalSearch() {
     ...adminFlights.filter(f => f.available && (
       f.from.toLowerCase().includes(q) || f.to.toLowerCase().includes(q) || f.airline.toLowerCase().includes(q)
     )).slice(0, 5).map(f => ({ type: 'flight', icon: Plane, title: `${f.from} → ${f.to}`, sub: `${f.airline} · ${f.cabin} · ${fmt(f.price)}`, action: () => navigate('/flights') })),
+    ...packages.filter(p => p.available && (
+      p.name.toLowerCase().includes(q) || p.destination.toLowerCase().includes(q)
+    )).slice(0, 5).map(p => ({ type: 'package', icon: Package, title: p.name, sub: `${p.destination} · ${p.duration} days · ${fmt(p.price)}`, action: () => navigate('/hot-tours') })),
   ];
 
-  const TYPE_COLOR = { flight: 'bg-[#eaf3f4] text-[#2d6a6f]' };
+  const TYPE_COLOR = { flight: 'bg-[#eaf3f4] text-[#2d6a6f]', package: 'bg-[#f6f1e4] text-[#a45e00]' };
 
   const handleSelect = (item) => { item.action(); setOpen(false); setQuery(''); };
+
+  const onInputKeyDown = (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIndex(i => Math.min(i + 1, results.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIndex(i => Math.max(i - 1, 0)); }
+    else if (e.key === 'Enter' && results[activeIndex]) { e.preventDefault(); handleSelect(results[activeIndex]); }
+  };
 
   return (
     <>
       {/* Trigger Button */}
-      <button onClick={() => setOpen(true)}
+      <button onClick={() => { setQuery(''); setOpen(true); }}
         className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/15 bg-white/[0.07] hover:bg-white/15 hover:border-[#f5b942]/40 transition-all text-white/55 text-sm">
         <Search className="w-4 h-4" />
         {/* Full label only on very wide screens — long-locale nav rows need the room */}
@@ -62,8 +69,10 @@ export default function GlobalSearch() {
               <Search className="w-5 h-5 text-[#93876f] shrink-0" />
               <input
                 ref={inputRef}
+                autoFocus
                 value={query}
-                onChange={e => setQuery(e.target.value)}
+                onChange={e => { setQuery(e.target.value); setActiveIndex(0); }}
+                onKeyDown={onInputKeyDown}
                 placeholder={t('ui.search.placeholder')}
                 className="flex-1 text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#d9c9a3]"
               />
@@ -88,7 +97,8 @@ export default function GlobalSearch() {
                     const Icon = item.icon;
                     return (
                       <button key={i} onClick={() => handleSelect(item)}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#f6f1e4] transition-all group text-left">
+                        onMouseEnter={() => setActiveIndex(i)}
+                        className={`w-full flex items-center gap-3 px-4 py-3 transition-all group text-left ${i === activeIndex ? 'bg-[#f6f1e4]' : 'hover:bg-[#f6f1e4]'}`}>
                         <div className="w-9 h-9 rounded-xl bg-[#faf6ed] flex items-center justify-center shrink-0">
                           <Icon className="w-4 h-4 text-[#5c5245]" />
                         </div>

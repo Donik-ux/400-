@@ -5,8 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../store/useLangStore';
 import { TOURS } from '../data/exoticTours';
 import Price, { usePriceFormatter } from '../components/Price';
+import { handleImgError } from '../utils/imageFallback';
 
-const parsePrice = (s) => Number(String(s || '').replace(/[^\d]/g, '')) || 0;
+// Tour data is authored in EUR ('€8,500' etc.) but <Price>/usePriceFormatter
+// render the parsed number as a USD base amount — convert once here so
+// displayed prices and budget-fit checks aren't off by the EUR/USD spread.
+const EUR_TO_USD = 1.09;
+const parsePrice = (s) => {
+  const n = Number(String(s || '').replace(/[^\d]/g, '')) || 0;
+  return String(s || '').trim().startsWith('€') ? Math.round(n * EUR_TO_USD) : n;
+};
 
 const TourCard = ({ tour, budget }) => {
   const [expanded, setExpanded] = useState(false);
@@ -38,6 +46,7 @@ const TourCard = ({ tour, budget }) => {
         <img
           src={tour.image}
           alt={tour.title}
+          onError={handleImgError}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
@@ -127,7 +136,7 @@ const TourCard = ({ tour, budget }) => {
             onClick={openTour}
             className="btn-gold px-4 py-2.5 rounded-xl text-[12px] flex items-center gap-1.5 shrink-0"
           >
-            <Sparkles className="w-3.5 h-3.5" /> View tour <ArrowRight className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5" /> {t('exotic.viewTour')} <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>

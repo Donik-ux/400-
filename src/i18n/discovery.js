@@ -10,6 +10,11 @@
 export default {
   en: {
     whereToGo: {
+      seo: {
+        title: 'Where to fly on your budget — destination finder',
+        description: "Enter your budget and trip length — we'll show which countries you can fly to from Bishkek, with cost estimates and an AI plan.",
+        keywords: ['where to fly', 'destination finder by budget', 'cheap destinations from Bishkek'],
+      },
       hero: {
         badge: 'Budget match',
         title1: 'Where can you fly',
@@ -61,6 +66,11 @@ export default {
     },
 
     toolsPage: {
+      seo: {
+        title: 'Traveller tools — currency converter, tip calculator, world clock',
+        description: 'Handy tools for your trip: live currency converter, tip calculator, world clock and unit converter.',
+        keywords: ['currency converter', 'tip calculator', 'world clock', 'traveller tools'],
+      },
       hero: {
         badge: 'Tools',
         title1: 'Traveller',
@@ -91,6 +101,10 @@ export default {
       clock: {
         title: 'World clock',
         sub: "Don't mix up the time for a call home or online check-in.",
+        cities: {
+          bishkek: 'Bishkek', dubai: 'Dubai', istanbul: 'Istanbul', bangkok: 'Bangkok',
+          london: 'London', tokyo: 'Tokyo', newYork: 'New York', paris: 'Paris',
+        },
       },
       units: {
         title: 'Unit converter',
@@ -202,6 +216,11 @@ export default {
 
   uz: {
     whereToGo: {
+      seo: {
+        title: "Byudjetingizga qayerga uchish mumkin — yo'nalish tanlash",
+        description: "Byudjet va sayohat muddatini kiriting — Bishkekdan qaysi davlatlarga ucha olishingizni narx bahosi va AI reja bilan ko'rsatamiz.",
+        keywords: ["qayerga uchish", "byudjet bo'yicha yo'nalish tanlash", "Bishkekdan arzon yo'nalishlar"],
+      },
       hero: {
         badge: 'Byudjetga mos',
         title1: 'Byudjetingizga',
@@ -253,6 +272,11 @@ export default {
     },
 
     toolsPage: {
+      seo: {
+        title: "Sayohatchi vositalari — valyuta konvertori, choychaqa, dunyo vaqti",
+        description: "Sayohatingiz uchun qulay vositalar: jonli valyuta konvertori, choychaqa kalkulyatori, dunyo vaqti va o'lchov konvertori.",
+        keywords: ['valyuta konvertori', 'choychaqa kalkulyatori', "dunyo vaqti", 'sayohatchi vositalari'],
+      },
       hero: {
         badge: 'Vositalar',
         title1: 'Sayohatchi',
@@ -283,6 +307,10 @@ export default {
       clock: {
         title: 'Dunyo vaqti',
         sub: "Uyga qo'ng'iroq yoki onlayn ro'yxatdan o'tish vaqtini adashtirmang.",
+        cities: {
+          bishkek: 'Bishkek', dubai: 'Dubay', istanbul: 'Istanbul', bangkok: 'Bangkok',
+          london: 'London', tokyo: 'Tokio', newYork: 'Nyu-York', paris: 'Parij',
+        },
       },
       units: {
         title: "O'lchov konvertori",

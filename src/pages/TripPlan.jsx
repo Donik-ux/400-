@@ -14,7 +14,6 @@ import { generateAiItinerary, isAiAvailable } from '../services/aiPlannerService
 import { generateItinerary } from '../services/plannerService';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
-import { handleImgError } from '../utils/imageFallback';
 import { heroFor } from '../utils/destinationImages';
 import { toast } from '../components/Toast';
 import SmartImage from '../components/SmartImage';
@@ -96,13 +95,17 @@ export default function TripPlan() {
   const [purpose,    setPurpose]    = useState(purposeState || 'Tourism and cultural exploration');
   const [name,       setName]       = useState(user?.name || '');
   const [loading,    setLoading]    = useState(false);
-  const [plan,       setPlan]       = useState(null);
+  const savedPlanState = location.state?.savedPlan;
+  const [plan,       setPlan]       = useState(savedPlanState || null);
   const [error,      setError]      = useState(null);
-  const [saved,      setSaved]      = useState(false);
+  const [saved,      setSaved]      = useState(Boolean(savedPlanState));
 
-  /* ── Auto-generate the full plan when the user lands here ── */
+  /* ── Auto-generate the full plan when the user lands here ──
+     Skipped when a previously-saved plan was passed in (e.g. reopening a
+     booking from My Bookings) — regenerating would discard what was saved. */
   useEffect(() => {
     if (!itemWithHero || !type) return;
+    if (savedPlanState) return;
     runGenerate();
     // Persist core params in URL so refresh works.
     if (!searchParams.get('to') && itemWithHero.destination) {
@@ -174,7 +177,7 @@ export default function TripPlan() {
         };
       }
       setPlan(result);
-    } catch (err) {
+    } catch {
       setError(t('tripPlan.genericError'));
     } finally {
       setLoading(false);
@@ -235,7 +238,7 @@ export default function TripPlan() {
   const handleShare = async () => {
     const text = buildShareText({ item, plan, travelDate, travelers, fmt });
     if (navigator.share) {
-      try { await navigator.share({ title: `MAFTRAVEL · ${item.destination || item.name}`, text }); return; } catch {}
+      try { await navigator.share({ title: `MAFTRAVEL · ${item.destination || item.name}`, text }); return; } catch { /* ignore */ }
     }
     try {
       await navigator.clipboard.writeText(text);

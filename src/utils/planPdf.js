@@ -3,9 +3,10 @@
  * Opens a print-styled window matching the MAFTRAVEL look and triggers the
  * browser's native print dialog → the user picks "Save as PDF".
  *
- * Plan shape: { id, savedAt, formData:{destination,days,budget,travelers},
- *   itineraries:[{day,title,activities:[{time,activity,description,cost}],meals,accommodation}],
- *   meta:{summary,budgetBreakdown:{accommodation,food,activities,transport,total},tips,source} }
+ * Plan shape (as produced by usePlanner.js / plannerService.js / aiPlannerService.js):
+ * { id, savedAt, formData:{destination,days,budget,travelers},
+ *   itineraries:[{day,title,events:[{time,name,address,price,duration}],halalRestaurant:{name,address,avgPrice}}],
+ *   meta:{budgetBreakdown:{accommodation,food,activities,transport,total},travelTips,source} }
  */
 
 const esc = (s) =>
@@ -20,28 +21,24 @@ export function downloadPlanPdf(plan) {
   const travelers = plan.formData?.travelers || plan.formData?.pax || 1;
   const bb        = plan.meta?.budgetBreakdown || {};
   const total     = bb.total;
-  const summary   = plan.meta?.summary || '';
-  const tips      = Array.isArray(plan.meta?.tips) ? plan.meta.tips : [];
+  const tips      = Array.isArray(plan.meta?.travelTips) ? plan.meta.travelTips : [];
   const savedAt   = plan.savedAt ? new Date(plan.savedAt).toLocaleDateString() : '';
 
   const daysHtml = (plan.itineraries || []).map((d) => {
-    const acts = (d.activities || []).map((a) => `
+    const acts = (d.events || []).map((ev) => `
         <tr>
-          <td class="t">${esc(a.time || '')}</td>
-          <td><strong>${esc(a.activity || '')}</strong>${a.description ? `<div class="desc">${esc(a.description)}</div>` : ''}</td>
-          <td class="c">${a.cost != null && a.cost !== '' ? '$' + esc(a.cost) : ''}</td>
+          <td class="t">${esc(ev.time || '')}</td>
+          <td><strong>${esc(ev.name || '')}</strong>${ev.address ? `<div class="desc">${esc(ev.address)}</div>` : ''}</td>
+          <td class="c">${ev.price ? esc(ev.price) : ''}</td>
         </tr>`).join('');
-    const meals = d.meals
-      ? `<div class="meals">🍽 ${['breakfast', 'lunch', 'dinner']
-          .map((m) => (d.meals[m] ? `<span><b>${m}:</b> ${esc(d.meals[m])}</span>` : ''))
-          .filter(Boolean).join(' &nbsp;·&nbsp; ')}</div>`
+    const meals = d.halalRestaurant
+      ? `<div class="meals">🍽 <b>${esc(d.halalRestaurant.name)}</b>${d.halalRestaurant.address ? ` · ${esc(d.halalRestaurant.address)}` : ''}${d.halalRestaurant.avgPrice ? ` · ${esc(d.halalRestaurant.avgPrice)}` : ''}</div>`
       : '';
-    const acc = d.accommodation ? `<div class="acc">🏨 ${esc(d.accommodation)}</div>` : '';
     return `
       <section class="day">
         <h2><span class="num">${esc(d.day || '')}</span> ${esc(d.title || 'Day ' + (d.day || ''))}</h2>
         ${acts ? `<table>${acts}</table>` : ''}
-        ${meals}${acc}
+        ${meals}
       </section>`;
   }).join('');
 
@@ -49,7 +46,7 @@ export function downloadPlanPdf(plan) {
       <section class="day budget">
         <h2>Budget breakdown</h2>
         <table>
-          ${['accommodation', 'food', 'activities', 'transport']
+          ${['flight', 'accommodation', 'food', 'transport', 'activities', 'shopping', 'dayTrip']
             .map((k) => (bb[k] != null ? `<tr><td style="text-transform:capitalize">${k}</td><td class="c">$${esc(bb[k])}</td></tr>` : ''))
             .join('')}
           <tr class="total"><td>Total</td><td class="c">$${esc(total)}</td></tr>
@@ -98,7 +95,6 @@ export function downloadPlanPdf(plan) {
         ${savedAt ? `<span>🕑 Saved ${esc(savedAt)}</span>` : ''}
       </div>
     </div>
-    ${summary ? `<p class="summary">${esc(summary)}</p>` : ''}
     ${daysHtml}
     ${breakdownHtml}
     ${tipsHtml}
@@ -107,7 +103,7 @@ export function downloadPlanPdf(plan) {
       <button onclick="window.print()" style="background:#f5b942;border:0;padding:11px 24px;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;color:#002250">Save as PDF</button>
     </p>
   </div>
-  <script>window.onload=function(){setTimeout(function(){window.print()},450)}<\/script>
+  <script>window.onload=function(){setTimeout(function(){window.print()},450)}</script>
 </body></html>`;
 
   const w = window.open('', '_blank');

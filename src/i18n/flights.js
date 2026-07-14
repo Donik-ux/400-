@@ -61,6 +61,7 @@ export default {
         noMatchTitle: 'No flights match your filters',
         noMatchSub: 'Try clearing some filters to see more results.',
         clearFilters: 'Clear filters',
+        direct: 'direct',
       },
       banners: {
         realtimeTitle: 'Real-time prices.',
@@ -131,6 +132,7 @@ export default {
         comparePrices: 'Compare prices',
         lowerCo2: 'Lower CO₂',
         left: 'left!',
+        approxPrice: 'approx · per person',
       },
     },
   },
@@ -192,6 +194,7 @@ export default {
         noMatchTitle: 'Filtrlaringizga mos reys topilmadi',
         noMatchSub: 'Ko‘proq natija ko‘rish uchun ba’zi filtrlarni tozalab ko‘ring.',
         clearFilters: 'Filtrlarni tozalash',
+        direct: 'to‘g‘ridan-to‘g‘ri',
       },
       banners: {
         realtimeTitle: 'Jonli narxlar.',
@@ -262,6 +265,7 @@ export default {
         comparePrices: 'Narxlarni solishtirish',
         lowerCo2: 'Kamroq CO₂',
         left: 'qoldi!',
+        approxPrice: 'taxminan · bir kishiga',
       },
     },
   },

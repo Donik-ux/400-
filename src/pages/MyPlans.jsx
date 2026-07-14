@@ -107,7 +107,7 @@ export default function MyPlans() {
               const days   = plan.itineraries?.length || plan.formData?.days || 0;
               const total  = plan.meta?.budgetBreakdown?.total;
               const budget = Number(plan.formData?.budget) || 0;
-              const isAi   = plan.meta?.source === 'ai';
+              const isAi   = plan.meta?.source === 'grok';
               return (
                 <div key={plan.id}
                   className="group bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft lift flex flex-col">

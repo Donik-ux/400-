@@ -88,6 +88,21 @@ export default {
       toast: {
         dismiss: 'Dismiss',
       },
+      currency: {
+        placeholder: 'USD, euro, som…',
+        popular: 'Popular',
+        all: 'All currencies',
+        nothingFound: 'Nothing found',
+      },
+      weather: {
+        loading: 'Loading weather…',
+        unavailable: 'Weather unavailable',
+      },
+      language: {
+        searchPlaceholder: 'Search language…',
+        noneFound: 'No language found',
+        countBadge: 'languages · AI-powered',
+      },
     },
   },
   uz: {
@@ -173,6 +188,21 @@ export default {
       },
       toast: {
         dismiss: 'Yopish',
+      },
+      currency: {
+        placeholder: 'USD, evro, som…',
+        popular: 'Mashhur',
+        all: 'Barcha valyutalar',
+        nothingFound: 'Hech narsa topilmadi',
+      },
+      weather: {
+        loading: 'Ob-havo yuklanmoqda…',
+        unavailable: 'Ob-havo mavjud emas',
+      },
+      language: {
+        searchPlaceholder: 'Tilni qidirish…',
+        noneFound: 'Til topilmadi',
+        countBadge: 'til · AI asosida',
       },
     },
   },

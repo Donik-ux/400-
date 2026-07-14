@@ -18,7 +18,7 @@ export default function CurrencySwitcher({ align = 'right', full = false }) {
   const currency = useCurrencyStore((s) => s.currency);
   const setCurrency = useCurrencyStore((s) => s.setCurrency);
   const rates = useCurrencyStore((s) => s.rates);
-  const { lang } = useTranslation();
+  const { lang, t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const ref = useRef(null);
@@ -42,7 +42,6 @@ export default function CurrencySwitcher({ align = 'right', full = false }) {
 
   useEffect(() => {
     if (!open) return undefined;
-    setQuery('');
     // Let the panel mount, then focus the search box
     const focusT = setTimeout(() => searchRef.current?.focus(), 30);
     const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
@@ -78,7 +77,7 @@ export default function CurrencySwitcher({ align = 'right', full = false }) {
     <div ref={ref} className={`relative ${full ? 'w-full' : ''}`}>
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => { if (!open) setQuery(''); setOpen((v) => !v); }}
         className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[12px] font-bold text-white/80 hover:text-white hover:bg-white/10 transition-premium border border-white/15 ${full ? 'w-full justify-between' : ''}`}
       >
         <Coins className="w-3.5 h-3.5 shrink-0" />
@@ -98,7 +97,7 @@ export default function CurrencySwitcher({ align = 'right', full = false }) {
                 ref={searchRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="USD, euro, som…"
+                placeholder={t('ui.currency.placeholder')}
                 className="w-full bg-transparent outline-none text-[13px] font-semibold text-white placeholder:text-white/30"
               />
             </div>
@@ -107,14 +106,14 @@ export default function CurrencySwitcher({ align = 'right', full = false }) {
           <div className="max-h-80 overflow-y-auto overscroll-contain">
             {popular.length > 0 && (
               <>
-                <div className="px-4 pt-2.5 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-[#f5b942]/70">Popular</div>
+                <div className="px-4 pt-2.5 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-[#f5b942]/70">{t('ui.currency.popular')}</div>
                 {popular.map((code) => <Row key={code} code={code} />)}
-                <div className="px-4 pt-2.5 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-white/30">All currencies · {rest.length}</div>
+                <div className="px-4 pt-2.5 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-white/30">{t('ui.currency.all')} · {rest.length}</div>
               </>
             )}
             {rest.map((code) => <Row key={code} code={code} />)}
             {filtered.length === 0 && (
-              <p className="px-4 py-6 text-center text-[12px] text-white/40 font-semibold">Nothing found</p>
+              <p className="px-4 py-6 text-center text-[12px] text-white/40 font-semibold">{t('ui.currency.nothingFound')}</p>
             )}
           </div>
         </div>

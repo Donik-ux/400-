@@ -23,7 +23,11 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // `motion` and capitalized params are exempt: ESLint's scope analysis
+      // does not count JSX element names (`<motion.div>`, `<Icon />`) as
+      // references, so framer-motion imports and `({ icon: Icon })` props
+      // are falsely reported unused when only used as JSX elements.
+      'no-unused-vars': ['error', { varsIgnorePattern: '^([A-Z_]|motion$)', argsIgnorePattern: '^[A-Z_]' }],
     },
   },
   {

@@ -71,7 +71,7 @@ function buildAggregators(flight, date, pax = 1) {
     {
       name: 'Aviasales', logo: '✈️', tagline: 'Best prices for CIS routes',
       badge: 'Recommended', badgeCls: 'bg-[#fff7e6] text-[#a45e00]', borderCls: 'border-[#ffe6a3] hover:border-[#f5b942]',
-      url: d_as ? `https://www.aviasales.ru/search/${from}${d_as}${to}${d_as}${pax}` : `https://www.aviasales.ru`,
+      url: d_as ? `https://www.aviasales.ru/search/${from}${d_as}${to}${pax}` : `https://www.aviasales.ru`,
     },
     {
       name: 'Skyscanner', logo: '🔍', tagline: 'Compare 1000+ airlines worldwide',

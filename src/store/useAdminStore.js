@@ -121,16 +121,17 @@ const useAdminStore = create((set, get) => ({
 
   /* ── Bookings ── */
   addBooking: (booking) => {
-    const b = { ...booking, id: `b${Date.now()}`, status: 'pending', createdAt: new Date().toISOString() };
+    const b = { ...booking, id: `b${Date.now()}`, status: booking.status || 'pending', createdAt: new Date().toISOString() };
     const next = [...get().bookings, b];
     save(S_BOOKINGS, next);
-    // Create notification
-    get().addNotification({
-      type: 'booking',
-      title: `New booking: ${b.itemName}`,
-      message: `${b.userName} booked ${b.itemName} for $${b.total}`,
-      severity: 'info',
-    });
+    if (b.status !== 'saved') {
+      get().addNotification({
+        type: 'booking',
+        title: `New booking: ${b.itemName}`,
+        message: `${b.userName} booked ${b.itemName} for $${b.total}`,
+        severity: 'info',
+      });
+    }
     set({ bookings: next });
     return b;
   },

@@ -58,24 +58,6 @@ export const formatFlightDate = (iso, locale = 'en-US') => {
   return dt.toLocaleDateString(locale, { weekday: 'short', day: 'numeric', month: 'short' });
 };
 
-// Approximate base prices for popular city pairs (USD, one-way economy)
-const BASE_PRICES = {
-  'FRU-DXB': 240, 'FRU-IST': 280, 'FRU-MOW': 180, 'FRU-LON': 520, 'FRU-PAR': 540, 'FRU-NYC': 740, 'FRU-BKK': 380, 'FRU-TKO': 720,
-  'ALA-DXB': 230, 'ALA-IST': 270, 'ALA-BKK': 360, 'ALA-LON': 510, 'ALA-PAR': 530, 'ALA-NYC': 720,
-  'TAS-DXB': 260, 'TAS-IST': 290, 'TAS-MOW': 200, 'TAS-LON': 540, 'TAS-PAR': 560,
-};
-
-const matchPrice = (from, to) => {
-  // Try to find a route code by extracting airport code from "City (CODE)"
-  const codeOf = (s) => {
-    const m = String(s || '').match(/\(([A-Z]{3,4})\)/);
-    if (m) return m[1].slice(0, 3);
-    return String(s || '').toUpperCase().slice(0, 3);
-  };
-  const a = codeOf(from), b = codeOf(to);
-  return BASE_PRICES[`${a}-${b}`] || BASE_PRICES[`${b}-${a}`] || 350;
-};
-
 const CABIN_MULTIPLIER = {
   'Economy':         1,
   'Premium Economy': 1.6,

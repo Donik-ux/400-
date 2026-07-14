@@ -121,7 +121,7 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {bookings.slice(0, 5).map((b, i) => (
+                  {bookings.slice(0, 5).map((b) => (
                     <div key={b.id} className="group flex items-center gap-4 p-4 rounded-2xl bg-[#f6f1e4] border border-[#efe6d2] hover:bg-white hover:border-[#0071c2]/20 hover:shadow-soft transition-all cursor-pointer"
                       onClick={() => navigate('/my-bookings')}>
                       <div className="w-12 h-12 rounded-xl bg-white border border-[#efe6d2] flex items-center justify-center shrink-0">

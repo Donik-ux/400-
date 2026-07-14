@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   MapPin, Plane, Hotel, UtensilsCrossed, Car, Activity,
   Wallet, Lightbulb, CheckCircle2, Calendar, ArrowLeft, Map,
@@ -158,6 +158,7 @@ const ITINERARY = [
   },
 ];
 
+ 
 const BudgetBar = ({ label, amount, total, color, icon: Icon }) => {
   const fmt = usePriceFormatter();
   const pct = total > 0 ? Math.round((amount / total) * 100) : 0;
@@ -232,9 +233,12 @@ const BerlinTrip = () => {
   const [activeTab, setActiveTab]     = useState('itinerary'); // 'itinerary' | 'map'
   const [filterDay, setFilterDay]     = useState(null);
 
-  const filteredLocations = filterDay
-    ? MAP_LOCATIONS.filter(l => l.day === filterDay)
-    : MAP_LOCATIONS;
+  // Memoized so an unrelated re-render (e.g. the copy-plan toast timeout)
+  // doesn't hand FitBounds a new array identity and snap the map view back.
+  const filteredLocations = useMemo(
+    () => (filterDay ? MAP_LOCATIONS.filter(l => l.day === filterDay) : MAP_LOCATIONS),
+    [filterDay],
+  );
 
   const buildItineraryText = () => {
     const header = [

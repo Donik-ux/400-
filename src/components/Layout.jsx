@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import Footer from './Footer';
 import NotificationWidget from './UI/NotificationWidget';
+import WhatsAppButton from './WhatsAppButton';
 import ToastContainer from './Toast';
 import TranslationProgress from './TranslationProgress';
 import ScrollProgress from './fx/ScrollProgress';
@@ -45,6 +46,7 @@ export default function Layout({ children }) {
       <main className={!isAdmin && !isAuth ? 'pt-[64px]' : ''}>{children}</main>
       {!isAdmin && !isAuth && <Footer />}
       {!isAdmin && !isAuth && <NotificationWidget />}
+      {!isAdmin && !isAuth && <WhatsAppButton />}
       <ToastContainer />
       <TranslationProgress />
     </div>

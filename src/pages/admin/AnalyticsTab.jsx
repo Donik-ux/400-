@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { TrendingUp, DollarSign, BarChart3, Calendar, Download } from 'lucide-react';
 import useAdminStore from '../../store/useAdminStore';
 
@@ -32,8 +32,6 @@ export default function AnalyticsTab() {
   const bookings     = useAdminStore(s => s.bookings);
   const adminFlights = useAdminStore(s => s.adminFlights);
   const packages     = useAdminStore(s => s.packages);
-  const hotels       = useAdminStore(s => s.hotels);
-  const [view, setView] = useState('monthly');
 
   const monthly    = useMemo(() => buildMonthlyRevenue(bookings), [bookings]);
   const maxRevenue = Math.max(...monthly.map(m => m.total), 1);

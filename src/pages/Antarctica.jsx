@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -74,8 +74,8 @@ export default function Antarctica() {
     () => dateOptions.reduce((best, o, i) => (o.factor < dateOptions[best].factor ? i : best), 0),
     [dateOptions],
   );
-  const [dateIdx, setDateIdx] = useState(cheapestIdx);
-  const userPickedDate = useRef(false);
+  // null → follow the best weather+price pick; a number → traveler's manual choice
+  const [pickedIdx, setPickedIdx] = useState(null);
 
   // Real weather (Open-Meteo forecast, or a 3-year same-day average once past
   // the forecast horizon) for every candidate departure date — this is what
@@ -95,11 +95,8 @@ export default function Antarctica() {
   );
   const bestValueIdx = useMemo(() => pickBestValueIndex(valueCandidates), [valueCandidates]);
 
-  // Auto-select the best weather+price pick as soon as it's known — but only
-  // until the traveler manually taps a different date card.
-  useEffect(() => {
-    if (!userPickedDate.current) setDateIdx(bestValueIdx);
-  }, [bestValueIdx]);
+  // Follow the best weather+price pick until the traveler manually taps a date card.
+  const dateIdx = pickedIdx ?? bestValueIdx;
 
   // One AI-authored line about the fare trend for this exact route/month
   // (Gemini) — real per-date price/weather math above stays authoritative;
@@ -107,7 +104,7 @@ export default function Antarctica() {
   const [aiFareNote, setAiFareNote] = useState(null);
   useEffect(() => {
     const fromClean = cleanCity(fromCity);
-    if (!fromClean) { setAiFareNote(null); return; }
+    if (!fromClean) return;
     let cancelled = false;
     const timer = setTimeout(() => {
       const month = dateOptions[bestValueIdx]?.date?.toLocaleDateString('en', { month: 'long', year: 'numeric' });
@@ -342,7 +339,7 @@ export default function Antarctica() {
                 const WeatherIcon = wmo?.icon;
                 return (
                   <button key={o.iso} type="button"
-                    onClick={() => { userPickedDate.current = true; setDateIdx(i); }}
+                    onClick={() => setPickedIdx(i)}
                     className={`relative shrink-0 snap-start w-[136px] rounded-xl border-2 px-3 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
                       isSel
                         ? 'border-[#0071c2] bg-[#f0f5ff] ring-4 ring-[#0071c2]/10 shadow-soft'
@@ -395,7 +392,7 @@ export default function Antarctica() {
                 : t('antarctica.builder.suggestSwitchWeather').replace('{date}', recDate);
               return (
                 <button type="button"
-                  onClick={() => { userPickedDate.current = false; setDateIdx(bestValueIdx); }}
+                  onClick={() => setPickedIdx(null)}
                   className="mt-3 w-full flex items-center gap-2.5 rounded-xl border border-[#7cc4d9]/50 bg-[#f0f9fb] px-3.5 py-2.5 text-left hover:bg-[#e3f3f7] transition">
                   <Wand2 className="w-4 h-4 text-[#0071c2] shrink-0" />
                   <span className="text-[12px] font-bold text-[#00435c] leading-snug">{msg}</span>
@@ -403,7 +400,7 @@ export default function Antarctica() {
               );
             })()}
 
-            {aiFareNote?.advice && (
+            {Boolean(cleanCity(fromCity)) && aiFareNote?.advice && (
               <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#fff7e6] border border-[#ffd76e]/60 px-3.5 py-2.5">
                 <Sparkles className="w-3.5 h-3.5 text-[#a45e00] shrink-0 mt-0.5" />
                 <span className="text-[11.5px] font-semibold text-[#7c4a00] leading-snug">{aiFareNote.advice}</span>

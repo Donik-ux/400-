@@ -44,7 +44,6 @@ export default function Profile() {
   const passCountry = detectPassportCountry(form.passportNumber);
   const bookings    = getBookingsByUser(user?.id || '');
 
-  const fill = (str, vars = {}) => String(str).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 
   const handleSave = () => {
     saveProfile(form);

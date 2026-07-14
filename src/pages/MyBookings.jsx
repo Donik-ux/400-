@@ -232,7 +232,12 @@ export default function MyBookings() {
                         <div className="text-[10px] text-[#93876f] font-bold uppercase">{t('lists.bookings.total')}</div>
                         <div className="text-[20px] font-black text-[#003580] leading-none">{fmt(b.total || 0)}</div>
                       </div>
-                      <button onClick={() => navigate('/trip-plan', { state: { item: { id: b.itemId || b.id, name: b.itemName, destination: dest, duration: 5, price: b.total, image: heroFor(dest) }, type: 'package' } })}
+                      <button onClick={() => navigate('/trip-plan', { state: {
+                          item: { id: b.itemId || b.id, name: b.itemName, destination: dest, duration: b.plan?.days?.length || 5, price: b.total, image: heroFor(dest) },
+                          type: 'package',
+                          savedPlan: b.plan || undefined,
+                          startDate: b.date || undefined,
+                        } })}
                         className="px-4 py-2.5 rounded-xl bg-[#0071c2] hover:bg-[#005fa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
                         {t('lists.bookings.open')} <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                       </button>

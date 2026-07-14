@@ -2,30 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { getCoords } from '../data/coords';
 import { wmoInfo } from '../utils/wmoWeatherCodes';
+import { useTranslation } from '../store/useLangStore';
 
 export default function WeatherWidget({ city }) {
+  if (!city || !getCoords(city)) return null;
+  // key remounts the inner widget per city, so data/error state always starts fresh
+  return <WeatherInner key={city} city={city} />;
+}
+
+function WeatherInner({ city }) {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!city) return;
     const coords = getCoords(city);
-    if (!coords) { setError(null); setData(null); return; }
-
+    let cancelled = false;
     fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lng}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&forecast_days=3`
     )
-      .then(r => r.json())
-      .then(d => { setData(d); setError(null); })
-      .catch(() => setError('Failed to load'));
+      .then(r => { if (!r.ok) throw new Error('bad response'); return r.json(); })
+      .then(d => {
+        if (cancelled) return;
+        if (!d || d.error || !d.current_weather) { setError('Failed to load'); return; }
+        setData(d); setError(null);
+      })
+      .catch(() => { if (!cancelled) setError('Failed to load'); });
+    return () => { cancelled = true; };
   }, [city]);
-
-  if (!city || !getCoords(city)) return null;
 
   if (error) {
     return (
       <div className="text-[11px] text-[#93876f] font-medium px-3 py-2">
-        Weather unavailable
+        {t('ui.weather.unavailable')}
       </div>
     );
   }
@@ -33,7 +42,7 @@ export default function WeatherWidget({ city }) {
   if (!data) {
     return (
       <div className="flex items-center gap-2 px-3 py-2 text-[11px] text-[#93876f] font-medium">
-        <Loader2 className="w-3 h-3 animate-spin" /> Loading weather…
+        <Loader2 className="w-3 h-3 animate-spin" /> {t('ui.weather.loading')}
       </div>
     );
   }

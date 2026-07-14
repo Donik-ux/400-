@@ -25,6 +25,7 @@ const useAuthStore = create((set, get) => ({
      (no real backend for those yet), so only the single high-value admin
      credential is protected this way. */
   login: async (email, password) => {
+    email = String(email || '').trim().toLowerCase();
     if (email === ADMIN.email) {
       try {
         const base = (import.meta.env?.BASE_URL || '/');
@@ -44,9 +45,9 @@ const useAuthStore = create((set, get) => ({
       }
     }
     const users = loadUsers();
-    const found = users.find(u => u.email === email && u.password === password);
+    const found = users.find(u => u.email.toLowerCase() === email && u.password === password);
     if (found) {
-      const session = { id: found.id, name: found.name, email: found.email, role: 'user', avatar: found.name[0].toUpperCase() };
+      const session = { id: found.id, name: found.name, email: found.email, role: 'user', avatar: (found.name?.[0] || found.email[0]).toUpperCase() };
       localStorage.setItem(S_SESSION, JSON.stringify(session));
       set({ user: session });
       return { success: true };
@@ -61,9 +62,12 @@ const useAuthStore = create((set, get) => ({
   },
 
   register: (name, email, password) => {
+    name = String(name || '').trim();
+    email = String(email || '').trim().toLowerCase();
+    if (!name) return { success: false, error: 'Please enter your name' };
     const users = loadUsers();
     if (email === ADMIN.email) return { success: false, error: 'Email already in use' };
-    if (users.find(u => u.email === email)) return { success: false, error: 'Email already registered' };
+    if (users.find(u => u.email.toLowerCase() === email)) return { success: false, error: 'Email already registered' };
     const newUser = { id: `user_${Date.now()}`, name, email, password, role: 'user', createdAt: new Date().toISOString() };
     users.push(newUser);
     saveUsers(users);
@@ -114,7 +118,7 @@ const useAuthStore = create((set, get) => ({
     const profiles = loadProfiles();
     profiles[userId] = { ...profiles[userId], ...profileData, updatedAt: new Date().toISOString() };
     saveProfiles(profiles);
-    // Also update name in session if changed
+    // Also update name in session + the persisted user record, so a rename survives re-login
     if (profileData.firstName || profileData.lastName) {
       const current = get().user;
       const fullName = `${profileData.firstName || ''} ${profileData.lastName || ''}`.trim();
@@ -122,6 +126,10 @@ const useAuthStore = create((set, get) => ({
         const updated = { ...current, name: fullName, avatar: (profileData.firstName || current.name)?.[0]?.toUpperCase() };
         localStorage.setItem(S_SESSION, JSON.stringify(updated));
         set({ user: updated });
+
+        const users = loadUsers();
+        const u = users.find(x => x.id === userId);
+        if (u) { u.name = fullName; saveUsers(users); }
       }
     }
   },

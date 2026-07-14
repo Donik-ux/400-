@@ -12,7 +12,6 @@ const ddmmyyyy = (d) => {
   const x = new Date(d);
   return `${String(x.getDate()).padStart(2,'0')}/${String(x.getMonth()+1).padStart(2,'0')}/${x.getFullYear()}`;
 };
-const yyyymmdd = (d) => d ? new Date(d).toISOString().slice(0,10).replace(/-/g,'') : '';
 const codeOf = (s) => {
   const m = String(s || '').match(/\(([A-Z]{3,4})\)/);
   return m ? m[1].slice(0,3) : String(s || '').toUpperCase().slice(0,3);

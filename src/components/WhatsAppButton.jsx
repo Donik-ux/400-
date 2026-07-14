@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, X } from 'lucide-react';
-import { whatsappLink } from '../config/contact';
+import { whatsappLink, WHATSAPP_CONFIGURED } from '../config/contact';
 import { useTranslation } from '../store/useLangStore';
 
 /**
@@ -13,10 +13,13 @@ export default function WhatsAppButton() {
   const [showBubble, setShowBubble] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem('wa-bubble-dismissed')) return;
+    if (!WHATSAPP_CONFIGURED) return undefined;
+    if (sessionStorage.getItem('wa-bubble-dismissed')) return undefined;
     const id = setTimeout(() => setShowBubble(true), 6000);
     return () => clearTimeout(id);
   }, []);
+
+  if (!WHATSAPP_CONFIGURED) return null;
 
   const dismiss = (e) => {
     e?.stopPropagation?.();

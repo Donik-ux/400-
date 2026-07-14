@@ -1,6 +1,7 @@
 import React from 'react';
 import { Lock } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
+import { SUPPORT_EMAIL } from '../config/contact';
 
 const Section = ({ num, title, children }) => (
   <div className="mb-8">
@@ -91,8 +92,8 @@ export default function PrivacyPolicy() {
                 <li>{t('legal.privacy.s8c')}</li>
               </ul>
               <p className="mt-3">
-                <a href="mailto:support@maftravel.com" className="text-[#003580] font-semibold hover:underline">
-                  support@maftravel.com
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="text-[#003580] font-semibold hover:underline">
+                  {SUPPORT_EMAIL}
                 </a>
               </p>
             </Section>
@@ -111,8 +112,8 @@ export default function PrivacyPolicy() {
 
             <Section num="12" title={t('legal.privacy.s12Title')}>
               <p>
-                <a href="mailto:support@maftravel.com" className="text-[#003580] font-semibold hover:underline">
-                  support@maftravel.com
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="text-[#003580] font-semibold hover:underline">
+                  {SUPPORT_EMAIL}
                 </a>
               </p>
             </Section>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -56,7 +56,7 @@ export default function Flights() {
     keywords: ['cheap flights', 'flight search', 'Dubai flights', 'Maldives flights', 'Bali flights', 'compare airfare', 'MAFTRAVEL flights'],
   });
 
-  const [formData, setFormData] = useState({ from: '', to: '', date: '', returnDate: '' });
+  const [formData, setFormData] = useState(() => location.state?.formData || { from: '', to: '', date: '', returnDate: '' });
   const [filter,   setFilter]   = useState('all');                         // all | nonstop | business
   const [airlineFilter, setAirlineFilter] = useState(null);                // null = all
   const [maxPrice,   setMaxPrice]         = useState(null);                // null = no cap
@@ -65,21 +65,14 @@ export default function Flights() {
   const { getFlights, loading, error, aiRefining, aiSource, source } = useFlights();
 
   // Auto-search when navigating from Home with prefilled formData
-  const initialRun = useRef(true);
   useEffect(() => {
-    const state = location.state;
-    if (state?.formData && initialRun.current) {
-      initialRun.current = false;
-      const fd = state.formData;
-      setFormData(fd);
-      if (fd.from && fd.to) {
-        getFlights(fd);
-      }
-    }
-    // Clean up location state so refresh doesn't re-trigger
-    if (state?.formData) {
+    const fd = location.state?.formData;
+    if (fd) {
+      if (fd.from && fd.to) getFlights(fd);
+      // Clean up location state so refresh doesn't re-trigger
       window.history.replaceState({}, '');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount only, mirrors the pre-existing initialRun guard
   }, []);
 
   const handleSearch = async (eOrPayload) => {
@@ -145,13 +138,20 @@ export default function Flights() {
       });
   }, [formData.date, cheapest]);
 
-  const [altWeather, setAltWeather] = useState({});
+  // Tags each fetch result with the destination it was fetched for, so a
+  // destination change can never display the previous city's weather.
+  const [altWeatherResult, setAltWeatherResult] = useState({ city: null, map: {} });
   useEffect(() => {
-    if (!altDates.length || !formData.to) { setAltWeather({}); return; }
+    if (!altDates.length || !formData.to) return;
     let cancelled = false;
-    getWeatherForDates(formData.to, altDates.map((d) => d.iso)).then((map) => { if (!cancelled) setAltWeather(map); });
+    getWeatherForDates(formData.to, altDates.map((d) => d.iso))
+      .then((map) => { if (!cancelled) setAltWeatherResult({ city: formData.to, map }); });
     return () => { cancelled = true; };
   }, [altDates, formData.to]);
+  const altWeather = useMemo(
+    () => (altWeatherResult.city === formData.to ? altWeatherResult.map : {}),
+    [altWeatherResult, formData.to],
+  );
 
   const altBestIdx = useMemo(() => {
     if (!altDates.length) return -1;
@@ -315,7 +315,7 @@ export default function Flights() {
                 <div className="bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-4 space-y-2.5">
                   <h3 className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">{t('flightsPage.highlights.title')}</h3>
                   <Insight icon={<Wallet className="w-3.5 h-3.5" />} label={t('flightsPage.highlights.cheapest')} val={fmt(cheapest)} sub={flights.find(f => f.price === cheapest)?.airline} />
-                  <Insight icon={<Plane className="w-3.5 h-3.5" />}  label={t('flightsPage.highlights.nonstop') || 'Non-stop'} val={`${flights.filter(f => f.stops === 0).length}`} sub={t('flights.results.direct') || 'direct'} />
+                  <Insight icon={<Plane className="w-3.5 h-3.5" />}  label={t('flightsPage.highlights.nonstop') || 'Non-stop'} val={`${flights.filter(f => f.stops === 0).length}`} sub={t('flightsPage.results.direct') || 'direct'} />
                 </div>
               )}
             </aside>

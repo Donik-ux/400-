@@ -35,14 +35,14 @@ const FALLBACK_RATES = {
 
 /* ── World clock cities ── */
 const CLOCK_CITIES = [
-  { city: 'Бишкек',   flag: '🇰🇬', tz: 'Asia/Bishkek' },
-  { city: 'Дубай',    flag: '🇦🇪', tz: 'Asia/Dubai' },
-  { city: 'Стамбул',  flag: '🇹🇷', tz: 'Europe/Istanbul' },
-  { city: 'Бангкок',  flag: '🇹🇭', tz: 'Asia/Bangkok' },
-  { city: 'Лондон',   flag: '🇬🇧', tz: 'Europe/London' },
-  { city: 'Токио',    flag: '🇯🇵', tz: 'Asia/Tokyo' },
-  { city: 'Нью-Йорк', flag: '🇺🇸', tz: 'America/New_York' },
-  { city: 'Париж',    flag: '🇫🇷', tz: 'Europe/Paris' },
+  { key: 'bishkek', flag: '🇰🇬', tz: 'Asia/Bishkek' },
+  { key: 'dubai',   flag: '🇦🇪', tz: 'Asia/Dubai' },
+  { key: 'istanbul', flag: '🇹🇷', tz: 'Europe/Istanbul' },
+  { key: 'bangkok', flag: '🇹🇭', tz: 'Asia/Bangkok' },
+  { key: 'london',  flag: '🇬🇧', tz: 'Europe/London' },
+  { key: 'tokyo',   flag: '🇯🇵', tz: 'Asia/Tokyo' },
+  { key: 'newYork', flag: '🇺🇸', tz: 'America/New_York' },
+  { key: 'paris',   flag: '🇫🇷', tz: 'Europe/Paris' },
 ];
 
 const fmtMoney = (n) => {
@@ -234,7 +234,7 @@ function TipCalculator() {
 
 /* ─────────── World clock ─────────── */
 function WorldClock() {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -244,12 +244,12 @@ function WorldClock() {
 
   const timeIn = (tz) => {
     try {
-      return new Intl.DateTimeFormat('ru-RU', { timeZone: tz, hour: '2-digit', minute: '2-digit' }).format(now);
+      return new Intl.DateTimeFormat(lang || 'en', { timeZone: tz, hour: '2-digit', minute: '2-digit' }).format(now);
     } catch { return '—'; }
   };
   const dayIn = (tz) => {
     try {
-      return new Intl.DateTimeFormat('ru-RU', { timeZone: tz, weekday: 'short', day: 'numeric', month: 'short' }).format(now);
+      return new Intl.DateTimeFormat(lang || 'en', { timeZone: tz, weekday: 'short', day: 'numeric', month: 'short' }).format(now);
     } catch { return ''; }
   };
 
@@ -265,9 +265,9 @@ function WorldClock() {
 
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3">
         {CLOCK_CITIES.map(c => (
-          <div key={c.city} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3 text-center hover:border-[#0071c2]/40 hover:bg-white transition-premium">
+          <div key={c.key} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3 text-center hover:border-[#0071c2]/40 hover:bg-white transition-premium">
             <div className="text-[18px] leading-none mb-1">{c.flag}</div>
-            <div className="text-[12px] font-bold text-[#5c5245]">{c.city}</div>
+            <div className="text-[12px] font-bold text-[#5c5245]">{t(`toolsPage.clock.cities.${c.key}`)}</div>
             <div className="text-[20px] font-black text-gradient leading-tight tabular-nums">{timeIn(c.tz)}</div>
             <div className="text-[10px] text-[#93876f]">{dayIn(c.tz)}</div>
           </div>
@@ -414,9 +414,9 @@ function Phrasebook() {
 export default function Tools() {
   const { t } = useTranslation();
   useSEO({
-    title: 'Инструменты путешественника — конвертер валют, чаевые, время',
-    description: 'Полезные инструменты для поездки: конвертер валют по актуальному курсу, калькулятор чаевых и мировые часы.',
-    keywords: ['конвертер валют', 'калькулятор чаевых', 'мировое время', 'инструменты путешественника'],
+    title: t('toolsPage.seo.title'),
+    description: t('toolsPage.seo.description'),
+    keywords: t('toolsPage.seo.keywords'),
   });
 
   return (

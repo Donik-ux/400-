@@ -50,7 +50,7 @@ export async function askGeminiServer({ prompt, temperature = 0.7, json = false,
   if (!res.ok) {
     const msg = data?.error?.message || data?.raw || res.statusText;
     const e = new Error(`Gemini ${res.status}: ${String(msg).slice(0, 200)}`);
-    e.status = res.status >= 400 && res.status < 500 ? 502 : 502;
+    e.status = res.status === 429 ? 429 : 502;
     throw e;
   }
   const text = extractText(data);
@@ -71,14 +71,27 @@ export default async function handler(req, res) {
   const rl = checkRateLimit(req, { limit: 20, windowMs: 5 * 60_000, bucket: 'ai-ask' });
   if (!rl.allowed) return sendRateLimited(res, rl.retryAfterSec);
 
+  let body;
   try {
-    let body = req.body;
+    body = req.body;
     if (typeof body === 'string') body = JSON.parse(body || '{}');
-    if (!body && req.method === 'POST') {
+    if (!body) {
       let raw = ''; for await (const c of req) raw += c;
       body = raw ? JSON.parse(raw) : {};
     }
-    const text = await askGeminiServer(body || {});
+  } catch {
+    return send(400, { error: 'Invalid JSON body' });
+  }
+
+  if (typeof body?.prompt !== 'string' || body.prompt.length > 16000) {
+    return send(400, { error: 'prompt is required and must be under 16000 characters' });
+  }
+
+  try {
+    // model/apiKey are never taken from the client — always use server env config,
+    // so a caller can't force a pricier model or spend the key on a foreign quota.
+    const { prompt, temperature, json } = body;
+    const text = await askGeminiServer({ prompt, temperature, json });
     return send(200, { text });
   } catch (e) {
     return send(e.status || 500, { error: String(e?.message || e) });

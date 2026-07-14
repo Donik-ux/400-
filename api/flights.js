@@ -63,10 +63,18 @@ function buildAviasalesLink({ origin, destination, dateISO, link, marker }) {
   const base = `https://www.aviasales.com/search/${origin}${ddmm}${destination}1`;
   return marker ? `${base}?marker=${marker}` : base;
 }
+// Travelpayouts returns local-time-with-offset stamps (e.g. "2026-08-01T04:50:00+05:00").
+// Parse the wall-clock hh:mm straight from the string — a Vercel lambda runs in UTC, so
+// going through `new Date(...).getHours()` would silently convert to the wrong timezone.
+function minsFromIso(iso) {
+  if (!iso) return 0;
+  const t = iso.split('T')[1] || '';
+  const [hh = '0', mm = '0'] = t.split(':');
+  return Number(hh) * 60 + Number(mm);
+}
 function mapTpOffer(o, { from, to, marker }) {
-  const dep = o.departure_at ? new Date(o.departure_at) : null;
-  const depDate = dep ? o.departure_at.slice(0, 10) : '';
-  const depMins = dep ? dep.getHours() * 60 + dep.getMinutes() : 0;
+  const depDate = o.departure_at ? o.departure_at.slice(0, 10) : '';
+  const depMins = minsFromIso(o.departure_at);
   const durMin = Number(o.duration || o.duration_to || 0);
   const arrMinsAbs = depMins + durMin;
   const code = o.airline || '';
@@ -78,7 +86,7 @@ function mapTpOffer(o, { from, to, marker }) {
     cabin: 'Economy',
     price: Math.round(Number(o.price) || 0),
     pricePerPerson: Math.round(Number(o.price) || 0),
-    departure: dep ? fmtClock(depMins) : '—',
+    departure: o.departure_at ? fmtClock(depMins) : '—',
     arrival: durMin ? fmtClock(arrMinsAbs) : '—',
     departMins: depMins,
     arrNextDay: durMin ? arrMinsAbs >= 24 * 60 : false,

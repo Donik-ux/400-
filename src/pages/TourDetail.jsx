@@ -10,8 +10,16 @@ import { getTourById } from '../data/exoticTours';
 import useSEO from '../hooks/useSEO';
 import { useTranslation } from '../store/useLangStore';
 import Price, { usePriceFormatter } from '../components/Price';
+import { handleImgError } from '../utils/imageFallback';
 
-const parsePrice = (s) => Number(String(s || '').replace(/[^\d]/g, '')) || 0;
+// Tour data is authored in EUR ('€8,500' etc.) but <Price>/usePriceFormatter
+// render the parsed number as a USD base amount — convert once here, matching
+// ExoticTours.jsx, so displayed prices aren't off by the EUR/USD spread.
+const EUR_TO_USD = 1.09;
+const parsePrice = (s) => {
+  const n = Number(String(s || '').replace(/[^\d]/g, '')) || 0;
+  return String(s || '').trim().startsWith('€') ? Math.round(n * EUR_TO_USD) : n;
+};
 
 const COST_SPLIT = [
   { labelKey: 'costFlights',    emoji: '✈️', pct: 0.30 },
@@ -96,6 +104,7 @@ export default function TourDetail() {
       <div className="relative h-[400px] md:h-[460px] overflow-hidden">
         <motion.img
           src={tour.image} alt={tour.title}
+          onError={handleImgError}
           initial={{ scale: 1.08 }} animate={{ scale: 1 }}
           transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
           className="w-full h-full object-cover" />

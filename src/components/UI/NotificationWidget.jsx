@@ -56,7 +56,10 @@ export default function NotificationWidget() {
       markShown(deal.id);
       // Also fire browser notification if supported
       if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification(deal.title, { body: deal.body, icon: '/vite.svg' });
+        // Android Chrome throws "Illegal constructor" here — page-context
+        // Notification construction requires a ServiceWorkerRegistration there.
+        // The in-app toast above already covers the alert, so just swallow it.
+        try { new Notification(deal.title, { body: deal.body, icon: '/vite.svg' }); } catch { /* unsupported on this platform */ }
       }
     }, 3000);
     return () => clearTimeout(t);
@@ -118,7 +121,7 @@ export default function NotificationWidget() {
 
       {/* Deal Toast */}
       {toast && (
-        <div className="fixed top-6 right-4 z-[200] w-80 animate-slide-in-right">
+        <div className="fixed top-6 right-4 left-4 sm:left-auto z-[200] w-auto sm:w-80 animate-slide-in-right">
           <div className="bg-white border border-[#e6dcc3] rounded-2xl p-4 shadow-2xl flex items-start gap-3">
             <div className="text-2xl shrink-0">{toast.icon}</div>
             <div className="flex-1">

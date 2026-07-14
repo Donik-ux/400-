@@ -54,7 +54,6 @@ const WEEKDAY_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday
 const MONTH_LONG   = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 const formatDateLong  = (d) => `${WEEKDAY_LONG[d.getDay()]}, ${MONTH_LONG[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-const formatDateShort = (d) => `${MONTH_LONG[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 
 /* ── Validate & patch AI response so the UI never breaks ── */
 const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose }) => {

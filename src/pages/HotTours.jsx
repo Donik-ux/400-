@@ -26,7 +26,7 @@ import GoldDust from '../components/fx/GoldDust';
 
 const PREFS_KEY = 'maf_ai_prefs';
 const loadPrefs = () => { try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; } catch { return {}; } };
-const savePrefs = (p) => { try { localStorage.setItem(PREFS_KEY, JSON.stringify(p)); } catch {} };
+const savePrefs = (p) => { try { localStorage.setItem(PREFS_KEY, JSON.stringify(p)); } catch { /* ignore */ } };
 
 /* ── Static dressing for the Hot Deals section (admin-seeded) ────── */
 const buildHotDeals = (packages) => {
@@ -157,10 +157,10 @@ const HotTours = () => {
       setResult(r);
       savePrefs({ balance: Number(b), days: Number(d), vibe: sanitizeVibe(v) });
       toast.ai(
-        r.source === 'ai' ? 'AI built 4 tours for your balance' : 'Smart Match found 4 tours for your balance',
+        r.source === 'grok' ? 'AI built 4 tours for your balance' : 'Smart Match found 4 tours for your balance',
         `${d} day${Number(d) === 1 ? '' : 's'} · all under $${b}`
       );
-    } catch (err) {
+    } catch {
       setError('Could not generate packages right now. Try again in a moment.');
       toast.error('Generation failed', 'Please try again in a moment.');
     } finally {
@@ -185,7 +185,7 @@ const HotTours = () => {
       };
       let plan;
       if (isAiAvailable()) {
-        try { plan = await generateAiItinerary(params); } catch {}
+        try { plan = await generateAiItinerary(params); } catch { /* ignore */ }
       }
       if (!plan) plan = await generateItinerary(params);
       setPlanFor(s => ({ ...s, [idx]: { loading: false, plan } }));
@@ -404,7 +404,8 @@ const HotTours = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {result.packages.map((p, i) => {
               const badge = STYLE_BADGE[p.style] || STYLE_BADGE.standard;
-              const fakeId = `${p.destination}-${i}`;
+              // Content-stable id (not the array index) so wishlist state survives regeneration
+              const fakeId = `aipkg-${p.destination}-${p.days}-${p.price}`;
               return (
                 <motion.div
                   key={fakeId}

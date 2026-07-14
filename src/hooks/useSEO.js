@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { SUPPORT_EMAIL } from '../config/contact';
 
 /**
  * useSEO — Har bir sahifa uchun <title>, meta description,
@@ -13,6 +14,7 @@ import { useEffect } from 'react';
  * @param {string[]} [options.keywords] — Meta keywords massivi
  */
 export default function useSEO({ title, description, image, url, type = 'website', keywords = [] }) {
+  const keywordsKey = keywords.join(', ');
   useEffect(() => {
     const siteTitle = 'MAFTRAVEL';
     const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
@@ -22,7 +24,7 @@ export default function useSEO({ title, description, image, url, type = 'website
     // ── Basic ──────────────────────────────────
     document.title = fullTitle;
     setMeta('description',               description);
-    setMeta('keywords',                  keywords.join(', '));
+    setMeta('keywords',                  keywordsKey);
     setMeta('robots',                    'index, follow');
     setMeta('author',                    'MAFTRAVEL');
 
@@ -54,8 +56,7 @@ export default function useSEO({ title, description, image, url, type = 'website
       url:        canonical,
       description,
       image:      ogImage,
-      telephone:  '+996700000000',
-      email:      'support@maftravel.com',
+      email:      SUPPORT_EMAIL,
       address: {
         '@type':           'PostalAddress',
         addressCountry:    'KG',
@@ -63,7 +64,7 @@ export default function useSEO({ title, description, image, url, type = 'website
       },
       sameAs: [],
     });
-  }, [title, description, image, url, type, keywords.join(',')]);
+  }, [title, description, image, url, type, keywordsKey]);
 }
 
 /* ── helpers ── */

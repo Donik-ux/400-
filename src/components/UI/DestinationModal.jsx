@@ -110,6 +110,7 @@ const DestinationModal = ({ destination, onClose }) => {
                 { icon: Globe,    label: t('modal.language'),    value: destination.stats.language   },
                 { icon: Users,    label: t('modal.population'),  value: destination.stats.population },
                 { icon: Clock,    label: t('modal.currency'),    value: destination.stats.currency   },
+               
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4 hover:bg-white/[0.06] hover:border-white/[0.1] transition-premium">
                   <div className="flex items-center gap-1.5 mb-2">

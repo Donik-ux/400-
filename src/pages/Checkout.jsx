@@ -589,6 +589,7 @@ export default function Checkout() {
 
 /* ─── Confirmation Screen (light theme) ─── */
 function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
+  const fmtPrice = usePriceFormatter();
   return (
     <div className="min-h-screen bg-[#faf6ed] flex items-center justify-center px-4 py-20">
       <div className="max-w-lg w-full page-fade">

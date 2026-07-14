@@ -7,24 +7,26 @@ const DISCLAIMER_KEY = 'imaf_disclaimer_accepted';
 
 export default function DisclaimerModal() {
   const { t } = useTranslation();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(() => !sessionStorage.getItem(DISCLAIMER_KEY));
   const [read, setRead] = useState(false);
-
-  useEffect(() => {
-    const accepted = sessionStorage.getItem(DISCLAIMER_KEY);
-    if (!accepted) setVisible(true);
-  }, []);
 
   const handleAccept = () => {
     sessionStorage.setItem(DISCLAIMER_KEY, '1');
     setVisible(false);
   };
 
+  useEffect(() => {
+    if (!visible) return undefined;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prevOverflow; };
+  }, [visible]);
+
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full my-8 max-h-[calc(100vh-4rem)] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="bg-[#003580] px-7 py-5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -40,7 +42,7 @@ export default function DisclaimerModal() {
         <div className="h-[2px] bg-gradient-to-r from-transparent via-[#f5b942]/70 to-transparent" aria-hidden="true" />
 
         {/* Body */}
-        <div className="px-7 py-6 max-h-[60vh] overflow-y-auto">
+        <div className="px-7 py-6 flex-1 min-h-0 overflow-y-auto">
           <div className="flex items-start gap-3 mb-5 p-4 note-warn rounded-2xl">
             <AlertTriangle className="w-5 h-5 text-[#c9962f] shrink-0 mt-0.5" />
             <p className="text-[13px] font-bold text-warn">
@@ -78,10 +80,9 @@ export default function DisclaimerModal() {
 
         {/* Footer */}
         <div className="px-7 py-5 border-t border-[#efe6d2] bg-[#f6f1e4]">
-          <label className="flex items-start gap-3 cursor-pointer mb-5 select-none">
+          <label onClick={() => setRead(v => !v)} className="flex items-start gap-3 cursor-pointer mb-5 select-none">
             <div
-              onClick={() => setRead(v => !v)}
-              className={`w-5 h-5 rounded shrink-0 mt-0.5 border-2 flex items-center justify-center transition-all cursor-pointer ${
+              className={`w-5 h-5 rounded shrink-0 mt-0.5 border-2 flex items-center justify-center transition-all ${
                 read ? 'bg-[#003580] border-[#003580]' : 'border-[#d9c9a3] bg-white'
               }`}
             >

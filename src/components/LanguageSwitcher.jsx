@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronDown, Search, Check, Globe } from 'lucide-react';
-import useLangStore from '../store/useLangStore';
+import useLangStore, { useTranslation } from '../store/useLangStore';
 import { LANGUAGES, LANG_MAP } from '../i18n/languages';
 
 /**
@@ -22,6 +22,7 @@ const PANEL_WIDTH = 288; // w-72
 export default function LanguageSwitcher({ align = 'right', showName = true, full = false }) {
   const lang = useLangStore((s) => s.lang);
   const setLang = useLangStore((s) => s.setLang);
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [pos, setPos] = useState({ top: 0, left: 0 });
@@ -107,7 +108,7 @@ export default function LanguageSwitcher({ align = 'right', showName = true, ful
                 ref={searchRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search language…"
+                placeholder={t('ui.language.searchPlaceholder')}
                 className="bg-transparent outline-none text-[13px] text-white placeholder:text-white/35 w-full"
               />
             </div>
@@ -115,7 +116,7 @@ export default function LanguageSwitcher({ align = 'right', showName = true, ful
 
           <div className="max-h-[min(60vh,360px)] overflow-y-auto py-1.5">
             {filtered.length === 0 && (
-              <p className="px-4 py-6 text-center text-[12px] text-white/40">No language found</p>
+              <p className="px-4 py-6 text-center text-[12px] text-white/40">{t('ui.language.noneFound')}</p>
             )}
             {filtered.map((l) => (
               <button
@@ -139,7 +140,7 @@ export default function LanguageSwitcher({ align = 'right', showName = true, ful
 
           <div className="px-4 py-2.5 border-t border-white/10 bg-[#001a44] flex items-center gap-2 text-[10.5px] text-white/40 font-semibold uppercase tracking-wide">
             <Globe className="w-3.5 h-3.5" />
-            {LANGUAGES.length} languages · AI-powered
+            {LANGUAGES.length} {t('ui.language.countBadge')}
           </div>
         </div>,
         document.body,

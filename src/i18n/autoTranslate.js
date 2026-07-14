@@ -14,7 +14,6 @@
  * cached in localStorage keyed by the ENGLISH source text, and it degrades
  * gracefully — no API key / offline / quota simply keeps showing English.
  */
-import { askGrok, isGrokAvailable, extractJson } from '../services/grokClient';
 import { translations } from './index';
 import { LANG_MAP, isStaticLang } from './languages';
 
@@ -159,33 +158,6 @@ const getAllEnglishStrings = () => {
 };
 
 /* ── Gemini batch translation ────────────────────────────────────────── */
-const buildPrompt = (targetName, strings) => `You are a professional UI localization engine for a travel web app called MAFTRAVEL.
-Translate each English string in the JSON array below into ${targetName}.
-
-Rules:
-- Return ONLY a JSON array of strings, same length and same order as the input.
-- Keep it natural and concise — these are buttons, labels, headings and short sentences.
-- Preserve ALL placeholders exactly as written, e.g. {name}, {count}, {0}, %s, \\n.
-- Preserve emoji and brand names (MAFTRAVEL) unchanged.
-- Do NOT add quotes, comments, explanations or markdown — output the raw JSON array only.
-
-Input:
-${JSON.stringify(strings)}`;
-
-// Gemini sometimes wraps the array ({"translations":[...]}) or returns an
-// object map — normalise all of those back to a plain array.
-const normalizeArray = (v) => {
-  if (Array.isArray(v)) return v;
-  if (v && typeof v === 'object') {
-    if (Array.isArray(v.translations)) return v.translations;
-    if (Array.isArray(v.result)) return v.result;
-    const vals = Object.values(v);
-    if (vals.length === 1 && Array.isArray(vals[0])) return vals[0];
-    if (vals.length && vals.every((x) => typeof x === 'string')) return vals;
-  }
-  return null;
-};
-
 const isRetryable = (err) => {
   const s = err?.status;
   if (s === 429 || s === 408 || (s >= 500 && s <= 599)) return true;

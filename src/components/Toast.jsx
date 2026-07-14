@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import React, { useEffect, useRef } from 'react';
 import { create } from 'zustand';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertCircle, Info, X, Sparkles } from 'lucide-react';
@@ -34,10 +35,15 @@ const ToastItem = ({ t, onClose }) => {
   const { t: tr } = useTranslation();
   const S = STYLE[t.type] || STYLE.info;
   const Icon = S.icon;
+  // onClose gets a new identity on every ToastContainer render (an inline
+  // arrow per toast) — read it from a ref so the timer only (re)starts when
+  // this toast's own id/duration changes, not on every unrelated toast event.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => { onCloseRef.current = onClose; });
   useEffect(() => {
-    const tm = setTimeout(onClose, t.duration);
+    const tm = setTimeout(() => onCloseRef.current(), t.duration);
     return () => clearTimeout(tm);
-  }, [t.duration, onClose]);
+  }, [t.id, t.duration]);
 
   return (
     <motion.div

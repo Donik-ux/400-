@@ -30,6 +30,32 @@ function amadeusDevApi() {
   };
 }
 
+// Dev-only middleware so `/api/hotels` (a Vercel serverless function in prod)
+// also works under `npm run dev` — same pattern as amadeusDevApi above.
+function hotelsDevApi() {
+  return {
+    name: 'hotels-dev-api',
+    configureServer(server) {
+      server.middlewares.use('/api/hotels', async (req, res) => {
+        const send = (status, obj) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          const url = new URL(req.originalUrl || req.url, 'http://localhost');
+          const params = Object.fromEntries(url.searchParams);
+          const mod = await server.ssrLoadModule('/api/hotels.js');
+          const { status, body } = await mod.searchHotelsApi(params);
+          send(status, body);
+        } catch (err) {
+          send(500, { error: String(err?.message || err), hotels: [] });
+        }
+      });
+    },
+  };
+}
+
 // Dev-only middleware so `/api/translate` (a Vercel serverless function in prod)
 // also works under `npm run dev`. Proxies to free Google Translate server-side.
 function translateDevApi() {
@@ -110,22 +136,29 @@ function adminAuthDevApi() {
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // loadEnv with '' prefix loads ALL vars (incl. non-VITE_) for server-side use.
+  // The `|| ''` tail matters: assigning `process.env.X = undefined` doesn't
+  // clear it, it coerces to the literal string "undefined" (a Node quirk),
+  // which then passes truthy `if (!key)` checks in the API handlers and
+  // sends a real request with client_id="undefined" instead of cleanly
+  // reporting "not configured".
   const env = loadEnv(mode, process.cwd(), '');
-  process.env.TRAVELPAYOUTS_TOKEN   = env.TRAVELPAYOUTS_TOKEN   || process.env.TRAVELPAYOUTS_TOKEN;
-  process.env.TRAVELPAYOUTS_MARKER  = env.TRAVELPAYOUTS_MARKER  || process.env.TRAVELPAYOUTS_MARKER;
-  process.env.AMADEUS_CLIENT_ID     = env.AMADEUS_CLIENT_ID     || process.env.AMADEUS_CLIENT_ID;
-  process.env.AMADEUS_CLIENT_SECRET = env.AMADEUS_CLIENT_SECRET || process.env.AMADEUS_CLIENT_SECRET;
-  process.env.AMADEUS_ENV           = env.AMADEUS_ENV           || process.env.AMADEUS_ENV;
-  process.env.GEMINI_API_KEY        = env.GEMINI_API_KEY        || process.env.GEMINI_API_KEY;
-  process.env.GEMINI_MODEL          = env.GEMINI_MODEL          || process.env.GEMINI_MODEL;
-  process.env.ADMIN_PASSWORD        = env.ADMIN_PASSWORD        || process.env.ADMIN_PASSWORD;
-  process.env.ADMIN_TOKEN_SECRET    = env.ADMIN_TOKEN_SECRET    || process.env.ADMIN_TOKEN_SECRET;
+  process.env.TRAVELPAYOUTS_TOKEN   = env.TRAVELPAYOUTS_TOKEN   || process.env.TRAVELPAYOUTS_TOKEN   || '';
+  process.env.TRAVELPAYOUTS_MARKER  = env.TRAVELPAYOUTS_MARKER  || process.env.TRAVELPAYOUTS_MARKER  || '';
+  process.env.AMADEUS_CLIENT_ID     = env.AMADEUS_CLIENT_ID     || process.env.AMADEUS_CLIENT_ID     || '';
+  process.env.AMADEUS_CLIENT_SECRET = env.AMADEUS_CLIENT_SECRET || process.env.AMADEUS_CLIENT_SECRET || '';
+  process.env.AMADEUS_ENV           = env.AMADEUS_ENV           || process.env.AMADEUS_ENV           || '';
+  process.env.GEMINI_API_KEY        = env.GEMINI_API_KEY        || process.env.GEMINI_API_KEY        || '';
+  process.env.GEMINI_MODEL          = env.GEMINI_MODEL          || process.env.GEMINI_MODEL          || '';
+  process.env.ADMIN_PASSWORD        = env.ADMIN_PASSWORD        || process.env.ADMIN_PASSWORD        || '';
+  process.env.ADMIN_TOKEN_SECRET    = env.ADMIN_TOKEN_SECRET    || process.env.ADMIN_TOKEN_SECRET    || '';
+  process.env.DUFFEL_API_KEY        = env.DUFFEL_API_KEY        || process.env.DUFFEL_API_KEY        || '';
 
   return {
     plugins: [
       react(),
       tailwindcss(),
       amadeusDevApi(),
+      hotelsDevApi(),
       translateDevApi(),
       aiAskDevApi(),
       adminAuthDevApi(),

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -11,6 +11,8 @@ import useSEO from '../hooks/useSEO';
 import { useTranslation } from '../store/useLangStore';
 import Price, { usePriceFormatter } from '../components/Price';
 import { handleImgError } from '../utils/imageFallback';
+import { searchHotels } from '../services/hotelService';
+import { getCityCode } from '../data/cityCodes';
 
 // Tour data is authored in EUR ('€8,500' etc.) but <Price>/usePriceFormatter
 // render the parsed number as a USD base amount — convert once here, matching
@@ -52,6 +54,34 @@ export default function TourDetail() {
   const [travelers, setTravelers] = useState(2);
   const [budget, setBudget]       = useState(pricePer * 2);
   const [date, setDate]           = useState('');
+
+  const cityCode = getCityCode(tour?.to?.city);
+  const [hotels, setHotels]               = useState([]);
+  const [hotelsLoading, setHotelsLoading] = useState(false);
+  const [hotelsStatus, setHotelsStatus]   = useState(null);
+
+  useEffect(() => {
+    if (!tour || !cityCode) return undefined;
+    // Sample a 3-night stay to check live rates — the tour's own duration
+    // splits across two legs (origin + destination), so it isn't the same
+    // as the destination hotel's length of stay.
+    const checkIn  = date || new Date(Date.now() + 30 * 86_400_000).toISOString().split('T')[0];
+    const checkOut = new Date(new Date(`${checkIn}T00:00:00`).getTime() + 3 * 86_400_000).toISOString().split('T')[0];
+    let cancelled = false;
+    const run = async () => {
+      setHotelsLoading(true);
+      try {
+        const res = await searchHotels({ city: tour.to.city, checkInDate: checkIn, checkOutDate: checkOut, adults: Math.min(travelers, 4) });
+        if (!cancelled) { setHotels(res.hotels); setHotelsStatus(res.status); }
+      } catch {
+        if (!cancelled) { setHotels([]); setHotelsStatus(500); }
+      } finally {
+        if (!cancelled) setHotelsLoading(false);
+      }
+    };
+    run();
+    return () => { cancelled = true; };
+  }, [tour, cityCode, date, travelers]);
 
   if (!tour) {
     return (
@@ -204,6 +234,40 @@ export default function TourDetail() {
               ))}
             </div>
           </section>
+
+          {/* Real hotel prices (Amadeus) — only shown for cities we can map to a code */}
+          {cityCode && (
+            <section className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft">
+              <h2 className="text-[15px] font-black text-[#1a1a1a] mb-1">{t('tourDetail.hotelsTitle')}</h2>
+              <p className="text-[12px] text-[#93876f] mb-4">{t('tourDetail.hotelsSub')} {tour.to.city}</p>
+
+              {hotelsLoading && (
+                <p className="text-[12px] text-[#93876f]">{t('tourDetail.hotelsLoading')}</p>
+              )}
+              {!hotelsLoading && hotelsStatus === 501 && (
+                <p className="text-[12px] text-[#93876f]">{t('tourDetail.hotelsNotConfigured')}</p>
+              )}
+              {!hotelsLoading && hotelsStatus && hotelsStatus !== 501 && hotels.length === 0 && (
+                <p className="text-[12px] text-[#93876f]">{t('tourDetail.hotelsNone')}</p>
+              )}
+              {!hotelsLoading && hotels.length > 0 && (
+                <div className="space-y-2.5">
+                  {hotels.slice(0, 5).map((h) => (
+                    <div key={h.id} className="flex items-center gap-3 border border-[#e6dcc3] rounded-xl p-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[13px] font-black text-[#1a1a1a] truncate">{h.name}</div>
+                        {h.address && <div className="text-[11px] text-[#93876f] truncate">{h.address}</div>}
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="text-[14px] font-black text-gradient"><Price amount={h.pricePerNight} /></div>
+                        <div className="text-[10px] text-[#93876f]">{t('tourDetail.hotelsPerNight')}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
 
           {/* Reviews */}
           <section className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft">

@@ -71,7 +71,7 @@ const useAuthStore = create((set, get) => ({
     const newUser = { id: `user_${Date.now()}`, name, email, password, role: 'user', createdAt: new Date().toISOString() };
     users.push(newUser);
     saveUsers(users);
-    const session = { id: newUser.id, name, email, role: 'user', avatar: name[0].toUpperCase() };
+    const session = { id: newUser.id, name, email, role: 'user', avatar: (name[0] || email[0]).toUpperCase() };
     localStorage.setItem(S_SESSION, JSON.stringify(session));
     set({ user: session });
     return { success: true };

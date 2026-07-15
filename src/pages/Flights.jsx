@@ -341,7 +341,7 @@ export default function Flights() {
               </div>
 
               {/* Source banner — real-price provider */}
-              {(source === 'kiwi' || source === 'travelpayouts' || source === 'amadeus') && (
+              {(source === 'kiwi' || source === 'travelpayouts' || source === 'duffel' || source === 'amadeus') && (
                 <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#e9f3ea] to-white border border-[#cfe3d2] shadow-soft flex items-center gap-2.5">
                   <span className="text-[18px]">📡</span>
                   <div className="text-[12px] font-bold text-[#24513a] leading-snug">
@@ -350,7 +350,9 @@ export default function Flights() {
                       ? t('flightsPage.banners.kiwiBody')
                       : source === 'travelpayouts'
                         ? t('flightsPage.banners.travelpayoutsBody')
-                        : t('flightsPage.banners.amadeusBody')}
+                        : source === 'duffel'
+                          ? t('flightsPage.banners.duffelBody')
+                          : t('flightsPage.banners.amadeusBody')}
                   </div>
                 </div>
               )}

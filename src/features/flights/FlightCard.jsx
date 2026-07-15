@@ -15,11 +15,11 @@ export default function FlightCard({ flight, index, aiPriced }) {
   // the button opens the real page for THIS flight; else the airline deep-link.
   const officialUrl = flight.buyLink || officialUrlFor(flight);
   const meta = airlineMetaOf(flight);
-  // Real quote (Kiwi/Travelpayouts/Amadeus) vs in-app estimate → controls the "≈ approx" hint.
-  const isRealPrice = flight.source === 'kiwi' || flight.source === 'travelpayouts' || flight.source === 'amadeus';
+  // Real quote (Kiwi/Travelpayouts/Duffel/Amadeus) vs in-app estimate → controls the "≈ approx" hint.
+  const isRealPrice = flight.source === 'kiwi' || flight.source === 'travelpayouts' || flight.source === 'duffel' || flight.source === 'amadeus';
   const fromCity = (flight.from || '').split('(')[0].trim();
   const toCity   = (flight.to   || '').split('(')[0].trim();
-  const sourceLabel = flight.source === 'kiwi' ? 'Kiwi' : flight.source === 'travelpayouts' ? 'Aviasales' : null;
+  const sourceLabel = flight.source === 'kiwi' ? 'Kiwi' : flight.source === 'travelpayouts' ? 'Aviasales' : flight.source === 'duffel' ? 'Duffel' : null;
   const bookLabel = meta?.domain ? meta.domain.split('.')[0] : (sourceLabel || flight.airline);
   const nonStop = flight.stops === 0;
 

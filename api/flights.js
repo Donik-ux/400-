@@ -5,8 +5,16 @@
 //      Default for everyone — works out of the box, no env vars needed.
 //   2. Travelpayouts / Aviasales v3 — needs TRAVELPAYOUTS_TOKEN, gives Aviasales
 //      buy-links and affiliate commission.
-//   3. Amadeus Self-Service — live GDS prices when configured (major routes).
-//   4. 501 → client falls back to its AI/template estimate.
+//   3. Duffel — needs DUFFEL_API_KEY (free self-serve signup, no partner
+//      approval needed for test-mode keys). See scrapers/duffelClient.js.
+//   4. Amadeus Self-Service — live GDS prices when configured (major routes).
+//   5. 501 → client falls back to its AI/template estimate.
+//
+// Note on scope: Skyscanner, Kayak, Momondo, Google Flights, Booking.com
+// Flights and Expedia have NO public self-serve API for real-time fares —
+// access to their pricing data is partner-only and requires a business
+// agreement, so they stay as deep-link "Book on X" buttons in
+// FlightBookingModal.jsx rather than real price sources here.
 //
 // Buying is ALWAYS an external redirect (Aviasales / airline site) — we only
 // show prices here, never sell tickets ourselves.
@@ -15,6 +23,7 @@
 // (named `searchAmadeus` is kept for the Vite middleware; `searchFlightsApi`
 // is the new combined entry).
 import { searchKiwi } from './scrapers/kiwiClient.js';
+import { searchDuffel } from './scrapers/duffelClient.js';
 import { checkRateLimit, sendRateLimited } from './_rateLimit.js';
 const AMADEUS_HOSTS = {
   test: 'https://test.api.amadeus.com',
@@ -243,7 +252,14 @@ export async function searchFlightsApi(params = {}) {
   } catch (err) {
     console.warn('Travelpayouts failed:', err?.message);
   }
-  // 3) Amadeus (live, major routes)
+  // 3) Duffel (when DUFFEL_API_KEY configured — free self-serve test mode)
+  try {
+    const df = await searchDuffel(params);
+    if (df && df.status === 200 && df.body.flights.length > 0) return df;
+  } catch (err) {
+    console.warn('Duffel failed:', err?.message);
+  }
+  // 4) Amadeus (live, major routes)
   const am = await searchAmadeus(params);
   if (am.status === 200 && am.body.flights.length > 0) return am;
 

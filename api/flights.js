@@ -237,34 +237,38 @@ export async function searchAmadeus({ from, to, date, adults = 1, cabin = 'ECONO
 
 /* ────────────────────────── Combined entry ─────────────────────────────── */
 
+// Query every configured source IN PARALLEL and merge their offers into one
+// price-sorted list, so the UI can show "Kiwi $450 / Duffel $470 / Amadeus
+// $460" side by side instead of only ever showing whichever source happened
+// to be tried first. Sources that aren't configured (no API key) resolve
+// instantly via their own early-return, so this costs nothing extra when
+// only Kiwi is enabled — same one real network call as before.
 export async function searchFlightsApi(params = {}) {
-  // 1) Kiwi.com — open GraphQL, works without any token.
-  try {
-    const kw = await searchKiwi(params);
-    if (kw && kw.status === 200 && kw.body.flights.length > 0) return kw;
-  } catch (err) {
-    console.warn('Kiwi failed:', err?.message);
-  }
-  // 2) Travelpayouts (when token configured — preferred for Aviasales buy-links)
-  try {
-    const tp = await searchTravelpayouts(params);
-    if (tp && tp.status === 200 && tp.body.flights.length > 0) return tp;
-  } catch (err) {
-    console.warn('Travelpayouts failed:', err?.message);
-  }
-  // 3) Duffel (when DUFFEL_API_KEY configured — free self-serve test mode)
-  try {
-    const df = await searchDuffel(params);
-    if (df && df.status === 200 && df.body.flights.length > 0) return df;
-  } catch (err) {
-    console.warn('Duffel failed:', err?.message);
-  }
-  // 4) Amadeus (live, major routes)
-  const am = await searchAmadeus(params);
-  if (am.status === 200 && am.body.flights.length > 0) return am;
+  const results = await Promise.allSettled([
+    searchKiwi(params),
+    searchTravelpayouts(params),
+    searchDuffel(params),
+    searchAmadeus(params),
+  ]);
 
-  // Nothing real available → signal client to use its own estimate.
-  return { status: 501, body: { error: 'No real fares available for this route', flights: [] } };
+  const merged = [];
+  const sources = [];
+  for (const r of results) {
+    if (r.status !== 'fulfilled' || !r.value) continue;
+    const { status, body } = r.value;
+    if (status === 200 && Array.isArray(body.flights) && body.flights.length > 0) {
+      merged.push(...body.flights);
+      if (body.source) sources.push(body.source);
+    }
+  }
+
+  if (merged.length === 0) {
+    // Nothing real available → signal client to use its own estimate.
+    return { status: 501, body: { error: 'No real fares available for this route', flights: [] } };
+  }
+
+  merged.sort((a, b) => a.price - b.price);
+  return { status: 200, body: { flights: merged, source: sources[0], sources } };
 }
 
 // Vercel serverless entrypoint

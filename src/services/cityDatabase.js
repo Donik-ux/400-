@@ -1009,6 +1009,20 @@ const ALIASES = {
   'доха':           'doha',
 };
 
+// Tokenize on word boundaries so short aliases (e.g. "uk") can't match as a
+// raw substring of an unrelated word (e.g. "bukhara" contains "uk").
+const tokenize = (s) => (s || '').toLowerCase().match(/[a-zа-яё0-9]+/gi) || [];
+
+// True if `needle`'s tokens appear as a contiguous run inside `haystackTokens`.
+const containsPhrase = (haystackTokens, needle) => {
+  const needleTokens = tokenize(needle);
+  if (needleTokens.length === 0) return false;
+  for (let i = 0; i <= haystackTokens.length - needleTokens.length; i++) {
+    if (needleTokens.every((t, j) => haystackTokens[i + j] === t)) return true;
+  }
+  return false;
+};
+
 // ── Fuzzy city lookup ──────────────────────────────────────────────────────────
 export const findCity = (input = '') => {
   const q = input.toLowerCase().trim();
@@ -1017,20 +1031,24 @@ export const findCity = (input = '') => {
   // Direct key match
   if (cityDatabase[q]) return cityDatabase[q];
 
+  const qTokens = tokenize(q);
+
   // Alias match (country/region name → representative city)
   for (const [alias, cityKey] of Object.entries(ALIASES)) {
-    if (q === alias || q.includes(alias) || alias.includes(q)) {
+    if (q === alias || containsPhrase(qTokens, alias) || containsPhrase(tokenize(alias), q)) {
       if (cityDatabase[cityKey]) return cityDatabase[cityKey];
     }
   }
 
   // Match by city name or country name inside the database
   for (const [, data] of Object.entries(cityDatabase)) {
+    const nameTokens = tokenize(data.name);
+    const countryTokens = tokenize(data.country);
     if (
-      data.name.toLowerCase().includes(q) ||
-      q.includes(data.name.toLowerCase()) ||
-      data.country.toLowerCase().includes(q) ||
-      q.includes(data.country.toLowerCase())
+      containsPhrase(qTokens, data.name) ||
+      containsPhrase(nameTokens, q) ||
+      containsPhrase(qTokens, data.country) ||
+      containsPhrase(countryTokens, q)
     ) {
       return data;
     }

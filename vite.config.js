@@ -85,7 +85,7 @@ function translateDevApi() {
   };
 }
 
-// Dev-only middleware for /api/aiAsk (Gemini proxy — keeps the key server-side,
+// Dev-only middleware for /api/aiAsk (Groq proxy — keeps the key server-side,
 // mirrors translateDevApi's shape).
 function aiAskDevApi() {
   return {
@@ -101,7 +101,7 @@ function aiAskDevApi() {
           let raw = ''; for await (const c of req) raw += c;
           const body = raw ? JSON.parse(raw) : {};
           const mod = await server.ssrLoadModule('/api/aiAsk.js');
-          const text = await mod.askGeminiServer(body);
+          const text = await mod.askGroqServer(body);
           send(200, { text });
         } catch (err) {
           send(err.status || 500, { error: String(err?.message || err) });
@@ -147,8 +147,8 @@ export default defineConfig(({ mode }) => {
   process.env.AMADEUS_CLIENT_ID     = env.AMADEUS_CLIENT_ID     || process.env.AMADEUS_CLIENT_ID     || '';
   process.env.AMADEUS_CLIENT_SECRET = env.AMADEUS_CLIENT_SECRET || process.env.AMADEUS_CLIENT_SECRET || '';
   process.env.AMADEUS_ENV           = env.AMADEUS_ENV           || process.env.AMADEUS_ENV           || '';
-  process.env.GEMINI_API_KEY        = env.GEMINI_API_KEY        || process.env.GEMINI_API_KEY        || '';
-  process.env.GEMINI_MODEL          = env.GEMINI_MODEL          || process.env.GEMINI_MODEL          || '';
+  process.env.GROQ_API_KEY          = env.GROQ_API_KEY          || process.env.GROQ_API_KEY          || '';
+  process.env.GROQ_MODEL            = env.GROQ_MODEL            || process.env.GROQ_MODEL            || '';
   process.env.ADMIN_PASSWORD        = env.ADMIN_PASSWORD        || process.env.ADMIN_PASSWORD        || '';
   process.env.ADMIN_TOKEN_SECRET    = env.ADMIN_TOKEN_SECRET    || process.env.ADMIN_TOKEN_SECRET    || '';
   process.env.DUFFEL_API_KEY        = env.DUFFEL_API_KEY        || process.env.DUFFEL_API_KEY        || '';

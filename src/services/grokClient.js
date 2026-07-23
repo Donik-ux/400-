@@ -1,11 +1,11 @@
 /**
- * AI client (Gemini-backed, Grok-compatible shim).
+ * AI client (Groq-backed; function names kept as `askGrok` for history).
  *
- * History: this used to call xAI / Grok directly, then Google Gemini directly
- * from the browser with a VITE_-prefixed key. That key gets bundled straight
- * into the public JS by Vite, so anyone could read it out of the built
- * bundle and spend our quota — see api/aiAsk.js, which now holds the real
- * key server-only. This module just proxies to that endpoint.
+ * History: this used to call xAI / Grok directly, then Google Gemini, both
+ * directly from the browser with a VITE_-prefixed key. That key gets bundled
+ * straight into the public JS by Vite, so anyone could read it out of the
+ * built bundle and spend our quota — see api/aiAsk.js, which now holds the
+ * real key server-only. This module just proxies to that endpoint.
  *
  * The exported API surface (askGrok, isGrokAvailable, extractJson) is kept
  * identical so the service files importing this module (aiPlannerService,

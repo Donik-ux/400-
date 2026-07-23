@@ -1,4 +1,4 @@
-// Server-side proxy for Gemini (askGrok in src/services/grokClient.js).
+// Server-side proxy for Groq (askGrok in src/services/grokClient.js).
 //
 // Previously the browser called Gemini directly with a VITE_-prefixed key,
 // which Vite bundles straight into the public JS — anyone could read it out
@@ -6,55 +6,46 @@
 // server-only; the client only ever talks to /api/ai-ask.
 import { checkRateLimit, sendRateLimited } from './_rateLimit.js';
 
-const GEMINI_URL = (model, key) =>
-  `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`;
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
-// GEMINI_API_KEY is the canonical server-only name going forward. The
-// VITE_-prefixed one is read too so existing Vercel env vars keep working
-// during migration — but it should be renamed (dropping VITE_) and removed
-// from anywhere client code could read it.
-const getApiKey = (override) =>
-  override || process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
-const getModel = (override) => override || process.env.GEMINI_MODEL || process.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash';
+const getApiKey = (override) => override || process.env.GROQ_API_KEY || '';
+const getModel = (override) => override || process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 
 const safeJson = async (res) => {
   const text = await res.text();
   try { return JSON.parse(text); } catch { return { raw: text }; }
 };
 
-const extractText = (json) => {
-  if (!json) return '';
-  const parts = json?.candidates?.[0]?.content?.parts;
-  return Array.isArray(parts) ? parts.map((p) => p?.text || '').join('').trim() : '';
-};
+const extractText = (json) => (json?.choices?.[0]?.message?.content || '').trim();
 
-export async function askGeminiServer({ prompt, temperature = 0.7, json = false, model, apiKey } = {}) {
+export async function askGroqServer({ prompt, temperature = 0.7, json = false, model, apiKey } = {}) {
   const key = getApiKey(apiKey);
-  if (!key) { const e = new Error('NO_GEMINI_KEY'); e.status = 501; throw e; }
+  if (!key) { const e = new Error('NO_GROQ_KEY'); e.status = 501; throw e; }
   if (!prompt || typeof prompt !== 'string') { const e = new Error('prompt is required'); e.status = 400; throw e; }
 
   const body = {
-    contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: {
-      temperature,
-      ...(json ? { responseMimeType: 'application/json' } : {}),
-    },
+    model: getModel(model),
+    temperature,
+    messages: json
+      ? [{ role: 'system', content: 'Respond with a single valid JSON object only — no markdown, no commentary.' }, { role: 'user', content: prompt }]
+      : [{ role: 'user', content: prompt }],
+    ...(json ? { response_format: { type: 'json_object' } } : {}),
   };
 
-  const res = await fetch(GEMINI_URL(getModel(model), key), {
+  const res = await fetch(GROQ_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
     body: JSON.stringify(body),
   });
   const data = await safeJson(res);
   if (!res.ok) {
     const msg = data?.error?.message || data?.raw || res.statusText;
-    const e = new Error(`Gemini ${res.status}: ${String(msg).slice(0, 200)}`);
+    const e = new Error(`Groq ${res.status}: ${String(msg).slice(0, 200)}`);
     e.status = res.status === 429 ? 429 : 502;
     throw e;
   }
   const text = extractText(data);
-  if (!text) { const e = new Error('Gemini returned an empty response'); e.status = 502; throw e; }
+  if (!text) { const e = new Error('Groq returned an empty response'); e.status = 502; throw e; }
   return text;
 }
 
@@ -91,7 +82,7 @@ export default async function handler(req, res) {
     // model/apiKey are never taken from the client — always use server env config,
     // so a caller can't force a pricier model or spend the key on a foreign quota.
     const { prompt, temperature, json } = body;
-    const text = await askGeminiServer({ prompt, temperature, json });
+    const text = await askGroqServer({ prompt, temperature, json });
     return send(200, { text });
   } catch (e) {
     return send(e.status || 500, { error: String(e?.message || e) });

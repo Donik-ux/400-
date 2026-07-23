@@ -24,6 +24,7 @@ import { toast } from '../components/Toast';
 import useSEO from '../hooks/useSEO';
 import { usePriceFormatter } from '../components/Price';
 import GoldDust from '../components/fx/GoldDust';
+import SmartImage from '../components/SmartImage';
 
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80';
 
@@ -391,7 +392,7 @@ export default function Planner() {
 
           {/* Destination hero */}
           <div className="relative h-52 md:h-72 rounded-2xl overflow-hidden mb-6 shadow-lift">
-            <img src={getDestImg(formData.destination)} alt={formData.destination} className="w-full h-full object-cover" />
+            <SmartImage src={getDestImg(formData.destination)} alt={formData.destination} wrapperClassName="absolute inset-0" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
             <div className="absolute bottom-5 left-6 right-6 flex items-end justify-between gap-4 flex-wrap">
               <div>

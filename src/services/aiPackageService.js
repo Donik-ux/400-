@@ -14,6 +14,7 @@ const CATALOG = [
   // Budget Saver (≤ $800 total per person)
   { city: 'Tashkent',      country: 'Uzbekistan',         tier: 1, vibe: ['city','cultural','warm'],          img: 'https://images.unsplash.com/photo-1573108724029-4c46571d6490?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Samarkand',     country: 'Uzbekistan',         tier: 1, vibe: ['cultural'],                        img: 'https://images.unsplash.com/photo-1604608672516-9656d6678f86?auto=format&fit=crop&w=1200&q=80' },
+  { city: 'Bukhara',       country: 'Uzbekistan',         tier: 1, vibe: ['cultural'],                        img: 'https://images.unsplash.com/photo-1670514535515-e7af911bdadb?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Bishkek',       country: 'Kyrgyzstan',         tier: 1, vibe: ['nature','city'],                   img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Cairo',         country: 'Egypt',              tier: 1, vibe: ['cultural','warm'],                 img: 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Istanbul',      country: 'Turkey',             tier: 1, vibe: ['city','cultural'],                 img: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=1200&q=80' },

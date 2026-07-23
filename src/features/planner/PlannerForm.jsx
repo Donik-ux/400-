@@ -3,6 +3,7 @@ import { MapPin, Calendar, Clock, DollarSign, Sparkles, AlertTriangle, Navigatio
 import { useTranslation } from '../../store/useLangStore';
 import { getVisaInfo, lookupDestination } from '../../services/destinationLookup';
 import CityAutocomplete from '../flights/CityAutocomplete';
+import SmartImage from '../../components/SmartImage';
 
 /* ── Budget tiers ─────────────────────────────────────────────────────────── */
 /* `budget` values are data; labelKey/descKey resolve to translated UI text. */
@@ -38,7 +39,7 @@ const DestPreview = ({ destination }) => {
     <div className="mt-2 rounded-xl overflow-hidden border border-[#e6dcc3] shadow-soft page-fade">
       {/* Mini hero */}
       <div className="relative h-20 w-full">
-        <img src={hero} alt={entry.country} className="w-full h-full object-cover" />
+        <SmartImage src={hero} alt={destination} wrapperClassName="absolute inset-0" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
         <div className="absolute inset-0 flex items-center px-3 gap-2">
           <span className="text-2xl leading-none">{entry.country.split(' ').pop()}</span>

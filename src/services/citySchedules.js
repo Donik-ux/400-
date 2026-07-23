@@ -1069,6 +1069,65 @@ const samarkandSchedules = [
   },
 ];
 
+// ── BUKHARA ────────────────────────────────────────────────────────────────────
+const bukharaSchedules = [
+  {
+    id: 'arrival',
+    tags: ['arrival'],
+    title: 'Arrival in Bukhara',
+    place: 'Bukhara Airport / Train Station → Old City',
+    events: [
+      { time: '10:00', name: 'Arrival at Bukhara Airport (BHK) or train station', type: 'flight' },
+      { time: '11:00', name: 'Transfer to hotel', price: '~$5–10', type: 'transport' },
+      { time: '12:00', name: 'Hotel check-in', type: 'hotel' },
+      { time: '13:00', name: 'Lunch at El classico café — affordable, near Golden Bukhara hotel', address: '1st floor, near Golden Bukhara hotel, Bukhara 200100', price: '~$3–6', type: 'food' },
+      { time: '15:00', name: 'First walk — Lyab-i Hauz square preview', type: 'leisure' },
+      { time: '19:30', name: 'Welcome dinner — Bukhara-style plov', price: '~$8', type: 'food' },
+    ],
+  },
+  {
+    id: 'po_i_kalyan',
+    tags: ['history', 'culture'],
+    title: 'Po-i-Kalyan & the Ark Fortress',
+    place: 'Old City — Heart of Bukhara',
+    events: [
+      { time: '07:30', name: 'Early breakfast', type: 'food' },
+      { time: '08:30', name: 'Po-i-Kalyan Complex — Kalyan Minaret & Mosque', address: 'Po-i-Kalyan, Bukhara', price: '~$2', type: 'attraction' },
+      { time: '10:30', name: 'Ark Fortress — citadel & former royal residence', address: 'Registan St, Bukhara', price: '~$3', type: 'attraction' },
+      { time: '12:30', name: 'Lunch at El classico café — affordable, near Golden Bukhara hotel', address: '1st floor, near Golden Bukhara hotel, Bukhara 200100', price: '~$3–6', type: 'food' },
+      { time: '14:00', name: 'Bolo Hauz Mosque — "forty columns" mosque', address: 'Registan St, Bukhara', price: '~$1', type: 'attraction' },
+      { time: '15:30', name: 'Trading domes — Taki-Zargaron & Taki-Telpak Furushon', price: 'Free to browse', type: 'shopping' },
+      { time: '19:00', name: 'Dinner on the Lyab-i Hauz square terraces', price: '~$8', type: 'food' },
+    ],
+  },
+  {
+    id: 'ismail_samani',
+    tags: ['history'],
+    title: 'Ismail Samani Mausoleum & Chor Minor',
+    place: 'Bukhara Heritage Sites',
+    events: [
+      { time: '08:00', name: 'Breakfast', type: 'food' },
+      { time: '09:30', name: 'Ismail Samani Mausoleum, Samani Park', address: 'Samani Park, Bukhara', price: '~$1', type: 'attraction' },
+      { time: '11:00', name: 'Chor Minor (Four Minarets), Old Jewish Quarter', address: 'Old Jewish Quarter, Bukhara', price: '~$1', type: 'attraction' },
+      { time: '13:00', name: 'Lunch', price: '~$6', type: 'food' },
+      { time: '15:00', name: 'Sitorai Mokhi-Khosa — Emir\'s summer palace', price: '~$2', type: 'museum' },
+      { time: '18:00', name: 'Free evening in the Old City', type: 'leisure' },
+      { time: '20:00', name: 'Dinner', price: '~$8', type: 'food' },
+    ],
+  },
+  {
+    id: 'departure',
+    tags: ['departure'],
+    title: 'Departure Day',
+    place: 'Bukhara → Airport / Train',
+    events: [
+      { time: '07:00', name: 'Breakfast & checkout', type: 'food' },
+      { time: '08:00', name: 'Transfer to airport or train station', price: '~$5', type: 'transport' },
+      { time: '09:30', name: 'Check-in & departure', type: 'flight' },
+    ],
+  },
+];
+
 // ── PRAGUE ────────────────────────────────────────────────────────────────────
 const pragueSchedules = [
   {
@@ -2215,6 +2274,7 @@ export const citySchedules = {
   newyork:      newyorkSchedules,
   tashkent:     tashkentSchedules,
   samarkand:    samarkandSchedules,
+  bukhara:      bukharaSchedules,
   prague:       pragueSchedules,
   singapore:    singaporeSchedules,
   cairo:        cairoSchedules,
@@ -2311,9 +2371,24 @@ const CITY_ALIASES = {
   ташкент:       'tashkent',
   узбекистан:    'tashkent',
   самарканд:     'samarkand',
+  бухара:        'bukhara',
   прага:         'prague',
   чехия:         'prague',
   сингапур:      'singapore',
+};
+
+// Tokenize on word boundaries so a short alias (e.g. "uk") can't match as a
+// raw substring of an unrelated word (e.g. "bukhara" contains "uk").
+const tokenize = (s) => (s || '').toLowerCase().match(/[a-zа-яё0-9]+/gi) || [];
+
+// True if `needle`'s tokens appear as a contiguous run inside `haystackTokens`.
+const containsPhrase = (haystackTokens, needle) => {
+  const needleTokens = tokenize(needle);
+  if (needleTokens.length === 0) return false;
+  for (let i = 0; i <= haystackTokens.length - needleTokens.length; i++) {
+    if (needleTokens.every((t, j) => haystackTokens[i + j] === t)) return true;
+  }
+  return false;
 };
 
 // ── Lookup helper ─────────────────────────────────────────────────────────────
@@ -2321,18 +2396,25 @@ export const getSchedulesForCity = (destination) => {
   if (!destination) return genericSchedules;
   const q = destination.toLowerCase().trim();
   const normalized = q.replace(/\s+/g, '');
+  const qTokens = tokenize(destination);
 
-  // Direct key match (exact or partial)
+  // Direct key match (exact or partial). `key.includes(queryToken)` matches a
+  // shortened/partial city name (e.g. "kuala" -> "kualalumpur"), but only once
+  // the token is long enough to not be a coincidental substring of some
+  // unrelated key (e.g. "uk" is a substring of "bukhara").
   if (citySchedules[normalized]) return citySchedules[normalized];
+  const firstToken = normalized.split(/[\s,]+/)[0];
   for (const [key, schedules] of Object.entries(citySchedules)) {
-    if (normalized.includes(key) || key.includes(normalized.split(/[\s,]+/)[0])) {
+    if (normalized.includes(key) || (firstToken.length >= 4 && key.includes(firstToken))) {
       return schedules;
     }
   }
 
-  // Alias match: country / alt-spelling / Russian name
+  // Alias match: country / alt-spelling / Russian name. Tokenized so a short
+  // alias (e.g. "uk") can't match as a raw substring of an unrelated word
+  // (e.g. "bukhara" contains "uk").
   for (const [alias, cityKey] of Object.entries(CITY_ALIASES)) {
-    if (normalized.includes(alias) || alias.includes(normalized)) {
+    if (containsPhrase(qTokens, alias) || containsPhrase(tokenize(alias), destination)) {
       return citySchedules[cityKey] || genericSchedules;
     }
   }

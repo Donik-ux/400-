@@ -111,6 +111,32 @@ function aiAskDevApi() {
   };
 }
 
+// Dev-only middleware for /api/photo (Unsplash proxy — keeps the key
+// server-side, mirrors amadeusDevApi's GET+query-string shape).
+function photoDevApi() {
+  return {
+    name: 'photo-dev-api',
+    configureServer(server) {
+      server.middlewares.use('/api/photo', async (req, res) => {
+        const send = (status, obj) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          const url = new URL(req.originalUrl || req.url, 'http://localhost');
+          const q = url.searchParams.get('q');
+          const mod = await server.ssrLoadModule('/api/photo.js');
+          const photoUrl = await mod.searchPhoto(q);
+          send(200, { url: photoUrl });
+        } catch (err) {
+          send(err.status || 500, { error: String(err?.message || err) });
+        }
+      });
+    },
+  };
+}
+
 // Dev-only middleware for /api/adminAuth (real, server-verified admin login —
 // replaces the old client-only "type any role into localStorage" check).
 function adminAuthDevApi() {
@@ -152,6 +178,7 @@ export default defineConfig(({ mode }) => {
   process.env.ADMIN_PASSWORD        = env.ADMIN_PASSWORD        || process.env.ADMIN_PASSWORD        || '';
   process.env.ADMIN_TOKEN_SECRET    = env.ADMIN_TOKEN_SECRET    || process.env.ADMIN_TOKEN_SECRET    || '';
   process.env.DUFFEL_API_KEY        = env.DUFFEL_API_KEY        || process.env.DUFFEL_API_KEY        || '';
+  process.env.UNSPLASH_ACCESS_KEY   = env.UNSPLASH_ACCESS_KEY   || process.env.UNSPLASH_ACCESS_KEY   || '';
 
   return {
     plugins: [
@@ -161,6 +188,7 @@ export default defineConfig(({ mode }) => {
       hotelsDevApi(),
       translateDevApi(),
       aiAskDevApi(),
+      photoDevApi(),
       adminAuthDevApi(),
     ],
   };

@@ -590,6 +590,55 @@ export const cityDatabase = {
     },
   },
 
+  bukhara: {
+    name: 'Bukhara', country: 'Uzbekistan', currency: 'UZS', budgetFactor: 0.28,
+    hero: 'https://images.unsplash.com/photo-1670514535515-e7af911bdadb?auto=format&fit=crop&w=1400&q=80',
+    transport: {
+      luxury:   'Private car from Tashkent (6–7 h) or fly into Bukhara Airport (BHK, ~1 h from Tashkent) + private transfer.',
+      standard: 'Afrosiyob/Sharq train from Tashkent via Samarkand (~4–5 h total, ~$15–25) + local taxis (~$1–3).',
+      economy:  'Domestic flight or overnight train from Tashkent (~$8–15) + shared taxis (~$0.50–1); Old City is fully walkable.',
+    },
+    hotels: {
+      luxury:   'Sahid Zarafshon Hotel (Old Town, near the Ark Fortress)',
+      standard: 'Bukhara Vavilon Plaza Hotel (Usta Shirin St, near the Ark Fortress)',
+      economy:  'Sasha & Son Hotel (16th-century merchant house near Lyab-i Hauz)',
+    },
+    tips: [
+      'Bukhara\'s Old City is a UNESCO World Heritage Site — over 2,000 years old, one of the best-preserved Silk Road cities in Central Asia.',
+      'Buy a combined ticket at the Ark Fortress ticket office — covers several of the Old City museums.',
+      'Lyab-i Hauz square (17th-c. pond + mulberry trees) is the best place to rest — teahouses ring the water on all sides.',
+      'The whole historic centre is walkable — most sights are within 1.5 km of each other.',
+      'Bukhara plov is cooked differently from Tashkent/Samarkand style — worth trying both to compare.',
+    ],
+    places: [
+      'Po-i-Kalyan Complex (Kalyan Minaret & Mosque)', 'Ark Fortress', 'Lyab-i Hauz square',
+      'Chor Minor (Four Minarets)', 'Trading domes (Taki-Zargaron, Taki-Sarrafon)', 'Ismail Samani Mausoleum, Samani Park',
+      'Bolo Hauz Mosque', 'Sitorai Mokhi-Khosa (Emir\'s summer palace)', 'Old Jewish Quarter',
+    ],
+    activities: {
+      history: {
+        morning:   ['Po-i-Kalyan Complex — 12th-c. Kalyan Minaret (46 m) & Kalyan Mosque (~25 000 UZS)', 'Ark Fortress — citadel & former royal residence (~30 000 UZS)', 'Ismail Samani Mausoleum, Samani Park — 9th–10th c., one of the oldest monuments in Central Asia (~15 000 UZS)', 'Mir-i-Arab Madrasa — view the courtyard from outside (still an active seminary, free)'],
+        afternoon: ['Chor Minor (Four Minarets), Old Jewish Quarter (~15 000 UZS)', 'Bolo Hauz Mosque — "forty columns" mosque opposite the Ark (~10 000 UZS)', 'Ulugbek Madrasah, Bukhara — the oldest of Ulugbek\'s three 15th-c. madrasas (~15 000 UZS)', 'Chashma-Ayub Mausoleum — 12th-c. legendary spring site (~10 000 UZS)'],
+        evening:   ['Ark Fortress illuminated at dusk (exterior free)', 'Po-i-Kalyan complex at blue hour — minaret lit up (free)', 'Lyab-i Hauz square evening — teahouses & mulberry trees (free)', 'Old City lantern-lit lanes walk (free)'],
+      },
+      culture: {
+        morning:   ['Trading domes — Taki-Zargaron (jewellers), Taki-Telpak Furushon (hat-makers) (free to browse)', 'Bukhara Regional Art Museum, Ark Fortress grounds (~15 000 UZS)', 'Suzani embroidery & ikat silk workshop visit', 'Gold embroidery (zardozi) atelier tour, Old City'],
+        afternoon: ['Sitorai Mokhi-Khosa — Emir\'s summer palace, ~4 km from centre (~25 000 UZS)', 'Bahauddin Naqshband Complex — major Sufi pilgrimage shrine, ~12 km outside town (~15 000 UZS + taxi)', 'Miniature painting workshop, Old City', 'Taki-Sarrafon (money-changers\' dome) craft shopping'],
+        evening:   ['Traditional Uzbek dinner with folklore show at a restaurant on Lyab-i Hauz', 'Nadir Divan-Beg Madrasa courtyard evening — live traditional music (seasonal)', 'Old City evening walk past the illuminated trading domes (free)', 'Chaikhana (teahouse) terrace on Lyab-i Hauz — tea & pastries (~15 000 UZS)'],
+      },
+      food: {
+        morning:   ['Bukhara-style plov at a Lyab-i Hauz chaikhana (opens ~08:00, ~25 000 UZS)', 'Non flatbread fresh from a tandyr oven, Old City bazaar (~5 000 UZS)', 'Katyk (yogurt) & dried fruit breakfast from a local stall (~10 000 UZS)', 'Green tea & pastries at a Lyab-i Hauz teahouse (~10 000 UZS)'],
+        afternoon: ['Shashlik kebab near the trading domes (~20 000 UZS)', 'Norin (thin-noodle horsemeat dish) at a local eatery (~20 000 UZS)', 'Samsa from an Old City tandyr stall (~5 000 UZS each)', 'Manti (steamed dumplings) at a family-run kitchen (~15 000 UZS)'],
+        evening:   ['Dinner on the Lyab-i Hauz square terraces — plov, salads, live music (~40 000 UZS)', 'Home-style Uzbek dinner at a family guesthouse (~50 000 UZS)', 'Bukhara wine tasting — local Shirin/Bagizagan wines', 'Old City rooftop dinner with Po-i-Kalyan minaret views'],
+      },
+      nature: {
+        morning:   ['Zerafshan River oasis morning walk, outskirts of town', 'Samani Park morning stroll around the mausoleum gardens (free)', 'Sitorai Mokhi-Khosa palace gardens (~25 000 UZS combined with palace)', 'Old City rooftop sunrise views from a teahouse terrace'],
+        afternoon: ['Bahauddin Naqshband Complex gardens, outside town (~15 000 UZS + taxi)', 'Countryside day trip to a nearby kolkhoz village for a home-cooked lunch', 'Lyab-i Hauz mulberry-tree square, midday shade (free)', 'Ark Fortress ramparts walk — views over the Old City (~30 000 UZS)'],
+        evening:   ['Sunset over the Old City from the Ark Fortress ramparts (~30 000 UZS)', 'Lyab-i Hauz square at dusk — locals gathering by the pond (free)', 'Po-i-Kalyan minaret silhouette at blue hour (free)', 'Evening stroll along the old irrigation canals, Old City (free)'],
+      },
+    },
+  },
+
   prague: {
     name: 'Prague', country: 'Czech Republic', currency: 'CZK', budgetFactor: 0.75,
     hero: 'https://images.unsplash.com/photo-1541849546-216549ae216d?auto=format&fit=crop&w=1400&q=80',

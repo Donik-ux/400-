@@ -8,6 +8,7 @@ import { detectCurrentLocation } from '../services/geolocation';
 
 /* Curated destination recommendations. */
 const RECOMMENDED = [
+  { city: 'Bukhara',      country: 'Uzbekistan',   from: 125, img: 'https://images.unsplash.com/photo-1670514535515-e7af911bdadb?auto=format&fit=crop&w=900&q=80', tag: '2,000+ years old' },
   { city: 'New York',     country: 'USA',          from: 540, img: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=900&q=80' },
   { city: 'Miami',        country: 'USA',          from: 480, img: 'https://images.unsplash.com/photo-1535498730771-e735b998cd64?auto=format&fit=crop&w=900&q=80' },
   { city: 'Lauterbrunnen',country: 'Switzerland',  from: 620, img: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=900&q=80' },
@@ -114,6 +115,11 @@ export default function RecommendedTrips() {
             className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-soft transition hover:-translate-y-1.5 hover:shadow-lift text-left">
             <SmartImage src={d.img} alt={d.city} wrapperClassName="absolute inset-0" className="group-hover:scale-110 transition-transform duration-[600ms]" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
+            {d.tag && (
+              <div className="absolute top-2.5 left-2.5 text-[9px] font-black uppercase tracking-wide bg-[#febb02] text-[#1a1a1a] px-2 py-1 rounded-md shadow-soft">
+                {d.tag}
+              </div>
+            )}
             <div className="absolute inset-0 p-3 flex flex-col justify-end text-white">
               <div className="text-[15px] font-black leading-tight">{d.city}</div>
               <div className="text-[11px] text-white/70 font-semibold mb-2">{d.country}</div>

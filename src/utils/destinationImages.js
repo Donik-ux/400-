@@ -82,7 +82,7 @@ const HEROES = {
   osh:         'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1400&q=80',
   tashkent:    'https://images.unsplash.com/photo-1573108724029-4c46571d6490?auto=format&fit=crop&w=1400&q=80',
   samarkand:   'https://images.unsplash.com/photo-1604608672516-9656d6678f86?auto=format&fit=crop&w=1400&q=80',
-  bukhara:     'https://images.unsplash.com/photo-1567606404787-b54fab06f5e0?auto=format&fit=crop&w=1400&q=80',
+  bukhara:     'https://images.unsplash.com/photo-1670514535515-e7af911bdadb?auto=format&fit=crop&w=1400&q=80',
   almaty:      'https://images.unsplash.com/photo-1548588681-adf41d474533?auto=format&fit=crop&w=1400&q=80',
   moscow:      'https://images.unsplash.com/photo-1547448415-e9f5b28e570d?auto=format&fit=crop&w=1400&q=80',
   baku:        'https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?auto=format&fit=crop&w=1400&q=80',
@@ -97,27 +97,35 @@ const GENERIC_FALLBACKS = [
   'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1400&q=80',
 ];
 
+const findCuratedKey = (k) => {
+  if (!k) return null;
+  if (HEROES[k]) return k;
+  if (k.includes(',')) {
+    const city = k.split(',')[0].trim();
+    if (HEROES[city]) return city;
+  }
+  for (const key of Object.keys(HEROES)) {
+    if (k.includes(key) || key.includes(k)) return key;
+  }
+  return null;
+};
+
 /** Find a hero image for any destination string. Always returns something. */
 export const heroFor = (destination = '') => {
   const k = String(destination).toLowerCase().trim();
   if (!k) return GENERIC_FALLBACKS[0];
 
-  // direct hit
-  if (HEROES[k]) return HEROES[k];
-
-  // "city, country" → try city part
-  if (k.includes(',')) {
-    const city = k.split(',')[0].trim();
-    if (HEROES[city]) return HEROES[city];
-  }
-
-  // partial match
-  for (const key of Object.keys(HEROES)) {
-    if (k.includes(key) || key.includes(k)) return HEROES[key];
-  }
+  const curatedKey = findCuratedKey(k);
+  if (curatedKey) return HEROES[curatedKey];
 
   // deterministic fallback by hash
   let h = 0;
   for (let i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) | 0;
   return GENERIC_FALLBACKS[Math.abs(h) % GENERIC_FALLBACKS.length];
+};
+
+/** True if `destination` has a hand-picked photo (vs. the generic hash fallback). */
+export const hasCuratedHero = (destination = '') => {
+  const k = String(destination).toLowerCase().trim();
+  return Boolean(findCuratedKey(k));
 };

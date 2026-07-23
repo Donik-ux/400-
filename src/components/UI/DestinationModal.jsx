@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { X, MapPin, Calendar, Globe, Users, Plane, ArrowRight, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../../store/useLangStore';
+import SmartImage from '../SmartImage';
 
 const DestinationModal = ({ destination, onClose }) => {
   const navigate    = useNavigate();
@@ -60,12 +61,7 @@ const DestinationModal = ({ destination, onClose }) => {
         >
           {/* ─── HERO IMAGE ─── */}
           <div className="relative h-64 md:h-72 shrink-0 overflow-hidden">
-            <img
-              src={destination.hero}
-              alt={destination.city}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
+            <SmartImage src={destination.hero} alt={destination.city} wrapperClassName="absolute inset-0" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-black/30 to-transparent" />
 
             <button

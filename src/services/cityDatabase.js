@@ -604,6 +604,11 @@ export const cityDatabase = {
       economy:  'Sasha & Son Hotel (16th-century merchant house near Lyab-i Hauz)',
     },
     hotelAddress: 'Usto Sharif St 49, Bukhara 200100, Uzbekistan',
+    // Real, verified places the AI planner must feature (not just fall back to
+    // when offline) — see aiPlannerService.js's mustIncludeBlock.
+    mustInclude: [
+      { name: 'El Classico Restaurant', type: 'food', address: 'Mukhammad Ikbal St, Bukhara 200100', note: 'affordable, popular with travellers' },
+    ],
     tips: [
       'Bukhara\'s Old City is a UNESCO World Heritage Site — over 2,000 years old, one of the best-preserved Silk Road cities in Central Asia.',
       'Buy a combined ticket at the Ark Fortress ticket office — covers several of the Old City museums.',

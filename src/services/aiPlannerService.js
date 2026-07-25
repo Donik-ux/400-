@@ -245,6 +245,13 @@ Write ALL human-readable text VALUES in ${langName}: every "title", "label", "tr
 
   const startStr = startDate ? new Date(startDate).toDateString() : 'as soon as practical';
 
+  // Real, verified local spots (see cityDatabase.js `mustInclude`) that the
+  // AI must feature rather than inventing its own — e.g. a specific
+  // traveller-vetted restaurant we want every itinerary to surface.
+  const mustIncludeBlock = (cityData?.mustInclude?.length)
+    ? `\nMUST-INCLUDE REAL PLACES — feature EVERY one of these at least once, using the exact name and address given (they are verified, not suggestions to replace):\n${cityData.mustInclude.map(p => `- ${p.name} (${p.type}), ${p.address}${p.note ? ` — ${p.note}` : ''}`).join('\n')}\n`
+    : '';
+
   // Budget tier — drives how expensive entries you suggest
   const tierHint = totalBdg < 800
     ? '⚠️ TIGHT BUDGET. Prefer FREE attractions (parks, viewpoints, plazas, free museums). Street food / canteen meals $3–8. No paid tours over $15.'
@@ -264,7 +271,7 @@ Start date: ${startStr}
 ${routeNote}
 ${transportNote}
 Interests: ${interests.join(', ') || 'sightseeing, culture, food, history'}
-
+${mustIncludeBlock}
 CRITICAL RULES — FOLLOW EXACTLY:
 1. Every place name MUST be a REAL, named attraction, museum, neighbourhood, market, park, landmark, viewpoint or street in ${destination}. NEVER use placeholders like "City Center" or "Local Restaurant".
 2. EVERY event MUST include a real STREET ADDRESS with postal code AND district. Example formats:

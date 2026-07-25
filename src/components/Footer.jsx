@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Compass, Mail } from 'lucide-react';
+import { Compass, Mail, Youtube } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 import { SUPPORT_EMAIL } from '../config/contact';
 
@@ -48,9 +48,17 @@ export default function Footer() {
                 <span className="text-[7px] font-bold text-white/40 uppercase tracking-widest mt-0.5">{t('footer.brandSub')}</span>
               </div>
             </div>
-            <p className="text-[13px] text-white/55 leading-relaxed mb-6 font-medium">
+            <p className="text-[13px] text-white/55 leading-relaxed mb-4 font-medium">
               {t('footer.desc')}
             </p>
+            <a href="https://youtube.com/@maftravel" target="_blank" rel="noopener noreferrer"
+              aria-label="MAFTRAVEL on YouTube"
+              className="inline-flex items-center gap-2 text-[13px] font-bold text-white/65 hover:text-white transition-premium group">
+              <span className="w-8 h-8 rounded-lg bg-white/[0.08] border border-white/[0.15] flex items-center justify-center group-hover:bg-[#ff0000] group-hover:border-[#ff0000] transition-premium">
+                <Youtube className="w-4 h-4" />
+              </span>
+              YouTube
+            </a>
           </div>
 
           {/* Navigation */}

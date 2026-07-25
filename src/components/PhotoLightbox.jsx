@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { X, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
-import { heroFor, GENERIC_FALLBACKS } from '../utils/destinationImages';
 import { fetchLivePhoto } from '../services/photoClient';
 
 // Distinct search angles so the live photos are varied, not near-duplicates.
@@ -8,23 +7,21 @@ const QUERY_ANGLES = ['landmarks', 'old town', 'architecture', 'street life'];
 
 /**
  * Fullscreen photo viewer for a destination: opens with the card's own photo
- * plus the destination hero, then upgrades to 3-5 distinct live photos of the
- * place via /api/photo (Unsplash) when configured. Generic travel photos pad
- * the set so there are always at least 3 slides.
+ * only, then adds up to 4 distinct live photos of the place via /api/photo
+ * (Unsplash) when configured — no generic filler photos.
  */
 export default function PhotoLightbox({ destination, mainImage, onClose }) {
   const city = String(destination || '').split(',')[0].trim();
-  const [photos, setPhotos] = useState(() =>
-    [...new Set([mainImage, heroFor(city), ...GENERIC_FALLBACKS].filter(Boolean))].slice(0, 4));
+  const [photos, setPhotos] = useState(() => [mainImage].filter(Boolean));
   const [index, setIndex] = useState(0);
 
-  // Swap in real, city-specific photos as they resolve (no-op without a key).
+  // Add real, city-specific photos as they resolve (no-op without a key).
   useEffect(() => {
     let cancelled = false;
     Promise.all(QUERY_ANGLES.map((a) => fetchLivePhoto(`${city} ${a}`))).then((live) => {
       const found = live.filter(Boolean);
       if (cancelled || !found.length) return;
-      setPhotos([...new Set([mainImage, ...found, heroFor(city)].filter(Boolean))].slice(0, 5));
+      setPhotos([...new Set([mainImage, ...found].filter(Boolean))].slice(0, 5));
     });
     return () => { cancelled = true; };
   }, [city, mainImage]);

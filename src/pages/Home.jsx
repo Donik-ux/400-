@@ -1066,7 +1066,7 @@ const Home = () => {
               {reviews.length > 0
                 ? fill(t('homePage.reviews.subtitleCount'), {
                     count: reviews.length,
-                    plural: reviews.length === 1 ? '' : 's',
+                    reviewWord: t(reviews.length === 1 ? 'homePage.reviews.reviewWordSingular' : 'homePage.reviews.reviewWordPlural'),
                     avg: (reviews.reduce((s, r) => s + (r.rating || 5), 0) / reviews.length).toFixed(1),
                   })
                 : t('homePage.reviews.subtitleEmpty')}
@@ -1100,15 +1100,20 @@ const Home = () => {
           )}
 
           {reviews.length > 0 && (
-            <div className="grid md:grid-cols-3 gap-4">
-              {reviews.slice(0, 9).map((r, i) => (
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+              {reviews.slice(0, 20).map((r, i) => (
                 <motion.div
                   key={`${r.name}-${r.createdAt || i}`}
                   initial={{ opacity: 0, y: 14 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: (i % 6) * 0.08 }}
-                  className="quote-lux relative bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] shadow-soft p-5 pt-9 lift">
+                  className="quote-lux relative shrink-0 w-[85vw] sm:w-80 snap-start bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] shadow-soft p-5 pt-9 lift">
+                  {r.destination && (
+                    <div className="absolute top-3 right-3 text-[10px] font-black uppercase tracking-wide bg-white text-[#0071c2] px-2 py-1 rounded-md shadow-soft flex items-center gap-1">
+                      <MapPin className="w-2.5 h-2.5" /> {r.destination}
+                    </div>
+                  )}
                   <div className="flex items-center gap-1 mb-2 text-[#febb02]">
                     {Array.from({ length: r.rating || 5 }).map((_, k) => <Star key={k} className="w-3.5 h-3.5 fill-[#febb02]" />)}
                   </div>

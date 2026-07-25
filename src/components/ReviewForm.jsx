@@ -7,6 +7,7 @@ import { toast } from './Toast';
 export default function ReviewForm({ t, onSubmitted }) {
   const [name, setName] = useState('');
   const [city, setCity] = useState('');
+  const [destination, setDestination] = useState('');
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
   const [text, setText] = useState('');
@@ -20,11 +21,11 @@ export default function ReviewForm({ t, onSubmitted }) {
       return;
     }
     setSubmitting(true);
-    const result = await submitReview({ name, city, rating, text });
+    const result = await submitReview({ name, city, destination, rating, text });
     setSubmitting(false);
     if (result.success) {
       toast.success(t('homePage.reviews.formSuccessTitle'), t('homePage.reviews.formSuccessBody'));
-      setName(''); setCity(''); setRating(5); setText('');
+      setName(''); setCity(''); setDestination(''); setRating(5); setText('');
       onSubmitted?.(result.review);
     } else {
       toast.error(t('homePage.reviews.formErrorTitle'), result.error);
@@ -52,6 +53,10 @@ export default function ReviewForm({ t, onSubmitted }) {
           placeholder={t('homePage.reviews.cityPlaceholder')}
           className="px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#0071c2] transition" />
       </div>
+
+      <input value={destination} onChange={(e) => setDestination(e.target.value)} maxLength={60}
+        placeholder={t('homePage.reviews.destinationPlaceholder')}
+        className="w-full px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#0071c2] transition mb-2" />
 
       <textarea value={text} onChange={(e) => setText(e.target.value)} maxLength={500} required rows={3}
         placeholder={t('homePage.reviews.textPlaceholder')}

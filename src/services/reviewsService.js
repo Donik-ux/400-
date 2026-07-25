@@ -14,15 +14,15 @@ export const fetchReviews = async () => {
 };
 
 /**
- * @param {{name: string, city?: string, rating: number, text: string}} review
+ * @param {{name: string, city?: string, destination?: string, rating: number, text: string}} review
  * @returns {Promise<{success: boolean, error?: string}>}
  */
-export const submitReview = async ({ name, city, rating, text }) => {
+export const submitReview = async ({ name, city, destination, rating, text }) => {
   try {
     const res = await fetch(`${base()}api/reviews`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, city, rating, text }),
+      body: JSON.stringify({ name, city, destination, rating, text }),
     });
     const data = await res.json().catch(() => null);
     if (!res.ok) return { success: false, error: data?.error || `Request failed (${res.status})` };

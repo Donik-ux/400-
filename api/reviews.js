@@ -36,16 +36,17 @@ export async function listReviews(limit = 50) {
     .filter(Boolean);
 }
 
-export async function addReview({ name, city, rating, text } = {}) {
-  const cleanName   = String(name || '').trim().slice(0, 60);
-  const cleanCity   = String(city || '').trim().slice(0, 60);
-  const cleanText   = String(text || '').trim().slice(0, 500);
-  const cleanRating = Math.max(1, Math.min(5, Math.round(Number(rating) || 5)));
+export async function addReview({ name, city, destination, rating, text } = {}) {
+  const cleanName        = String(name || '').trim().slice(0, 60);
+  const cleanCity        = String(city || '').trim().slice(0, 60);
+  const cleanDestination = String(destination || '').trim().slice(0, 60);
+  const cleanText        = String(text || '').trim().slice(0, 500);
+  const cleanRating      = Math.max(1, Math.min(5, Math.round(Number(rating) || 5)));
 
   if (!cleanName)                 { const e = new Error('Name is required');                e.status = 400; throw e; }
   if (cleanText.length < 10)      { const e = new Error('Review text is too short');         e.status = 400; throw e; }
 
-  const review = { name: cleanName, city: cleanCity, rating: cleanRating, text: cleanText, createdAt: new Date().toISOString() };
+  const review = { name: cleanName, city: cleanCity, destination: cleanDestination, rating: cleanRating, text: cleanText, createdAt: new Date().toISOString() };
   await redisCommand('LPUSH', REVIEWS_KEY, JSON.stringify(review));
   await redisCommand('LTRIM', REVIEWS_KEY, 0, MAX_REVIEWS - 1);
   return review;

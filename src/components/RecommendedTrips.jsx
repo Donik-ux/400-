@@ -103,7 +103,7 @@ export default function RecommendedTrips() {
       </div>
 
       {/* Destination recommendations */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+      <div className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
         {RECOMMENDED.map((d, i) => (
           <motion.button
             key={d.city}
@@ -112,7 +112,7 @@ export default function RecommendedTrips() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.3, delay: (i % 6) * 0.05 }}
-            className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-soft transition hover:-translate-y-1.5 hover:shadow-lift text-left">
+            className="group relative shrink-0 w-40 md:w-44 aspect-[3/4] snap-start overflow-hidden rounded-2xl shadow-soft transition hover:-translate-y-1.5 hover:shadow-lift text-left">
             <SmartImage src={d.img} alt={d.city} wrapperClassName="absolute inset-0" className="group-hover:scale-110 transition-transform duration-[600ms]" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
             {d.tag && (

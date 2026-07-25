@@ -459,7 +459,7 @@ export default function Flights() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+              <div className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
                 {POPULAR_ROUTES.map((r, i) => (
                   <button key={i}
                     onClick={() => {
@@ -467,7 +467,7 @@ export default function Flights() {
                       handleSearch({ formData: { from: r.from, to: r.to, date: '' } });
                       window.scrollTo({ top: 80, behavior: 'smooth' });
                     }}
-                    className="group card-sheen relative aspect-[4/5] overflow-hidden rounded-3xl bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 border border-[#e6dcc3] transition-all duration-300 active:scale-[0.98]"
+                    className="group card-sheen relative shrink-0 w-48 md:w-56 aspect-[4/5] snap-start overflow-hidden rounded-3xl bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 border border-[#e6dcc3] transition-all duration-300 active:scale-[0.98]"
                     style={{ backgroundImage: `url(${heroFor(r.city)})` }}>
                     <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url(${heroFor(r.city)})` }} />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />

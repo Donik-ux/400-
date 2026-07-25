@@ -547,7 +547,7 @@ const HotTours = () => {
           </div>
           <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">{t('hotTours.tiers.title')}</h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+        <div className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {[
             { lab: t('hotTours.tiers.budgetSaver'),     min: 500,  max: 800,    img: 'https://images.unsplash.com/photo-1715540335937-f54bf332585a?auto=format&fit=crop&w=600&q=80' },
             { lab: t('hotTours.tiers.smartValue'),      min: 800,  max: 1500,   img: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80' },
@@ -556,7 +556,7 @@ const HotTours = () => {
             { lab: t('hotTours.tiers.luxurySignature'), min: 5000, max: 12000,  img: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=600&q=80' },
           ].map((b, i) => (
             <button key={i} onClick={() => { const v = Math.round((b.min + b.max) / 2); setBalance(v); runStudio(v); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group lift card-sheen relative overflow-hidden rounded-2xl aspect-[4/5] shadow-soft border border-[#e6dcc3]">
+              className="group lift card-sheen relative shrink-0 w-44 md:w-48 snap-start overflow-hidden rounded-2xl aspect-[4/5] shadow-soft border border-[#e6dcc3]">
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" style={{ backgroundImage:`url(${b.img})` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               <div className="absolute inset-0 p-4 flex flex-col justify-end text-left text-white">
@@ -582,7 +582,7 @@ const HotTours = () => {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {hotDeals.map((p, i) => (
             <motion.div
               key={p.id}
@@ -590,7 +590,7 @@ const HotTours = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.05, ease: [0.4, 0, 0.2, 1] }}
-              className="group lift card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft"
+              className="group lift card-sheen shrink-0 w-80 snap-start bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft"
             >
               <div className="relative h-48 overflow-hidden">
                 <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}

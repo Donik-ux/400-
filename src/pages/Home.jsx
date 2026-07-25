@@ -712,12 +712,12 @@ const Home = () => {
           </button>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {featured.map((p, i) => {
             const discount = [42, 35, 28, 22][i] || 20;
             const original = Math.round(p.price / (1 - discount / 100));
             return (
-              <Tilt3D key={p.id} max={7} className="rounded-2xl">
+              <Tilt3D key={p.id} max={7} className="shrink-0 w-72 snap-start rounded-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -934,9 +934,9 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {TRENDING.map((d, i) => (
-            <Tilt3D key={i} max={9} className="card-sheen aspect-[4/3] rounded-2xl shadow-soft">
+            <Tilt3D key={i} max={9} className="card-sheen shrink-0 w-56 md:w-64 aspect-[4/3] snap-start rounded-2xl shadow-soft">
               <motion.button
                 onClick={() => navigate(d.city === 'Antarctica' ? '/antarctica' : '/flights', {
                   state: d.city === 'Antarctica' ? undefined : { formData: { from: '', to: d.city, date: '', returnDate: '' } },
@@ -983,7 +983,7 @@ const Home = () => {
         <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a] mb-1">{t('homePage.themesSection.heading')}</h2>
         <p className="text-[14px] text-[#5c5245] font-medium mb-6">{t('homePage.themesSection.subtitle')}</p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {THEMES.map((th, i) => (
             <motion.button
               key={th.id}
@@ -992,7 +992,7 @@ const Home = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.28, delay: (i % 6) * 0.04 }}
-              className="group bg-white rounded-2xl border border-[#e6dcc3] shadow-soft hover:border-[#0071c2] overflow-hidden lift">
+              className="group shrink-0 w-40 md:w-44 snap-start bg-white rounded-2xl border border-[#e6dcc3] shadow-soft hover:border-[#0071c2] overflow-hidden lift">
               <div className="aspect-[4/3] overflow-hidden">
                 <div className="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-[600ms]" style={{ backgroundImage:`url(${th.img})` }} />
               </div>
@@ -1014,7 +1014,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {allPackages.map((p, i) => (
             <motion.div
               key={p.id}
@@ -1022,7 +1022,7 @@ const Home = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
-              className="card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft lift group cursor-pointer"
+              className="card-sheen shrink-0 w-72 snap-start bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft lift group cursor-pointer"
               onClick={() => navigate('/hot-tours')}>
               <div className="relative h-44 overflow-hidden">
                 <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}

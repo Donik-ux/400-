@@ -5,7 +5,7 @@ import {
   ArrowLeft, MapPin, Calendar, Users, Sparkles, Loader2, Plane, Hotel, Utensils, Bus,
   Activity, ShoppingBag, Wallet, Printer, Share2, Save, Download, Clock, Heart,
   Check, Map as MapIcon, AlertCircle, Star, Lightbulb, Phone, ShieldAlert, RefreshCcw,
-  Navigation, ExternalLink, ArrowRight, UserPlus, X, Landmark,
+  Navigation, ExternalLink, ArrowRight, UserPlus, X, Landmark, PartyPopper,
 } from 'lucide-react';
 import { mapsUrlFor, mapsUrlFromAddress, dayMapsUrl } from '../utils/mapsUrl';
 import useAuthStore from '../store/useAuthStore';
@@ -339,6 +339,25 @@ export default function TripPlan() {
 
           {/* ── Left: Plan ── */}
           <div className="lg:col-span-2 space-y-5" id="print-plan">
+
+            {/* ── Upcoming holiday banner (AI-found, near the travel dates) ── */}
+            {plan?.cityInfo?.upcomingEvent && (
+              <div className="flex items-start gap-3 rounded-2xl border border-[#f5b942]/50 bg-gradient-to-r from-[#fff7e6] to-[#fffdf5] p-4 shadow-soft">
+                <div className="w-10 h-10 rounded-xl bg-[#febb02] flex items-center justify-center text-[#1a1a1a] shrink-0">
+                  <PartyPopper className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#a45e00]">{t('tripPlan.upcomingEventLabel')}</div>
+                  <div className="text-[15px] font-black text-[#1a1a1a] mt-0.5">
+                    {plan.cityInfo.upcomingEvent.name}
+                    {plan.cityInfo.upcomingEvent.date && <span className="text-[#a45e00]"> · {plan.cityInfo.upcomingEvent.date}</span>}
+                  </div>
+                  {plan.cityInfo.upcomingEvent.note && (
+                    <p className="text-[13px] text-[#5c5245] font-medium leading-relaxed mt-1">{plan.cityInfo.upcomingEvent.note}</p>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* ── Berlin-style header summary ── */}
             <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 md:p-6 shadow-soft">

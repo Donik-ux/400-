@@ -174,8 +174,12 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
   /* Emergency contacts — always populated from our curated DB */
   const emergency = getEmergencyContacts(destination);
 
-  const cityInfo = (parsed?.cityInfo?.about || parsed?.cityInfo?.currentHappenings)
-    ? { about: parsed.cityInfo.about || '', currentHappenings: parsed.cityInfo.currentHappenings || '' }
+  const rawEvent = parsed?.cityInfo?.upcomingEvent;
+  const upcomingEvent = (rawEvent && typeof rawEvent === 'object' && rawEvent.name)
+    ? { name: rawEvent.name, date: rawEvent.date || '', note: rawEvent.note || '' }
+    : null;
+  const cityInfo = (parsed?.cityInfo?.about || parsed?.cityInfo?.currentHappenings || upcomingEvent)
+    ? { about: parsed.cityInfo.about || '', currentHappenings: parsed.cityInfo.currentHappenings || '', upcomingEvent }
     : null;
 
   return {
@@ -304,6 +308,7 @@ CRITICAL RULES — FOLLOW EXACTLY:
 9. Respect budget: daily ~$${dailyBudget}, food ~$${mealBudget}/day. Choose ${style}-tier experiences. Every individual event price MUST fit the tier above. Sum of all event prices for a day SHOULD NOT exceed daily budget.
 10. Return ONLY a single valid JSON object — no markdown, no code fences, no commentary.
 11. Include a top-level "cityInfo" object: "about" is 3-4 sentences of real history — founding period/age (e.g. "founded in the 8th century", "over 2,000 years old"), what the city/place is historically known for, and roughly how many/what kind of major attractions it has. "currentHappenings" is 1-2 sentences on what's currently relevant there right now — the current season's appeal, any recurring festival/event around ${startStr}, or what the city is known for today. Use real, factual information — do not invent fake events or statistics.
+12. In "cityInfo" also include "upcomingEvent": the nearest REAL recurring holiday/festival in ${destination} on or after ${startStr} (national holiday, city festival, religious celebration — e.g. Navruz on March 21, a city's annual festival, Independence Day). Fields: "name", "date" (e.g. "March 21" or "late May"), "note" — one warm sentence inviting the traveler to arrive a day early to celebrate it in the city. ONLY use real, well-known recurring events with their real dates; if you don't know any within ~2 months of ${startStr}, set "upcomingEvent" to null instead of inventing one.
 
 ADDRESS FORMAT EXAMPLES (use this exact richness):
   - "Pariser Platz, 10117 Berlin" (district: "Mitte")
@@ -322,7 +327,8 @@ Return EXACTLY this JSON shape:
   },
   "cityInfo": {
     "about": "3-4 real sentences: founding period/age, historical significance, rough number/kind of major attractions",
-    "currentHappenings": "1-2 sentences on what's currently relevant/appealing there right now"
+    "currentHappenings": "1-2 sentences on what's currently relevant/appealing there right now",
+    "upcomingEvent": { "name": "Real recurring holiday/festival", "date": "March 21", "note": "One sentence inviting the traveler to arrive a day early for it" }
   },
   "hotel": {
     "name":          "Real hotel name in ${destination}",

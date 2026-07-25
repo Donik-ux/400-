@@ -17,7 +17,15 @@
 import { translations } from './index';
 import { LANG_MAP, isStaticLang } from './languages';
 
-const STORAGE_PREFIX = 'maf_i18n_';
+// v2: translations cached before the {placeholder}-protection fix in
+// api/translate.js may contain corrupted tokens (e.g. "{стране}" instead of
+// "{country}") — bumping the prefix discards them so they re-translate clean.
+const STORAGE_PREFIX = 'maf_i18n_v2_';
+try {
+  Object.keys(localStorage)
+    .filter((k) => k.startsWith('maf_i18n_') && !k.startsWith(STORAGE_PREFIX))
+    .forEach((k) => localStorage.removeItem(k));
+} catch { /* storage unavailable — nothing to clean */ }
 // Free-tier Gemini allows very few requests/day, so the #1 priority is sending
 // as FEW requests as possible: huge batches, one at a time.
 const BATCH_SIZE = 120;       // strings per Gemini request — whole site ≈ a handful of calls

@@ -5,7 +5,7 @@ import {
   ArrowLeft, MapPin, Calendar, Users, Sparkles, Loader2, Plane, Hotel, Utensils, Bus,
   Activity, ShoppingBag, Wallet, Printer, Share2, Save, Download, Clock, Heart,
   Check, Map as MapIcon, AlertCircle, Star, Lightbulb, Phone, ShieldAlert, RefreshCcw,
-  Navigation, ExternalLink, ArrowRight,
+  Navigation, ExternalLink, ArrowRight, UserPlus, X,
 } from 'lucide-react';
 import { mapsUrlFor, mapsUrlFromAddress, dayMapsUrl } from '../utils/mapsUrl';
 import useAuthStore from '../store/useAuthStore';
@@ -99,6 +99,10 @@ export default function TripPlan() {
   const [plan,       setPlan]       = useState(savedPlanState || null);
   const [error,      setError]      = useState(null);
   const [saved,      setSaved]      = useState(Boolean(savedPlanState));
+  const [guestBannerDismissed, setGuestBannerDismissed] = useState(false);
+  // Not signed in at all, or only ever used "continue as guest" — either way
+  // this plan lives in localStorage only and won't survive a cache clear.
+  const isGuest = !user || user.role === 'guest';
 
   /* ── Auto-generate the full plan when the user lands here ──
      Skipped when a previously-saved plan was passed in (e.g. reopening a
@@ -286,6 +290,29 @@ export default function TripPlan() {
       </section>
 
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 page-fade">
+
+        {plan && isGuest && !guestBannerDismissed && (
+          <div className="mb-6 flex items-start gap-3 rounded-2xl border border-[#f5b942]/50 bg-[#fff7e6] p-4 shadow-soft">
+            <div className="w-9 h-9 rounded-xl bg-[#febb02] flex items-center justify-center text-[#1a1a1a] shrink-0">
+              <UserPlus className="w-4.5 h-4.5" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-[14px] font-black text-[#1a1a1a]">{t('tripPlan.guestBanner.title')}</p>
+              <p className="text-[13px] text-[#5c5245] font-medium mt-0.5">{t('tripPlan.guestBanner.body')}</p>
+              <button
+                onClick={() => navigate('/register')}
+                className="mt-2.5 inline-flex items-center gap-1.5 bg-[#003580] hover:bg-[#0071c2] text-white text-[12px] font-black rounded-lg px-3.5 py-2 shadow-soft transition active:scale-95">
+                <UserPlus className="w-3.5 h-3.5" /> {t('tripPlan.guestBanner.cta')}
+              </button>
+            </div>
+            <button
+              onClick={() => setGuestBannerDismissed(true)}
+              aria-label={t('tripPlan.guestBanner.dismiss')}
+              className="text-[#93876f] hover:text-[#1a1a1a] transition shrink-0 p-1">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 

@@ -17,6 +17,13 @@ export default {
       back: 'Back',
       freeBadge: 'Your trip plan · 100% free',
       heroSub: 'A full day-by-day plan for {total} — places to visit, where to eat, how to get around.',
+      // Guest register nudge (shown above the plan for guests / logged-out visitors)
+      guestBanner: {
+        title: "Don't lose this plan",
+        body: 'You’re not signed in — this trip plan only lives in this browser. Create a free account to save it to My Plans.',
+        cta: 'Register free',
+        dismiss: 'Dismiss',
+      },
       // Summary card
       sectionLabel: 'Travel Plan',
       routeMapLabel: 'Your route on the map',
@@ -194,6 +201,13 @@ export default {
       back: 'Orqaga',
       freeBadge: 'Sayohat rejangiz · 100% bepul',
       heroSub: '{total} uchun to‘liq kunma-kun reja — qayerga borish, qayerda ovqatlanish va qanday yurish.',
+      // Guest register nudge (shown above the plan for guests / logged-out visitors)
+      guestBanner: {
+        title: 'Bu rejani yo‘qotmang',
+        body: 'Siz tizimga kirmagansiz — bu sayohat rejasi faqat shu brauzerda saqlanadi. Uni "Mening rejalarim"ga saqlash uchun bepul ro‘yxatdan o‘ting.',
+        cta: 'Bepul ro‘yxatdan o‘tish',
+        dismiss: 'Yopish',
+      },
       // Summary card
       sectionLabel: 'Sayohat rejasi',
       routeMapLabel: 'Marshrutingiz xaritada',

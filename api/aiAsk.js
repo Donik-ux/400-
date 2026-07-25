@@ -18,14 +18,22 @@ const safeJson = async (res) => {
 
 const extractText = (json) => (json?.choices?.[0]?.message?.content || '').trim();
 
-export async function askGroqServer({ prompt, temperature = 0.7, json = false, model, apiKey } = {}) {
+export async function askGroqServer({ prompt, temperature = 0.7, json = false, model, apiKey, maxTokens } = {}) {
   const key = getApiKey(apiKey);
   if (!key) { const e = new Error('NO_GROQ_KEY'); e.status = 501; throw e; }
   if (!prompt || typeof prompt !== 'string') { const e = new Error('prompt is required'); e.status = 400; throw e; }
 
+  // Groq's default completion cap (4096 tokens) truncates a full multi-day
+  // itinerary mid-JSON. Callers with large/variable output (day-by-day plans)
+  // should pass their own `maxTokens` sized to what they're asking for — the
+  // account-wide limit is 12,000 tokens/minute TOTAL (prompt + max_tokens),
+  // so an oversized flat value here would make every request fail outright.
+  const cappedMaxTokens = Math.max(256, Math.min(11000, Number(maxTokens) || (json ? 4000 : 2000)));
+
   const body = {
     model: getModel(model),
     temperature,
+    max_tokens: cappedMaxTokens,
     messages: json
       ? [{ role: 'system', content: 'Respond with a single valid JSON object only — no markdown, no commentary.' }, { role: 'user', content: prompt }]
       : [{ role: 'user', content: prompt }],
@@ -81,8 +89,8 @@ export default async function handler(req, res) {
   try {
     // model/apiKey are never taken from the client — always use server env config,
     // so a caller can't force a pricier model or spend the key on a foreign quota.
-    const { prompt, temperature, json } = body;
-    const text = await askGroqServer({ prompt, temperature, json });
+    const { prompt, temperature, json, maxTokens } = body;
+    const text = await askGroqServer({ prompt, temperature, json, maxTokens });
     return send(200, { text });
   } catch (e) {
     return send(e.status || 500, { error: String(e?.message || e) });

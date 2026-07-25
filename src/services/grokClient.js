@@ -75,6 +75,9 @@ export const askGrok = async (prompt, opts = {}) => {
         temperature: opts.temperature ?? 0.7,
         json: !!opts.json,
         model: opts.model,
+        // Lets a caller with large/variable output (e.g. a day-by-day
+        // itinerary) size the completion budget itself — see api/aiAsk.js.
+        maxTokens: opts.maxTokens,
         // Only ever populated by a caller that explicitly passes its own key
         // (none do today) — the normal path relies on the server's own key.
         apiKey: opts.apiKey,

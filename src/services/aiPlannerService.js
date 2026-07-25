@@ -354,9 +354,14 @@ Return EXACTLY this JSON shape:
 Return EXACTLY ${numDays} day objects in "days". Each "events" array should have 5–7 items for middle days, 3–4 for arrival/departure days.
 Every event MUST have "address" (real street+postal) and "transportToNext" (except the last event of a day).`;
 
+  // Size the completion budget to the trip length — a flat cap either
+  // truncates long itineraries mid-JSON or reserves more of the shared
+  // 12,000 tokens/minute pool than a short trip actually needs.
+  const maxTokens = Math.min(10000, 1000 + numDays * 800);
+
   let parseErr;
   try {
-    const rawText = await askGrok(prompt, { apiKey, model, temperature: 0.7, json: true });
+    const rawText = await askGrok(prompt, { apiKey, model, temperature: 0.7, json: true, maxTokens });
     const parsed = extractJson(rawText);
     const normalized = normalizeAiPlan(parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose });
 

@@ -137,6 +137,37 @@ function photoDevApi() {
   };
 }
 
+// Dev-only middleware for /api/reviews (Upstash-backed public reviews —
+// GET to list, POST to submit).
+function reviewsDevApi() {
+  return {
+    name: 'reviews-dev-api',
+    configureServer(server) {
+      server.middlewares.use('/api/reviews', async (req, res) => {
+        const send = (status, obj) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          const mod = await server.ssrLoadModule('/api/reviews.js');
+          if (req.method === 'GET') {
+            return send(200, { reviews: await mod.listReviews(50) });
+          }
+          if (req.method === 'POST') {
+            let raw = ''; for await (const c of req) raw += c;
+            const body = raw ? JSON.parse(raw) : {};
+            return send(200, { review: await mod.addReview(body) });
+          }
+          return send(405, { error: 'GET or POST only' });
+        } catch (err) {
+          send(err.status || 500, { error: String(err?.message || err) });
+        }
+      });
+    },
+  };
+}
+
 // Dev-only middleware for /api/adminAuth (real, server-verified admin login —
 // replaces the old client-only "type any role into localStorage" check).
 function adminAuthDevApi() {
@@ -179,6 +210,8 @@ export default defineConfig(({ mode }) => {
   process.env.ADMIN_TOKEN_SECRET    = env.ADMIN_TOKEN_SECRET    || process.env.ADMIN_TOKEN_SECRET    || '';
   process.env.DUFFEL_API_KEY        = env.DUFFEL_API_KEY        || process.env.DUFFEL_API_KEY        || '';
   process.env.UNSPLASH_ACCESS_KEY   = env.UNSPLASH_ACCESS_KEY   || process.env.UNSPLASH_ACCESS_KEY   || '';
+  process.env.UPSTASH_REDIS_REST_URL   = env.UPSTASH_REDIS_REST_URL   || process.env.UPSTASH_REDIS_REST_URL   || '';
+  process.env.UPSTASH_REDIS_REST_TOKEN = env.UPSTASH_REDIS_REST_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || '';
 
   return {
     plugins: [
@@ -189,6 +222,7 @@ export default defineConfig(({ mode }) => {
       translateDevApi(),
       aiAskDevApi(),
       photoDevApi(),
+      reviewsDevApi(),
       adminAuthDevApi(),
     ],
   };

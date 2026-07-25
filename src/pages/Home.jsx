@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -23,6 +23,8 @@ import CityAutocomplete from '../features/flights/CityAutocomplete';
 import WeatherWidget from '../components/WeatherWidget';
 import DestinationMap from '../components/DestinationMap';
 import RecommendedTrips from '../components/RecommendedTrips';
+import ReviewForm from '../components/ReviewForm';
+import { fetchReviews } from '../services/reviewsService';
 import GlobePoints from '../components/fx/GlobePoints';
 import GoldDust from '../components/fx/GoldDust';
 import Tilt3D from '../components/fx/Tilt3D';
@@ -52,6 +54,10 @@ const THEMES = [
   { id: 'family',   labelKey: 'themes.family',    icon: Heart,    img: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=700&q=80' },
   { id: 'luxury',   labelKey: 'themes.luxury',    icon: Award,    img: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=700&q=80' },
 ];
+
+// Lightweight {placeholder} interpolation on top of the plain t() lookup.
+const fill = (str, vars = {}) =>
+  String(str).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 
 const Home = () => {
   const navigate = useNavigate();
@@ -91,6 +97,15 @@ const Home = () => {
   const [aiStart,   setAiStart]   = useState('');
   const [aiReturn,  setAiReturn]  = useState('');
   const [locatingFrom, setLocatingFrom] = useState(false);
+
+  const [reviews, setReviews] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    fetchReviews().then((r) => { if (!cancelled) { setReviews(r); setReviewsLoading(false); } });
+    return () => { cancelled = true; };
+  }, []);
 
   // Fill the AI "From" field with the user's detected current city.
   const useMyLocationForAi = async () => {
@@ -1039,7 +1054,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ─── REVIEWS ─────────────────────────────────────────────── */}
+      {/* ─── REVIEWS (real, visitor-submitted — see api/reviews.js) ──── */}
       <section className="paper-linen bg-white border-y border-[#e6dcc3]">
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12">
           <div className="text-center mb-8">
@@ -1047,38 +1062,70 @@ const Home = () => {
               {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-[#febb02]" />)}
             </div>
             <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.reviews.heading')}</h2>
-            <p className="text-[14px] text-[#5c5245] font-medium">{t('homePage.reviews.subtitle')}</p>
+            <p className="text-[14px] text-[#5c5245] font-medium">
+              {reviews.length > 0
+                ? fill(t('homePage.reviews.subtitleCount'), {
+                    count: reviews.length,
+                    plural: reviews.length === 1 ? '' : 's',
+                    avg: (reviews.reduce((s, r) => s + (r.rating || 5), 0) / reviews.length).toFixed(1),
+                  })
+                : t('homePage.reviews.subtitleEmpty')}
+            </p>
+            {!showReviewForm && (
+              <button onClick={() => setShowReviewForm(true)}
+                className="mt-4 inline-flex items-center gap-2 bg-[#003580] hover:bg-[#0071c2] text-white text-[13px] font-black rounded-xl px-4 py-2.5 transition active:scale-95 shadow-soft">
+                <Star className="w-4 h-4" /> {t('homePage.reviews.leaveReviewCta')}
+              </button>
+            )}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
-            {[
-              { name: 'Aisha R.', city: 'Bishkek', text: t('homePage.reviews.t1'), rating: 5 },
-              { name: 'Daniyar K.', city: 'Almaty', text: t('homePage.reviews.t2'), rating: 5 },
-              { name: 'Sofia M.', city: 'Tashkent', text: t('homePage.reviews.t3'), rating: 5 },
-            ].map((r, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.08 }}
-                className="quote-lux relative bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] shadow-soft p-5 pt-9 lift">
-                <div className="flex items-center gap-1 mb-2 text-[#febb02]">
-                  {Array.from({ length: r.rating }).map((_, k) => <Star key={k} className="w-3.5 h-3.5 fill-[#febb02]" />)}
-                </div>
-                <p className="font-display italic text-[16px] text-[#1a1a1a] leading-relaxed mb-3">{r.text}</p>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#003580] text-white text-[11px] font-black flex items-center justify-center shadow-soft">
-                    {r.name.charAt(0)}
+          {showReviewForm && (
+            <div className="max-w-xl mx-auto mb-8">
+              <ReviewForm
+                t={t}
+                onSubmitted={(review) => { setReviews((prev) => [review, ...prev]); setShowReviewForm(false); }}
+              />
+              <button onClick={() => setShowReviewForm(false)}
+                className="mt-2 text-[12px] font-bold text-[#93876f] hover:text-[#1a1a1a] transition mx-auto block">
+                {t('homePage.reviews.cancel')}
+              </button>
+            </div>
+          )}
+
+          {!reviewsLoading && reviews.length === 0 && !showReviewForm && (
+            <div className="max-w-md mx-auto text-center bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] p-6">
+              <div className="font-black text-[#1a1a1a] mb-1">{t('homePage.reviews.emptyTitle')}</div>
+              <p className="text-[13px] text-[#5c5245] font-medium">{t('homePage.reviews.emptyBody')}</p>
+            </div>
+          )}
+
+          {reviews.length > 0 && (
+            <div className="grid md:grid-cols-3 gap-4">
+              {reviews.slice(0, 9).map((r, i) => (
+                <motion.div
+                  key={`${r.name}-${r.createdAt || i}`}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: (i % 6) * 0.08 }}
+                  className="quote-lux relative bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] shadow-soft p-5 pt-9 lift">
+                  <div className="flex items-center gap-1 mb-2 text-[#febb02]">
+                    {Array.from({ length: r.rating || 5 }).map((_, k) => <Star key={k} className="w-3.5 h-3.5 fill-[#febb02]" />)}
                   </div>
-                  <div className="text-[12px]">
-                    <div className="font-black text-[#1a1a1a]">{r.name}</div>
-                    <div className="text-[#93876f] font-semibold">{r.city}</div>
+                  <p className="font-display italic text-[16px] text-[#1a1a1a] leading-relaxed mb-3">{r.text}</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-[#003580] text-white text-[11px] font-black flex items-center justify-center shadow-soft">
+                      {r.name.charAt(0)}
+                    </div>
+                    <div className="text-[12px]">
+                      <div className="font-black text-[#1a1a1a]">{r.name}</div>
+                      {r.city && <div className="text-[#93876f] font-semibold">{r.city}</div>}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

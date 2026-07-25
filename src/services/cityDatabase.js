@@ -609,6 +609,9 @@ export const cityDatabase = {
     mustInclude: [
       { name: 'El Classico Restaurant', type: 'food', address: 'Mukhammad Ikbal St, Bukhara 200100', note: 'affordable, popular with travellers' },
     ],
+    // Shown on the hotel card whenever the plan's hotel name matches — see
+    // aiPlannerService.js / plannerService.js.
+    hotelPhoto: { match: 'vavilon plaza', url: '/images/bukhara-vavilon-plaza-hotel.jpg' },
     tips: [
       'Bukhara\'s Old City is a UNESCO World Heritage Site — over 2,000 years old, one of the best-preserved Silk Road cities in Central Asia.',
       'Buy a combined ticket at the Ark Fortress ticket office — covers several of the Old City museums.',
@@ -1109,4 +1112,12 @@ export const findCity = (input = '') => {
     }
   }
   return null;
+};
+
+/** Real photo for a specific verified hotel (e.g. a partner's own listing photo),
+ * matched by a substring of its name — falls back to no image otherwise. */
+export const hotelPhotoFor = (cityData, hotelName) => {
+  const photo = cityData?.hotelPhoto;
+  if (!photo || !hotelName) return null;
+  return String(hotelName).toLowerCase().includes(photo.match) ? photo.url : null;
 };

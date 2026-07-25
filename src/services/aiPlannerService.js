@@ -1,5 +1,5 @@
 import { askGrok, isGrokAvailable, extractJson as extractJsonFromText } from './grokClient';
-import { findCity } from './cityDatabase';
+import { findCity, hotelPhotoFor } from './cityDatabase';
 import { getEmergencyContacts } from './emergencyContacts';
 import { LANG_MAP } from '../i18n/languages';
 
@@ -252,6 +252,13 @@ Write ALL human-readable text VALUES in ${langName}: every "title", "label", "tr
     ? `\nMUST-INCLUDE REAL PLACES — feature EVERY one of these at least once, using the exact name and address given (they are verified, not suggestions to replace):\n${cityData.mustInclude.map(p => `- ${p.name} (${p.type}), ${p.address}${p.note ? ` — ${p.note}` : ''}`).join('\n')}\n`
     : '';
 
+  // Force the top-level "hotel" object onto a specific verified partner
+  // property (with its own real photo — see cityDatabase.js `hotelPhoto`)
+  // instead of letting the model invent a plausible-but-different one.
+  const hotelOverrideBlock = (cityData?.hotelPhoto && cityData.hotels?.[style])
+    ? `\nHOTEL OVERRIDE — the top-level "hotel" object MUST use exactly this real hotel (do not invent or substitute a different one): name "${cityData.hotels[style].replace(/\s*\([^)]*\)\s*$/, '')}", address "${cityData.hotelAddress || ''}".\n`
+    : '';
+
   // Budget tier — drives how expensive entries you suggest
   const tierHint = totalBdg < 800
     ? '⚠️ TIGHT BUDGET. Prefer FREE attractions (parks, viewpoints, plazas, free museums). Street food / canteen meals $3–8. No paid tours over $15.'
@@ -271,7 +278,7 @@ Start date: ${startStr}
 ${routeNote}
 ${transportNote}
 Interests: ${interests.join(', ') || 'sightseeing, culture, food, history'}
-${mustIncludeBlock}
+${mustIncludeBlock}${hotelOverrideBlock}
 CRITICAL RULES — FOLLOW EXACTLY:
 1. Every place name MUST be a REAL, named attraction, museum, neighbourhood, market, park, landmark, viewpoint or street in ${destination}. NEVER use placeholders like "City Center" or "Local Restaurant".
 2. EVERY event MUST include a real STREET ADDRESS with postal code AND district. Example formats:
@@ -365,10 +372,14 @@ Every event MUST have "address" (real street+postal) and "transportToNext" (exce
     const parsed = extractJson(rawText);
     const normalized = normalizeAiPlan(parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose });
 
+    const finalHotel = normalized.hotel || { name: hotelLabel, address: '', area: destination };
+    const hotelImage = hotelPhotoFor(cityData, finalHotel.name);
+    if (hotelImage) { finalHotel.image = hotelImage; finalHotel.recommended = true; }
+
     return {
       header:              normalized.header,
       days:                normalized.days,
-      hotel:               normalized.hotel || { name: hotelLabel, address: '', area: destination },
+      hotel:               finalHotel,
       budgetBreakdown:     bd,
       transportSuggestion: normalized.transportSuggestion || (cityData?.transport?.[style] ?? 'Walk where possible; use public transit for longer distances.'),
       travelTips:          normalized.travelTips.length ? normalized.travelTips : (cityData?.tips ?? []),

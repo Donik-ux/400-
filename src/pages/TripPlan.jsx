@@ -22,6 +22,8 @@ import CityAutocomplete from '../features/flights/CityAutocomplete';
 import DestinationMap from '../components/DestinationMap';
 import { getCoords } from '../data/coords';
 import Price, { usePriceFormatter } from '../components/Price';
+import useSEO from '../hooks/useSEO';
+import { findCity } from '../services/cityDatabase';
 
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) : '—';
 
@@ -187,6 +189,25 @@ export default function TripPlan() {
       setLoading(false);
     }
   };
+
+  /* ── SEO: pull in any verified partner names (hotel/restaurant) for this
+     destination so a search for THEM can also surface this plan page. ── */
+  const destName = item?.destination || item?.name || '';
+  const cityData  = useMemo(() => findCity(destName), [destName]);
+  const partnerNames = useMemo(() => {
+    const names = [];
+    if (plan?.hotel?.recommended && plan.hotel.name) names.push(plan.hotel.name);
+    if (cityData?.mustInclude?.length) names.push(...cityData.mustInclude.map(p => p.name));
+    return [...new Set(names)];
+  }, [plan?.hotel?.recommended, plan?.hotel?.name, cityData]);
+  useSEO({
+    title: destName ? `${item.duration || ''}-Day ${destName} Trip Plan`.trim() : undefined,
+    description: destName
+      ? `Free AI-built day-by-day plan for ${destName}${partnerNames.length ? ` — featuring ${partnerNames.join(' and ')}` : ''}, with real hotels, restaurants and a full budget breakdown.`
+      : undefined,
+    image: item?.image,
+    keywords: destName ? [destName, `${destName} trip plan`, `${destName} itinerary`, ...partnerNames] : [],
+  });
 
   /* ── No item passed in → friendly redirect ── */
   if (!item || !type) {
@@ -405,12 +426,21 @@ export default function TripPlan() {
               return (
                 <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-soft">
                   <div className="flex items-start gap-3">
-                    <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] flex items-center justify-center text-[#0071c2] shrink-0">
-                      <Hotel className="w-5 h-5" />
-                    </div>
+                    {h.image ? (
+                      <SmartImage src={h.image} alt={h.name} wrapperClassName="w-16 h-16 rounded-xl shrink-0" />
+                    ) : (
+                      <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] flex items-center justify-center text-[#0071c2] shrink-0">
+                        <Hotel className="w-5 h-5" />
+                      </div>
+                    )}
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap mb-0.5">
                         <span className="text-[10px] font-black uppercase tracking-widest text-[#0071c2]">{t('tripPlan.yourStay')}</span>
+                        {h.recommended && (
+                          <span className="text-[10px] font-black text-white bg-[#008009] px-2 py-0.5 rounded-md flex items-center gap-0.5">
+                            <Star className="w-2.5 h-2.5 fill-white" /> {t('tripPlan.recommendedBadge')}
+                          </span>
+                        )}
                         {h.stars && (
                           <span className="text-[10px] font-black text-[#a45e00] bg-[#fff7e6] px-2 py-0.5 rounded-md flex items-center gap-0.5">
                             {h.stars}★

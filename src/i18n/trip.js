@@ -40,6 +40,7 @@ export default {
       whatsCovered: "What's covered in your {total}",
       // Hotel card
       yourStay: 'Your stay',
+      recommendedBadge: 'Recommended',
       navigate: 'Navigate',
       // Budget
       whereMoneyGoes: 'Where your {total} goes',
@@ -224,6 +225,7 @@ export default {
       whatsCovered: '{total} ichida nimalar bor',
       // Hotel card
       yourStay: 'Yashash joyingiz',
+      recommendedBadge: 'Tavsiya etamiz',
       navigate: 'Yo‘nalish',
       // Budget
       whereMoneyGoes: '{total} qayerga sarflanadi',

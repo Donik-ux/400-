@@ -1,4 +1,4 @@
-import { findCity } from './cityDatabase';
+import { findCity, hotelPhotoFor } from './cityDatabase';
 import { getSchedulesForCity, genericSchedules } from './citySchedules';
 import { getEmergencyContacts } from './emergencyContacts';
 import { findCityAttractions, buildArrivalEvents, buildDepartureEvents, buildMiddleDayEvents } from './cityAttractions';
@@ -447,6 +447,8 @@ export const generateItinerary = async ({
       area:    cityData?.area || destination,
       pricePerNight: budgetBreakdown.accommodation && nights ? `~$${Math.round(budgetBreakdown.accommodation / nights)}/night` : '',
       stars:   style === 'luxury' ? '5' : style === 'comfort' ? '4' : style === 'economy' ? '3' : '',
+      image:   hotelPhotoFor(cityData, hotelLabel),
+      recommended: Boolean(hotelPhotoFor(cityData, hotelLabel)),
     },
     budgetBreakdown,
     transportSuggestion,

@@ -5,7 +5,7 @@ import {
   ArrowLeft, MapPin, Calendar, Users, Sparkles, Loader2, Plane, Hotel, Utensils, Bus,
   Activity, ShoppingBag, Wallet, Printer, Share2, Save, Download, Clock, Heart,
   Check, Map as MapIcon, AlertCircle, Star, Lightbulb, Phone, ShieldAlert, RefreshCcw,
-  Navigation, ExternalLink, ArrowRight, UserPlus, X,
+  Navigation, ExternalLink, ArrowRight, UserPlus, X, Landmark,
 } from 'lucide-react';
 import { mapsUrlFor, mapsUrlFromAddress, dayMapsUrl } from '../utils/mapsUrl';
 import useAuthStore from '../store/useAuthStore';
@@ -378,6 +378,24 @@ export default function TripPlan() {
                     <span className="px-2 py-0.5 rounded-md bg-white/15 backdrop-blur capitalize">{item.category || t('tripPlan.categoryStandard')}</span>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* ── About this destination (AI-written: history + what's on now) ── */}
+            {plan?.cityInfo && (plan.cityInfo.about || plan.cityInfo.currentHappenings) && (
+              <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 shadow-soft">
+                <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#0071c2] mb-2.5">
+                  <Landmark className="w-3.5 h-3.5" /> {fill(t('tripPlan.aboutLabel'), { destination: item.destination || item.name })}
+                </div>
+                {plan.cityInfo.about && (
+                  <p className="text-[14px] text-[#1a1a1a] font-medium leading-relaxed">{plan.cityInfo.about}</p>
+                )}
+                {plan.cityInfo.currentHappenings && (
+                  <div className="mt-3 flex items-start gap-2 bg-[#f0f5ff] rounded-xl p-3">
+                    <Clock className="w-4 h-4 text-[#0071c2] mt-0.5 shrink-0" />
+                    <p className="text-[13px] text-[#1a1a1a] font-semibold leading-relaxed">{plan.cityInfo.currentHappenings}</p>
+                  </div>
+                )}
               </div>
             )}
 

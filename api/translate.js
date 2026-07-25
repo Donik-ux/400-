@@ -16,12 +16,38 @@ const GCODE = {
 };
 const gcode = (c) => GCODE[c] || String(c || 'en').split('-')[0];
 
+// Our i18n strings use {placeholder} tokens (e.g. "About {destination}") that
+// get filled in after translation. Google Translate doesn't always leave them
+// alone — it sometimes recognizes the word inside the braces and translates
+// it too (e.g. "{destination}" -> "{пункт назначения}"), corrupting the
+// token. Swap each one for an invisible, non-linguistic marker before sending
+// the request, then swap the originals back into the translated result.
+const PLACEHOLDER_RE = /\{(\w+)\}/g;
+const MARKER = '⁠'; // WORD JOINER — invisible, never itself translated
+
+function protectPlaceholders(text) {
+  const tokens = [];
+  const safe = text.replace(PLACEHOLDER_RE, (m) => {
+    tokens.push(m);
+    return `${MARKER}${tokens.length - 1}${MARKER}`;
+  });
+  return { safe, tokens };
+}
+
+function restorePlaceholders(text, tokens) {
+  if (!tokens.length) return text;
+  const markerRe = new RegExp(`${MARKER}(\\d+)${MARKER}`, 'g');
+  return text.replace(markerRe, (m, i) => tokens[Number(i)] ?? m);
+}
+
 async function gtranslate(text, target, source = 'en') {
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${encodeURIComponent(source)}&tl=${encodeURIComponent(gcode(target))}&dt=t&q=${encodeURIComponent(text)}`;
+  const { safe, tokens } = protectPlaceholders(text);
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${encodeURIComponent(source)}&tl=${encodeURIComponent(gcode(target))}&dt=t&q=${encodeURIComponent(safe)}`;
   const res = await fetch(url);
   if (!res.ok) { const e = new Error(`google ${res.status}`); e.status = res.status; throw e; }
   const data = await res.json();
-  return (data?.[0] || []).map((s) => s?.[0] ?? '').join('');
+  const translated = (data?.[0] || []).map((s) => s?.[0] ?? '').join('');
+  return restorePlaceholders(translated, tokens);
 }
 
 // Group strings into requests under a character budget; isolate multi-line ones

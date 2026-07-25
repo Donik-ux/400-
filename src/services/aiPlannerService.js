@@ -174,10 +174,15 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
   /* Emergency contacts — always populated from our curated DB */
   const emergency = getEmergencyContacts(destination);
 
+  const cityInfo = (parsed?.cityInfo?.about || parsed?.cityInfo?.currentHappenings)
+    ? { about: parsed.cityInfo.about || '', currentHappenings: parsed.cityInfo.currentHappenings || '' }
+    : null;
+
   return {
     header,
     days,
     hotel:               tripHotel,
+    cityInfo,
     transportSuggestion: parsed?.transportSuggestion || '',
     travelTips:          Array.isArray(parsed?.travelTips) ? parsed.travelTips.filter(Boolean).slice(0, 6) : [],
     halalFoodGuide:      parsed?.halalFoodGuide || '',
@@ -298,6 +303,7 @@ CRITICAL RULES — FOLLOW EXACTLY:
 8. Middle days = 6–8 events each (more places to visit). If special day, add label like "(Shopping Day)", "(Day Trip to X)", "(Free Day)".
 9. Respect budget: daily ~$${dailyBudget}, food ~$${mealBudget}/day. Choose ${style}-tier experiences. Every individual event price MUST fit the tier above. Sum of all event prices for a day SHOULD NOT exceed daily budget.
 10. Return ONLY a single valid JSON object — no markdown, no code fences, no commentary.
+11. Include a top-level "cityInfo" object: "about" is 3-4 sentences of real history — founding period/age (e.g. "founded in the 8th century", "over 2,000 years old"), what the city/place is historically known for, and roughly how many/what kind of major attractions it has. "currentHappenings" is 1-2 sentences on what's currently relevant there right now — the current season's appeal, any recurring festival/event around ${startStr}, or what the city is known for today. Use real, factual information — do not invent fake events or statistics.
 
 ADDRESS FORMAT EXAMPLES (use this exact richness):
   - "Pariser Platz, 10117 Berlin" (district: "Mitte")
@@ -313,6 +319,10 @@ Return EXACTLY this JSON shape:
     "dates":   "Month D – Month D, YYYY",
     "route":   "${fromCity || 'Home'} → ${destination} → ${returnCity || fromCity || 'Home'}",
     "purpose": "${purpose}"
+  },
+  "cityInfo": {
+    "about": "3-4 real sentences: founding period/age, historical significance, rough number/kind of major attractions",
+    "currentHappenings": "1-2 sentences on what's currently relevant/appealing there right now"
   },
   "hotel": {
     "name":          "Real hotel name in ${destination}",
@@ -364,7 +374,7 @@ Every event MUST have "address" (real street+postal) and "transportToNext" (exce
   // Size the completion budget to the trip length — a flat cap either
   // truncates long itineraries mid-JSON or reserves more of the shared
   // 12,000 tokens/minute pool than a short trip actually needs.
-  const maxTokens = Math.min(10000, 1000 + numDays * 800);
+  const maxTokens = Math.min(10000, 1200 + numDays * 800);
 
   let parseErr;
   try {
@@ -380,6 +390,7 @@ Every event MUST have "address" (real street+postal) and "transportToNext" (exce
       header:              normalized.header,
       days:                normalized.days,
       hotel:               finalHotel,
+      cityInfo:            normalized.cityInfo,
       budgetBreakdown:     bd,
       transportSuggestion: normalized.transportSuggestion || (cityData?.transport?.[style] ?? 'Walk where possible; use public transit for longer distances.'),
       travelTips:          normalized.travelTips.length ? normalized.travelTips : (cityData?.tips ?? []),

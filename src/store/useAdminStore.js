@@ -23,7 +23,7 @@ const SEED_FLIGHTS = [
 ];
 
 const SEED_PACKAGES = [
-  { id:'pkg7', name:'Antarctica Expedition Cruise', destination:'Antarctica', duration:10, price:8990, rating:5.0, reviews:87, category:'adventure', image:'https://images.unsplash.com/photo-1516569422572-d9e0514b9598?w=800&q=80', includes:['Flights to Ushuaia','Expedition ship cabin','All meals on board','Zodiac landings','Polar parka & boots rental'], highlights:['Cross the Drake Passage','Penguin colonies up close','Iceberg-filled Lemaire Channel','Whale watching','Polar plunge (optional)'], description:'Set foot on the White Continent — the rarest journey on Earth.', available:true, featured:true },
+  { id:'pkg7', name:'Antarctica Expedition Cruise', destination:'Antarctica', duration:10, price:8990, rating:5.0, reviews:87, category:'adventure', image:'https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?w=800&q=80', includes:['Flights to Ushuaia','Expedition ship cabin','All meals on board','Zodiac landings','Polar parka & boots rental'], highlights:['Cross the Drake Passage','Penguin colonies up close','Iceberg-filled Lemaire Channel','Whale watching','Polar plunge (optional)'], description:'Set foot on the White Continent — the rarest journey on Earth.', available:true, featured:true },
   { id:'pkg1', name:'Dubai Luxury Escape',   destination:'Dubai, UAE',    duration:7,  price:2499, rating:4.9, reviews:412, category:'luxury',    image:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80', includes:['Round-trip flights','5★ hotel','Desert safari','City tours','Airport transfers'], highlights:['Burj Khalifa visit','Dubai Mall & fountain show','Desert dune bashing','Dhow cruise dinner','Gold & Spice Souk'], description:'An ultra-luxurious escape to the City of Gold.', available:true, featured:true },
   { id:'pkg2', name:'Bali Tropical Paradise', destination:'Bali, Indonesia', duration:10, price:1899, rating:4.8, reviews:638, category:'beach',     image:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80', includes:['Round-trip flights','4★ resort','Rice terrace tours','Temple visits','Spa day'], highlights:['Tegallalang Rice Terraces','Tanah Lot Temple','Ubud Monkey Forest'], description:'Discover the Island of Gods.', available:true, featured:true },
   { id:'pkg3', name:'Istanbul Cultural Journey', destination:'Istanbul, Turkey', duration:6, price:1299, rating:4.7, reviews:287, category:'cultural', image:'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800&q=80', includes:['Round-trip flights','4★ hotel','Guided city tours'], highlights:['Hagia Sophia & Blue Mosque','Grand Bazaar shopping'], description:'Walk through centuries of history.', available:true, featured:false },
@@ -73,8 +73,14 @@ const initPackages      = () => {
   // Migration: inject any newer seed packages (Las Vegas, Bukhara, …) that a
   // previously-seeded visitor's stored list doesn't have yet.
   const missing = SEED_PACKAGES.filter(sp => !d.some(p => p.id === sp.id));
-  if (missing.length) {
-    const next = [...d, ...missing];
+  // Migration: the original Antarctica seed shipped with a wrong photo
+  // (hot-air balloons over the savanna) — swap stored copies to the real one.
+  const badAntarctica = d.find(p => p.id === 'pkg7' && /1516569422572/.test(p.image || ''));
+  if (missing.length || badAntarctica) {
+    const fixed = d.map(p => (p.id === 'pkg7' && /1516569422572/.test(p.image || ''))
+      ? { ...p, image: SEED_PACKAGES.find(sp => sp.id === 'pkg7')?.image || p.image }
+      : p);
+    const next = [...fixed, ...missing];
     save(S_PACKAGES, next);
     return next;
   }

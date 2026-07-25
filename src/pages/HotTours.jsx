@@ -31,8 +31,14 @@ const savePrefs = (p) => { try { localStorage.setItem(PREFS_KEY, JSON.stringify(
 
 /* ── Static dressing for the Hot Deals section (admin-seeded) ────── */
 const buildHotDeals = (packages) => {
-  const discounts = [42, 35, 30, 28, 25, 22];
-  return packages.slice(0, 6).map((p, i) => {
+  const discounts = [42, 38, 35, 30, 28, 25, 22, 20];
+  // Surface the newest destinations (Bukhara, Las Vegas) right after the
+  // headline deal instead of leaving them cut off past the slice.
+  const promoted = ['pkg9', 'pkg8'];
+  const head = packages.slice(0, 1);
+  const lifted = promoted.map(id => packages.find(p => p.id === id)).filter(Boolean);
+  const rest = packages.filter(p => !head.includes(p) && !lifted.includes(p));
+  return [...head, ...lifted, ...rest].slice(0, 8).map((p, i) => {
     const discount = discounts[i] || 20;
     const originalPrice = Math.round(p.price / (1 - discount / 100));
     return { ...p, discount, originalPrice, seatsLeft: 3 + ((i * 7) % 9), hoursLeft: 6 + ((i * 11) % 42) };

@@ -75,7 +75,14 @@ const Home = () => {
   const toggleWishlist = useWishlistStore(s => s.toggleWishlist);
   const isInWishlist   = useWishlistStore(s => s.isInWishlist);
 
-  const featured = useMemo(() => packages.filter(p => p.featured).slice(0, 4), [packages]);
+  // Featured deals, with Bukhara (pkg9) lifted to right after the headline
+  // Antarctica deal — it seeds late in the list and would otherwise be cut off.
+  const featured = useMemo(() => {
+    const f = packages.filter(p => p.featured);
+    const bukhara = f.find(p => p.id === 'pkg9');
+    const rest = f.filter(p => p !== bukhara);
+    return (bukhara && rest.length ? [rest[0], bukhara, ...rest.slice(1)] : f).slice(0, 4);
+  }, [packages]);
   const allPackages = useMemo(() => packages.slice(0, 10), [packages]);
 
   // search widget state

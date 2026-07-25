@@ -23,6 +23,7 @@ import BudgetAdvisory from '../components/BudgetAdvisory';
 import CityAutocomplete from '../features/flights/CityAutocomplete';
 import Price, { usePriceFormatter } from '../components/Price';
 import GoldDust from '../components/fx/GoldDust';
+import PhotoLightbox from '../components/PhotoLightbox';
 
 const PREFS_KEY = 'maf_ai_prefs';
 const loadPrefs = () => { try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; } catch { return {}; } };
@@ -92,6 +93,7 @@ const HotTours = () => {
   const [result,  setResult]  = useState(null);          // { packages, source, tier }
   const [openPkg, setOpenPkg] = useState(null);
   const [planFor, setPlanFor] = useState({});
+  const [lightbox, setLightbox] = useState(null);        // { destination, image }
 
   // Run AI on first mount so the page feels alive — without stealing the
   // scroll position: visitors should land on the hero, not the result grid.
@@ -592,7 +594,7 @@ const HotTours = () => {
               transition={{ duration: 0.3, delay: i * 0.05, ease: [0.4, 0, 0.2, 1] }}
               className="group lift card-sheen shrink-0 w-80 snap-start bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft"
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-48 overflow-hidden cursor-pointer" onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
                 <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -649,6 +651,10 @@ const HotTours = () => {
           ))}
         </div>
       </section>
+
+      {lightbox && (
+        <PhotoLightbox destination={lightbox.destination} mainImage={lightbox.image} onClose={() => setLightbox(null)} />
+      )}
 
     </div>
   );

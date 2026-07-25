@@ -25,6 +25,7 @@ import DestinationMap from '../components/DestinationMap';
 import RecommendedTrips from '../components/RecommendedTrips';
 import ReviewForm from '../components/ReviewForm';
 import { fetchReviews } from '../services/reviewsService';
+import PhotoLightbox from '../components/PhotoLightbox';
 import GlobePoints from '../components/fx/GlobePoints';
 import GoldDust from '../components/fx/GoldDust';
 import Tilt3D from '../components/fx/Tilt3D';
@@ -74,7 +75,7 @@ const Home = () => {
   const isInWishlist   = useWishlistStore(s => s.isInWishlist);
 
   const featured = useMemo(() => packages.filter(p => p.featured).slice(0, 4), [packages]);
-  const allPackages = useMemo(() => packages.slice(0, 8), [packages]);
+  const allPackages = useMemo(() => packages.slice(0, 10), [packages]);
 
   // search widget state
   const [tab, setTab]         = useState('tours');
@@ -101,6 +102,24 @@ const Home = () => {
   const [reviews, setReviews] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(true);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [lightbox, setLightbox] = useState(null); // { destination, image }
+
+  // Auto-advance the recommended-packages strip every 5s (pauses while the
+  // visitor's pointer/finger is on it; wraps back to the start at the end).
+  const recommendedRef = useRef(null);
+  const recommendedPaused = useRef(false);
+  useEffect(() => {
+    const id = setInterval(() => {
+      const el = recommendedRef.current;
+      if (!el || recommendedPaused.current) return;
+      const card = el.children[0];
+      if (!card) return;
+      const step = card.getBoundingClientRect().width + 16; // + gap-4
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - step / 2;
+      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + step, behavior: 'smooth' });
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
   useEffect(() => {
     let cancelled = false;
     fetchReviews().then((r) => { if (!cancelled) { setReviews(r); setReviewsLoading(false); } });
@@ -301,7 +320,7 @@ const Home = () => {
                     className="md:col-span-4"
                     icon={<MapPin className="w-4 h-4" />}
                     label={t('homePage.search.whereTo')}
-                    placeholder="Dubai, Bali, Maldives…"
+                    placeholder="Dubai, Bukhara, Maldives…"
                     value={dest}
                     onChange={setDest}
                   />
@@ -497,7 +516,7 @@ const Home = () => {
               {tab !== 'flights' && (
                 <div className="flex items-center flex-wrap gap-1.5 pt-3 px-1">
                   <span className="text-[11px] font-black uppercase tracking-widest text-[#93876f]">{t('homePage.search.popular')}</span>
-                  {['Dubai', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Berlin', 'Paris', 'Antarctica'].map(c => {
+                  {['Dubai', 'Bukhara', 'New York', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Paris', 'Antarctica'].map(c => {
                     const currentValue = tab === 'ai' ? aiDest : dest;
                     const active = String(currentValue || '').toLowerCase() === c.toLowerCase();
                     return (
@@ -726,7 +745,8 @@ const Home = () => {
                 className="group card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft cursor-pointer h-full"
                 onClick={() => navigate('/hot-tours')}
               >
-                <div className="relative h-44 overflow-hidden">
+                <div className="relative h-44 overflow-hidden"
+                  onClick={(e) => { e.stopPropagation(); setLightbox({ destination: p.destination, image: p.image }); }}>
                   <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
@@ -1014,7 +1034,12 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+        <div ref={recommendedRef}
+          onPointerEnter={() => { recommendedPaused.current = true; }}
+          onPointerLeave={() => { recommendedPaused.current = false; }}
+          onTouchStart={() => { recommendedPaused.current = true; }}
+          onTouchEnd={() => { setTimeout(() => { recommendedPaused.current = false; }, 4000); }}
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {allPackages.map((p, i) => (
             <motion.div
               key={p.id}
@@ -1024,7 +1049,8 @@ const Home = () => {
               transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
               className="card-sheen shrink-0 w-72 snap-start bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft lift group cursor-pointer"
               onClick={() => navigate('/hot-tours')}>
-              <div className="relative h-44 overflow-hidden">
+              <div className="relative h-44 overflow-hidden"
+                onClick={(e) => { e.stopPropagation(); setLightbox({ destination: p.destination, image: p.image }); }}>
                 <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 {p.featured && <span className="absolute top-2.5 left-2.5 bg-white text-[#0071c2] text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">{t('homePage.recommended.bestseller')}</span>}
@@ -1163,6 +1189,10 @@ const Home = () => {
       </section>
 
       <ServicesDrawer open={servicesOpen} onClose={() => setServicesOpen(false)} t={t} navigate={navigate} />
+
+      {lightbox && (
+        <PhotoLightbox destination={lightbox.destination} mainImage={lightbox.image} onClose={() => setLightbox(null)} />
+      )}
     </div>
   );
 };

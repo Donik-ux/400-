@@ -30,6 +30,8 @@ const SEED_PACKAGES = [
   { id:'pkg4', name:'Maldives Honeymoon Bliss', destination:'Maldives', duration:8, price:4299, rating:5.0, reviews:189, category:'beach',     image:'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80', includes:['Business class flights','Overwater villa','All-inclusive meals'], highlights:['Overwater bungalow stay','Crystal-clear lagoon snorkeling'], description:'The ultimate romantic getaway.', available:true, featured:true },
   { id:'pkg5', name:'Tokyo Modern Adventure', destination:'Tokyo, Japan', duration:9, price:2799, rating:4.8, reviews:521, category:'cultural', image:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', includes:['Round-trip flights','4★ hotel in Shinjuku','JR Pass (7 days)'], highlights:['Shibuya Crossing','Senso-ji Temple'], description:'Immerse in ultra-modern Japan.', available:true, featured:false },
   { id:'pkg6', name:'African Safari Adventure', destination:'Kenya & Tanzania', duration:12, price:5499, rating:4.9, reviews:143, category:'adventure', image:'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80', includes:['International flights','Luxury tented camps','All game drives'], highlights:['Great Migration at Masai Mara','Big Five game drives'], description:'Witness the greatest wildlife spectacle.', available:true, featured:true },
+  { id:'pkg8', name:'Las Vegas Lights & Canyons', destination:'Las Vegas, USA', duration:7, price:2899, rating:4.7, reviews:203, category:'luxury', image:'https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=800&q=80', includes:['Round-trip flights','4★ hotel on the Strip','Grand Canyon day tour','Airport transfers'], highlights:['The Strip & Fremont Street','Grand Canyon West Rim','Bellagio fountain show','Red Rock Canyon'], description:'Neon nights and canyon days in the entertainment capital of the world.', available:true, featured:true },
+  { id:'pkg9', name:'Bukhara Silk Road Heritage', destination:'Bukhara, Uzbekistan', duration:5, price:899, rating:4.9, reviews:96, category:'cultural', image:'https://images.unsplash.com/photo-1670514535515-e7af911bdadb?w=800&q=80', includes:['Round-trip flights','Boutique hotel in the Old City','Guided Old City tours','Daily breakfast'], highlights:['Po-i-Kalyan Complex','Ark Fortress','Lyab-i Hauz square','Trading domes bazaar'], description:'A 2,000-year-old living museum of the Silk Road.', available:true, featured:true },
 ];
 
 const SEED_BOOKINGS = [
@@ -65,6 +67,14 @@ const initPackages      = () => {
   // Migration: users seeded before the Antarctica launch get it injected once
   if (!d.some(p => p.id === 'pkg7' || /antarctica/i.test(p.destination || ''))) {
     const next = [SEED_PACKAGES[0], ...d];
+    save(S_PACKAGES, next);
+    return next;
+  }
+  // Migration: inject any newer seed packages (Las Vegas, Bukhara, …) that a
+  // previously-seeded visitor's stored list doesn't have yet.
+  const missing = SEED_PACKAGES.filter(sp => !d.some(p => p.id === sp.id));
+  if (missing.length) {
+    const next = [...d, ...missing];
     save(S_PACKAGES, next);
     return next;
   }

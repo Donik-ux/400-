@@ -600,9 +600,10 @@ export const cityDatabase = {
     },
     hotels: {
       luxury:   'Sahid Zarafshon Hotel (Old Town, near the Ark Fortress)',
-      standard: 'Bukhara Vavilon Plaza Hotel (Usta Shirin St, near the Ark Fortress)',
+      standard: 'Bukhara Vavilon Plaza Hotel (Usto Sharif St 49)',
       economy:  'Sasha & Son Hotel (16th-century merchant house near Lyab-i Hauz)',
     },
+    hotelAddress: 'Usto Sharif St 49, Bukhara 200100, Uzbekistan',
     tips: [
       'Bukhara\'s Old City is a UNESCO World Heritage Site — over 2,000 years old, one of the best-preserved Silk Road cities in Central Asia.',
       'Buy a combined ticket at the Ark Fortress ticket office — covers several of the Old City museums.',

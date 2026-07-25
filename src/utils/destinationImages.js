@@ -81,7 +81,7 @@ const HEROES = {
   bishkek:     'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1400&q=80',
   osh:         'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1400&q=80',
   tashkent:    'https://images.unsplash.com/photo-1573108724029-4c46571d6490?auto=format&fit=crop&w=1400&q=80',
-  samarkand:   'https://images.unsplash.com/photo-1604608672516-9656d6678f86?auto=format&fit=crop&w=1400&q=80',
+  samarkand:   'https://images.unsplash.com/photo-1715540335937-f54bf332585a?auto=format&fit=crop&w=1400&q=80',
   bukhara:     'https://images.unsplash.com/photo-1670514535515-e7af911bdadb?auto=format&fit=crop&w=1400&q=80',
   almaty:      'https://images.unsplash.com/photo-1548588681-adf41d474533?auto=format&fit=crop&w=1400&q=80',
   moscow:      'https://images.unsplash.com/photo-1547448415-e9f5b28e570d?auto=format&fit=crop&w=1400&q=80',

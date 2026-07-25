@@ -24,6 +24,8 @@ import { getCoords } from '../data/coords';
 import Price, { usePriceFormatter } from '../components/Price';
 import useSEO from '../hooks/useSEO';
 import { findCity } from '../services/cityDatabase';
+import AttractionGallery from '../components/AttractionGallery';
+import { attractionsFromPlan } from '../utils/attractionsFromPlan';
 
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) : '—';
 
@@ -209,6 +211,8 @@ export default function TripPlan() {
     keywords: destName ? [destName, `${destName} trip plan`, `${destName} itinerary`, ...partnerNames] : [],
   });
 
+  const galleryPlaces = useMemo(() => attractionsFromPlan(plan), [plan]);
+
   /* ── No item passed in → friendly redirect ── */
   if (!item || !type) {
     return (
@@ -375,6 +379,11 @@ export default function TripPlan() {
                   </div>
                 </div>
               </div>
+            )}
+
+            {/* ── Attraction photo gallery ── */}
+            {galleryPlaces.length > 0 && (
+              <AttractionGallery places={galleryPlaces} destination={item.destination || item.name} label={t('tripPlan.galleryLabel')} />
             )}
 
             {/* ── Route map ── */}

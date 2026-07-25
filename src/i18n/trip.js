@@ -27,6 +27,7 @@ export default {
       // Summary card
       sectionLabel: 'Travel Plan',
       routeMapLabel: 'Your route on the map',
+      galleryLabel: 'Places you\'ll see',
       translatingTitle: 'Rebuilding your plan',
       translatingBody: 'Generating the itinerary in your selected language…',
       titleFallback: 'Travel Plan – {destination}',
@@ -212,6 +213,7 @@ export default {
       // Summary card
       sectionLabel: 'Sayohat rejasi',
       routeMapLabel: 'Marshrutingiz xaritada',
+      galleryLabel: 'Ko‘radigan joylaringiz',
       translatingTitle: 'Reja qayta tuzilmoqda',
       translatingBody: 'Marshrut tanlangan tilingizda yaratilmoqda…',
       titleFallback: 'Sayohat rejasi – {destination}',

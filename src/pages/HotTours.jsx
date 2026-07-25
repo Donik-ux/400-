@@ -549,7 +549,7 @@ const HotTours = () => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {[
-            { lab: t('hotTours.tiers.budgetSaver'),     min: 500,  max: 800,    img: 'https://images.unsplash.com/photo-1604608672516-9656d6678f86?auto=format&fit=crop&w=600&q=80' },
+            { lab: t('hotTours.tiers.budgetSaver'),     min: 500,  max: 800,    img: 'https://images.unsplash.com/photo-1715540335937-f54bf332585a?auto=format&fit=crop&w=600&q=80' },
             { lab: t('hotTours.tiers.smartValue'),      min: 800,  max: 1500,   img: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80' },
             { lab: t('hotTours.tiers.comfortClass'),    min: 1500, max: 3000,   img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=600&q=80' },
             { lab: t('hotTours.tiers.premiumEscape'),   min: 3000, max: 5000,   img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80' },

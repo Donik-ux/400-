@@ -26,6 +26,7 @@ import RecommendedTrips from '../components/RecommendedTrips';
 import ReviewForm from '../components/ReviewForm';
 import { fetchReviews } from '../services/reviewsService';
 import PhotoLightbox from '../components/PhotoLightbox';
+import StatsPrism from '../components/StatsPrism';
 import GlobePoints from '../components/fx/GlobePoints';
 import GoldDust from '../components/fx/GoldDust';
 import Tilt3D from '../components/fx/Tilt3D';
@@ -574,60 +575,18 @@ const Home = () => {
       {/* spacer for the floating card */}
       <div className="h-24 md:h-28" />
 
-      {/* ─── STATS BAND ──────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 pt-2">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {[
-            { icon: Users,        value: '10,000+', label: t('homeStats.travelers') },
-            { icon: Globe,        value: '50+',     label: t('homeStats.countries') },
-            { icon: Sparkles,     value: t('homeStats.ai'),     label: t('homeStats.aiSub'),     small: true },
-            { icon: BadgePercent, value: t('homeStats.prices'), label: t('homeStats.pricesSub'), small: true },
-          ].map((s, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.06 }}
-              className="relative overflow-hidden bg-gradient-to-br from-[#00214f] to-[#001427] rounded-2xl shadow-lift p-4 md:p-5 text-center lift">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#f5b942]/70 to-transparent" />
-              <div className="absolute -right-6 -bottom-6 w-20 h-20 rounded-full bg-[#febb02]/10 blur-2xl pointer-events-none" />
-              <div className="relative w-10 h-10 mx-auto rounded-xl bg-[#f5b942]/12 text-[#ffd76e] flex items-center justify-center mb-2 ring-1 ring-[#f5b942]/25">
-                <s.icon className="w-5 h-5" />
-              </div>
-              <div className={`relative font-display font-semibold text-gradient-gold ${s.small ? 'text-[16px] md:text-[19px] leading-tight text-balance' : 'text-[24px] md:text-[28px] leading-none'}`}>{s.value}</div>
-              <div className="relative text-[11px] md:text-[12px] font-bold text-white/50 mt-1.5">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─── TRUST STRIP ─────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 py-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { icon: BadgePercent,  title: t('homePage.trust.bestPriceTitle'), sub: t('homePage.trust.bestPriceSub') },
-            { icon: Shield,        title: t('homePage.trust.secureTitle'),    sub: t('homePage.trust.secureSub') },
-            { icon: Headphones,    title: t('homePage.trust.supportTitle'),   sub: t('homePage.trust.supportSub') },
-            { icon: ThumbsUp,      title: t('homePage.trust.ratingTitle'),    sub: t('homePage.trust.ratingSub') },
-          ].map((f, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.06 }}
-              className="group bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-4 flex items-center gap-3 hover:border-[#0071c2] lift">
-              <div className="w-10 h-10 rounded-xl bg-[#f0f5ff] text-[#0071c2] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                <f.icon className="w-5 h-5" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-[13px] font-black text-[#1a1a1a] leading-snug line-clamp-2">{f.title}</div>
-                <div className="text-[11px] font-semibold text-[#93876f] leading-snug line-clamp-2">{f.sub}</div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+      {/* ─── STATS + TRUST PRISM (rotates every 5s, hold to pause) ── */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 pt-2 pb-6">
+        <StatsPrism faces={[
+          { stat: { icon: Users,        value: '10,000+',             label: t('homeStats.travelers') },
+            trust: { icon: BadgePercent, title: t('homePage.trust.bestPriceTitle'), sub: t('homePage.trust.bestPriceSub') } },
+          { stat: { icon: Globe,        value: '50+',                 label: t('homeStats.countries') },
+            trust: { icon: Shield,       title: t('homePage.trust.secureTitle'),    sub: t('homePage.trust.secureSub') } },
+          { stat: { icon: Sparkles,     value: t('homeStats.ai'),     label: t('homeStats.aiSub') },
+            trust: { icon: Headphones,   title: t('homePage.trust.supportTitle'),   sub: t('homePage.trust.supportSub') } },
+          { stat: { icon: BadgePercent, value: t('homeStats.prices'), label: t('homeStats.pricesSub') },
+            trust: { icon: ThumbsUp,     title: t('homePage.trust.ratingTitle'),    sub: t('homePage.trust.ratingSub') } },
+        ]} />
       </section>
 
       {/* ─── VALUE PROPS: BUDGET + PDF ───────────────────────────── */}

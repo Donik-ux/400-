@@ -36,6 +36,7 @@ const getBookingSites = (t) => [
 const ALT_DATE_OFFSETS = [-3, -1, 0, 1, 3, 7];
 
 const POPULAR_ROUTES = [
+  { from: 'Tashkent (TAS)',  to: 'Bukhara (BHK)',     city: 'Bukhara',    country: 'Uzbekistan',  from$: 55 },
   { from: 'Dubai (DXB)',     to: 'Maldives (MLE)',    city: 'Maldives',   country: 'Maldives',    from$: 410 },
   { from: 'Dubai (DXB)',     to: 'Bali (DPS)',        city: 'Bali',       country: 'Indonesia',   from$: 480 },
   { from: 'Abu Dhabi (AUH)', to: 'Seychelles (SEZ)',  city: 'Seychelles', country: 'Seychelles',  from$: 520 },

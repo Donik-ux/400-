@@ -32,9 +32,11 @@ const CATALOG = [
   { city: 'Phuket',        country: 'Thailand',           tier: 3, vibe: ['beach','warm'],                    img: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Barcelona',     country: 'Spain',              tier: 3, vibe: ['city','cultural','warm'],          img: 'https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Lisbon',        country: 'Portugal',           tier: 3, vibe: ['city','warm','cultural'],          img: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?auto=format&fit=crop&w=1200&q=80' },
+  { city: 'Las Vegas',     country: 'USA',                tier: 3, vibe: ['city','luxury'],                   img: 'https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?auto=format&fit=crop&w=1200&q=80' },
 
   // Premium (≤ $5000)
   { city: 'Tokyo',         country: 'Japan',              tier: 4, vibe: ['city','cultural'],                 img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1200&q=80' },
+  { city: 'New York',      country: 'USA',                tier: 4, vibe: ['city','luxury'],                   img: 'https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Paris',         country: 'France',             tier: 4, vibe: ['city','cultural','luxury'],        img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Rome',          country: 'Italy',              tier: 4, vibe: ['cultural','warm','city'],          img: 'https://images.unsplash.com/photo-1525874684015-58379d421a52?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Singapore',     country: 'Singapore',          tier: 4, vibe: ['city','warm','luxury'],            img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=80' },

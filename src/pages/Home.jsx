@@ -35,6 +35,7 @@ import { detectCurrentLocation } from '../services/geolocation';
 
 /* ── Static showcases ─────────────────────────────────────────────── */
 const TRENDING = [
+  { city: 'Bukhara',   country: 'Uzbekistan',  from: 125, img: 'https://images.unsplash.com/photo-1670514535515-e7af911bdadb?auto=format&fit=crop&w=900&q=80' },
   { city: 'Dubai',     country: 'UAE',         from: 280, img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80' },
   { city: 'New York',  country: 'USA',         from: 540, img: 'https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=900&q=80' },
   { city: 'Los Angeles', country: 'USA',       from: 620, img: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=900&q=80' },
@@ -79,13 +80,14 @@ const Home = () => {
   const toggleWishlist = useWishlistStore(s => s.toggleWishlist);
   const isInWishlist   = useWishlistStore(s => s.isInWishlist);
 
-  // Featured deals, with Bukhara (pkg9) lifted to right after the headline
-  // Antarctica deal — it seeds late in the list and would otherwise be cut off.
+  // Featured deals, with Bukhara (pkg9) and Las Vegas (pkg8) lifted to right
+  // after the headline Antarctica deal — they seed late in the list and would
+  // otherwise be cut off.
   const featured = useMemo(() => {
     const f = packages.filter(p => p.featured);
-    const bukhara = f.find(p => p.id === 'pkg9');
-    const rest = f.filter(p => p !== bukhara);
-    return (bukhara && rest.length ? [rest[0], bukhara, ...rest.slice(1)] : f).slice(0, 4);
+    const lifted = ['pkg9', 'pkg8'].map(id => f.find(p => p.id === id)).filter(Boolean);
+    const rest = f.filter(p => !lifted.includes(p));
+    return (rest.length ? [rest[0], ...lifted, ...rest.slice(1)] : f).slice(0, 4);
   }, [packages]);
   const allPackages = useMemo(() => packages.slice(0, 10), [packages]);
 

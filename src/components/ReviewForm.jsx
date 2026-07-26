@@ -40,7 +40,7 @@ export default function ReviewForm({ t, onSubmitted }) {
         {[1, 2, 3, 4, 5].map((n) => (
           <button key={n} type="button" onClick={() => setRating(n)} onMouseEnter={() => setHoverRating(n)}
             aria-label={`${n} star`} className="p-0.5">
-            <Star className={`w-5 h-5 transition-colors ${(hoverRating || rating) >= n ? 'fill-[#febb02] text-[#febb02]' : 'text-[#d9c9a3]'}`} />
+            <Star className={`w-5 h-5 transition-colors ${(hoverRating || rating) >= n ? 'fill-[#d9a43e] text-[#d9a43e]' : 'text-[#d9c9a3]'}`} />
           </button>
         ))}
       </div>
@@ -48,22 +48,22 @@ export default function ReviewForm({ t, onSubmitted }) {
       <div className="grid sm:grid-cols-2 gap-2 mb-2">
         <input value={name} onChange={(e) => setName(e.target.value)} maxLength={60} required
           placeholder={t('homePage.reviews.namePlaceholder')}
-          className="px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#0071c2] transition" />
+          className="px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#2f6395] transition" />
         <input value={city} onChange={(e) => setCity(e.target.value)} maxLength={60}
           placeholder={t('homePage.reviews.cityPlaceholder')}
-          className="px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#0071c2] transition" />
+          className="px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#2f6395] transition" />
       </div>
 
       <input value={destination} onChange={(e) => setDestination(e.target.value)} maxLength={60}
         placeholder={t('homePage.reviews.destinationPlaceholder')}
-        className="w-full px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#0071c2] transition mb-2" />
+        className="w-full px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#2f6395] transition mb-2" />
 
       <textarea value={text} onChange={(e) => setText(e.target.value)} maxLength={500} required rows={3}
         placeholder={t('homePage.reviews.textPlaceholder')}
-        className="w-full px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-medium text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#0071c2] transition resize-none mb-3" />
+        className="w-full px-3 py-2.5 rounded-xl border border-[#e6dcc3] bg-white text-[13px] font-medium text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none focus:border-[#2f6395] transition resize-none mb-3" />
 
       <button type="submit" disabled={submitting}
-        className="inline-flex items-center gap-2 bg-[#003580] hover:bg-[#0071c2] disabled:opacity-60 text-white text-[13px] font-black rounded-xl px-4 py-2.5 transition active:scale-95">
+        className="inline-flex items-center gap-2 bg-[#003580] hover:bg-[#2f6395] disabled:opacity-60 text-white text-[13px] font-black rounded-xl px-4 py-2.5 transition active:scale-95">
         {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
         {t('homePage.reviews.formSubmit')}
       </button>

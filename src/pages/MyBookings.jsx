@@ -14,7 +14,7 @@ import SmartImage from '../components/SmartImage';
 import { usePriceFormatter } from '../components/Price';
 
 const STATUS_META = (t) => ({
-  saved:     { cls: 'bg-[#f0f5ff] text-[#0071c2] border-[#dceaff]',  icon: BookOpen,    label: t('lists.bookings.statusSaved') },
+  saved:     { cls: 'bg-[#f0f5ff] text-[#2f6395] border-[#dceaff]',  icon: BookOpen,    label: t('lists.bookings.statusSaved') },
   confirmed: { cls: 'badge-ok',     icon: CheckCircle, label: t('bookings.status.confirmed') || 'Confirmed' },
   pending:   { cls: 'badge-warn',   icon: Clock,       label: t('bookings.status.pending')   || 'Pending'   },
   cancelled: { cls: 'badge-danger', icon: XCircle,     label: t('bookings.status.cancelled') || 'Cancelled' },
@@ -81,12 +81,12 @@ export default function MyBookings() {
   return (
     <div className="bg-[#faf6ed] min-h-screen -mt-[64px]">
       {/* ── Hero header ── */}
-      <section className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#0071c2] text-white overflow-hidden pt-[100px] pb-14">
+      <section className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#2f6395] text-white overflow-hidden pt-[100px] pb-14">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0071c2 0%, transparent 45%), radial-gradient(circle at 75% 70%, #febb02 0%, transparent 35%)' }} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#febb02]/15 blur-3xl pointer-events-none animate-float" />
+             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #2f6395 0%, transparent 45%), radial-gradient(circle at 75% 70%, #d9a43e 0%, transparent 35%)' }} />
+        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#d9a43e]/15 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#febb02] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#d9a43e] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <BookOpen className="w-3.5 h-3.5" /> {t('bookings.badge') || 'Travel History'}
           </div>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-[1.05] mb-2">
@@ -110,7 +110,7 @@ export default function MyBookings() {
                 placeholder={t('lists.bookings.searchPh')}
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full bg-white border-2 border-[#e6dcc3] focus:border-[#0071c2] rounded-xl pl-10 pr-4 py-2.5 text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none transition"
+                className="w-full bg-white border-2 border-[#e6dcc3] focus:border-[#2f6395] rounded-xl pl-10 pr-4 py-2.5 text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none transition"
               />
             </div>
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
@@ -126,7 +126,7 @@ export default function MyBookings() {
                   className={`px-3.5 py-2 rounded-xl text-[12px] font-black border whitespace-nowrap transition ${
                     filter === v
                       ? 'bg-[#003580] text-white border-[#003580]'
-                      : 'bg-white border-[#e6dcc3] text-[#1a1a1a] hover:border-[#0071c2]'
+                      : 'bg-white border-[#e6dcc3] text-[#1a1a1a] hover:border-[#2f6395]'
                   }`}>
                   {l} <span className={filter === v ? 'text-white/70' : 'text-[#93876f]'}>· {n}</span>
                 </button>
@@ -138,10 +138,10 @@ export default function MyBookings() {
         {/* ── Empty state ── */}
         {bookings.length === 0 && (
           <div className="bg-white border border-[#e6dcc3] rounded-3xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#0071c2]/15 blur-3xl pointer-events-none animate-float" />
-            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#febb02]/10 blur-3xl pointer-events-none" />
+            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#2f6395]/15 blur-3xl pointer-events-none animate-float" />
+            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#d9a43e]/10 blur-3xl pointer-events-none" />
             <div className="relative">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#003580] to-[#0071c2] flex items-center justify-center mx-auto mb-5 -rotate-3 shadow-lift">
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#003580] to-[#2f6395] flex items-center justify-center mx-auto mb-5 -rotate-3 shadow-lift">
                 <BookOpen className="w-10 h-10 text-white" />
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] mb-2">{t('bookings.empty') || 'No plans saved yet'}</h2>
@@ -154,7 +154,7 @@ export default function MyBookings() {
                   <Sparkles className="w-4 h-4" /> {t('lists.bookings.startStudio')}
                 </button>
                 <button onClick={() => navigate('/flights')}
-                  className="px-6 py-3.5 rounded-xl border-2 border-[#e6dcc3] hover:border-[#0071c2] hover:bg-[#f0f5ff] text-[#1a1a1a] text-[13px] font-black flex items-center justify-center gap-2 transition active:scale-95">
+                  className="px-6 py-3.5 rounded-xl border-2 border-[#e6dcc3] hover:border-[#2f6395] hover:bg-[#f0f5ff] text-[#1a1a1a] text-[13px] font-black flex items-center justify-center gap-2 transition active:scale-95">
                   <Plane className="w-4 h-4" /> {t('lists.bookings.searchFlights')}
                 </button>
               </div>
@@ -186,9 +186,9 @@ export default function MyBookings() {
 
                     <span className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${
                       b.type === 'flight'
-                        ? 'bg-[#0071c2] text-white'
+                        ? 'bg-[#2f6395] text-white'
                         : b.type === 'plan'
-                        ? 'bg-[#febb02] text-[#1a1a1a]'
+                        ? 'bg-[#d9a43e] text-[#1a1a1a]'
                         : 'bg-white text-[#003580]'
                     }`}>
                       {b.type === 'flight' ? <Plane className="w-3 h-3" /> : b.type === 'plan' ? <FileText className="w-3 h-3" /> : <Package className="w-3 h-3" />}
@@ -201,7 +201,7 @@ export default function MyBookings() {
 
                     <div className="absolute bottom-3 left-3 right-3 text-white">
                       <div className="flex items-center gap-1 text-[11px] font-bold text-white/85 mb-0.5">
-                        <MapPin className="w-3 h-3 text-[#febb02]" /> {dest || t('lists.bookings.destination')}
+                        <MapPin className="w-3 h-3 text-[#d9a43e]" /> {dest || t('lists.bookings.destination')}
                       </div>
                       <p className="text-[15px] font-black leading-tight line-clamp-1">{b.itemName}</p>
                     </div>
@@ -211,12 +211,12 @@ export default function MyBookings() {
                     <div className="flex items-center justify-between text-[11px] text-[#5c5245] font-bold mb-3 flex-wrap gap-x-3 gap-y-1">
                       {b.date && (
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5 text-[#0071c2]" />
+                          <Calendar className="w-3.5 h-3.5 text-[#2f6395]" />
                           {new Date(b.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
                         </span>
                       )}
                       <span className="flex items-center gap-1">
-                        <Users className="w-3.5 h-3.5 text-[#0071c2]" />{fill(t('lists.bookings.paxValue'), { count: b.passengers })}
+                        <Users className="w-3.5 h-3.5 text-[#2f6395]" />{fill(t('lists.bookings.paxValue'), { count: b.passengers })}
                       </span>
                     </div>
 
@@ -238,7 +238,7 @@ export default function MyBookings() {
                           savedPlan: b.plan || undefined,
                           startDate: b.date || undefined,
                         } })}
-                        className="px-4 py-2.5 rounded-xl bg-[#0071c2] hover:bg-[#005fa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
+                        className="px-4 py-2.5 rounded-xl bg-[#2f6395] hover:bg-[#005fa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
                         {t('lists.bookings.open')} <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                       </button>
                     </div>
@@ -258,7 +258,7 @@ export default function MyBookings() {
             <p className="text-[#1a1a1a] font-black mb-1">{t('lists.bookings.noMatchTitle')}</p>
             <p className="text-[#93876f] text-sm mb-4">{t('lists.bookings.noMatchSub')}</p>
             <button onClick={() => { setFilter('all'); setSearch(''); }}
-              className="px-5 py-2.5 rounded-xl bg-[#0071c2] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft">
+              className="px-5 py-2.5 rounded-xl bg-[#2f6395] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft">
               {t('lists.bookings.clearFilters')}
             </button>
           </div>

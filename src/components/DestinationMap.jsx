@@ -45,7 +45,7 @@ export default function DestinationMap({ destinations = [], className = '' }) {
               <Popup>
                 <div className="text-[13px] font-bold">{m.city || m.name}</div>
                 {m.country && <div className="text-[11px] text-[#5c5245]">{m.country}</div>}
-                {m.code && <div className="text-[10px] text-[#0071c2] font-black">{m.code}</div>}
+                {m.code && <div className="text-[10px] text-[#2f6395] font-black">{m.code}</div>}
               </Popup>
             ) : null}
           </Marker>

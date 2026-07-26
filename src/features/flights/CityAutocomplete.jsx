@@ -63,9 +63,9 @@ export default function CityAutocomplete({
 
   return (
     <div ref={wrapRef} className={`relative ${className}`}>
-      <label className="block bg-white border-2 border-[#e6dcc3] hover:border-[#0071c2] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition">
+      <label className="block bg-white border-2 border-[#e6dcc3] hover:border-[#2f6395] focus-within:border-[#2f6395] focus-within:ring-4 focus-within:ring-[#2f6395]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition">
         <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-0.5">
-          <span className="text-[#0071c2]">{icon}</span>{label}
+          <span className="text-[#2f6395]">{icon}</span>{label}
         </div>
         <input
           type="text"
@@ -106,7 +106,7 @@ export default function CityAutocomplete({
                 <span className="flex items-center gap-1.5 min-w-0">
                   <span className="block text-[13.5px] font-black text-[#1a1a1a] truncate">{a.isArea ? a.name : a.city}</span>
                   {a.isArea && (
-                    <span className="shrink-0 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-[#f0f5ff] text-[#0071c2]">Area</span>
+                    <span className="shrink-0 px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-[#f0f5ff] text-[#2f6395]">Area</span>
                   )}
                 </span>
                 <span className="block text-[11px] font-bold text-[#93876f] truncate">

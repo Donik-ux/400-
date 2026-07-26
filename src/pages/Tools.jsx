@@ -57,7 +57,7 @@ const CurrencySelect = ({ value, onChange, codes }) => {
   const list = codes && codes.length ? codes : CURRENCIES.map(c => c.code);
   return (
     <select value={value} onChange={e => onChange(e.target.value)}
-      className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition-premium">
+      className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] focus:ring-4 focus:ring-[#2f6395]/10 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition-premium">
       {list.map(code => (
         <option key={code} value={code}>{currencyFlag(code)} {code} — {nameFor(code)}</option>
       ))}
@@ -105,16 +105,16 @@ function CurrencyConverter() {
     <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft lift">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
-          <RefreshCw className="w-5 h-5 text-[#0071c2]" />
+          <RefreshCw className="w-5 h-5 text-[#2f6395]" />
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.converter.title')}</h2>
         <span className={`ml-auto inline-flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-full ${
           status === 'live' ? 'bg-[#e9f3ea] text-ok'
-          : status === 'loading' ? 'bg-[#f0f5ff] text-[#0071c2]'
+          : status === 'loading' ? 'bg-[#f0f5ff] text-[#2f6395]'
           : 'bg-[#fdf3dc] text-warn'
         }`}>
           <span className={`w-1.5 h-1.5 rounded-full ${
-            status === 'live' ? 'bg-[#2e7d4f]' : status === 'loading' ? 'bg-[#0071c2] animate-pulse' : 'bg-[#c9962f]'
+            status === 'live' ? 'bg-[#2e7d4f]' : status === 'loading' ? 'bg-[#2f6395] animate-pulse' : 'bg-[#c9962f]'
           }`} />
           {status === 'live' ? t('toolsPage.converter.statusLive') : status === 'loading' ? t('toolsPage.converter.statusLoading') : t('toolsPage.converter.statusOffline')}
         </span>
@@ -125,7 +125,7 @@ function CurrencyConverter() {
         <span className="text-[12px] font-bold text-[#1a1a1a] mb-1.5 block">{t('toolsPage.converter.amount')}</span>
         <input type="number" min="0" value={amount}
           onChange={e => setAmount(Math.max(0, Number(e.target.value)))}
-          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
+          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] focus:ring-4 focus:ring-[#2f6395]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
       </label>
 
       <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2">
@@ -134,7 +134,7 @@ function CurrencyConverter() {
           <CurrencySelect value={from} onChange={setFrom} codes={allCodes} />
         </label>
         <button onClick={swap} title={t('toolsPage.converter.swap')}
-          className="w-10 h-[42px] rounded-xl bg-[#003580] text-white flex items-center justify-center hover:bg-[#0071c2] transition-premium active:scale-90 shadow-soft hover:shadow-float">
+          className="w-10 h-[42px] rounded-xl bg-[#003580] text-white flex items-center justify-center hover:bg-[#2f6395] transition-premium active:scale-90 shadow-soft hover:shadow-float">
           <ArrowLeftRight className="w-4 h-4" />
         </button>
         <label>
@@ -143,9 +143,9 @@ function CurrencyConverter() {
         </label>
       </div>
 
-      <div className="mt-4 bg-gradient-to-br from-[#003580] to-[#0071c2] rounded-2xl p-5 text-white shadow-float relative overflow-hidden">
+      <div className="mt-4 bg-gradient-to-br from-[#003580] to-[#2f6395] rounded-2xl p-5 text-white shadow-float relative overflow-hidden">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 85% 20%, #f5b942 0%, transparent 45%)' }} />
+             style={{ backgroundImage: 'radial-gradient(circle at 85% 20%, #cf9c3f 0%, transparent 45%)' }} />
         <div className="relative">
           <p className="text-[11px] font-bold uppercase tracking-widest text-white/60">{amount || 0} {from} =</p>
           <p className="text-[32px] font-black leading-tight">{fmtMoney(result)} <span className="text-[16px] text-white/70">{to}</span></p>
@@ -173,7 +173,7 @@ function TipCalculator() {
     <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft lift">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
-          <Receipt className="w-5 h-5 text-[#0071c2]" />
+          <Receipt className="w-5 h-5 text-[#2f6395]" />
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.tip.title')}</h2>
       </div>
@@ -183,7 +183,7 @@ function TipCalculator() {
         <span className="text-[12px] font-bold text-[#1a1a1a] mb-1.5 block">{t('toolsPage.tip.bill')}</span>
         <input type="number" min="0" value={bill}
           onChange={e => setBill(Math.max(0, Number(e.target.value)))}
-          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
+          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] focus:ring-4 focus:ring-[#2f6395]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
       </label>
 
       <span className="text-[12px] font-bold text-[#1a1a1a] mb-1.5 block">{t('toolsPage.tip.tipLabel')}</span>
@@ -191,10 +191,10 @@ function TipCalculator() {
         {[0, 5, 10, 15, 20].map(p => (
           <button key={p} onClick={() => setPct(p)}
             className={`px-3.5 py-1.5 rounded-lg text-[12px] font-black border transition-premium ${
-              pct === p ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#003580]'
+              pct === p ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#2f6395] hover:text-[#003580]'
             }`}>{p}%</button>
         ))}
-        <div className="flex items-center gap-1 px-2 rounded-lg border border-[#e6dcc3] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/10 transition-premium">
+        <div className="flex items-center gap-1 px-2 rounded-lg border border-[#e6dcc3] focus-within:border-[#2f6395] focus-within:ring-4 focus-within:ring-[#2f6395]/10 transition-premium">
           <input type="number" min="0" max="100" value={pct}
             onChange={e => setPct(Math.min(100, Math.max(0, Number(e.target.value))))}
             className="w-12 text-[12px] font-black text-[#1a1a1a] outline-none py-1.5" />
@@ -204,16 +204,16 @@ function TipCalculator() {
 
       <div className="flex items-center justify-between mb-4">
         <span className="flex items-center gap-2 text-[13px] font-bold text-[#1a1a1a]">
-          <Users className="w-4 h-4 text-[#0071c2]" /> {t('toolsPage.tip.people')}
+          <Users className="w-4 h-4 text-[#2f6395]" /> {t('toolsPage.tip.people')}
         </span>
         <div className="flex items-center gap-3">
           <button onClick={() => setPeople(v => Math.max(1, v - 1))}
-            className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
+            className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#2f6395] hover:bg-[#f0f5ff] transition-premium active:scale-90">
             <Minus className="w-4 h-4 text-[#5c5245]" />
           </button>
           <span className="text-[15px] font-black text-[#1a1a1a] w-6 text-center tabular-nums">{people}</span>
           <button onClick={() => setPeople(v => Math.min(50, v + 1))}
-            className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
+            className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#2f6395] hover:bg-[#f0f5ff] transition-premium active:scale-90">
             <Plus className="w-4 h-4 text-[#5c5245]" />
           </button>
         </div>
@@ -257,7 +257,7 @@ function WorldClock() {
     <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft lift">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
-          <Clock className="w-5 h-5 text-[#0071c2]" />
+          <Clock className="w-5 h-5 text-[#2f6395]" />
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.clock.title')}</h2>
       </div>
@@ -265,7 +265,7 @@ function WorldClock() {
 
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3">
         {CLOCK_CITIES.map(c => (
-          <div key={c.key} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3 text-center hover:border-[#0071c2]/40 hover:bg-white transition-premium">
+          <div key={c.key} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3 text-center hover:border-[#2f6395]/40 hover:bg-white transition-premium">
             <div className="text-[18px] leading-none mb-1">{c.flag}</div>
             <div className="text-[12px] font-bold text-[#5c5245]">{t(`toolsPage.clock.cities.${c.key}`)}</div>
             <div className="text-[20px] font-black text-gradient leading-tight tabular-nums">{timeIn(c.tz)}</div>
@@ -307,7 +307,7 @@ function UnitConverter() {
     <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft lift">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
-          <Ruler className="w-5 h-5 text-[#0071c2]" />
+          <Ruler className="w-5 h-5 text-[#2f6395]" />
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.units.title')}</h2>
       </div>
@@ -317,7 +317,7 @@ function UnitConverter() {
         {UNIT_CATS.map(u => (
           <button key={u.key} onClick={() => pickCat(u.key)}
             className={`px-3.5 py-1.5 rounded-lg text-[12px] font-black border transition-premium ${
-              cat === u.key ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#003580]'
+              cat === u.key ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#2f6395] hover:text-[#003580]'
             }`}>{u.emoji} {t(`toolsPage.units.${u.labelKey}`)}</button>
         ))}
       </div>
@@ -327,15 +327,15 @@ function UnitConverter() {
           <span className="text-[11px] font-bold text-[#93876f] mb-1 block">{fromU}</span>
           <input type="number" value={val}
             onChange={e => setVal(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
+            className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] focus:ring-4 focus:ring-[#2f6395]/10 outline-none text-[18px] font-black text-[#1a1a1a] transition-premium" />
         </div>
         <button onClick={() => setDir(d => !d)} title={t('toolsPage.units.flipTitle')}
-          className="w-10 h-[42px] mt-5 rounded-xl bg-[#003580] text-white flex items-center justify-center hover:bg-[#0071c2] transition-premium active:scale-90 shadow-soft hover:shadow-float">
+          className="w-10 h-[42px] mt-5 rounded-xl bg-[#003580] text-white flex items-center justify-center hover:bg-[#2f6395] transition-premium active:scale-90 shadow-soft hover:shadow-float">
           <ArrowLeftRight className="w-4 h-4" />
         </button>
         <div>
           <span className="text-[11px] font-bold text-[#93876f] mb-1 block">{toU}</span>
-          <div className="px-3 py-2.5 rounded-xl bg-gradient-to-br from-[#f0f5ff] to-[#f6f1e4] border-2 border-[#0071c2]/15 text-[18px] font-black text-gradient">
+          <div className="px-3 py-2.5 rounded-xl bg-gradient-to-br from-[#f0f5ff] to-[#f6f1e4] border-2 border-[#2f6395]/15 text-[18px] font-black text-gradient">
             {result.toFixed(1)}
           </div>
         </div>
@@ -368,7 +368,7 @@ function Phrasebook() {
     <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-9 h-9 rounded-xl bg-[#f0f5ff] flex items-center justify-center shrink-0">
-          <Languages className="w-5 h-5 text-[#0071c2]" />
+          <Languages className="w-5 h-5 text-[#2f6395]" />
         </div>
         <h2 className="text-[16px] font-black text-[#1a1a1a]">{t('toolsPage.phrasebook.title')}</h2>
       </div>
@@ -380,7 +380,7 @@ function Phrasebook() {
         {LANGUAGES.map(l => (
           <button key={l.code} onClick={() => setCode(l.code)}
             className={`px-3.5 py-1.5 rounded-lg text-[12px] font-bold border transition-premium ${
-              code === l.code ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#003580]'
+              code === l.code ? 'bg-[#003580] text-white border-[#003580] shadow-float' : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#2f6395] hover:text-[#003580]'
             }`}>{l.flag} {l.name}</button>
         ))}
       </div>
@@ -390,15 +390,15 @@ function Phrasebook() {
           const entry = lang.phrases[p.key];
           if (!entry) return null;
           return (
-            <div key={p.key} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3.5 flex items-start gap-2 hover:border-[#0071c2]/40 hover:bg-white hover:shadow-soft transition-premium">
+            <div key={p.key} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3.5 flex items-start gap-2 hover:border-[#2f6395]/40 hover:bg-white hover:shadow-soft transition-premium">
               <div className="flex-1 min-w-0">
                 <p className="text-[11px] text-[#93876f] font-medium mb-0.5">{p.ru}</p>
                 <p className="text-[15px] font-black text-[#1a1a1a] leading-tight">{entry[0]}</p>
-                <p className="text-[12px] text-[#0071c2] font-semibold italic">[{entry[1]}]</p>
+                <p className="text-[12px] text-[#2f6395] font-semibold italic">[{entry[1]}]</p>
               </div>
               {canSpeak && (
                 <button onClick={() => speak(entry[0])} title={t('toolsPage.phrasebook.listen')}
-                  className="w-8 h-8 rounded-lg bg-white border border-[#e6dcc3] flex items-center justify-center text-[#0071c2] hover:bg-[#003580] hover:text-white hover:border-[#003580] transition-premium shrink-0 active:scale-90">
+                  className="w-8 h-8 rounded-lg bg-white border border-[#e6dcc3] flex items-center justify-center text-[#2f6395] hover:bg-[#003580] hover:text-white hover:border-[#003580] transition-premium shrink-0 active:scale-90">
                   <Volume2 className="w-4 h-4" />
                 </button>
               )}
@@ -427,7 +427,7 @@ export default function Tools() {
         <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-10">
           <div className="badge-editorial inline-flex px-3.5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest mb-4">
-            <Wrench className="w-3.5 h-3.5 text-[#ffd76e]" /> {t('toolsPage.hero.badge')}
+            <Wrench className="w-3.5 h-3.5 text-[#e6c988]" /> {t('toolsPage.hero.badge')}
           </div>
           <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-[-0.03em] leading-[1.05] mb-2 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
             {t('toolsPage.hero.title1')} <span className="italic font-medium text-gradient-gold gold-animate">{t('toolsPage.hero.title2')}</span>

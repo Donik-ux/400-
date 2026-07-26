@@ -77,8 +77,8 @@ export default function Profile() {
       {/* ── Hero header ── */}
       <section className="relative bg-gradient-to-br from-[#001026] via-[#002250] to-[#003580] text-white overflow-hidden pt-[100px] pb-16">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0071c2 0%, transparent 45%), radial-gradient(circle at 78% 65%, #f5b942 0%, transparent 38%)' }} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#f5b942]/15 blur-3xl pointer-events-none animate-float" />
+             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #2f6395 0%, transparent 45%), radial-gradient(circle at 78% 65%, #cf9c3f 0%, transparent 38%)' }} />
+        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#cf9c3f]/15 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-4xl mx-auto px-4 md:px-8">
           <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-white/60 hover:text-white text-[13px] font-semibold mb-7 transition">
             <ArrowLeft className="w-4 h-4" /> {t('profilePage.back')}
@@ -86,7 +86,7 @@ export default function Profile() {
 
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ffd76e] via-[#f5b942] to-[#d99a2b] flex items-center justify-center text-2xl font-black text-[#002250] ring-1 ring-white/30 shadow-lift">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#e6c988] via-[#cf9c3f] to-[#b58427] flex items-center justify-center text-2xl font-black text-[#002250] ring-1 ring-white/30 shadow-lift">
                 {user?.avatar || user?.name?.[0]?.toUpperCase()}
               </div>
               <div>
@@ -130,14 +130,14 @@ export default function Profile() {
           <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-float">
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
               <h2 className="text-sm font-black uppercase tracking-widest text-[#93876f] flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#f5b942]" /> {t('profilePage.myPlans') || 'My AI Trip Plans'}
+                <Sparkles className="w-4 h-4 text-[#cf9c3f]" /> {t('profilePage.myPlans') || 'My AI Trip Plans'}
                 {plans.length > 0 && (
-                  <span className="ml-1 px-2 py-0.5 bg-[#f0f5ff] text-[#0071c2] text-[11px] font-black rounded-full normal-case tracking-normal">{plans.length}</span>
+                  <span className="ml-1 px-2 py-0.5 bg-[#f0f5ff] text-[#2f6395] text-[11px] font-black rounded-full normal-case tracking-normal">{plans.length}</span>
                 )}
               </h2>
               {plans.length > 0 && (
                 <button onClick={() => navigate('/my-plans')}
-                  className="text-[12px] font-black text-[#0071c2] hover:underline flex items-center gap-1">
+                  className="text-[12px] font-black text-[#2f6395] hover:underline flex items-center gap-1">
                   {t('profilePage.viewAllPlans') || 'View all'} <ArrowRight className="w-3 h-3" />
                 </button>
               )}
@@ -145,7 +145,7 @@ export default function Profile() {
 
             {plans.length === 0 ? (
               <div className="text-center py-8 rounded-2xl border border-dashed border-[#e0e0e0] bg-[#fafafa]">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f5b942] to-[#d99a2b] flex items-center justify-center mx-auto mb-3 rotate-3 shadow-soft">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#cf9c3f] to-[#b58427] flex items-center justify-center mx-auto mb-3 rotate-3 shadow-soft">
                   <Map className="w-7 h-7 text-white" />
                 </div>
                 <p className="text-[15px] font-black text-[#1a1a1a] mb-1">{t('profilePage.noPlansTitle') || 'No saved plans yet'}</p>
@@ -169,7 +169,7 @@ export default function Profile() {
                     <div key={plan.id} className="group bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft hover:shadow-float lift flex flex-col">
                       <div className="relative h-28 bg-cover bg-center" style={{ backgroundImage: `url(${heroFor(dest)})` }}>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                        <span className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${isAi ? 'bg-[#f5b942] text-[#002250]' : 'bg-[#0071c2] text-white'}`}>
+                        <span className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${isAi ? 'bg-[#cf9c3f] text-[#002250]' : 'bg-[#2f6395] text-white'}`}>
                           <Sparkles className="w-3 h-3" /> {isAi ? (t('lists.plans.aiPlanTag') || 'AI plan') : (t('lists.plans.planTag') || 'Plan')}
                         </span>
                         <button onClick={() => handleRemovePlan(plan.id, dest)}
@@ -183,8 +183,8 @@ export default function Profile() {
                       </div>
                       <div className="p-3.5 flex flex-col flex-1">
                         <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-bold text-[#5c5245] mb-3">
-                          <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#0071c2]" /> {days} {t('profilePage.daysWord') || 'days'}</span>
-                          {budget > 0 && <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-[#0071c2]" /> {fmt(budget)}</span>}
+                          <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#2f6395]" /> {days} {t('profilePage.daysWord') || 'days'}</span>
+                          {budget > 0 && <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-[#2f6395]" /> {fmt(budget)}</span>}
                           <span className="flex items-center gap-1 text-[#93876f]"><Clock className="w-3 h-3" /> {fmtDate(plan.savedAt)}</span>
                         </div>
                         <div className="mt-auto flex items-center justify-between gap-2 pt-3 border-t border-[#efe6d2]">
@@ -193,12 +193,12 @@ export default function Profile() {
                           ) : <span className="text-[11px] text-[#93876f] font-bold">{t('lists.plans.openToView') || 'Open to view'}</span>}
                           <div className="flex items-center gap-1.5">
                             <button onClick={() => downloadPlanPdf(plan)}
-                              className="px-2.5 py-2 rounded-lg border-2 border-[#0071c2] text-[#0071c2] hover:bg-[#f0f5ff] text-[11px] font-black flex items-center gap-1 transition active:scale-95"
+                              className="px-2.5 py-2 rounded-lg border-2 border-[#2f6395] text-[#2f6395] hover:bg-[#f0f5ff] text-[11px] font-black flex items-center gap-1 transition active:scale-95"
                               title={t('lists.plans.downloadPdf') || 'Download PDF'}>
                               <Download className="w-3.5 h-3.5" /> PDF
                             </button>
                             <button onClick={() => openPlan(plan)}
-                              className="px-3 py-2 rounded-lg bg-[#0071c2] hover:bg-[#005fa3] text-white text-[11px] font-black flex items-center gap-1 transition active:scale-95 shadow-soft">
+                              className="px-3 py-2 rounded-lg bg-[#2f6395] hover:bg-[#005fa3] text-white text-[11px] font-black flex items-center gap-1 transition active:scale-95 shadow-soft">
                               {t('lists.plans.open') || 'Open'} <ArrowRight className="w-3 h-3" />
                             </button>
                           </div>
@@ -214,7 +214,7 @@ export default function Profile() {
           {/* ── Personal Info ── */}
           <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft hover:shadow-float transition">
             <h2 className="text-sm font-black uppercase tracking-widest text-[#93876f] mb-5 flex items-center gap-2">
-              <User className="w-4 h-4 text-[#f5b942]" /> {t('profilePage.personalInfo')}
+              <User className="w-4 h-4 text-[#cf9c3f]" /> {t('profilePage.personalInfo')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
@@ -232,7 +232,7 @@ export default function Profile() {
                   {editing ? (
                     <input type={field.type} placeholder={field.ph} value={form[field.k]}
                       onChange={e => f(field.k, e.target.value)}
-                      className="w-full bg-[#f6f1e4] border-2 border-[#e6dcc3] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#a89a7d] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/15 transition"
+                      className="w-full bg-[#f6f1e4] border-2 border-[#e6dcc3] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#a89a7d] focus:outline-none focus:border-[#2f6395] focus:ring-4 focus:ring-[#2f6395]/15 transition"
                     />
                   ) : (
                     <p className="text-sm text-[#1a1a1a] font-semibold py-3">{form[field.k] || <span className="text-[#c0c0c0] font-medium">{t('profilePage.notSet')}</span>}</p>
@@ -245,7 +245,7 @@ export default function Profile() {
           {/* ── Passport / Travel Document ── */}
           <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft hover:shadow-float transition">
             <h2 className="text-sm font-black uppercase tracking-widest text-[#93876f] mb-2 flex items-center gap-2">
-              <Shield className="w-4 h-4 text-[#f5b942]" /> {t('profilePage.passportSection')}
+              <Shield className="w-4 h-4 text-[#cf9c3f]" /> {t('profilePage.passportSection')}
             </h2>
             <p className="text-[#93876f] text-xs font-medium mb-5">
               {t('profilePage.passportHint')}
@@ -258,7 +258,7 @@ export default function Profile() {
                     <CreditCard className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#93876f]" />
                     <input type="text" placeholder={t('profilePage.passportNumberPlaceholder')} value={form.passportNumber}
                       onChange={e => f('passportNumber', e.target.value.toUpperCase())}
-                      className="w-full bg-[#f6f1e4] border-2 border-[#e6dcc3] rounded-xl pl-10 pr-4 py-3 text-sm text-[#1a1a1a] font-mono placeholder:text-[#a89a7d] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/15 transition uppercase"
+                      className="w-full bg-[#f6f1e4] border-2 border-[#e6dcc3] rounded-xl pl-10 pr-4 py-3 text-sm text-[#1a1a1a] font-mono placeholder:text-[#a89a7d] focus:outline-none focus:border-[#2f6395] focus:ring-4 focus:ring-[#2f6395]/15 transition uppercase"
                     />
                   </div>
                 ) : (
@@ -276,7 +276,7 @@ export default function Profile() {
                 {editing ? (
                   <input type="date" value={form.passportExpiry} onChange={e => f('passportExpiry', e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full bg-[#f6f1e4] border-2 border-[#e6dcc3] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/15 transition"
+                    className="w-full bg-[#f6f1e4] border-2 border-[#e6dcc3] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#2f6395] focus:ring-4 focus:ring-[#2f6395]/15 transition"
                   />
                 ) : (
                   <p className="text-sm text-[#1a1a1a] font-semibold py-3">
@@ -288,7 +288,7 @@ export default function Profile() {
 
             {!editing && !form.passportNumber && (
               <button onClick={() => setEditing(true)}
-                className="mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-[#d0d0d0] text-[#93876f] text-[11px] font-bold hover:border-[#0071c2] hover:text-[#0071c2] transition">
+                className="mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-[#d0d0d0] text-[#93876f] text-[11px] font-bold hover:border-[#2f6395] hover:text-[#2f6395] transition">
                 <CreditCard className="w-4 h-4" /> {t('profilePage.addPassport')}
               </button>
             )}
@@ -297,7 +297,7 @@ export default function Profile() {
           {/* ── Booking History ── */}
           <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 shadow-soft hover:shadow-float transition">
             <h2 className="text-sm font-black uppercase tracking-widest text-[#93876f] mb-5 flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-[#f5b942]" /> {t('profilePage.recentBookings')}
+              <BookOpen className="w-4 h-4 text-[#cf9c3f]" /> {t('profilePage.recentBookings')}
             </h2>
             {bookings.length === 0 ? (
               <p className="text-[#93876f] text-sm text-center py-6 font-medium">{t('profilePage.noBookings')}</p>
@@ -318,7 +318,7 @@ export default function Profile() {
                   </div>
                 ))}
                 {bookings.length > 5 && (
-                  <button onClick={() => navigate('/my-bookings')} className="text-center text-[#0071c2] text-xs font-bold py-2 hover:underline transition">
+                  <button onClick={() => navigate('/my-bookings')} className="text-center text-[#2f6395] text-xs font-bold py-2 hover:underline transition">
                     {t('profilePage.viewAll')} {bookings.length} {t('profilePage.bookingsWord')} →
                   </button>
                 )}

@@ -86,12 +86,12 @@ export default function TourDetail() {
   if (!tour) {
     return (
       <div className="min-h-screen bg-[#f6f1e4] flex flex-col items-center justify-center text-center px-6">
-        <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#0071c2]/15 to-[#003580]/10 flex items-center justify-center mb-5 animate-float">
-          <Compass className="w-10 h-10 text-[#0071c2]" />
+        <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#2f6395]/15 to-[#003580]/10 flex items-center justify-center mb-5 animate-float">
+          <Compass className="w-10 h-10 text-[#2f6395]" />
         </div>
         <h1 className="text-2xl font-black text-[#1a1a1a] mb-2">{t('tourDetail.notFoundTitle')}</h1>
         <p className="text-[#5c5245] mb-6">{t('tourDetail.notFoundSub')}</p>
-        <Link to="/exotic-tours" className="px-5 py-3 rounded-xl bg-[#003580] text-white font-black text-[13px] shadow-soft transition hover:bg-[#0071c2] active:scale-95">
+        <Link to="/exotic-tours" className="px-5 py-3 rounded-xl bg-[#003580] text-white font-black text-[13px] shadow-soft transition hover:bg-[#2f6395] active:scale-95">
           {t('tourDetail.allExoticTours')}
         </Link>
       </div>
@@ -139,7 +139,7 @@ export default function TourDetail() {
           transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
           className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#001a3d] via-[#001a3d]/45 to-[#001a3d]/25" />
-        <div className="absolute top-8 right-[10%] w-56 h-56 rounded-full bg-[#febb02]/10 blur-3xl pointer-events-none animate-float" />
+        <div className="absolute top-8 right-[10%] w-56 h-56 rounded-full bg-[#d9a43e]/10 blur-3xl pointer-events-none animate-float" />
 
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 md:px-12 flex flex-col">
           {/* Back */}
@@ -169,7 +169,7 @@ export default function TourDetail() {
                 {tour.to.city} {tour.to.flag}
               </span>
               <span className="flex items-center gap-1.5 text-[13px] font-bold"><Clock className="w-4 h-4 text-white/60" />{tour.days} {t('tourDetail.daysSuffix')}</span>
-              <span className="flex items-center gap-1.5 text-[13px] font-bold"><Star className="w-4 h-4 fill-[#febb02] text-[#febb02]" />{tour.rating} ({tour.reviews})</span>
+              <span className="flex items-center gap-1.5 text-[13px] font-bold"><Star className="w-4 h-4 fill-[#d9a43e] text-[#d9a43e]" />{tour.rating} ({tour.reviews})</span>
               <span className="flex items-center gap-1.5 text-[13px] font-bold"><Users className="w-4 h-4 text-white/60" />{tour.groupSize} {t('tourDetail.peopleSuffix')}</span>
             </div>
           </motion.div>
@@ -199,7 +199,7 @@ export default function TourDetail() {
                 <div className="mt-1 inline-block px-2.5 py-1 rounded-lg bg-[#fdf1e8] text-[#c26d4a] text-[13px] font-black">{tour.from.temp}</div>
               </div>
               <div className="flex flex-col items-center gap-1 shrink-0">
-                <Plane className="w-5 h-5 text-[#0071c2] rotate-45" />
+                <Plane className="w-5 h-5 text-[#2f6395] rotate-45" />
                 <div className="w-24 h-[3px] rounded-full bg-gradient-to-r from-[#c9962f] to-[#2d6a6f]" />
                 <span className="text-[10px] font-bold text-[#93876f]">{tour.days} {t('tourDetail.contrastDays')}</span>
               </div>
@@ -223,9 +223,9 @@ export default function TourDetail() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.28, delay: i * 0.05, ease: [0.4, 0, 0.2, 1] }}
-                  className="flex items-center gap-3 bg-white border border-[#e6dcc3] rounded-xl p-3.5 shadow-soft transition-colors hover:border-[#0071c2]/40"
+                  className="flex items-center gap-3 bg-white border border-[#e6dcc3] rounded-xl p-3.5 shadow-soft transition-colors hover:border-[#2f6395]/40"
                 >
-                  <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0071c2] to-[#003580] text-white text-[12px] font-black flex items-center justify-center shrink-0 shadow-sm">
+                  <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#2f6395] to-[#003580] text-white text-[12px] font-black flex items-center justify-center shrink-0 shadow-sm">
                     {i + 1}
                   </span>
                   <span className="text-[14px] font-semibold text-[#1a1a1a]">{h}</span>
@@ -276,7 +276,7 @@ export default function TourDetail() {
                 <div className="text-[40px] font-black text-gradient leading-none">{tour.rating}</div>
                 <div className="flex items-center gap-0.5 justify-center mt-1">
                   {[1, 2, 3, 4, 5].map(n => (
-                    <Star key={n} className={`w-3.5 h-3.5 ${n <= Math.round(tour.rating) ? 'fill-[#febb02] text-[#febb02]' : 'text-[#e6dcc3]'}`} />
+                    <Star key={n} className={`w-3.5 h-3.5 ${n <= Math.round(tour.rating) ? 'fill-[#d9a43e] text-[#d9a43e]' : 'text-[#e6dcc3]'}`} />
                   ))}
                 </div>
                 <div className="text-[11px] text-[#93876f] mt-1">{tour.reviews} {t('tourDetail.reviewsCount')}</div>
@@ -288,7 +288,7 @@ export default function TourDetail() {
                     <div key={stars} className="flex items-center gap-2">
                       <span className="text-[11px] font-bold text-[#93876f] w-3">{stars}</span>
                       <div className="flex-1 h-1.5 rounded-full bg-[#efe6d2] overflow-hidden">
-                        <div className="h-full rounded-full bg-[#febb02]" style={{ width: `${pct}%` }} />
+                        <div className="h-full rounded-full bg-[#d9a43e]" style={{ width: `${pct}%` }} />
                       </div>
                     </div>
                   );
@@ -306,7 +306,7 @@ export default function TourDetail() {
                       <span className="text-[13px] font-black text-[#1a1a1a]">{r.name}</span>
                       <span className="flex items-center gap-0.5">
                         {[1, 2, 3, 4, 5].map(n => (
-                          <Star key={n} className={`w-3 h-3 ${n <= r.rating ? 'fill-[#febb02] text-[#febb02]' : 'text-[#e6dcc3]'}`} />
+                          <Star key={n} className={`w-3 h-3 ${n <= r.rating ? 'fill-[#d9a43e] text-[#d9a43e]' : 'text-[#e6dcc3]'}`} />
                         ))}
                       </span>
                       <span className="text-[11px] text-[#93876f] ml-auto">{t(`tourDetail.${r.whenKey}`)}</span>
@@ -331,7 +331,7 @@ export default function TourDetail() {
                 <div className="text-[26px] font-black text-gradient leading-none"><Price amount={pricePer} /></div>
               </div>
               <div className="flex items-center gap-1 text-[12px] font-bold text-[#5c5245]">
-                <Star className="w-3.5 h-3.5 fill-[#febb02] text-[#febb02]" />{tour.rating}
+                <Star className="w-3.5 h-3.5 fill-[#d9a43e] text-[#d9a43e]" />{tour.rating}
               </div>
             </div>
 
@@ -342,16 +342,16 @@ export default function TourDetail() {
             {/* Travelers */}
             <div className="flex items-center justify-between mb-3">
               <span className="flex items-center gap-2 text-[13px] font-bold text-[#1a1a1a]">
-                <Users className="w-4 h-4 text-[#0071c2]" /> {t('tourDetail.travelers')}
+                <Users className="w-4 h-4 text-[#2f6395]" /> {t('tourDetail.travelers')}
               </span>
               <div className="flex items-center gap-3">
                 <button onClick={() => setTravelers(v => Math.max(1, v - 1))}
-                  className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] transition active:scale-90">
+                  className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#2f6395] transition active:scale-90">
                   <Minus className="w-4 h-4 text-[#5c5245]" />
                 </button>
                 <span className="text-[15px] font-black text-[#1a1a1a] w-6 text-center">{travelers}</span>
                 <button onClick={() => setTravelers(v => Math.min(12, v + 1))}
-                  className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] transition active:scale-90">
+                  className="w-8 h-8 rounded-lg border border-[#e6dcc3] flex items-center justify-center hover:border-[#2f6395] transition active:scale-90">
                   <Plus className="w-4 h-4 text-[#5c5245]" />
                 </button>
               </div>
@@ -360,9 +360,9 @@ export default function TourDetail() {
             {/* Budget + date */}
             <label className="block mb-3">
               <span className="flex items-center gap-1.5 text-[12px] font-bold text-[#1a1a1a] mb-1.5">
-                <Wallet className="w-3.5 h-3.5 text-[#0071c2]" /> {t('tourDetail.totalBudget')}
+                <Wallet className="w-3.5 h-3.5 text-[#2f6395]" /> {t('tourDetail.totalBudget')}
               </span>
-              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#0071c2] transition">
+              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#2f6395] transition">
                 <span className="text-[15px] font-black text-[#5c5245]">$</span>
                 <input type="number" min="0" step="100" value={budget}
                   onChange={e => setBudget(Math.max(0, Number(e.target.value)))}
@@ -371,11 +371,11 @@ export default function TourDetail() {
             </label>
             <label className="block mb-4">
               <span className="flex items-center gap-1.5 text-[12px] font-bold text-[#1a1a1a] mb-1.5">
-                <Calendar className="w-3.5 h-3.5 text-[#0071c2]" /> {t('tourDetail.departureDate')}
+                <Calendar className="w-3.5 h-3.5 text-[#2f6395]" /> {t('tourDetail.departureDate')}
               </span>
               <input type="date" min={today} value={date}
                 onChange={e => setDate(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] outline-none text-[14px] font-bold text-[#1a1a1a] transition" />
+                className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] outline-none text-[14px] font-bold text-[#1a1a1a] transition" />
             </label>
 
             {/* Fit banner */}
@@ -398,7 +398,7 @@ export default function TourDetail() {
                 </div>
               </div>
               <div className="mt-2.5 h-2 rounded-full bg-white/70 overflow-hidden">
-                <div className={`h-full rounded-full transition-all duration-500 ${fits ? 'bg-[#2e7d4f]' : 'bg-[#e0a435]'}`}
+                <div className={`h-full rounded-full transition-all duration-500 ${fits ? 'bg-[#2e7d4f]' : 'bg-[#c08c33]'}`}
                   style={{ width: `${progress}%` }} />
               </div>
             </div>
@@ -417,7 +417,7 @@ export default function TourDetail() {
 
             {/* Savings tips */}
             {savingTips.length > 0 && (
-              <div className="bg-[#fff7e6] border border-[#ffd76e] rounded-xl p-3.5 mb-4">
+              <div className="bg-[#fff7e6] border border-[#e6c988] rounded-xl p-3.5 mb-4">
                 <p className="flex items-center gap-1.5 text-[12px] font-black text-[#a45e00] mb-1.5">
                   <Lightbulb className="w-4 h-4" /> {t('tourDetail.savingTipsTitle')}
                 </p>

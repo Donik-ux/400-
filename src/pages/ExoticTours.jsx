@@ -59,7 +59,7 @@ const TourCard = ({ tour, budget }) => {
         {/* Budget-fit badge */}
         {hasBudget && (
           <div className={`absolute top-4 right-4 px-2.5 py-1 rounded-full text-[10px] font-black shadow-lg ${
-            fits ? 'bg-[#2e7d4f] text-white' : 'bg-gradient-to-r from-[#febb02] to-[#f5b942] text-[#1a1a1a]'
+            fits ? 'bg-[#2e7d4f] text-white' : 'bg-gradient-to-r from-[#d9a43e] to-[#cf9c3f] text-[#1a1a1a]'
           }`}>
             {fits ? `✓ ${t('exoticTours.inBudget')}` : `+${fmt(over)}`}
           </div>
@@ -82,7 +82,7 @@ const TourCard = ({ tour, budget }) => {
           </div>
           <div className="flex-1 flex items-center">
             <div className="flex-1 h-[3px] rounded-full bg-gradient-to-r from-[#c9962f] to-[#2d6a6f]" />
-            <Plane className="w-4 h-4 text-[#0071c2] mx-1 rotate-45 shrink-0" />
+            <Plane className="w-4 h-4 text-[#2f6395] mx-1 rotate-45 shrink-0" />
           </div>
           <div className="text-center px-1 shrink-0">
             <div className="text-[18px] leading-none">{tour.to.icon}</div>
@@ -97,7 +97,7 @@ const TourCard = ({ tour, budget }) => {
             <Clock className="w-3 h-3" />{tour.days} {t('exotic.days')}
           </span>
           <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#fff7e6] text-[11px] font-bold text-[#a45e00]">
-            <Star className="w-3 h-3 fill-[#febb02] text-[#febb02]" />{tour.rating} ({tour.reviews})
+            <Star className="w-3 h-3 fill-[#d9a43e] text-[#d9a43e]" />{tour.rating} ({tour.reviews})
           </span>
           <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#faf6ed] text-[11px] font-bold text-[#5c5245]">
             <Users className="w-3 h-3" />{tour.groupSize}
@@ -110,7 +110,7 @@ const TourCard = ({ tour, budget }) => {
         {/* Highlights toggle */}
         <button
           onClick={() => setExpanded(v => !v)}
-          className="text-[12px] font-bold text-[#0071c2] hover:underline mb-2 flex items-center gap-1 self-start"
+          className="text-[12px] font-bold text-[#2f6395] hover:underline mb-2 flex items-center gap-1 self-start"
         >
           {expanded ? t('exotic.hideHighlights') : t('exotic.showHighlights')} <ArrowRight className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-90' : ''}`} />
         </button>
@@ -119,7 +119,7 @@ const TourCard = ({ tour, budget }) => {
           <ul className="mb-3 space-y-1.5">
             {tour.highlights.map((h, i) => (
               <li key={i} className="flex items-center gap-2 text-[13px] text-[#5c5245]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0071c2] shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2f6395] shrink-0" />
                 {h}
               </li>
             ))}
@@ -181,9 +181,9 @@ const ExoticTours = () => {
       <div className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#003580] overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[200%] bg-white/10 blur-[120px] rounded-full" />
-          <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[200%] bg-[#0071c2]/30 blur-[100px] rounded-full" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[200%] bg-[#2f6395]/30 blur-[100px] rounded-full" />
         </div>
-        <div className="absolute top-10 right-[12%] w-64 h-64 rounded-full bg-[#febb02]/10 blur-3xl pointer-events-none animate-float" />
+        <div className="absolute top-10 right-[12%] w-64 h-64 rounded-full bg-[#d9a43e]/10 blur-3xl pointer-events-none animate-float" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-28 pb-20">
           <motion.div
@@ -200,7 +200,7 @@ const ExoticTours = () => {
 
             <h1 className="font-display text-[clamp(38px,10vw,72px)] font-semibold text-white leading-[0.95] tracking-[-0.03em] text-balance break-words mb-6">
               {t('exotic.title1')}<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffd76e] to-[#7fc4c9]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e6c988] to-[#7fc4c9]">
                 {t('exotic.title2')}
               </span>
             </h1>
@@ -240,7 +240,7 @@ const ExoticTours = () => {
         {/* Budget finder */}
         <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 mb-6 flex flex-col md:flex-row md:items-center gap-4 shadow-soft">
           <div className="flex items-center gap-3 shrink-0">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0071c2] to-[#003580] flex items-center justify-center shadow-sm">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#2f6395] to-[#003580] flex items-center justify-center shadow-sm">
               <Wallet className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -248,7 +248,7 @@ const ExoticTours = () => {
               <p className="text-[12px] text-[#93876f]">{t('exoticTours.budgetFinderSub')}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#0071c2] transition flex-1 md:max-w-[240px]">
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#2f6395] transition flex-1 md:max-w-[240px]">
             <span className="text-[16px] font-black text-[#5c5245]">$</span>
             <input
               type="number" min="0" step="500" value={budget || ''}
@@ -303,7 +303,7 @@ const ExoticTours = () => {
 
         {/* Bottom CTA */}
         <div className="relative mt-20 bg-gradient-to-br from-[#002250] via-[#003580] to-[#003580] rounded-[32px] p-10 md:p-16 text-center overflow-hidden shadow-lift">
-          <div className="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-[#febb02]/10 blur-3xl pointer-events-none animate-float" />
+          <div className="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-[#d9a43e]/10 blur-3xl pointer-events-none animate-float" />
           <div className="relative">
             <h2 className="text-[36px] font-black text-white mb-4">
               {t('exotic.ctaTitle')}

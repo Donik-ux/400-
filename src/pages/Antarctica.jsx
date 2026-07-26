@@ -225,7 +225,7 @@ export default function Antarctica() {
         <div className="absolute inset-0 sheen-top pointer-events-none" />
         <GoldDust className="absolute inset-0" density={0.8} />
         <div className="absolute -left-32 top-10 w-96 h-96 rounded-full bg-[#7cc4d9]/25 blur-3xl pointer-events-none animate-float" />
-        <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#febb02]/12 blur-3xl pointer-events-none" />
+        <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#d9a43e]/12 blur-3xl pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <motion.div
@@ -273,7 +273,7 @@ export default function Antarctica() {
       {/* ─── EXPEDITION BUILDER ──────────────────────────────────── */}
       <section id="expedition-builder" className="max-w-7xl mx-auto px-4 md:px-8 pt-12 scroll-mt-24 reveal">
         <div className="relative overflow-hidden bg-white rounded-3xl border border-[#e6dcc3] shadow-float">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#7cc4d9] via-[#febb02] to-[#7cc4d9]" />
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#7cc4d9] via-[#d9a43e] to-[#7cc4d9]" />
           <div className="p-5 md:p-8">
             <div className="eyebrow-lux mb-2">
               <Compass className="w-3.5 h-3.5" /> {t('antarctica.builder.eyebrow')}
@@ -301,15 +301,15 @@ export default function Antarctica() {
 
             {/* Duration 8 / 9 / 10 days */}
             <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">
-              <Calendar className="w-3.5 h-3.5 text-[#0071c2]" /> {t('antarctica.builder.durationLabel')}
+              <Calendar className="w-3.5 h-3.5 text-[#2f6395]" /> {t('antarctica.builder.durationLabel')}
             </div>
             <div className="grid grid-cols-3 gap-2 md:gap-3 mb-6">
               {DURATIONS.map((d) => (
                 <button key={d} type="button" onClick={() => setDays(d)}
                   className={`rounded-xl border-2 px-3 py-3 text-left transition active:scale-[0.98] ${
                     days === d
-                      ? 'border-[#0071c2] bg-[#f0f5ff] ring-4 ring-[#0071c2]/10 shadow-soft'
-                      : 'border-[#e6dcc3] bg-white hover:border-[#0071c2]/50'
+                      ? 'border-[#2f6395] bg-[#f0f5ff] ring-4 ring-[#2f6395]/10 shadow-soft'
+                      : 'border-[#e6dcc3] bg-white hover:border-[#2f6395]/50'
                   }`}>
                   <div className="flex items-baseline gap-1.5">
                     <span className="font-display text-[26px] font-bold text-[#003580] leading-none">{d}</span>
@@ -323,7 +323,7 @@ export default function Antarctica() {
             {/* Departure dates — fare calendar */}
             <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
               <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f]">
-                <CalendarDays className="w-3.5 h-3.5 text-[#0071c2]" /> {t('antarctica.builder.datesLabel')}
+                <CalendarDays className="w-3.5 h-3.5 text-[#2f6395]" /> {t('antarctica.builder.datesLabel')}
               </div>
               <span className="text-[11px] font-bold text-[#93876f]">{t('antarctica.builder.datesHint')}</span>
             </div>
@@ -342,8 +342,8 @@ export default function Antarctica() {
                     onClick={() => setPickedIdx(i)}
                     className={`relative shrink-0 snap-start w-[136px] rounded-xl border-2 px-3 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
                       isSel
-                        ? 'border-[#0071c2] bg-[#f0f5ff] ring-4 ring-[#0071c2]/10 shadow-soft'
-                        : 'border-[#e6dcc3] bg-white hover:border-[#0071c2]/50'
+                        ? 'border-[#2f6395] bg-[#f0f5ff] ring-4 ring-[#2f6395]/10 shadow-soft'
+                        : 'border-[#e6dcc3] bg-white hover:border-[#2f6395]/50'
                     }`}>
                     {i === bestValueIdx ? (
                       <span className="absolute -top-2 left-2 bg-[#7cc4d9] text-[#00214f] text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft flex items-center gap-0.5">
@@ -355,7 +355,7 @@ export default function Antarctica() {
                       </span>
                     )}
                     <div className="flex items-center justify-between gap-1">
-                      <div className="text-[10px] font-black uppercase tracking-wider text-[#0071c2]">
+                      <div className="text-[10px] font-black uppercase tracking-wider text-[#2f6395]">
                         {o.off === 0 ? t('antarctica.builder.today') : inDaysLabel(o.off)}
                       </div>
                       {WeatherIcon && (
@@ -394,14 +394,14 @@ export default function Antarctica() {
                 <button type="button"
                   onClick={() => setPickedIdx(null)}
                   className="mt-3 w-full flex items-center gap-2.5 rounded-xl border border-[#7cc4d9]/50 bg-[#f0f9fb] px-3.5 py-2.5 text-left hover:bg-[#e3f3f7] transition">
-                  <Wand2 className="w-4 h-4 text-[#0071c2] shrink-0" />
+                  <Wand2 className="w-4 h-4 text-[#2f6395] shrink-0" />
                   <span className="text-[12px] font-bold text-[#00435c] leading-snug">{msg}</span>
                 </button>
               );
             })()}
 
             {Boolean(cleanCity(fromCity)) && aiFareNote?.advice && (
-              <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#fff7e6] border border-[#ffd76e]/60 px-3.5 py-2.5">
+              <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#fff7e6] border border-[#e6c988]/60 px-3.5 py-2.5">
                 <Sparkles className="w-3.5 h-3.5 text-[#a45e00] shrink-0 mt-0.5" />
                 <span className="text-[11.5px] font-semibold text-[#7c4a00] leading-snug">{aiFareNote.advice}</span>
               </div>
@@ -415,9 +415,9 @@ export default function Antarctica() {
                   <div className="text-[10px] font-black uppercase tracking-widest text-[#7cc4d9] mb-1.5">{t('antarctica.builder.summaryLabel')}</div>
                   <div className="flex items-center gap-2 text-[15px] md:text-[17px] font-black flex-wrap">
                     <span className={fromClean ? '' : 'text-white/40'}>{fromClean || t('antarctica.builder.yourCity')}</span>
-                    <ArrowRight className="w-4 h-4 text-[#febb02] shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#d9a43e] shrink-0" />
                     <span className="text-gradient-gold">Antarctica</span>
-                    <ArrowRight className="w-4 h-4 text-[#febb02] shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#d9a43e] shrink-0" />
                     <span className={backClean ? '' : 'text-white/40'}>{backClean || t('antarctica.builder.yourCity')}</span>
                   </div>
                   <div className="text-[12px] font-bold text-white/60 mt-1.5">
@@ -461,9 +461,9 @@ export default function Antarctica() {
                 <img src={r.img} alt={r.title} loading="lazy" onError={handleImgError}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
-                <span className="absolute top-2.5 left-2.5 bg-[#febb02] text-[#1a1a1a] text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">{r.tag}</span>
+                <span className="absolute top-2.5 left-2.5 bg-[#d9a43e] text-[#1a1a1a] text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">{r.tag}</span>
                 <div className="absolute bottom-2.5 left-3 flex items-center gap-1.5 text-white">
-                  <r.icon className="w-4 h-4 text-[#ffd76e]" />
+                  <r.icon className="w-4 h-4 text-[#e6c988]" />
                   <span className="text-[15px] font-black [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">{r.title}</span>
                 </div>
               </div>
@@ -475,7 +475,7 @@ export default function Antarctica() {
                     <div className="text-[20px] font-black text-[#003580] whitespace-nowrap">{fmtCompact(r.price)}</div>
                   </div>
                   <button onClick={() => buildPlan({ days: r.days, price: r.price })}
-                    className="text-[12px] font-black text-white bg-[#0071c2] hover:bg-[#005fa3] px-3 py-2 rounded-lg transition shadow-soft flex items-center gap-1 active:scale-95">
+                    className="text-[12px] font-black text-white bg-[#2f6395] hover:bg-[#005fa3] px-3 py-2 rounded-lg transition shadow-soft flex items-center gap-1 active:scale-95">
                     {t('antarctica.hero.ctaPlan').split(' ')[0]} <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>
@@ -530,7 +530,7 @@ export default function Antarctica() {
           </div>
           <div className="note-warn rounded-2xl p-6 shadow-soft">
             <div className="flex items-start gap-3">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#febb02] to-[#e0a435] text-[#1a1a1a] flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#d9a43e] to-[#c08c33] text-[#1a1a1a] flex items-center justify-center shrink-0">
                 <Lightbulb className="w-5 h-5" />
               </div>
               <div>

@@ -23,7 +23,7 @@ function buildByType(bookings) {
   const flights  = bookings.filter(b => b.type === 'flight').length;
   const packages = bookings.filter(b => b.type === 'package').length;
   return [
-    { label: 'Flights',  value: flights,  color: 'bg-[#f5b942]' },
+    { label: 'Flights',  value: flights,  color: 'bg-[#cf9c3f]' },
     { label: 'Packages', value: packages, color: 'bg-[#7fb2e5]' },
   ];
 }
@@ -102,7 +102,7 @@ export default function AnalyticsTab() {
                     </div>
                   )}
                   <div
-                    className={`w-full rounded-t-lg transition-all duration-500 ${isCurrentMonth ? 'bg-gradient-to-t from-[#d99a2b] to-[#ffd76e]' : 'bg-[#8fb4ff]/15 group-hover:bg-[#8fb4ff]/25'}`}
+                    className={`w-full rounded-t-lg transition-all duration-500 ${isCurrentMonth ? 'bg-gradient-to-t from-[#b58427] to-[#e6c988]' : 'bg-[#8fb4ff]/15 group-hover:bg-[#8fb4ff]/25'}`}
                     style={{ height: `${Math.max(pct, m.total > 0 ? 4 : 0)}%` }}
                   />
                 </div>

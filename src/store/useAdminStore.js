@@ -57,7 +57,7 @@ const SEED_SETTINGS = {
   contactPhone: '+996 700 000 000',
   commission: 10,
   maintenanceMode: false,
-  primaryColor: '#0071c2',
+  primaryColor: '#2f6395',
 };
 
 const initFlights       = () => { const d = load(S_FLIGHTS,  null); if (!d) { save(S_FLIGHTS,  SEED_FLIGHTS);  return SEED_FLIGHTS;  } return d; };

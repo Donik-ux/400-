@@ -40,7 +40,7 @@ export default function Layout({ children }) {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-[#faf6ed] text-[#1a1a1a] selection:bg-[#0071c2] selection:text-white">
+    <div className="min-h-screen bg-[#faf6ed] text-[#1a1a1a] selection:bg-[#2f6395] selection:text-white">
       {!isAdmin && !isAuth && <ScrollProgress />}
       {!isAdmin && !isAuth && <Navbar />}
       <main className={!isAdmin && !isAuth ? 'pt-[64px]' : ''}>{children}</main>

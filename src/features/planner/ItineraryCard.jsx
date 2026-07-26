@@ -30,7 +30,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
       {/* Header */}
       <div className="relative bg-gradient-to-br from-[#003580] to-[#002250] px-5 py-4 overflow-hidden">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 90% 10%, #0071c2 0%, transparent 55%)' }} />
+             style={{ backgroundImage: 'radial-gradient(circle at 90% 10%, #2f6395 0%, transparent 55%)' }} />
         <div className="relative flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-white/15 ring-1 ring-white/20 flex items-center justify-center shrink-0">
@@ -50,7 +50,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
 
       {/* Place */}
       <div className="flex items-center gap-2 px-5 py-3 bg-[#f6f1e4] border-b border-[#efe6d2]">
-        <MapPin className="w-3.5 h-3.5 text-[#0071c2] shrink-0" />
+        <MapPin className="w-3.5 h-3.5 text-[#2f6395] shrink-0" />
         <span className="text-[13px] font-bold text-[#5c5245] truncate">{dayPlan.place}</span>
       </div>
 
@@ -70,7 +70,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
               <div className="flex items-start gap-3">
                 {/* Time badge */}
                 <div className="shrink-0 mt-0.5">
-                  <span className="text-[10px] font-black text-[#0071c2] bg-[#f0f5ff] ring-1 ring-[#0071c2]/10 px-2 py-1 rounded-md whitespace-nowrap">
+                  <span className="text-[10px] font-black text-[#2f6395] bg-[#f0f5ff] ring-1 ring-[#2f6395]/10 px-2 py-1 rounded-md whitespace-nowrap">
                     {ev.time || '—'}
                   </span>
                 </div>
@@ -91,7 +91,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
                   {/* Address — prominent */}
                   {ev.address && (
                     <div className="flex items-start gap-1.5 mt-1 bg-[#f0f7ff] border border-[#dceaff] rounded-lg px-2 py-1.5">
-                      <MapPin className="w-3 h-3 text-[#0071c2] shrink-0 mt-0.5" />
+                      <MapPin className="w-3 h-3 text-[#2f6395] shrink-0 mt-0.5" />
                       <p className="text-[11px] text-[#003580] leading-snug font-semibold">{ev.address}</p>
                     </div>
                   )}
@@ -108,7 +108,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
                         href={mapsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-[10px] text-[#0071c2] font-bold hover:text-[#003580] transition-colors"
+                        className="flex items-center gap-1 text-[10px] text-[#2f6395] font-bold hover:text-[#003580] transition-colors"
                       >
                         <Navigation className="w-3 h-3" />
                         {transportMode === 'car' ? t('plannerPage.card.navigate') : t('plannerPage.card.directions')}

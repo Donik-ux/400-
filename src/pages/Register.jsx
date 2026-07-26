@@ -40,7 +40,7 @@ export default function Register() {
     else setError(result.error);
   };
 
-  const inp = 'w-full bg-white border-[1.5px] border-[#e6dcc3] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/10 transition-all';
+  const inp = 'w-full bg-white border-[1.5px] border-[#e6dcc3] rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#2f6395] focus:ring-2 focus:ring-[#2f6395]/10 transition-all';
 
   return (
     <div className="min-h-screen bg-[#faf6ed] grid lg:grid-cols-2">
@@ -49,14 +49,14 @@ export default function Register() {
       <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#003580] via-[#00306f] to-[#002250] p-12 text-white">
         {/* Floating accents */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="animate-float absolute -top-12 -left-10 w-72 h-72 rounded-full bg-[#febb02]/15 blur-3xl" />
-          <div className="animate-float absolute bottom-0 -right-16 w-80 h-80 rounded-full bg-[#0071c2]/30 blur-3xl" style={{ animationDelay: '1.4s' }} />
-          <Sparkles className="animate-float absolute top-28 left-24 w-9 h-9 text-[#febb02]/40" style={{ animationDelay: '0.5s' }} />
+          <div className="animate-float absolute -top-12 -left-10 w-72 h-72 rounded-full bg-[#d9a43e]/15 blur-3xl" />
+          <div className="animate-float absolute bottom-0 -right-16 w-80 h-80 rounded-full bg-[#2f6395]/30 blur-3xl" style={{ animationDelay: '1.4s' }} />
+          <Sparkles className="animate-float absolute top-28 left-24 w-9 h-9 text-[#d9a43e]/40" style={{ animationDelay: '0.5s' }} />
           <Plane className="animate-float absolute bottom-32 right-24 w-10 h-10 text-white/15" style={{ animationDelay: '2s' }} />
         </div>
 
         <div className="relative z-10 flex items-center gap-2.5">
-          <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#ffd76e] via-[#f5b942] to-[#d99a2b] flex items-center justify-center shadow-[0_4px_16px_rgba(245,185,66,0.5)] ring-1 ring-white/30">
+          <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#e6c988] via-[#cf9c3f] to-[#b58427] flex items-center justify-center shadow-[0_4px_16px_rgba(207, 156, 63,0.5)] ring-1 ring-white/30">
             <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
             <Compass className="relative w-5 h-5 text-[#002250]" strokeWidth={2.5} />
           </div>
@@ -71,8 +71,8 @@ export default function Register() {
             {t('auth.register.heroSub')}
           </p>
           <div className="flex flex-col gap-3 text-sm text-white/80">
-            <div className="flex items-center gap-3"><Gift className="w-4 h-4 text-[#febb02] shrink-0" /> {t('auth.register.trustDeals')}</div>
-            <div className="flex items-center gap-3"><Globe2 className="w-4 h-4 text-[#febb02] shrink-0" /> {t('auth.register.trustSync')}</div>
+            <div className="flex items-center gap-3"><Gift className="w-4 h-4 text-[#d9a43e] shrink-0" /> {t('auth.register.trustDeals')}</div>
+            <div className="flex items-center gap-3"><Globe2 className="w-4 h-4 text-[#d9a43e] shrink-0" /> {t('auth.register.trustSync')}</div>
           </div>
         </div>
 
@@ -85,7 +85,7 @@ export default function Register() {
 
         {/* Logo */}
         <div className="flex items-center gap-2 justify-center mb-8 lg:hidden">
-          <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#ffd76e] via-[#f5b942] to-[#d99a2b] flex items-center justify-center shadow-[0_4px_16px_rgba(245,185,66,0.5)] ring-1 ring-white/30">
+          <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#e6c988] via-[#cf9c3f] to-[#b58427] flex items-center justify-center shadow-[0_4px_16px_rgba(207, 156, 63,0.5)] ring-1 ring-white/30">
             <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
             <Compass className="relative w-[18px] h-[18px] text-[#002250]" strokeWidth={2.5} />
           </div>
@@ -165,7 +165,7 @@ export default function Register() {
             )}
 
             <button type="submit" disabled={loading}
-              className="w-full py-3 rounded-xl bg-[#0071c2] text-white text-[14px] font-bold hover:bg-[#005fa3] transition-premium disabled:opacity-50 disabled:cursor-not-allowed mt-1 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(0,113,194,0.3)]">
+              className="w-full py-3 rounded-xl bg-[#2f6395] text-white text-[14px] font-bold hover:bg-[#005fa3] transition-premium disabled:opacity-50 disabled:cursor-not-allowed mt-1 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(47, 99, 149,0.3)]">
               {loading ? (
                 <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('auth.register.submitting')}</>
               ) : (
@@ -176,7 +176,7 @@ export default function Register() {
 
           <p className="text-center text-[#93876f] text-sm mt-5">
             {t('auth.register.hasAccount')}{' '}
-            <Link to="/login" className="text-[#0071c2] hover:text-[#003580] font-bold transition-all">{t('auth.register.signIn')}</Link>
+            <Link to="/login" className="text-[#2f6395] hover:text-[#003580] font-bold transition-all">{t('auth.register.signIn')}</Link>
           </p>
         </div>
       </div>

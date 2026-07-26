@@ -67,7 +67,7 @@ function DestinationCard({ dest, days, budget }) {
           {regionLabel}
         </span>
         <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-black shadow-float ${
-          dest.fits ? 'bg-[#2e7d4f] text-white' : 'bg-[#febb02] text-[#1a1a1a]'
+          dest.fits ? 'bg-[#2e7d4f] text-white' : 'bg-[#d9a43e] text-[#1a1a1a]'
         }`}>
           {dest.fits ? t('whereToGo.card.fits') : `+${usd(Math.abs(dest.spare))}`}
         </span>
@@ -82,18 +82,18 @@ function DestinationCard({ dest, days, budget }) {
 
         <div className="flex flex-wrap gap-1.5 mb-3">
           {dest.tags.map(tag => (
-            <span key={tag} className="text-[10px] font-bold text-[#0071c2] bg-[#f0f5ff] rounded-full px-2 py-0.5">#{tag}</span>
+            <span key={tag} className="text-[10px] font-bold text-[#2f6395] bg-[#f0f5ff] rounded-full px-2 py-0.5">#{tag}</span>
           ))}
         </div>
 
         {/* Cost breakdown */}
         <div className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3 mb-3 text-[11px] font-bold text-[#5c5245]">
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5"><Plane className="w-3 h-3 text-[#0071c2]" /> {t('whereToGo.card.flight')}</span>
+            <span className="flex items-center gap-1.5"><Plane className="w-3 h-3 text-[#2f6395]" /> {t('whereToGo.card.flight')}</span>
             <span>{usd(dest.flight)}</span>
           </div>
           <div className="flex items-center justify-between mt-1.5">
-            <span className="flex items-center gap-1.5"><Hotel className="w-3 h-3 text-[#0071c2]" /> {days} {t('whereToGo.card.daysOnSite')}</span>
+            <span className="flex items-center gap-1.5"><Hotel className="w-3 h-3 text-[#2f6395]" /> {days} {t('whereToGo.card.daysOnSite')}</span>
             <span>{usd(dest.ground)}</span>
           </div>
           <div className="hairline my-2" />
@@ -104,7 +104,7 @@ function DestinationCard({ dest, days, budget }) {
         </div>
 
         <button onClick={handlePlan}
-          className="mt-auto w-full py-2.5 rounded-xl bg-[#003580] text-white text-[12px] font-black flex items-center justify-center gap-1.5 hover:bg-[#0071c2] transition-premium active:scale-[0.98] shadow-soft group-hover:shadow-float">
+          className="mt-auto w-full py-2.5 rounded-xl bg-[#003580] text-white text-[12px] font-black flex items-center justify-center gap-1.5 hover:bg-[#2f6395] transition-premium active:scale-[0.98] shadow-soft group-hover:shadow-float">
           <Sparkles className="w-3.5 h-3.5" /> {t('whereToGo.card.plan')} <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
@@ -146,10 +146,10 @@ export default function WhereToGo() {
       {/* Hero + search */}
       <section className="relative bg-[#002250] text-white overflow-hidden">
         <div className="absolute inset-0 opacity-30 pointer-events-none animate-float"
-             style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #0071c2 0%, transparent 45%), radial-gradient(circle at 80% 70%, #f5b942 0%, transparent 38%)' }} />
+             style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #2f6395 0%, transparent 45%), radial-gradient(circle at 80% 70%, #cf9c3f 0%, transparent 38%)' }} />
         <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f5b942] text-[#002250] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#cf9c3f] text-[#002250] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <Compass className="w-3.5 h-3.5" /> {t('whereToGo.hero.badge')}
           </div>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-[1.05] mb-2">
@@ -163,9 +163,9 @@ export default function WhereToGo() {
           <div className="bg-white rounded-2xl p-4 md:p-5 flex flex-col md:flex-row md:items-end gap-4 max-w-3xl shadow-lift">
             <label className="flex-1">
               <span className="flex items-center gap-1.5 text-[12px] font-black text-[#1a1a1a] mb-1.5">
-                <Wallet className="w-3.5 h-3.5 text-[#0071c2]" /> {t('whereToGo.hero.budgetLabel')}
+                <Wallet className="w-3.5 h-3.5 text-[#2f6395]" /> {t('whereToGo.hero.budgetLabel')}
               </span>
-              <div className="flex items-center gap-2 px-3.5 py-3 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#0071c2] focus-within:ring-4 focus-within:ring-[#0071c2]/10 transition-premium">
+              <div className="flex items-center gap-2 px-3.5 py-3 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#2f6395] focus-within:ring-4 focus-within:ring-[#2f6395]/10 transition-premium">
                 <span className="text-[16px] font-black text-[#5c5245]">$</span>
                 <input type="number" min="0" step="100" value={budget}
                   onChange={e => setBudget(Math.max(0, Number(e.target.value)))}
@@ -175,23 +175,23 @@ export default function WhereToGo() {
 
             <div>
               <span className="flex items-center gap-1.5 text-[12px] font-black text-[#1a1a1a] mb-1.5">
-                <Calendar className="w-3.5 h-3.5 text-[#0071c2]" /> {t('whereToGo.hero.daysLabel')}
+                <Calendar className="w-3.5 h-3.5 text-[#2f6395]" /> {t('whereToGo.hero.daysLabel')}
               </span>
               <div className="flex items-center gap-2">
                 <button onClick={() => setDays(v => Math.max(1, v - 1))}
-                  className="w-10 h-[46px] rounded-xl border-2 border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
+                  className="w-10 h-[46px] rounded-xl border-2 border-[#e6dcc3] flex items-center justify-center hover:border-[#2f6395] hover:bg-[#f0f5ff] transition-premium active:scale-90">
                   <Minus className="w-4 h-4 text-[#5c5245]" />
                 </button>
                 <span className="text-[16px] font-black text-[#1a1a1a] w-8 text-center tabular-nums">{days}</span>
                 <button onClick={() => setDays(v => Math.min(30, v + 1))}
-                  className="w-10 h-[46px] rounded-xl border-2 border-[#e6dcc3] flex items-center justify-center hover:border-[#0071c2] hover:bg-[#f0f5ff] transition-premium active:scale-90">
+                  className="w-10 h-[46px] rounded-xl border-2 border-[#e6dcc3] flex items-center justify-center hover:border-[#2f6395] hover:bg-[#f0f5ff] transition-premium active:scale-90">
                   <Plus className="w-4 h-4 text-[#5c5245]" />
                 </button>
               </div>
             </div>
 
             <div className="flex items-center gap-1.5 px-3.5 py-3 rounded-xl bg-[#f6f1e4] border border-[#e6dcc3] text-[12px] font-bold text-[#5c5245]">
-              <Plane className="w-3.5 h-3.5 text-[#0071c2] rotate-45" /> {t('whereToGo.hero.fromPrefix')} {ORIGIN.city} ({ORIGIN.code})
+              <Plane className="w-3.5 h-3.5 text-[#2f6395] rotate-45" /> {t('whereToGo.hero.fromPrefix')} {ORIGIN.city} ({ORIGIN.code})
             </div>
           </div>
         </div>
@@ -208,7 +208,7 @@ export default function WhereToGo() {
                 className={`px-3.5 py-1.5 rounded-full text-[12px] font-bold border transition-premium ${
                   vibe === v.key
                     ? 'bg-[#003580] text-white border-[#003580] shadow-float'
-                    : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#003580] shadow-soft'
+                    : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#2f6395] hover:text-[#003580] shadow-soft'
                 }`}>
                 {v.emoji} {t(`whereToGo.vibes.${v.key}`)}
               </button>
@@ -219,8 +219,8 @@ export default function WhereToGo() {
               <button key={r.value} onClick={() => setRegion(region === r.value ? null : r.value)}
                 className={`px-3.5 py-1.5 rounded-full text-[11px] font-bold border transition-premium ${
                   region === r.value
-                    ? 'bg-[#0071c2] text-white border-[#0071c2] shadow-float'
-                    : 'bg-white text-[#93876f] border-[#e6dcc3] hover:border-[#0071c2] hover:text-[#0071c2]'
+                    ? 'bg-[#2f6395] text-white border-[#2f6395] shadow-float'
+                    : 'bg-white text-[#93876f] border-[#e6dcc3] hover:border-[#2f6395] hover:text-[#2f6395]'
                 }`}>
                 {t(`whereToGo.regions.${r.tKey}`)}
               </button>
@@ -254,7 +254,7 @@ export default function WhereToGo() {
         ) : (
           <div className="bg-white border border-[#e6dcc3] rounded-2xl p-10 text-center mb-8 shadow-soft">
             <div className="w-16 h-16 rounded-2xl bg-[#f0f5ff] flex items-center justify-center mx-auto mb-4">
-              <Compass className="w-8 h-8 text-[#0071c2] animate-float" />
+              <Compass className="w-8 h-8 text-[#2f6395] animate-float" />
             </div>
             <p className="text-[15px] font-black text-[#1a1a1a] mb-1">{t('whereToGo.results.emptyTitle')}</p>
             <p className="text-[13px] text-[#93876f]">{t('whereToGo.results.emptySub')}</p>

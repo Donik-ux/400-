@@ -49,7 +49,7 @@ export default function Dashboard() {
   const statCards = [
     { label: t('dashboard.totalSpent'),  value: fmt(stats.totalSpent), icon: DollarSign, color: 'text-[#5c7a4f]', bg: 'bg-[#eef3e7]' },
     { label: t('dashboard.confirmed'),   value: stats.confirmed,                          icon: Star,       color: 'text-[#b8860b]', bg: 'bg-[#fdf6e3]' },
-    { label: t('dashboard.pending'),     value: stats.pending,                            icon: Clock,      color: 'text-[#0071c2]', bg: 'bg-[#f0f5ff]' },
+    { label: t('dashboard.pending'),     value: stats.pending,                            icon: Clock,      color: 'text-[#2f6395]', bg: 'bg-[#f0f5ff]' },
     { label: t('dashboard.countries'),   value: stats.countries || 0,                     icon: MapPin,     color: 'text-[#7d5a8c]', bg: 'bg-[#f5eef8]' },
   ];
 
@@ -58,13 +58,13 @@ export default function Dashboard() {
       {/* Header */}
       <div className="relative bg-gradient-to-br from-[#003580] via-[#00306f] to-[#002250] text-white overflow-hidden">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="animate-float absolute -top-16 right-[8%] w-72 h-72 rounded-full bg-[#0071c2]/30 blur-3xl" />
-          <div className="animate-float absolute -bottom-24 left-[20%] w-80 h-80 rounded-full bg-[#febb02]/10 blur-3xl" style={{ animationDelay: '1.5s' }} />
+          <div className="animate-float absolute -top-16 right-[8%] w-72 h-72 rounded-full bg-[#2f6395]/30 blur-3xl" />
+          <div className="animate-float absolute -bottom-24 left-[20%] w-80 h-80 rounded-full bg-[#d9a43e]/10 blur-3xl" style={{ animationDelay: '1.5s' }} />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-20">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center text-2xl font-black border border-white/20 shadow-2xl text-[#febb02]">
+              <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center text-2xl font-black border border-white/20 shadow-2xl text-[#d9a43e]">
                 {user.avatar || user.name?.[0]}
               </div>
               <div>
@@ -108,7 +108,7 @@ export default function Dashboard() {
                     {t('dashboard.recentBookingsSub')}
                   </p>
                 </div>
-                <button onClick={() => navigate('/my-bookings')} className="text-sm font-bold text-[#0071c2] hover:underline flex items-center gap-1">
+                <button onClick={() => navigate('/my-bookings')} className="text-sm font-bold text-[#2f6395] hover:underline flex items-center gap-1">
                   {t('dashboard.viewBookings')} <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -122,10 +122,10 @@ export default function Dashboard() {
               ) : (
                 <div className="space-y-4">
                   {bookings.slice(0, 5).map((b) => (
-                    <div key={b.id} className="group flex items-center gap-4 p-4 rounded-2xl bg-[#f6f1e4] border border-[#efe6d2] hover:bg-white hover:border-[#0071c2]/20 hover:shadow-soft transition-all cursor-pointer"
+                    <div key={b.id} className="group flex items-center gap-4 p-4 rounded-2xl bg-[#f6f1e4] border border-[#efe6d2] hover:bg-white hover:border-[#2f6395]/20 hover:shadow-soft transition-all cursor-pointer"
                       onClick={() => navigate('/my-bookings')}>
                       <div className="w-12 h-12 rounded-xl bg-white border border-[#efe6d2] flex items-center justify-center shrink-0">
-                        {b.type === 'flight' ? <Plane className="w-6 h-6 text-[#0071c2]" /> :
+                        {b.type === 'flight' ? <Plane className="w-6 h-6 text-[#2f6395]" /> :
                          b.type === 'package' ? <Package className="w-6 h-6 text-[#7d5a8c]" /> :
                          <Hotel className="w-6 h-6 text-[#b8860b]" />}
                       </div>
@@ -157,7 +157,7 @@ export default function Dashboard() {
 
             {/* Travel Insight */}
             <div className="bg-gradient-to-br from-[#003580] via-[#00306f] to-[#002250] rounded-3xl p-8 text-white relative overflow-hidden group shadow-lift">
-              <div className="pointer-events-none absolute -top-10 right-10 w-56 h-56 rounded-full bg-[#febb02]/15 blur-3xl animate-float" />
+              <div className="pointer-events-none absolute -top-10 right-10 w-56 h-56 rounded-full bg-[#d9a43e]/15 blur-3xl animate-float" />
               <div className="relative z-10 max-w-sm">
                 <h3 className="text-2xl font-black leading-tight mb-4 tracking-tighter">
                   {t('dashboard.insightProTitle')}
@@ -200,7 +200,7 @@ export default function Dashboard() {
 
             {/* Rewards */}
             <div className="relative overflow-hidden bg-gradient-to-br from-[#5c3d6b] via-[#4a2f5c] to-[#1f1338] rounded-3xl p-6 text-white shadow-lift">
-              <div className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full bg-[#febb02]/15 blur-2xl animate-float" />
+              <div className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full bg-[#d9a43e]/15 blur-2xl animate-float" />
               <div className="relative w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
                 <Sparkles className="w-6 h-6 text-[#e3c6f0]" />
               </div>

@@ -70,7 +70,7 @@ function buildAggregators(flight, date, pax = 1) {
   const sites = [
     {
       name: 'Aviasales', logo: '✈️', tagline: 'Best prices for CIS routes',
-      badge: 'Recommended', badgeCls: 'bg-[#fff7e6] text-[#a45e00]', borderCls: 'border-[#ffe6a3] hover:border-[#f5b942]',
+      badge: 'Recommended', badgeCls: 'bg-[#fff7e6] text-[#a45e00]', borderCls: 'border-[#ecd9a8] hover:border-[#cf9c3f]',
       url: d_as ? `https://www.aviasales.ru/search/${from}${d_as}${to}${pax}` : `https://www.aviasales.ru`,
     },
     {
@@ -144,8 +144,8 @@ export default function FlightBookingModal({ flight, date, pax = 1, onClose }) {
         <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-md flex items-start justify-between p-5 border-b border-[#e6dcc3] rounded-t-2xl">
           <div className="min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-7 h-7 rounded-lg bg-[#0071c2]/10 flex items-center justify-center shrink-0">
-                <Plane className="w-4 h-4 text-[#0071c2]" />
+              <span className="w-7 h-7 rounded-lg bg-[#2f6395]/10 flex items-center justify-center shrink-0">
+                <Plane className="w-4 h-4 text-[#2f6395]" />
               </span>
               <p className="text-[14px] font-black text-[#003580] truncate">
                 {flight.from?.split('(')[0]?.trim()} → {flight.to?.split('(')[0]?.trim()}
@@ -223,8 +223,8 @@ export default function FlightBookingModal({ flight, date, pax = 1, onClose }) {
         {/* ── Compare aggregators ── */}
         <section className="px-5 pt-5">
           <div className="flex items-center gap-2 mb-2.5">
-            <TrendingDown className="w-4 h-4 text-[#0071c2]" />
-            <h3 className="text-[12px] font-black uppercase tracking-widest text-[#0071c2]">
+            <TrendingDown className="w-4 h-4 text-[#2f6395]" />
+            <h3 className="text-[12px] font-black uppercase tracking-widest text-[#2f6395]">
               {official ? t('ui.booking.compareOr') : t('ui.booking.compareTop')}
             </h3>
             <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold text-[#93876f]">
@@ -256,7 +256,7 @@ export default function FlightBookingModal({ flight, date, pax = 1, onClose }) {
                       <span className="text-[9px] font-black uppercase tracking-wider bg-[#008009] text-white px-1.5 py-0.5 rounded">{t('ui.booking.best') || 'Best'}</span>
                     )}
                   </div>
-                  <span className="flex items-center gap-1 text-[#0071c2] text-[12px] font-black group-hover:gap-2 transition-all">
+                  <span className="flex items-center gap-1 text-[#2f6395] text-[12px] font-black group-hover:gap-2 transition-all">
                     {t('ui.booking.book') || 'Book'} <ExternalLink className="w-3 h-3" />
                   </span>
                 </div>

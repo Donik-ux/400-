@@ -10,17 +10,17 @@ const NotFound = () => {
     <div className="relative min-h-[70vh] flex items-center justify-center px-4 py-16 bg-[#faf6ed] overflow-hidden">
       {/* Floating accents */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="animate-float absolute -top-16 -left-10 w-72 h-72 rounded-full bg-[#0071c2]/10 blur-3xl" />
-        <div className="animate-float absolute -bottom-16 -right-10 w-80 h-80 rounded-full bg-[#febb02]/10 blur-3xl" style={{ animationDelay: '1.6s' }} />
+        <div className="animate-float absolute -top-16 -left-10 w-72 h-72 rounded-full bg-[#2f6395]/10 blur-3xl" />
+        <div className="animate-float absolute -bottom-16 -right-10 w-80 h-80 rounded-full bg-[#d9a43e]/10 blur-3xl" style={{ animationDelay: '1.6s' }} />
         <Plane className="animate-float absolute top-16 right-[12%] w-10 h-10 text-[#003580]/10" style={{ animationDelay: '0.5s' }} />
-        <Compass className="animate-float absolute bottom-16 left-[12%] w-12 h-12 text-[#febb02]/15" style={{ animationDelay: '2.1s' }} />
+        <Compass className="animate-float absolute bottom-16 left-[12%] w-12 h-12 text-[#d9a43e]/15" style={{ animationDelay: '2.1s' }} />
       </div>
 
       <div className="relative max-w-xl w-full bg-white border border-[#e6dcc3] rounded-3xl shadow-lift p-10 text-center page-fade">
-        <div className="animate-float w-20 h-20 rounded-2xl bg-gradient-to-br from-[#003580] to-[#002250] text-[#febb02] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-float">
+        <div className="animate-float w-20 h-20 rounded-2xl bg-gradient-to-br from-[#003580] to-[#002250] text-[#d9a43e] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-float">
           <Compass className="w-10 h-10" />
         </div>
-        <p className="text-[12px] font-black uppercase tracking-widest text-[#0071c2] mb-2">{t('notFound.badge')}</p>
+        <p className="text-[12px] font-black uppercase tracking-widest text-[#2f6395] mb-2">{t('notFound.badge')}</p>
         <h1 className="text-3xl md:text-4xl font-black tracking-tight mb-3 text-gradient">
           {t('notFound.title')}
         </h1>
@@ -29,7 +29,7 @@ const NotFound = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button onClick={() => navigate('/')}
-            className="px-5 py-3 rounded-xl border-2 border-[#e6dcc3] hover:border-[#0071c2] hover:bg-[#f0f5ff] text-[13px] font-black text-[#1a1a1a] transition active:scale-95 flex items-center justify-center gap-2">
+            className="px-5 py-3 rounded-xl border-2 border-[#e6dcc3] hover:border-[#2f6395] hover:bg-[#f0f5ff] text-[13px] font-black text-[#1a1a1a] transition active:scale-95 flex items-center justify-center gap-2">
             <ArrowLeft className="w-4 h-4" /> {t('notFound.backHome')}
           </button>
           <button onClick={() => navigate('/hot-tours')}
@@ -39,10 +39,10 @@ const NotFound = () => {
         </div>
         <div className="hairline my-7" />
         <div className="flex justify-center gap-5 text-[#5c5245]">
-          <button onClick={() => navigate('/flights')} className="flex items-center gap-1.5 text-[12px] font-bold hover:text-[#0071c2] transition">
+          <button onClick={() => navigate('/flights')} className="flex items-center gap-1.5 text-[12px] font-bold hover:text-[#2f6395] transition">
             <Plane className="w-3.5 h-3.5" /> {t('notFound.searchFlights')}
           </button>
-          <button onClick={() => navigate('/hot-tours')} className="flex items-center gap-1.5 text-[12px] font-bold hover:text-[#0071c2] transition">
+          <button onClick={() => navigate('/hot-tours')} className="flex items-center gap-1.5 text-[12px] font-bold hover:text-[#2f6395] transition">
             <Flame className="w-3.5 h-3.5" /> {t('notFound.hotTours')}
           </button>
         </div>

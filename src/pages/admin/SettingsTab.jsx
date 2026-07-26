@@ -108,7 +108,7 @@ export default function SettingsTab() {
           </div>
           <button
             onClick={() => f('maintenanceMode', !form.maintenanceMode)}
-            className={`relative w-11 h-6 rounded-full transition-all duration-300 ${form.maintenanceMode ? 'bg-[#febb02]' : 'bg-[#8fb4ff]/15'}`}
+            className={`relative w-11 h-6 rounded-full transition-all duration-300 ${form.maintenanceMode ? 'bg-[#d9a43e]' : 'bg-[#8fb4ff]/15'}`}
           >
             <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-all duration-300 ${form.maintenanceMode ? 'translate-x-5' : ''}`} />
           </button>
@@ -118,7 +118,7 @@ export default function SettingsTab() {
       {/* Actions */}
       <div className="flex items-center gap-3">
         <button onClick={handleSave}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${saved ? 'bg-[#86d29a] text-[#00112b]' : 'bg-gradient-to-r from-[#ffd76e] to-[#f5b942] text-[#00112b] hover:brightness-110 shadow-soft'}`}>
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${saved ? 'bg-[#86d29a] text-[#00112b]' : 'bg-gradient-to-r from-[#e6c988] to-[#cf9c3f] text-[#00112b] hover:brightness-110 shadow-soft'}`}>
           <Save className="w-4 h-4" /> {saved ? 'Saved!' : 'Save Settings'}
         </button>
         <button onClick={handleReset}

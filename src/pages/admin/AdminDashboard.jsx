@@ -77,11 +77,11 @@ export default function AdminDashboard() {
         <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
           {TABS.map(tb => (
             <button key={tb.id} onClick={() => setTab(tb.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-[12px] font-bold uppercase tracking-[0.1em] transition-premium ${tab === tb.id ? 'bg-gradient-to-r from-[#ffd76e] to-[#f5b942] text-[#00112b] shadow-soft' : 'text-white/40 hover:text-white hover:bg-white/[0.04]'}`}>
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-[12px] font-bold uppercase tracking-[0.1em] transition-premium ${tab === tb.id ? 'bg-gradient-to-r from-[#e6c988] to-[#cf9c3f] text-[#00112b] shadow-soft' : 'text-white/40 hover:text-white hover:bg-white/[0.04]'}`}>
               <tb.icon className="w-4 h-4 flex-shrink-0" />
               <span className="flex-1">{tb.label}</span>
               {tb.badge > 0 && (
-                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full ${tab === tb.id ? 'bg-[#00112b]/20 text-[#00112b]' : 'bg-[#febb02]/15 text-[#ffd76e]'}`}>{tb.badge}</span>
+                <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full ${tab === tb.id ? 'bg-[#00112b]/20 text-[#00112b]' : 'bg-[#d9a43e]/15 text-[#e6c988]'}`}>{tb.badge}</span>
               )}
             </button>
           ))}
@@ -98,10 +98,10 @@ export default function AdminDashboard() {
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 night-side border-t flex">
         {TABS.map(tb => (
           <button key={tb.id} onClick={() => setTab(tb.id)}
-            className={`flex-1 py-3 flex flex-col items-center gap-1 text-[9px] font-black uppercase tracking-widest transition-premium ${tab === tb.id ? 'text-[#ffd76e]' : 'text-white/30'}`}>
+            className={`flex-1 py-3 flex flex-col items-center gap-1 text-[9px] font-black uppercase tracking-widest transition-premium ${tab === tb.id ? 'text-[#e6c988]' : 'text-white/30'}`}>
             <div className="relative">
               <tb.icon className="w-5 h-5" />
-              {tb.badge > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#febb02] text-[7px] font-black flex items-center justify-center text-[#00112b]">{tb.badge}</span>}
+              {tb.badge > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#d9a43e] text-[7px] font-black flex items-center justify-center text-[#00112b]">{tb.badge}</span>}
             </div>
             {tb.label.slice(0,4)}
           </button>
@@ -161,7 +161,7 @@ function DashboardTab() {
           <div className="flex flex-wrap gap-2">
             {['week', 'month'].map(rangeOption => (
               <button key={rangeOption} type="button" onClick={() => setActivityRange(rangeOption)}
-                className={`px-3 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition ${activityRange === rangeOption ? 'bg-[#febb02] text-[#00112b]' : 'night-inset text-white/60 hover:bg-[#8fb4ff]/10'}`}>
+                className={`px-3 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition ${activityRange === rangeOption ? 'bg-[#d9a43e] text-[#00112b]' : 'night-inset text-white/60 hover:bg-[#8fb4ff]/10'}`}>
                 {t(`admin.activity.range.${rangeOption}`)}
               </button>
             ))}
@@ -186,7 +186,7 @@ function DashboardTab() {
                 </div>
                 <div className="h-3 rounded-full bg-[#8fb4ff]/10 overflow-hidden">
                   <div style={{ width: `${(usageChart.counts[index] / maxValue) * 100}%` }}
-                    className="h-full rounded-full bg-gradient-to-r from-[#d99a2b] to-[#ffd76e] transition-all duration-300" />
+                    className="h-full rounded-full bg-gradient-to-r from-[#b58427] to-[#e6c988] transition-all duration-300" />
                 </div>
               </div>
             ))}
@@ -366,7 +366,7 @@ function PackagesTab() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex justify-end">
-        <button onClick={startAdd} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#ffd76e] to-[#f5b942] text-[#00112b] text-[11px] font-black uppercase tracking-widest transition-premium hover:brightness-110 shadow-soft">
+        <button onClick={startAdd} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#e6c988] to-[#cf9c3f] text-[#00112b] text-[11px] font-black uppercase tracking-widest transition-premium hover:brightness-110 shadow-soft">
           <Plus className="w-4 h-4" /> {t('admin.packagesTab.add')}
         </button>
       </div>
@@ -416,7 +416,7 @@ function PackagesTab() {
             </div>
           </div>
           <div className="flex items-center gap-3 mt-5">
-            <button onClick={handleSave} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#ffd76e] to-[#f5b942] text-[#00112b] text-[11px] font-black uppercase tracking-widest transition-premium hover:brightness-110 shadow-soft">
+            <button onClick={handleSave} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#e6c988] to-[#cf9c3f] text-[#00112b] text-[11px] font-black uppercase tracking-widest transition-premium hover:brightness-110 shadow-soft">
               <Save className="w-4 h-4" /> Save
             </button>
             <button onClick={() => setShowForm(false)} className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/[0.08] text-white/60 text-[11px] font-black uppercase tracking-widest hover:bg-white/[0.04] transition-premium">

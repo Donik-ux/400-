@@ -31,12 +31,12 @@ export default function BudgetAdvisory({ balance, className = '' }) {
 
   return (
     <div className={`relative overflow-hidden rounded-2xl border shadow-soft ${isTiny ? 'border-[#eccfc7] bg-gradient-to-br from-[#faeae6] to-white' : 'border-[#ffe6a8] bg-gradient-to-br from-[#fff7e6] to-white'} ${className}`}>
-      <div className={`absolute -right-12 -top-12 w-44 h-44 rounded-full blur-3xl pointer-events-none ${isTiny ? 'bg-[#d98a75]/40' : 'bg-[#febb02]/30'}`} />
-      <div className={`absolute left-0 top-0 bottom-0 w-1 ${isTiny ? 'bg-[#b3402e]' : 'bg-gradient-to-b from-[#febb02] to-[#e0a435]'}`} />
+      <div className={`absolute -right-12 -top-12 w-44 h-44 rounded-full blur-3xl pointer-events-none ${isTiny ? 'bg-[#d98a75]/40' : 'bg-[#d9a43e]/30'}`} />
+      <div className={`absolute left-0 top-0 bottom-0 w-1 ${isTiny ? 'bg-[#b3402e]' : 'bg-gradient-to-b from-[#d9a43e] to-[#c08c33]'}`} />
 
       <div className="relative p-4 md:p-5">
         <div className="flex items-start gap-3 mb-3">
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${isTiny ? 'bg-[#b3402e] text-white' : 'bg-gradient-to-br from-[#febb02] to-[#e0a435] text-[#1a1a1a]'}`}>
+          <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${isTiny ? 'bg-[#b3402e] text-white' : 'bg-gradient-to-br from-[#d9a43e] to-[#c08c33] text-[#1a1a1a]'}`}>
             {isTiny ? <AlertTriangle className="w-6 h-6" /> : <PiggyBank className="w-6 h-6" />}
           </div>
           <div className="min-w-0">
@@ -52,7 +52,7 @@ export default function BudgetAdvisory({ balance, className = '' }) {
         </div>
 
         {/* Savings calculator */}
-        <div className={`rounded-xl border backdrop-blur-sm ${isTiny ? 'border-[#f3ded8] bg-white/90' : 'border-[#febb02]/30 bg-white/85'} p-3 md:p-4 shadow-soft`}>
+        <div className={`rounded-xl border backdrop-blur-sm ${isTiny ? 'border-[#f3ded8] bg-white/90' : 'border-[#d9a43e]/30 bg-white/85'} p-3 md:p-4 shadow-soft`}>
           <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2.5">
             <TrendingUp className="w-3 h-3 text-[#2e7d4f]" />
             {`${t('ui.budget.saveHeader')} $${target}`}

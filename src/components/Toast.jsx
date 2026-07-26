@@ -27,8 +27,8 @@ export const toast = {
 const STYLE = {
   success: { icon: CheckCircle, bar: 'bg-[#2e7d4f]',  iconCls: 'text-[#2e7d4f]', tint: 'bg-[#e9f3ea]'  },
   error:   { icon: AlertCircle, bar: 'bg-[#b3402e]',  iconCls: 'text-danger',    tint: 'bg-[#faeae6]'  },
-  info:    { icon: Info,        bar: 'bg-[#0071c2]',  iconCls: 'text-[#0071c2]', tint: 'bg-[#f0f5ff]'  },
-  ai:      { icon: Sparkles,    bar: 'bg-[#febb02]',  iconCls: 'text-[#a45e00]', tint: 'bg-[#fff7e6]'  },
+  info:    { icon: Info,        bar: 'bg-[#2f6395]',  iconCls: 'text-[#2f6395]', tint: 'bg-[#f0f5ff]'  },
+  ai:      { icon: Sparkles,    bar: 'bg-[#d9a43e]',  iconCls: 'text-[#a45e00]', tint: 'bg-[#fff7e6]'  },
 };
 
 const ToastItem = ({ t, onClose }) => {

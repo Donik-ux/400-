@@ -53,18 +53,18 @@ export default function TranslationProgress() {
       {/* Top progress bar */}
       <div className="fixed top-0 left-0 right-0 z-[10050] h-[3px] bg-transparent pointer-events-none">
         <div
-          className="h-full bg-gradient-to-r from-[#f5b942] to-[#ffd76e] shadow-[0_0_10px_rgba(245,185,66,0.7)] transition-[width] duration-300 ease-out"
+          className="h-full bg-gradient-to-r from-[#cf9c3f] to-[#e6c988] shadow-[0_0_10px_rgba(207, 156, 63,0.7)] transition-[width] duration-300 ease-out"
           style={{ width: `${pct}%` }}
         />
       </div>
 
       {/* Floating chip */}
       <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[10050] flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#012154] border border-white/15 shadow-2xl page-fade pointer-events-none">
-        <Languages className="w-4 h-4 text-[#f5b942] animate-pulse" />
+        <Languages className="w-4 h-4 text-[#cf9c3f] animate-pulse" />
         <span className="text-[12px] font-bold text-white">
           {meta?.flag} Translating to {meta?.native || lang}…
         </span>
-        <span className="text-[12px] font-black text-[#f5b942] tabular-nums">{pct}%</span>
+        <span className="text-[12px] font-black text-[#cf9c3f] tabular-nums">{pct}%</span>
       </div>
     </>
   );

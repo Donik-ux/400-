@@ -77,20 +77,20 @@ export default function RecommendedTrips() {
         <div className="flex flex-col md:flex-row md:items-end gap-3">
           <label className="flex-1 block">
             <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-1">
-              <MapPin className="w-3.5 h-3.5 text-[#0071c2]" /> {t('tripRec.fromLabel')}
+              <MapPin className="w-3.5 h-3.5 text-[#2f6395]" /> {t('tripRec.fromLabel')}
             </span>
             <input
               value={from}
               onChange={(e) => { setFrom(e.target.value); setDetected(false); setLocError(''); }}
               placeholder={t('tripRec.fromPh')}
-              className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition placeholder:text-[#a89a7d]"
+              className="w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] focus:ring-2 focus:ring-[#2f6395]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition placeholder:text-[#a89a7d]"
             />
           </label>
           <button
             type="button"
             onClick={useMyLocation}
             disabled={locating}
-            className="inline-flex items-center justify-center gap-2 bg-[#003580] hover:bg-[#0071c2] disabled:opacity-60 text-white font-black text-[13px] rounded-xl py-2.5 px-4 shadow-soft transition active:scale-95 shrink-0">
+            className="inline-flex items-center justify-center gap-2 bg-[#003580] hover:bg-[#2f6395] disabled:opacity-60 text-white font-black text-[13px] rounded-xl py-2.5 px-4 shadow-soft transition active:scale-95 shrink-0">
             {locating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Navigation className="w-4 h-4" />}
             {locating ? t('tripRec.locating') : t('tripRec.useLocation')}
           </button>
@@ -117,14 +117,14 @@ export default function RecommendedTrips() {
             <SmartImage src={d.img} alt={d.city} wrapperClassName="absolute inset-0" className="group-hover:scale-110 transition-transform duration-[600ms]" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
             {d.tag && (
-              <div className="absolute top-2.5 left-2.5 text-[9px] font-black uppercase tracking-wide bg-[#febb02] text-[#1a1a1a] px-2 py-1 rounded-md shadow-soft">
+              <div className="absolute top-2.5 left-2.5 text-[9px] font-black uppercase tracking-wide bg-[#d9a43e] text-[#1a1a1a] px-2 py-1 rounded-md shadow-soft">
                 {d.tag}
               </div>
             )}
             <div className="absolute inset-0 p-3 flex flex-col justify-end text-white">
               <div className="text-[15px] font-black leading-tight">{d.city}</div>
               <div className="text-[11px] text-white/70 font-semibold mb-2">{d.country}</div>
-              <div className="inline-flex items-center gap-1 text-[10px] font-black bg-white/95 text-[#003580] px-2 py-1 rounded-md w-fit group-hover:bg-[#febb02] group-hover:text-[#1a1a1a] transition-colors">
+              <div className="inline-flex items-center gap-1 text-[10px] font-black bg-white/95 text-[#003580] px-2 py-1 rounded-md w-fit group-hover:bg-[#d9a43e] group-hover:text-[#1a1a1a] transition-colors">
                 <Sparkles className="w-3 h-3" /> {t('tripRec.build')} <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </div>

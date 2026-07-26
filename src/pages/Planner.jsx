@@ -67,7 +67,7 @@ function downloadPDF(destination, days, meta, itineraries, t, extras = {}) {
   .day-card { background: #f6f1e4; border: 1px solid #e6dcc3; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
   .day-title { font-size: 15px; font-weight: bold; color: #003580; margin-bottom: 8px; }
   .event { display: flex; gap: 10px; margin-bottom: 6px; font-size: 12px; padding: 6px 0; border-bottom: 1px solid #eee; }
-  .event-time { color: #0071c2; font-weight: bold; min-width: 50px; }
+  .event-time { color: #2f6395; font-weight: bold; min-width: 50px; }
   .event-dur { color: #93876f; min-width: 60px; }
   .event-name { flex: 1; }
   .event-price { color: #003580; font-weight: bold; }
@@ -79,7 +79,7 @@ function downloadPDF(destination, days, meta, itineraries, t, extras = {}) {
   .place-name { font-size: 13px; font-weight: bold; color: #1a1a1a; flex: 1; }
   .place-day { font-size: 10px; font-weight: bold; color: #003580; background: #e8f4fd; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
   .place-addr { font-size: 11px; color: #93876f; margin-bottom: 5px; line-height: 1.4; }
-  .place-map { font-size: 11px; color: #0071c2; text-decoration: none; font-weight: bold; }
+  .place-map { font-size: 11px; color: #2f6395; text-decoration: none; font-weight: bold; }
   .tips li { font-size: 13px; margin-bottom: 6px; color: #5c5245; }
   .footer { margin-top: 32px; padding-top: 16px; border-top: 2px solid #e6dcc3; color: #93876f; font-size: 11px; text-align: center; }
   @media print { body { padding: 10px; } }
@@ -330,7 +330,7 @@ export default function Planner() {
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-14">
           <div className="max-w-2xl mb-8 page-fade">
             <div className="badge-editorial inline-flex rounded-full px-3.5 py-1.5 mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-[#ffd76e]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#e6c988]" />
               <span className="text-[11px] font-black uppercase tracking-widest">{t('planner.badge')}</span>
             </div>
             <h1 className="font-display text-[36px] md:text-[52px] font-semibold tracking-[-0.03em] leading-tight mb-3 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
@@ -493,7 +493,7 @@ export default function Planner() {
               {/* Transport */}
               <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5">
                 <div className="flex items-center gap-2 mb-2">
-                  <Car className="w-4 h-4 text-[#0071c2]" />
+                  <Car className="w-4 h-4 text-[#2f6395]" />
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#93876f]">{t('planner.results.transportSuggestion')}</p>
                 </div>
                 <p className="text-[13px] text-[#5c5245] leading-relaxed">{meta.transportSuggestion}</p>
@@ -502,7 +502,7 @@ export default function Planner() {
                 {(transport === 'car' || navApps?.length > 0) && (
                   <div className="mt-4">
                     <button onClick={() => setShowNavApps(v => !v)}
-                      className="flex items-center justify-between w-full text-[12px] font-bold text-[#0071c2] hover:text-[#003580] transition-premium">
+                      className="flex items-center justify-between w-full text-[12px] font-bold text-[#2f6395] hover:text-[#003580] transition-premium">
                       <span className="flex items-center gap-1.5"><Navigation className="w-3.5 h-3.5" /> {t('plannerPage.results.recommendedApps')}</span>
                       {showNavApps ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                     </button>
@@ -537,13 +537,13 @@ export default function Planner() {
               {/* Tips */}
               <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 flex-1">
                 <div className="flex items-center gap-2 mb-3">
-                  <Lightbulb className="w-4 h-4 text-[#d99a2b]" />
+                  <Lightbulb className="w-4 h-4 text-[#b58427]" />
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#93876f]">{t('planner.results.tips')}</p>
                 </div>
                 <ul className="space-y-2.5">
                   {(meta.travelTips || []).map((tip, i) => (
                     <li key={i} className="flex gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#0071c2] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#2f6395] shrink-0 mt-0.5" />
                       <span className="text-[12px] text-[#5c5245] leading-snug">{tip}</span>
                     </li>
                   ))}
@@ -556,7 +556,7 @@ export default function Planner() {
           {localApps && (
             <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 mb-6">
               <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <Smartphone className="w-5 h-5 text-[#0071c2]" />
+                <Smartphone className="w-5 h-5 text-[#2f6395]" />
                 <h3 className="text-[16px] font-black text-[#1a1a1a]">{t('plannerPage.apps.title')}</h3>
                 <span className="text-[13px] font-bold text-[#5c5245]">· {localApps.country}</span>
               </div>
@@ -566,7 +566,7 @@ export default function Planner() {
 
               {/* Local currency */}
               {currency && (
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mb-4 p-3.5 rounded-xl bg-[#f0f5ff] border border-[#0071c2]/15">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mb-4 p-3.5 rounded-xl bg-[#f0f5ff] border border-[#2f6395]/15">
                   <span className="text-[13px] font-black text-[#003580]">
                     💰 {t('plannerPage.apps.localCurrency')}: {currency.name} · {currency.code} {currency.symbol}
                   </span>
@@ -592,7 +592,7 @@ export default function Planner() {
                     <div className="flex flex-col gap-2">
                       {group.list.map(app => (
                         <a key={app.name} href={app.link} target="_blank" rel="noopener noreferrer"
-                          className="flex items-start gap-2.5 p-2.5 bg-white rounded-lg border border-[#e6dcc3] hover:border-[#0071c2]/40 hover:shadow-sm transition-premium">
+                          className="flex items-start gap-2.5 p-2.5 bg-white rounded-lg border border-[#e6dcc3] hover:border-[#2f6395]/40 hover:shadow-sm transition-premium">
                           <span className="text-lg shrink-0">{app.icon}</span>
                           <div className="flex-1 min-w-0">
                             <p className="text-[12px] font-bold text-[#1a1a1a]">{app.name}</p>
@@ -625,9 +625,9 @@ export default function Planner() {
           {packing && (
             <div className="bg-white border border-[#e6dcc3] rounded-2xl p-6 mb-6">
               <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <Briefcase className="w-5 h-5 text-[#0071c2]" />
+                <Briefcase className="w-5 h-5 text-[#2f6395]" />
                 <h3 className="text-[16px] font-black text-[#1a1a1a]">{t('plannerPage.packing.title')}</h3>
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#f0f5ff] text-[#0071c2]">{packing.seasonLabel}</span>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#f0f5ff] text-[#2f6395]">{packing.seasonLabel}</span>
               </div>
               <p className="text-[12px] text-[#93876f] mb-4">{t('plannerPage.packing.sub')}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -642,7 +642,7 @@ export default function Planner() {
                           <button key={key} onClick={() => setPackChecked(p => ({ ...p, [key]: !p[key] }))}
                             className="flex items-start gap-2 text-left group">
                             <span className={`w-4 h-4 rounded border shrink-0 mt-0.5 flex items-center justify-center transition-premium ${
-                              checked ? 'bg-[#0071c2] border-[#0071c2]' : 'border-[#d9c9a3] group-hover:border-[#0071c2]'
+                              checked ? 'bg-[#2f6395] border-[#2f6395]' : 'border-[#d9c9a3] group-hover:border-[#2f6395]'
                             }`}>
                               {checked && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
                             </span>
@@ -693,7 +693,7 @@ export default function Planner() {
           {/* Budget summary table */}
           <div className="bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden mb-6">
             <div className="px-6 py-4 border-b border-[#efe6d2] flex items-center gap-2">
-              <Wallet className="w-4 h-4 text-[#0071c2]" />
+              <Wallet className="w-4 h-4 text-[#2f6395]" />
               <p className="text-[13px] font-bold text-[#1a1a1a]">{t('plannerPage.results.estimatedSummary')}</p>
             </div>
             <div className="divide-y divide-[#efe6d2]">

@@ -3,7 +3,7 @@ import { cn } from '../../utils/cn';
 
 const Button = ({ children, variant = 'primary', size = 'md', className, ...props }) => {
   const base =
-    'group relative inline-flex items-center justify-center gap-2 rounded-2xl font-black uppercase tracking-widest transition-premium active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#febb02]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A] disabled:opacity-30 disabled:pointer-events-none select-none cursor-pointer';
+    'group relative inline-flex items-center justify-center gap-2 rounded-2xl font-black uppercase tracking-widest transition-premium active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9a43e]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A] disabled:opacity-30 disabled:pointer-events-none select-none cursor-pointer';
 
   const variants = {
     primary:

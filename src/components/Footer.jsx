@@ -28,18 +28,18 @@ export default function Footer() {
   return (
     <footer className="relative w-full bg-gradient-to-b from-[#003580] to-[#001427] text-white mt-12 overflow-hidden">
       {/* Gold hairline to echo the navbar accent */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5b942]/45 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#cf9c3f]/45 to-transparent" />
       {/* Ambient depth — same atmospheric language as the hero sections, kept subtle */}
       <div className="pattern-lux" />
-      <div className="absolute -left-24 top-0 w-96 h-96 rounded-full bg-[#0071c2]/15 blur-3xl pointer-events-none" />
-      <div className="absolute -right-24 bottom-0 w-96 h-96 rounded-full bg-[#febb02]/10 blur-3xl pointer-events-none" />
+      <div className="absolute -left-24 top-0 w-96 h-96 rounded-full bg-[#2f6395]/15 blur-3xl pointer-events-none" />
+      <div className="absolute -right-24 bottom-0 w-96 h-96 rounded-full bg-[#d9a43e]/10 blur-3xl pointer-events-none" />
       <div aria-hidden="true" className="masthead-ghost">MAFTRAVEL</div>
       <div className="relative max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-14 pb-24 md:pb-28">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-white/[0.12]">
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5 mb-4 cursor-pointer group" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
-              <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#ffd76e] via-[#f5b942] to-[#d99a2b] flex items-center justify-center shadow-[0_4px_16px_rgba(245,185,66,0.4)] ring-1 ring-white/30 group-hover:scale-105 group-hover:rotate-[8deg] transition-premium">
+              <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#e6c988] via-[#cf9c3f] to-[#b58427] flex items-center justify-center shadow-[0_4px_16px_rgba(207, 156, 63,0.4)] ring-1 ring-white/30 group-hover:scale-105 group-hover:rotate-[8deg] transition-premium">
                 <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
                 <Compass className="relative w-[18px] h-[18px] text-[#002250]" strokeWidth={2.5} />
               </div>
@@ -112,7 +112,7 @@ export default function Footer() {
         <div className="pt-8 pb-2 flex flex-col items-center gap-2 text-center">
           <p className="text-[13px] text-white/60 font-medium">{t('footer.questions')}</p>
           <a href={`mailto:${SUPPORT_EMAIL}`}
-            className="inline-flex items-center gap-2 text-[14px] font-bold text-[#f5b942] hover:text-[#ffd76e] transition-colors">
+            className="inline-flex items-center gap-2 text-[14px] font-bold text-[#cf9c3f] hover:text-[#e6c988] transition-colors">
             <Mail className="w-4 h-4" />
             {SUPPORT_EMAIL}
           </a>
@@ -128,10 +128,10 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <div className="label-gold text-[9.5px] bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#f5b942]/20">
+            <div className="label-gold text-[9.5px] bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#cf9c3f]/20">
               <span>✈️ {t('footer.smartFlights')}</span>
             </div>
-            <div className="label-gold text-[9.5px] bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#f5b942]/20">
+            <div className="label-gold text-[9.5px] bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#cf9c3f]/20">
               <span>🧠 {t('footer.aiPlanning')}</span>
             </div>
           </div>

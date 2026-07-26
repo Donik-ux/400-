@@ -55,7 +55,7 @@ function WeatherInner({ city }) {
   return (
     <div className="flex items-center gap-4 px-3 py-2">
       <div className="flex items-center gap-2">
-        <Icon className="w-6 h-6 text-[#0071c2]" />
+        <Icon className="w-6 h-6 text-[#2f6395]" />
         <span className="text-[20px] font-black text-[#1a1a1a]">{Math.round(current.temperature)}°C</span>
       </div>
       <div className="flex items-center gap-3 text-[11px] font-bold text-[#5c5245]">

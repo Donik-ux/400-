@@ -80,12 +80,12 @@ export default function Wishlist() {
   return (
     <div className="bg-[#faf6ed] min-h-screen -mt-[64px]">
       {/* ── Hero header ── */}
-      <section className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#0071c2] text-white overflow-hidden pt-[100px] pb-14">
+      <section className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#2f6395] text-white overflow-hidden pt-[100px] pb-14">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0071c2 0%, transparent 45%), radial-gradient(circle at 75% 70%, #febb02 0%, transparent 35%)' }} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#febb02]/15 blur-3xl pointer-events-none animate-float" />
+             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #2f6395 0%, transparent 45%), radial-gradient(circle at 75% 70%, #d9a43e 0%, transparent 35%)' }} />
+        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#d9a43e]/15 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#febb02] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#d9a43e] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <Heart className="w-3.5 h-3.5 fill-[#1a1a1a]" /> {t('wishlist.badge') || 'Saved Items'}
           </div>
           <div className="flex items-end justify-between gap-4 flex-wrap">
@@ -118,7 +118,7 @@ export default function Wishlist() {
                 className={`px-3.5 py-2 rounded-xl text-[12px] font-black border transition ${
                   filter === v
                     ? 'bg-[#003580] text-white border-[#003580]'
-                    : 'bg-white border-[#e6dcc3] text-[#1a1a1a] hover:border-[#0071c2]'
+                    : 'bg-white border-[#e6dcc3] text-[#1a1a1a] hover:border-[#2f6395]'
                 }`}>
                 {l} <span className={filter === v ? 'text-white/70' : 'text-[#93876f]'}>· {n}</span>
               </button>
@@ -129,10 +129,10 @@ export default function Wishlist() {
         {/* ── Empty state ── */}
         {cards.length === 0 && (
           <div className="bg-white border border-[#e6dcc3] rounded-3xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#febb02]/20 blur-3xl pointer-events-none animate-float" />
-            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#0071c2]/10 blur-3xl pointer-events-none" />
+            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#d9a43e]/20 blur-3xl pointer-events-none animate-float" />
+            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#2f6395]/10 blur-3xl pointer-events-none" />
             <div className="relative">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#febb02] to-[#ff8a00] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-lift">
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#d9a43e] to-[#ff8a00] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-lift">
                 <Heart className="w-10 h-10 text-white fill-white" />
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] mb-2">{t('wishlist.empty') || 'Your wishlist is empty'}</h2>
@@ -145,7 +145,7 @@ export default function Wishlist() {
                   <Sparkles className="w-4 h-4" /> {t('lists.wishlist.openStudio')}
                 </button>
                 <button onClick={() => navigate('/flights')}
-                  className="px-6 py-3.5 rounded-xl border-2 border-[#e6dcc3] hover:border-[#0071c2] hover:bg-[#f0f5ff] text-[13px] font-black text-[#1a1a1a] flex items-center justify-center gap-2 transition active:scale-95">
+                  className="px-6 py-3.5 rounded-xl border-2 border-[#e6dcc3] hover:border-[#2f6395] hover:bg-[#f0f5ff] text-[13px] font-black text-[#1a1a1a] flex items-center justify-center gap-2 transition active:scale-95">
                   <Plane className="w-4 h-4" /> {t('lists.wishlist.searchFlights')}
                 </button>
               </div>
@@ -194,8 +194,8 @@ export default function Wishlist() {
 
                     <span className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${
                       card.type === 'flight'
-                        ? 'bg-[#0071c2] text-white'
-                        : 'bg-[#febb02] text-[#1a1a1a]'
+                        ? 'bg-[#2f6395] text-white'
+                        : 'bg-[#d9a43e] text-[#1a1a1a]'
                     }`}>
                       {card.type === 'flight' ? <Plane className="w-3 h-3" /> : <Package className="w-3 h-3" />}
                       {card.type === 'flight' ? t('lists.wishlist.flightTag') : t('lists.wishlist.tourTag')}
@@ -209,14 +209,14 @@ export default function Wishlist() {
 
                     {card.rating && (
                       <span className="absolute bottom-2.5 left-2.5 inline-flex items-center gap-1 px-2 py-1 bg-white/95 rounded-md text-[11px] font-black text-[#1a1a1a]">
-                        <Star className="w-3 h-3 fill-[#febb02] text-[#febb02]" /> {card.rating}
+                        <Star className="w-3 h-3 fill-[#d9a43e] text-[#d9a43e]" /> {card.rating}
                       </span>
                     )}
                   </div>
 
                   <div className="p-4 flex flex-col flex-1">
                     <div className="flex items-center gap-1 text-[11px] text-[#5c5245] font-bold mb-1">
-                      <MapPin className="w-3 h-3 text-[#0071c2]" /> {card.sub}
+                      <MapPin className="w-3 h-3 text-[#2f6395]" /> {card.sub}
                     </div>
                     <h3 className="text-[15px] font-black text-[#1a1a1a] mb-2 line-clamp-2 leading-snug">{card.title}</h3>
                     {card.meta && (
@@ -237,7 +237,7 @@ export default function Wishlist() {
                         )}
                       </div>
                       <button onClick={card.cta}
-                        className="px-4 py-2.5 rounded-xl bg-[#0071c2] hover:bg-[#005fa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
+                        className="px-4 py-2.5 rounded-xl bg-[#2f6395] hover:bg-[#005fa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
                         {t('wishlist.viewDetails') || 'View'} <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                       </button>
                     </div>
@@ -257,7 +257,7 @@ export default function Wishlist() {
             <p className="text-[#1a1a1a] font-black mb-1">{t('lists.wishlist.noMatchTitle')}</p>
             <p className="text-[#93876f] text-sm mb-4">{t('lists.wishlist.noMatchSub')}</p>
             <button onClick={() => setFilter('all')}
-              className="px-5 py-2.5 rounded-xl bg-[#0071c2] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft">
+              className="px-5 py-2.5 rounded-xl bg-[#2f6395] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft">
               {t('lists.wishlist.showAll')}
             </button>
           </div>

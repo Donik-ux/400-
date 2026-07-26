@@ -110,7 +110,7 @@ const DestinationModal = ({ destination, onClose }) => {
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4 hover:bg-white/[0.06] hover:border-white/[0.1] transition-premium">
                   <div className="flex items-center gap-1.5 mb-2">
-                    <Icon className="w-3 h-3 text-[#febb02]/70" />
+                    <Icon className="w-3 h-3 text-[#d9a43e]/70" />
                     <span className="text-[9px] font-black uppercase tracking-[0.18em] text-white/25">{label}</span>
                   </div>
                   <div className="text-[12px] font-bold text-white/70 leading-tight">{value}</div>
@@ -129,7 +129,7 @@ const DestinationModal = ({ destination, onClose }) => {
                     key={title}
                     className="group flex items-start gap-4 bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 hover:border-white/[0.14] hover:bg-white/[0.06] transition-premium"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/[0.07] flex items-center justify-center text-[18px] shrink-0 transition-premium group-hover:scale-110 group-hover:border-[#febb02]/30 group-hover:bg-[#febb02]/[0.08]">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/[0.07] flex items-center justify-center text-[18px] shrink-0 transition-premium group-hover:scale-110 group-hover:border-[#d9a43e]/30 group-hover:bg-[#d9a43e]/[0.08]">
                       {icon}
                     </div>
                     <div>

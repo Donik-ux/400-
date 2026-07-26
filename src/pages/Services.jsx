@@ -18,7 +18,7 @@ import { usePriceFormatter } from '../components/Price';
 const Shell = ({ icon: Icon, title, desc, children }) => (
   <div className="bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-5 md:p-6 lift flex flex-col">
     <div className="flex items-start gap-3 mb-4">
-      <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] text-[#0071c2] flex items-center justify-center shrink-0">
+      <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] text-[#2f6395] flex items-center justify-center shrink-0">
         <Icon className="w-5 h-5" />
       </div>
       <div>
@@ -36,7 +36,7 @@ const Field = ({ label, value, onChange, placeholder, type = 'text', min }) => (
     <input
       type={type} value={value} min={min} placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition placeholder:text-[#a89a7d]"
+      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] focus:ring-2 focus:ring-[#2f6395]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition placeholder:text-[#a89a7d]"
     />
   </label>
 );
@@ -45,7 +45,7 @@ const Select = ({ label, value, onChange, options }) => (
   <label className="block">
     <span className="text-[11px] font-black uppercase tracking-widest text-[#93876f]">{label}</span>
     <select value={value} onChange={(e) => onChange(e.target.value)}
-      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#0071c2] focus:ring-2 focus:ring-[#0071c2]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition cursor-pointer">
+      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] focus:ring-2 focus:ring-[#2f6395]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition cursor-pointer">
       {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
     </select>
   </label>
@@ -53,7 +53,7 @@ const Select = ({ label, value, onChange, options }) => (
 
 const RunButton = ({ onClick, loading, disabled, label, loadingLabel }) => (
   <button onClick={onClick} disabled={loading || disabled}
-    className="w-full flex items-center justify-center gap-2 bg-gradient-to-b from-[#0071c2] to-[#005fa3] hover:from-[#0079d0] hover:to-[#0071c2] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-[14px] rounded-xl py-2.5 px-5 shadow-soft hover:shadow-lift transition active:scale-95">
+    className="w-full flex items-center justify-center gap-2 bg-gradient-to-b from-[#2f6395] to-[#005fa3] hover:from-[#0079d0] hover:to-[#2f6395] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-[14px] rounded-xl py-2.5 px-5 shadow-soft hover:shadow-lift transition active:scale-95">
     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
     {loading ? loadingLabel : label}
   </button>
@@ -70,7 +70,7 @@ const TrendBadge = ({ trend }) => {
   const map = {
     rising:  { icon: TrendingUp,   cls: 'text-danger bg-[#faeae6]',   label: t('servicesPage.trendRising') },
     falling: { icon: TrendingDown, cls: 'text-ok bg-[#e9f3ea]', label: t('servicesPage.trendFalling') },
-    stable:  { icon: Minus,        cls: 'text-[#0071c2] bg-[#f0f5ff]', label: t('servicesPage.trendStable') },
+    stable:  { icon: Minus,        cls: 'text-[#2f6395] bg-[#f0f5ff]', label: t('servicesPage.trendStable') },
   };
   const m = map[trend] || map.stable;
   return (
@@ -121,8 +121,8 @@ function VisaChecker() {
 
   const statusMap = {
     visa_free:        { label: t('servicesPage.visa.statusFree'),     cls: 'badge-ok' },
-    visa_on_arrival:  { label: t('servicesPage.visa.statusArrival'),  cls: 'bg-[#f0f5ff] text-[#0071c2] border-[#bcd9ff]' },
-    e_visa:           { label: t('servicesPage.visa.statusEvisa'),    cls: 'bg-[#f0f5ff] text-[#0071c2] border-[#bcd9ff]' },
+    visa_on_arrival:  { label: t('servicesPage.visa.statusArrival'),  cls: 'bg-[#f0f5ff] text-[#2f6395] border-[#bcd9ff]' },
+    e_visa:           { label: t('servicesPage.visa.statusEvisa'),    cls: 'bg-[#f0f5ff] text-[#2f6395] border-[#bcd9ff]' },
     visa_required:    { label: t('servicesPage.visa.statusRequired'), cls: 'badge-warn' },
     unknown:          { label: t('servicesPage.visa.statusUnknown'),  cls: 'bg-[#f6f1e4] text-[#5c5245] border-[#e6dcc3]' },
   };
@@ -155,7 +155,7 @@ function VisaChecker() {
                 <ul className="space-y-1">
                   {d.documents.map((x, i) => (
                     <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#5c5245]">
-                      <Check className="w-3.5 h-3.5 text-[#0071c2] shrink-0 mt-0.5" /> {x}
+                      <Check className="w-3.5 h-3.5 text-[#2f6395] shrink-0 mt-0.5" /> {x}
                     </li>
                   ))}
                 </ul>
@@ -223,7 +223,7 @@ function BudgetOptimizer() {
                       <span className="text-[#5c5245]">{fmt(Math.round(b.amount))}</span>
                     </div>
                     <div className="h-1.5 rounded-full bg-[#efe6d2] overflow-hidden">
-                      <div className="h-full rounded-full bg-gradient-to-r from-[#0071c2] to-[#003580]" style={{ width: `${Math.min(100, b.pct || 0)}%` }} />
+                      <div className="h-full rounded-full bg-gradient-to-r from-[#2f6395] to-[#003580]" style={{ width: `${Math.min(100, b.pct || 0)}%` }} />
                     </div>
                   </div>
                 ))}
@@ -235,7 +235,7 @@ function BudgetOptimizer() {
                 <ul className="space-y-1">
                   {d.tips.map((x, i) => (
                     <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#5c5245]">
-                      <Sparkles className="w-3.5 h-3.5 text-[#febb02] shrink-0 mt-0.5" /> {x}
+                      <Sparkles className="w-3.5 h-3.5 text-[#d9a43e] shrink-0 mt-0.5" /> {x}
                     </li>
                   ))}
                 </ul>
@@ -255,7 +255,7 @@ function CheapestMonth() {
   const [destination, setDestination] = useState('');
   const ai = useAI((a) => cheapestMonth(a));
   const d = ai.data;
-  const levelCls = { low: 'bg-[#2e7d4f]', medium: 'bg-[#febb02]', high: 'bg-[#b3402e]' };
+  const levelCls = { low: 'bg-[#2e7d4f]', medium: 'bg-[#d9a43e]', high: 'bg-[#b3402e]' };
 
   return (
     <Shell icon={CalendarRange} title={t('servicesPage.cheapest.title')} desc={t('servicesPage.cheapest.desc')}>
@@ -406,7 +406,7 @@ export default function Services() {
 
   const bookables = [
     { icon: ShieldCheck, accent: 'bg-[#f0fdf4] text-[#008009]', title: t('servicesPage.insurance.title'), desc: t('servicesPage.insurance.desc'), message: 'Hi MAFTRAVEL! I want a travel insurance quote.' },
-    { icon: Wifi,        accent: 'bg-[#f0f5ff] text-[#0071c2]', title: t('servicesPage.esim.title'),      desc: t('servicesPage.esim.desc'),      message: 'Hi MAFTRAVEL! I want a travel eSIM.' },
+    { icon: Wifi,        accent: 'bg-[#f0f5ff] text-[#2f6395]', title: t('servicesPage.esim.title'),      desc: t('servicesPage.esim.desc'),      message: 'Hi MAFTRAVEL! I want a travel eSIM.' },
     { icon: Car,         accent: 'bg-[#fff7e6] text-[#b8860b]', title: t('servicesPage.transfer.title'),  desc: t('servicesPage.transfer.desc'),  message: 'Hi MAFTRAVEL! I want to book an airport transfer.' },
     { icon: Armchair,    accent: 'bg-[#fdf3dc] text-[#8a5c17]', title: t('servicesPage.lounge.title'),    desc: t('servicesPage.lounge.desc'),    message: 'Hi MAFTRAVEL! I want an airport lounge pass.' },
   ];
@@ -419,7 +419,7 @@ export default function Services() {
         <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-10">
           <div className="badge-editorial inline-flex px-3.5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-[#ffd76e]" /> {t('servicesPage.hero.badge')}
+            <Sparkles className="w-3.5 h-3.5 text-[#e6c988]" /> {t('servicesPage.hero.badge')}
           </div>
           <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-[-0.03em] leading-[1.05] mb-2 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
             {t('servicesPage.hero.title1')} <span className="italic font-medium text-gradient-gold gold-animate">{t('servicesPage.hero.title2')}</span>

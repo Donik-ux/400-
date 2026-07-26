@@ -169,7 +169,7 @@ export default function Flights() {
         className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[820px]"
         style={{
           background:
-            'radial-gradient(46rem 40rem at 10% 0%, rgba(0,113,194,0.06) 0%, transparent 60%), radial-gradient(42rem 38rem at 94% 2%, rgba(245,185,66,0.06) 0%, transparent 60%)',
+            'radial-gradient(46rem 40rem at 10% 0%, rgba(47, 99, 149,0.06) 0%, transparent 60%), radial-gradient(42rem 38rem at 94% 2%, rgba(207, 156, 63,0.06) 0%, transparent 60%)',
         }}
       />
 
@@ -186,11 +186,11 @@ export default function Flights() {
         {/* fade INTO the light page */}
         <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent to-[#faf6ed]" />
         <Plane className="absolute right-[6%] top-[120px] w-40 h-40 text-white/[0.08] -rotate-[25deg] animate-float pointer-events-none hidden md:block" />
-        <div className="absolute -right-24 -bottom-12 w-80 h-80 rounded-full bg-[#febb02]/12 blur-3xl pointer-events-none" />
+        <div className="absolute -right-24 -bottom-12 w-80 h-80 rounded-full bg-[#d9a43e]/12 blur-3xl pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="max-w-2xl mb-7">
             <div className="badge-editorial px-3.5 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.14em] mb-4">
-              <Plane className="w-3.5 h-3.5 text-[#ffd76e]" /> {t('flights.badge') || t('flightsPage.hero.badge')}
+              <Plane className="w-3.5 h-3.5 text-[#e6c988]" /> {t('flights.badge') || t('flightsPage.hero.badge')}
             </div>
             <h1 className="font-display text-[40px] md:text-[62px] font-semibold tracking-[-0.03em] leading-[1.0] mb-3 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.28)]">
               {t('flightsPage.hero.titleLine1')}<br className="hidden md:block" /> <span className="italic font-medium text-gradient-gold gold-animate">{t('flightsPage.hero.titleLine2')}</span>
@@ -223,8 +223,8 @@ export default function Flights() {
             { icon: Headphones,   t: t('flightsPage.trust.support'),   s: t('flightsPage.trust.supportSub') },
             { icon: ThumbsUp,     t: t('flightsPage.trust.rating'),    s: t('flightsPage.trust.ratingSub') },
           ].map((f, i) => (
-            <div key={i} className="bg-white border border-[#e6dcc3] rounded-2xl p-4 flex items-center gap-3 hover:border-[#0071c2]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all duration-300">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f0f5ff] to-[#dceaff] text-[#0071c2] flex items-center justify-center shrink-0 shadow-soft">
+            <div key={i} className="bg-white border border-[#e6dcc3] rounded-2xl p-4 flex items-center gap-3 hover:border-[#2f6395]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all duration-300">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f0f5ff] to-[#dceaff] text-[#2f6395] flex items-center justify-center shrink-0 shadow-soft">
                 <f.icon className="w-5 h-5" />
               </div>
               <div className="min-w-0">
@@ -287,7 +287,7 @@ export default function Flights() {
                     min={priceRange[0]} max={priceRange[1]} step={10}
                     value={maxPrice ?? priceRange[1]}
                     onChange={e => setMaxPrice(Number(e.target.value))}
-                    className="w-full accent-[#0071c2] cursor-pointer" />
+                    className="w-full accent-[#2f6395] cursor-pointer" />
                   <div className="flex justify-between text-[10px] font-bold text-[#93876f] mt-1">
                     <span>{fmt(priceRange[0])}</span>
                     <span>{fmt(priceRange[1])}</span>
@@ -336,7 +336,7 @@ export default function Flights() {
                 <button
                   onClick={() => handleSearch({ formData })}
                   disabled={loading || aiRefining}
-                  className="px-3.5 py-2 rounded-xl border-2 border-[#0071c2] text-[#0071c2] hover:bg-[#f0f5ff] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shadow-soft hover:shadow-float"
+                  className="px-3.5 py-2 rounded-xl border-2 border-[#2f6395] text-[#2f6395] hover:bg-[#f0f5ff] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shadow-soft hover:shadow-float"
                   title={t('flightsPage.results.refreshTitle')}>
                   <Sparkles className={`w-3.5 h-3.5 ${aiRefining ? 'animate-pulse' : ''}`} />
                   {aiRefining ? t('flightsPage.results.aiRefining') : t('flightsPage.results.refreshWithAI')}
@@ -360,15 +360,15 @@ export default function Flights() {
                 </div>
               )}
               {aiRefining && source !== 'amadeus' && (
-                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#f0f5ff] to-[#dceaff] border border-[#0071c2]/20 shadow-soft flex items-center gap-2.5">
-                  <Sparkles className="w-4 h-4 text-[#0071c2] animate-pulse shrink-0" />
+                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#f0f5ff] to-[#dceaff] border border-[#2f6395]/20 shadow-soft flex items-center gap-2.5">
+                  <Sparkles className="w-4 h-4 text-[#2f6395] animate-pulse shrink-0" />
                   <div className="text-[12px] text-[#003580] font-bold">
                     {t('flightsPage.banners.grokRefining')}
                   </div>
                 </div>
               )}
               {!aiRefining && source === 'grok' && aiSource && (
-                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#fff7e6] to-white border border-[#ffd76e] shadow-soft flex items-center gap-2.5">
+                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#fff7e6] to-white border border-[#e6c988] shadow-soft flex items-center gap-2.5">
                   <BadgeCheck className="w-4 h-4 text-[#a45e00] shrink-0" />
                   <div className="text-[12px] font-bold text-[#7c4a00] leading-snug">
                     <strong>{t('flightsPage.banners.aiEstimateTitle')}</strong> · {t('flightsPage.banners.aiEstimateMedian')} <strong>{fmt(aiSource.median)}</strong> · {t('flightsPage.banners.aiEstimateRange')} {fmt(aiSource.low)}–{fmt(aiSource.high)}{aiSource.note ? ` · ${aiSource.note}` : ''}
@@ -381,7 +381,7 @@ export default function Flights() {
               {altDates.length > 1 && (
                 <div className="mb-4 bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-4">
                   <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-3">
-                    <Wand2 className="w-3.5 h-3.5 text-[#0071c2]" /> {t('flightsPage.smartDates.title')}
+                    <Wand2 className="w-3.5 h-3.5 text-[#2f6395]" /> {t('flightsPage.smartDates.title')}
                   </div>
                   <div className="flex gap-2 overflow-x-auto pt-2 pb-1 -mx-1 px-1 snap-x">
                     {altDates.map((d, i) => {
@@ -395,8 +395,8 @@ export default function Flights() {
                           onClick={() => handleSearch({ formData: { ...formData, date: d.iso } })}
                           className={`relative shrink-0 snap-start w-[110px] rounded-xl border-2 px-2.5 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
                             isToday
-                              ? 'border-[#0071c2] bg-[#f0f5ff] ring-4 ring-[#0071c2]/10'
-                              : 'border-[#e6dcc3] bg-white hover:border-[#0071c2]/50'
+                              ? 'border-[#2f6395] bg-[#f0f5ff] ring-4 ring-[#2f6395]/10'
+                              : 'border-[#e6dcc3] bg-white hover:border-[#2f6395]/50'
                           }`}>
                           {i === altBestIdx && !isToday && (
                             <span className="absolute -top-2 left-2 bg-[#7cc4d9] text-[#00214f] text-[8.5px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft">
@@ -404,7 +404,7 @@ export default function Flights() {
                             </span>
                           )}
                           <div className="flex items-center justify-between gap-1">
-                            <div className="text-[9.5px] font-black uppercase tracking-wider text-[#0071c2]">
+                            <div className="text-[9.5px] font-black uppercase tracking-wider text-[#2f6395]">
                               {isToday ? t('flightsPage.smartDates.searched') : d.date.toLocaleDateString(lang || 'en', { weekday: 'short' })}
                             </div>
                             {WeatherIcon && (
@@ -439,7 +439,7 @@ export default function Flights() {
                     <p className="text-[#1a1a1a] font-bold mb-1">{t('flightsPage.results.noMatchTitle')}</p>
                     <p className="text-[#93876f] text-sm mb-4">{t('flightsPage.results.noMatchSub')}</p>
                     <button onClick={clearFilters}
-                      className="px-4 py-2 rounded-xl bg-[#0071c2] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft hover:shadow-float">
+                      className="px-4 py-2 rounded-xl bg-[#2f6395] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft hover:shadow-float">
                       {t('flightsPage.results.clearFilters')}
                     </button>
                   </div>
@@ -475,10 +475,10 @@ export default function Flights() {
                     <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url(${heroFor(r.city)})` }} />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
                     <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end text-left text-white">
-                      <div className="text-[10px] font-black uppercase tracking-widest text-[#febb02] mb-1">{r.country}</div>
+                      <div className="text-[10px] font-black uppercase tracking-widest text-[#d9a43e] mb-1">{r.country}</div>
                       <div className="font-display text-[18px] md:text-[21px] font-bold leading-tight">{r.city}</div>
                       <div className="text-[10px] text-white/75 font-bold mb-2.5">{r.from.split(' (')[0]} → {r.to.split(' (')[0]}</div>
-                      <div className="inline-flex items-center gap-1.5 bg-[#febb02] text-[#1a1a1a] font-black px-2.5 py-1 rounded-lg w-fit text-[11px] shadow-soft group-hover:gap-2.5 transition-all">
+                      <div className="inline-flex items-center gap-1.5 bg-[#d9a43e] text-[#1a1a1a] font-black px-2.5 py-1 rounded-lg w-fit text-[11px] shadow-soft group-hover:gap-2.5 transition-all">
                         <Plane className="w-3 h-3" /> {t('flightsPage.inspiration.from')} ${r.from$}
                       </div>
                     </div>
@@ -489,11 +489,11 @@ export default function Flights() {
 
             {/* AI Trip CTA — rich blue/gold accent band */}
             <section className="mt-10 reveal">
-              <div className="relative overflow-hidden bg-gradient-to-br from-[#003580] via-[#0071c2] to-[#003580] rounded-3xl p-6 md:p-9 text-white shadow-float">
-                <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#febb02]/30 blur-3xl pointer-events-none animate-float" />
+              <div className="relative overflow-hidden bg-gradient-to-br from-[#003580] via-[#2f6395] to-[#003580] rounded-3xl p-6 md:p-9 text-white shadow-float">
+                <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#d9a43e]/30 blur-3xl pointer-events-none animate-float" />
                 <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
                   <div className="max-w-xl">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#febb02] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-3">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d9a43e] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-3">
                       <Sparkles className="w-3.5 h-3.5" /> {t('flightsPage.aiCta.badge')}
                     </div>
                     <h2 className="h-editorial text-2xl md:text-[34px] mb-2">
@@ -535,7 +535,7 @@ export default function Flights() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[13px] font-black text-[#1a1a1a] leading-tight line-clamp-2">{al.name}</p>
-                      <p className="text-[10.5px] text-[#0071c2] font-bold truncate">{al.domain}</p>
+                      <p className="text-[10.5px] text-[#2f6395] font-bold truncate">{al.domain}</p>
                     </div>
                   </div>
                   <BadgeCheck className="w-4 h-4 text-[#2e7d4f] shrink-0 mt-0.5" title={t('flightsPage.direct.officialAirline')} />
@@ -590,18 +590,18 @@ export default function Flights() {
                     <div>
                       <p className="text-[15px] font-black text-[#1a1a1a] leading-tight">{site.name}</p>
                       <div className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 rounded-md bg-[#fff7e6]">
-                        <Star className="w-3 h-3 text-[#febb02] fill-[#febb02]" />
+                        <Star className="w-3 h-3 text-[#d9a43e] fill-[#d9a43e]" />
                         <span className="text-[11px] font-black text-[#a45e00]">{site.rating}</span>
                       </div>
                     </div>
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-wider bg-[#febb02] text-[#1a1a1a] px-2 py-1 rounded-md shrink-0">{site.badge}</span>
+                  <span className="text-[9px] font-black uppercase tracking-wider bg-[#d9a43e] text-[#1a1a1a] px-2 py-1 rounded-md shrink-0">{site.badge}</span>
                 </div>
 
                 <p className="relative text-[13px] text-[#5c5245] leading-relaxed flex-1">{site.desc}</p>
 
                 <div className="relative flex items-center justify-between pt-3 border-t border-[#efe6d2]">
-                  <span className="text-[12px] font-black text-[#003580] group-hover:text-[#0071c2] transition-colors">
+                  <span className="text-[12px] font-black text-[#003580] group-hover:text-[#2f6395] transition-colors">
                     {t('flights.searchOn') || 'Search on'} {site.name}
                   </span>
                   <span className="w-7 h-7 rounded-lg flex items-center justify-center text-white shadow-soft group-hover:translate-x-0.5 transition-transform duration-300"
@@ -613,7 +613,7 @@ export default function Flights() {
             ))}
           </div>
 
-          <div className="mt-5 bg-[#fff7e6] border border-[#ffd76e] rounded-2xl p-4 flex items-start gap-3 shadow-soft">
+          <div className="mt-5 bg-[#fff7e6] border border-[#e6c988] rounded-2xl p-4 flex items-start gap-3 shadow-soft">
             <div className="text-xl shrink-0">💡</div>
             <div>
               <p className="text-[13px] font-black text-[#a45e00] mb-1">{t('flights.proTip') || 'Pro tip: compare before you buy'}</p>
@@ -638,7 +638,7 @@ const FilterGroup = ({ title, children }) => (
 const FilterChip = ({ active, onClick, children }) => (
   <button onClick={onClick}
     className={`px-3 py-1.5 rounded-xl text-[12px] font-black border transition active:scale-95 ${
-      active ? 'bg-[#003580] text-white border-[#003580] shadow-soft' : 'bg-white border-[#e6dcc3] text-[#1a1a1a] hover:border-[#0071c2]'
+      active ? 'bg-[#003580] text-white border-[#003580] shadow-soft' : 'bg-white border-[#e6dcc3] text-[#1a1a1a] hover:border-[#2f6395]'
     }`}>
     {children}
   </button>
@@ -646,7 +646,7 @@ const FilterChip = ({ active, onClick, children }) => (
 
 const Insight = ({ icon, label, val, sub }) => (
   <div className="flex items-center gap-2.5 p-2 rounded-xl bg-[#f6f1e4] border border-[#efe6d2]">
-    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#f0f5ff] to-[#dceaff] flex items-center justify-center text-[#0071c2] shrink-0 shadow-soft">{icon}</div>
+    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#f0f5ff] to-[#dceaff] flex items-center justify-center text-[#2f6395] shrink-0 shadow-soft">{icon}</div>
     <div className="min-w-0">
       <div className="text-[9.5px] font-black uppercase tracking-widest text-[#93876f]">{label}</div>
       <div className="text-[13px] font-black text-[#003580] leading-tight">{val}</div>

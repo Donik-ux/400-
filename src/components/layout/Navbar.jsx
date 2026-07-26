@@ -56,20 +56,20 @@ export default function Navbar() {
             iOS Safari whites out the page on pinch-zoom otherwise */}
         <div aria-hidden="true" className={`absolute inset-0 -z-10 transition-premium ${scrolled ? 'nav-veil--scrolled' : 'nav-veil'}`} />
         {/* ambient gold glow */}
-        <div className="pointer-events-none absolute -top-12 left-1/3 w-80 h-24 bg-[#f5b942]/10 blur-3xl rounded-full" />
+        <div className="pointer-events-none absolute -top-12 left-1/3 w-80 h-24 bg-[#cf9c3f]/10 blur-3xl rounded-full" />
         {/* Gold hairline accent */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5b942]/55 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#cf9c3f]/55 to-transparent" />
 
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-[64px] flex items-center justify-between gap-2">
           {/* Logo */}
           <button onClick={() => navigate('/')} className="flex items-center gap-2.5 group shrink-0">
-            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#ffd76e] via-[#f5b942] to-[#d99a2b] flex items-center justify-center shadow-[0_4px_16px_rgba(245,185,66,0.5)] ring-1 ring-white/30 group-hover:scale-105 group-hover:rotate-[8deg] transition-premium">
+            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#e6c988] via-[#cf9c3f] to-[#b58427] flex items-center justify-center shadow-[0_4px_16px_rgba(207, 156, 63,0.5)] ring-1 ring-white/30 group-hover:scale-105 group-hover:rotate-[8deg] transition-premium">
               <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
               <Compass className="relative w-[19px] h-[19px] text-[#002250]" strokeWidth={2.5} />
             </div>
             <div className="hidden sm:flex flex-col leading-none">
               <span className="text-[19px] font-black tracking-tight bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">MAFTRAVEL</span>
-              <span className="text-[9px] font-bold text-[#f5b942] tracking-[0.22em] uppercase mt-1">{t('footer.brandSub')}</span>
+              <span className="text-[9px] font-bold text-[#cf9c3f] tracking-[0.22em] uppercase mt-1">{t('footer.brandSub')}</span>
             </div>
           </button>
 
@@ -79,13 +79,13 @@ export default function Navbar() {
             {links.map(({ to, label }) => (
               <NavLink key={to} to={to}
                 className={({ isActive }) =>
-                  `px-2 2xl:px-3.5 py-2 rounded-lg text-[12.5px] 2xl:text-[13px] font-semibold whitespace-nowrap transition-premium ${isActive ? 'text-[#f5b942] bg-[#f5b942]/10' : 'text-white/65 hover:text-white hover:bg-white/[0.07]'}`
+                  `px-2 2xl:px-3.5 py-2 rounded-lg text-[12.5px] 2xl:text-[13px] font-semibold whitespace-nowrap transition-premium ${isActive ? 'text-[#cf9c3f] bg-[#cf9c3f]/10' : 'text-white/65 hover:text-white hover:bg-white/[0.07]'}`
                 }
               >
                 {({ isActive }) => (
                   <span className="relative">
                     {label}
-                    <span className={`absolute -bottom-1.5 left-0 right-0 h-[2.5px] rounded-full bg-[#f5b942] transition-premium ${isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`} />
+                    <span className={`absolute -bottom-1.5 left-0 right-0 h-[2.5px] rounded-full bg-[#cf9c3f] transition-premium ${isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`} />
                   </span>
                 )}
               </NavLink>
@@ -128,8 +128,8 @@ export default function Navbar() {
             {user ? (
               <div className="relative hidden md:block" data-dropdown>
                 <button onClick={() => { setUserOpen(v => !v); }}
-                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-white/15 hover:border-[#f5b942]/50 hover:bg-white/10 transition-premium">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#f5b942] to-[#d99a2b] flex items-center justify-center text-[11px] font-black text-[#002250] shadow-sm">
+                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-white/15 hover:border-[#cf9c3f]/50 hover:bg-white/10 transition-premium">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#cf9c3f] to-[#b58427] flex items-center justify-center text-[11px] font-black text-[#002250] shadow-sm">
                     {user.avatar}
                   </div>
                   <span className="text-[13px] font-semibold text-white max-w-28 truncate">{user.name}</span>
@@ -143,7 +143,7 @@ export default function Navbar() {
                     </div>
                     {user.role === 'admin' && (
                       <button onClick={() => { navigate('/admin'); setUserOpen(false); }}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-semibold text-[#f5b942] hover:bg-white/[0.06] border-b border-white/10 transition-premium">
+                        className="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-semibold text-[#cf9c3f] hover:bg-white/[0.06] border-b border-white/10 transition-premium">
                         <ShieldCheck className="w-4 h-4" /> {t('nav.adminPanel')}
                       </button>
                     )}
@@ -181,7 +181,7 @@ export default function Navbar() {
                   {t('nav.signIn')}
                 </button>
                 <button onClick={() => navigate('/register')}
-                  className="shrink-0 px-3 xl:px-4 py-2 text-[13px] font-black whitespace-nowrap text-[#002250] bg-gradient-to-br from-[#f5b942] to-[#e0a435] hover:shadow-[0_6px_20px_rgba(245,185,66,0.45)] hover:-translate-y-px rounded-lg shadow-sm transition-premium">
+                  className="shrink-0 px-3 xl:px-4 py-2 text-[13px] font-black whitespace-nowrap text-[#002250] bg-gradient-to-br from-[#cf9c3f] to-[#c08c33] hover:shadow-[0_6px_20px_rgba(207, 156, 63,0.45)] hover:-translate-y-px rounded-lg shadow-sm transition-premium">
                   {t('nav.register')}
                 </button>
               </div>
@@ -202,7 +202,7 @@ export default function Navbar() {
           {links.map(({ to, label }) => (
             <NavLink key={to} to={to} onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
-                `py-3.5 px-4 rounded-lg text-[14px] font-semibold border-b border-white/10 transition-premium ${isActive ? 'text-[#f5b942] bg-white/[0.06]' : 'text-white'}`
+                `py-3.5 px-4 rounded-lg text-[14px] font-semibold border-b border-white/10 transition-premium ${isActive ? 'text-[#cf9c3f] bg-white/[0.06]' : 'text-white'}`
               }>{label}</NavLink>
           ))}
           {user && (
@@ -221,7 +221,7 @@ export default function Navbar() {
               </button>
               {user.role === 'admin' && (
                 <button onClick={() => { navigate('/admin'); setMobileOpen(false); }}
-                  className="py-3.5 px-4 rounded-lg text-[14px] font-semibold text-[#f5b942] border-b border-white/10 text-left flex items-center gap-2">
+                  className="py-3.5 px-4 rounded-lg text-[14px] font-semibold text-[#cf9c3f] border-b border-white/10 text-left flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4" /> {t('nav.adminPanel')}
                 </button>
               )}
@@ -240,11 +240,11 @@ export default function Navbar() {
             ) : (
               <>
                 <button onClick={() => { navigate('/login'); setMobileOpen(false); }}
-                  className="w-full py-3 rounded-lg border border-[#f5b942]/50 text-[#f5b942] text-[13px] font-bold">
+                  className="w-full py-3 rounded-lg border border-[#cf9c3f]/50 text-[#cf9c3f] text-[13px] font-bold">
                   {t('nav.signIn')}
                 </button>
                 <button onClick={() => { navigate('/register'); setMobileOpen(false); }}
-                  className="w-full py-3 rounded-lg bg-gradient-to-br from-[#f5b942] to-[#e0a435] text-[#002250] text-[13px] font-black">
+                  className="w-full py-3 rounded-lg bg-gradient-to-br from-[#cf9c3f] to-[#c08c33] text-[#002250] text-[13px] font-black">
                   {t('nav.registerFree')}
                 </button>
               </>

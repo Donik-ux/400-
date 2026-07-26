@@ -52,7 +52,7 @@ export default function GlobalSearch() {
     <>
       {/* Trigger Button */}
       <button onClick={() => { setQuery(''); setOpen(true); }}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/15 bg-white/[0.07] hover:bg-white/15 hover:border-[#f5b942]/40 transition-all text-white/55 text-sm">
+        className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/15 bg-white/[0.07] hover:bg-white/15 hover:border-[#cf9c3f]/40 transition-all text-white/55 text-sm">
         <Search className="w-4 h-4" />
         {/* Full label only on very wide screens — long-locale nav rows need the room */}
         <span className="hidden 2xl:block text-[12px]">{t('ui.search.trigger')}</span>
@@ -110,7 +110,7 @@ export default function GlobalSearch() {
                           <span className={`text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest ${TYPE_COLOR[item.type]}`}>
                             {item.type}
                           </span>
-                          <ArrowRight className="w-3.5 h-3.5 text-[#d9c9a3] group-hover:text-[#0071c2] transition-all" />
+                          <ArrowRight className="w-3.5 h-3.5 text-[#d9c9a3] group-hover:text-[#2f6395] transition-all" />
                         </div>
                       </button>
                     );

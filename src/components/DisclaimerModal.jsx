@@ -30,7 +30,7 @@ export default function DisclaimerModal() {
         {/* Header */}
         <div className="bg-[#003580] px-7 py-5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Shield className="w-6 h-6 text-[#ffd76e] shrink-0" />
+            <Shield className="w-6 h-6 text-[#e6c988] shrink-0" />
             <div>
               <h2 className="text-white font-black text-[17px] leading-tight">MAFTRAVEL</h2>
               <p className="text-white/60 text-[11px] uppercase tracking-widest font-bold">{t('ui.disclaimer.eyebrow')}</p>
@@ -39,7 +39,7 @@ export default function DisclaimerModal() {
           <LanguageSwitcher align="right" />
 
         </div>
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#f5b942]/70 to-transparent" aria-hidden="true" />
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#cf9c3f]/70 to-transparent" aria-hidden="true" />
 
         {/* Body */}
         <div className="px-7 py-6 flex-1 min-h-0 overflow-y-auto">

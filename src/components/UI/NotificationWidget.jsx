@@ -94,9 +94,9 @@ export default function NotificationWidget() {
       {/* Permission Banner */}
       {showBanner && (
         <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-[200] w-[calc(100%-24px)] max-w-sm animate-slide-up">
-          <div className="bg-[#003580] text-white rounded-2xl px-3.5 py-3 sm:p-4 shadow-2xl flex items-center sm:items-start gap-3 border border-[#f5b942]/25">
+          <div className="bg-[#003580] text-white rounded-2xl px-3.5 py-3 sm:p-4 shadow-2xl flex items-center sm:items-start gap-3 border border-[#cf9c3f]/25">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-              <BellRing className="w-4 h-4 text-[#ffd76e]" />
+              <BellRing className="w-4 h-4 text-[#e6c988]" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[13px] sm:text-sm font-bold leading-snug">{t('ui.notify.title')}</p>
@@ -127,7 +127,7 @@ export default function NotificationWidget() {
             <div className="flex-1">
               <p className="text-sm font-black text-[#1a1a1a] mb-0.5">{toast.title}</p>
               <p className="text-xs text-[#5c5245]">{toast.body}</p>
-              <span className="inline-block mt-2 text-[9px] font-black px-2 py-0.5 rounded-full bg-[#0071c2]/10 text-[#0071c2] uppercase tracking-widest">
+              <span className="inline-block mt-2 text-[9px] font-black px-2 py-0.5 rounded-full bg-[#2f6395]/10 text-[#2f6395] uppercase tracking-widest">
                 {toast.tag}
               </span>
             </div>

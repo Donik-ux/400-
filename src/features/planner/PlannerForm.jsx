@@ -26,7 +26,7 @@ const Field = ({ label, icon: Icon, children }) => (
   </div>
 );
 
-const inputCls = "w-full bg-white border border-[#e6dcc3] rounded-xl pl-10 pr-4 py-3 text-[14px] text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#0071c2] focus:ring-4 focus:ring-[#0071c2]/10 transition-premium";
+const inputCls = "w-full bg-white border border-[#e6dcc3] rounded-xl pl-10 pr-4 py-3 text-[14px] text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#2f6395] focus:ring-4 focus:ring-[#2f6395]/10 transition-premium";
 
 /* ── Destination Preview Card ─────────────────────────────────────────────── */
 const DestPreview = ({ destination }) => {
@@ -46,7 +46,7 @@ const DestPreview = ({ destination }) => {
           <div>
             <p className="text-white font-black text-[14px] leading-tight">{entry.country}</p>
             {entry.visa ? (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#f5b942]/95 text-[#5c3d0e] rounded-full px-2 py-0.5 mt-0.5">
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#cf9c3f]/95 text-[#5c3d0e] rounded-full px-2 py-0.5 mt-0.5">
                 <AlertTriangle className="w-2.5 h-2.5" /> {t('plannerPage.form.visaRequiredBadge')}
               </span>
             ) : (
@@ -110,8 +110,8 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
 
         {/* Route badge */}
         {formData.fromCity && formData.destination && (
-          <div className="mt-2 px-3 py-2 bg-[#f0f5ff] border border-[#0071c2]/20 rounded-xl flex items-center gap-2">
-            <span className="text-[12px] text-[#0071c2] font-bold">
+          <div className="mt-2 px-3 py-2 bg-[#f0f5ff] border border-[#2f6395]/20 rounded-xl flex items-center gap-2">
+            <span className="text-[12px] text-[#2f6395] font-bold">
               ✈️ {formData.fromCity} → {formData.destination}
             </span>
           </div>
@@ -175,7 +175,7 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
                   className={`flex flex-col items-center gap-1 px-2 py-3 rounded-xl border text-center transition-premium ${
                     active
                       ? 'bg-[#003580] border-[#003580] text-white shadow-float -translate-y-0.5'
-                      : 'bg-white border-[#e6dcc3] text-[#5c5245] hover:border-[#0071c2] hover:text-[#003580] hover:-translate-y-0.5 hover:shadow-soft'
+                      : 'bg-white border-[#e6dcc3] text-[#5c5245] hover:border-[#2f6395] hover:text-[#003580] hover:-translate-y-0.5 hover:shadow-soft'
                   }`}
                 >
                   <span className="text-[13px] font-black leading-tight">{t(`plannerPage.form.tiers.${tier.labelKey}`)}</span>
@@ -199,7 +199,7 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
             />
           </Field>
           {activeTier && (
-            <p className="text-[11px] text-[#0071c2] mt-1 font-medium">
+            <p className="text-[11px] text-[#2f6395] mt-1 font-medium">
               {t(`plannerPage.form.tiers.${activeTier.labelKey}`)} · {t(`plannerPage.form.tiers.${activeTier.descKey}`)}
             </p>
           )}

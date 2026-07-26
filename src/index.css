@@ -3,19 +3,19 @@
 /* ── Warm editorial theme — ivory/sand neutrals instead of flat corporate grays,
    navy + gold as the two brand anchors, gold carrying the single bright accent role ── */
 @theme {
-  --color-bg:          #faf6ed;
+  --color-bg:          #f5f7f9;
   --color-surface:     #ffffff;
-  --color-surface2:    #f6f1e4;
-  --color-border:      #e6dcc3;
-  --color-border2:     #efe6d2;
-  --color-text:        #1a1a1a;
-  --color-text-sub:    #5c5245;
-  --color-text-muted:  #93876f;
-  --color-primary:     #003580;
-  --color-primary-deep:#002250;
-  --color-accent:      #2f6395;
-  --color-gold:        #d9a43e;
-  --color-gold-deep:   #cf9c3f;
+  --color-surface2:    #eef2f5;
+  --color-border:      #dfe7ec;
+  --color-border2:     #e8edf1;
+  --color-text:        #252a31;
+  --color-text-sub:    #4a5867;
+  --color-text-muted:  #697d95;
+  --color-primary:     #252a31;
+  --color-primary-deep:#1c2127;
+  --color-accent:      #0172cb;
+  --color-gold:        #00a58e;
+  --color-gold-deep:   #009882;
 
   /* Brand-tuned status families — moss / saffron / terracotta instead of
      default Tailwind green/amber/red, so alerts stay inside the palette */
@@ -30,13 +30,13 @@
   --color-danger-border: #eccfc7;
 
   /* Admin "Nightdesk" — the brand at night: deep navy, not neutral black */
-  --color-night:   #00112b;
-  --color-night-2: #001c47;
+  --color-night:   #14181d;
+  --color-night-2: #1b2026;
 
   /* Premium elevation scale — three-layer recipe (contact + direct + ambient) for physically-grounded depth */
   --shadow-soft:  0 1px 1px rgba(16,24,40,0.03), 0 2px 5px rgba(16,24,40,0.05), 0 8px 20px -8px rgba(16,24,40,0.08);
   --shadow-float: 0 2px 6px rgba(16,24,40,0.05), 0 10px 24px -8px rgba(16,24,40,0.14), 0 28px 52px -18px rgba(16,24,40,0.16);
-  --shadow-lift:  0 4px 10px rgba(0,53,128,0.10), 0 18px 38px -12px rgba(0,53,128,0.24), 0 34px 64px -22px rgba(16,24,40,0.18);
+  --shadow-lift:  0 4px 10px rgba(37, 42, 49,0.10), 0 18px 38px -12px rgba(37, 42, 49,0.24), 0 34px 64px -22px rgba(16,24,40,0.18);
 
   /* Motion */
   --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
@@ -44,8 +44,8 @@
 }
 
 :root {
-  background-color: #faf6ed;
-  color: #1a1a1a;
+  background-color: #f5f7f9;
+  color: #252a31;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -68,7 +68,7 @@ p { line-height: 1.65; }
 body {
   margin: 0;
   min-height: 100vh;
-  background: #faf6ed;
+  background: #f5f7f9;
   position: relative;
   /* Stop the browser from silently re-adjusting scroll position when async
      content (images, AI results) loads in above the fold on a freshly
@@ -85,8 +85,8 @@ body::after {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(120% 60% at 50% -10%, rgba(207, 156, 63, 0.05), transparent 60%),
-    radial-gradient(120% 50% at 50% 110%, rgba(0, 34, 80, 0.035), transparent 60%);
+    radial-gradient(120% 60% at 50% -10%, rgba(0, 152, 130, 0.05), transparent 60%),
+    radial-gradient(120% 50% at 50% 110%, rgba(28, 33, 39, 0.035), transparent 60%);
 }
 
 /* Whisper-soft global grain for tactile depth (doesn't touch component colors) */
@@ -115,7 +115,7 @@ h1 { letter-spacing: -0.025em; font-variation-settings: 'SOFT' 0, 'opsz' 144; }
 /* Keyboard-only focus ring (doesn't affect mouse clicks) */
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(47, 99, 149,0.35);
+  box-shadow: 0 0 0 3px rgba(1, 114, 203,0.35);
   border-radius: 6px;
 }
 
@@ -130,12 +130,12 @@ button, a, input, select, textarea {
 
 /* Brand-tinted text selection — small detail, easy to miss, reads as intentional */
 ::selection {
-  background: rgba(47, 99, 149,0.22);
-  color: #002250;
+  background: rgba(1, 114, 203,0.22);
+  color: #1c2127;
 }
 
 /* Thin, brand-toned scrollbar in Firefox to match the WebKit rules below */
-* { scrollbar-width: thin; scrollbar-color: #cfa040 transparent; }
+* { scrollbar-width: thin; scrollbar-color: #00a58e transparent; }
 
 /* ── Transitions ── */
 .transition-premium {
@@ -155,52 +155,21 @@ button, a, input, select, textarea {
 .lift:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
 .lift:active { transform: translateY(-2px); }
 
-/* Premium gold CTA — matches the navbar gradient, with a brushed-metal sheen so it reads
-   as a physical coin/badge rather than a flat fill */
+/* Primary CTA — flat kiwi-green button with white text and a simple hover
+   darken (Kiwi/Orbit style: no metallic gradients, sheens or light sweeps) */
 .btn-gold {
   position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background: linear-gradient(135deg, #e6c988 0%, #d9a43e 42%, #cf9c3f 72%, #dc9a2e 100%);
-  color: #1a1a1a;
+  background: #00a58e;
+  color: #ffffff;
   border: none;
   border-radius: 12px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s var(--ease-premium), box-shadow 0.2s var(--ease-premium);
-  box-shadow:
-    0 4px 14px rgba(192, 140, 51,0.35),
-    0 1px 0 rgba(255,255,255,0.5) inset,
-    0 -2px 5px rgba(138,92,23,0.32) inset,
-    0 0 0 1px rgba(184,126,26,0.35);
+  transition: background-color 0.2s var(--ease-premium), transform 0.2s var(--ease-premium), box-shadow 0.2s var(--ease-premium);
+  box-shadow: 0 1px 2px rgba(37, 42, 49, 0.08);
 }
-.btn-gold::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.38), transparent 55%);
-  pointer-events: none;
-}
-/* Light streak on hover only — the always-on sweep read as too flashy */
-.btn-gold::after {
-  content: '';
-  position: absolute;
-  top: 0; bottom: 0; left: -60%;
-  width: 40%;
-  background: linear-gradient(75deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
-  transform: skewX(-20deg);
-  pointer-events: none;
-}
-.btn-gold:hover::after {
-  animation: goldSweep 1.2s ease-in-out 1;
-}
-@keyframes goldSweep {
-  0%   { left: -60%; }
-  55%  { left: 130%; }
-  100% { left: 130%; }
-}
-.btn-gold:hover  { transform: translateY(-2px) scale(1.015); box-shadow: 0 14px 34px rgba(192, 140, 51,0.55), 0 1px 0 rgba(255,255,255,0.6) inset, 0 -2px 5px rgba(138,92,23,0.28) inset, 0 0 0 1px rgba(184,126,26,0.40); }
-.btn-gold:active { transform: scale(0.98); }
+.btn-gold:hover  { background: #009882; box-shadow: 0 4px 12px rgba(0, 143, 119, 0.25); }
+.btn-gold:active { transform: scale(0.98); background: #008f77; }
 
 /* ── Luxury ornamental divider — used to break up long homepage sections with intent ── */
 .divider-lux {
@@ -214,15 +183,15 @@ button, a, input, select, textarea {
   content: '';
   height: 1px;
   width: 72px;
-  background: linear-gradient(90deg, transparent, rgba(207, 156, 63,0.7));
+  background: linear-gradient(90deg, transparent, rgba(0, 152, 130,0.7));
 }
-.divider-lux::after { background: linear-gradient(90deg, rgba(207, 156, 63,0.7), transparent); }
+.divider-lux::after { background: linear-gradient(90deg, rgba(0, 152, 130,0.7), transparent); }
 
 /* ── Gold-veined glow frame — a slow-pulsing gold halo for the single most important
    card on a page (the hero search card). Spend sparingly: one per page, not everywhere. ── */
 .frame-lux {
   position: relative;
-  box-shadow: 0 0 0 1px rgba(207, 156, 63,0.25), 0 24px 60px -18px rgba(207, 156, 63,0.45);
+  box-shadow: 0 0 0 1px rgba(0, 152, 130,0.25), 0 24px 60px -18px rgba(0, 152, 130,0.45);
 }
 .frame-lux::before {
   content: '';
@@ -230,13 +199,13 @@ button, a, input, select, textarea {
   inset: -3px;
   border-radius: inherit;
   padding: 3px;
-  background: linear-gradient(120deg, #fff2cf, #d9a43e 28%, #8a5c17 52%, #d9a43e 76%, #fff2cf);
+  background: linear-gradient(120deg, #dff5f0, #00a58e 28%, #8a5c17 52%, #00a58e 76%, #dff5f0);
   background-size: 220% 220%;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
-  filter: drop-shadow(0 0 10px rgba(207, 156, 63,0.35));
+  filter: drop-shadow(0 0 10px rgba(0, 152, 130,0.35));
 }
 @keyframes frameGoldShift {
   0%, 100% { background-position: 0% 50%; }
@@ -259,14 +228,14 @@ button, a, input, select, textarea {
 
 /* Hairline dividers */
 .hairline       { height: 1px; background: linear-gradient(to right, transparent, rgba(16,24,40,0.10), transparent); }
-.hairline-gold  { height: 1px; background: linear-gradient(to right, transparent, rgba(207, 156, 63,0.45), transparent); }
+.hairline-gold  { height: 1px; background: linear-gradient(to right, transparent, rgba(0, 152, 130,0.45), transparent); }
 
 /* ── Navbar glass layers — kept on an ABSOLUTE CHILD of the fixed nav, never
    on the fixed element itself: iOS Safari (esp. the Liquid Glass builds)
    whites out the page while pinch-zooming when a fixed header carries
    backdrop-filter/background directly. ── */
 .nav-veil {
-  background: linear-gradient(to right, #001026, #002250, #001a3d);
+  background: linear-gradient(to right, #001026, #1c2127, #001a3d);
 }
 .nav-veil--scrolled {
   background: rgba(0, 17, 43, 0.80);
@@ -313,7 +282,7 @@ button, a, input, select, textarea {
 
 /* Dark glass (navy surfaces) */
 .glass-dark {
-  background: rgba(0, 34, 80, 0.72);
+  background: rgba(28, 33, 39, 0.72);
   backdrop-filter: blur(18px) saturate(160%);
   -webkit-backdrop-filter: blur(18px) saturate(160%);
 }
@@ -324,7 +293,7 @@ button, a, input, select, textarea {
   100% { background-position: 480px 0; }
 }
 .shimmer {
-  background: linear-gradient(90deg, #f2ead9 25%, #faf6ed 50%, #f2ead9 75%);
+  background: linear-gradient(90deg, #f2ead9 25%, #f5f7f9 50%, #f2ead9 75%);
   background-size: 960px 100%;
   animation: shimmer 1.4s linear infinite;
 }
@@ -352,12 +321,12 @@ button, a, input, select, textarea {
    with a visible gold vein through the middle instead of a faint tint ── */
 .aurora-bg {
   background:
-    radial-gradient(46% 60% at 10% 15%, rgba(47, 99, 149,0.65) 0%, transparent 70%),
-    radial-gradient(42% 52% at 90% 20%, rgba(207, 156, 63,0.38) 0%, transparent 65%),
+    radial-gradient(46% 60% at 10% 15%, rgba(1, 114, 203,0.65) 0%, transparent 70%),
+    radial-gradient(42% 52% at 90% 20%, rgba(0, 152, 130,0.38) 0%, transparent 65%),
     radial-gradient(60% 70% at 58% 100%, rgba(0,63,150,0.65) 0%, transparent 72%),
     radial-gradient(46% 55% at 26% 85%, rgba(0,149,210,0.40) 0%, transparent 70%),
     radial-gradient(30% 40% at 75% 70%, rgba(214,158,46,0.22) 0%, transparent 65%),
-    linear-gradient(160deg, #000e26 0%, #001c47 42%, #00295c 68%, #003f96 100%);
+    linear-gradient(160deg, #000e26 0%, #1b2026 42%, #00295c 68%, #003f96 100%);
   background-size: 200% 200%;
   animation: auroraShift 20s ease-in-out infinite;
 }
@@ -420,7 +389,7 @@ button, a, input, select, textarea {
 
 /* ── Blue gradient text ── */
 .text-gradient {
-  background: linear-gradient(135deg, #003580 0%, #2f6395 100%);
+  background: linear-gradient(135deg, #252a31 0%, #0172cb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -428,7 +397,7 @@ button, a, input, select, textarea {
 
 /* ── Gold gradient text (premium accents) — antique-brass depth, not flat highlighter ── */
 .text-gradient-gold {
-  background: linear-gradient(135deg, #ecd9a8 0%, #d9a43e 32%, #b58427 62%, #a8701c 100%);
+  background: linear-gradient(135deg, #cdeee7 0%, #00a58e 32%, #007f6d 62%, #006a5b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -440,23 +409,23 @@ button, a, input, select, textarea {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, rgba(0,34,80,0.55), rgba(0,17,43,0.55));
+  background: linear-gradient(135deg, rgba(28, 33, 39,0.55), rgba(0,17,43,0.55));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(207, 156, 63,0.45);
-  color: #e6c988;
+  border: 1px solid rgba(0, 152, 130,0.45);
+  color: #61d1bf;
   box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 8px 24px -8px rgba(0,0,0,0.35);
 }
 
 /* ── Scrollbar — a thread of gold along the page edge ── */
 ::-webkit-scrollbar { width: 7px; }
-::-webkit-scrollbar-track { background: #faf6ed; }
+::-webkit-scrollbar-track { background: #f5f7f9; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #e8c26a, #cfa040 50%, #b3841f);
+  background: linear-gradient(180deg, #61d1bf, #00a58e 50%, #007f6d);
   border-radius: 10px;
-  border: 1px solid rgba(250, 246, 237, 0.6);
+  border: 1px solid rgba(245, 247, 249, 0.6);
 }
-::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #f2cf7a, #d9ab48 50%, #bd8e29); }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #7adcc9, #00b89c 50%, #008f77); }
 
 /* ── Date input ── */
 input[type='date']::-webkit-calendar-picker-indicator {
@@ -473,21 +442,21 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
 .inp {
   width: 100%;
   background: white;
-  border: 1.5px solid #e6dcc3;
+  border: 1.5px solid #dfe7ec;
   border-radius: 12px;
   padding: 10px 14px;
   font-size: 14px;
-  color: #1a1a1a;
+  color: #252a31;
   outline: none;
   transition: border-color 0.18s, box-shadow 0.18s;
 }
-.inp:focus   { border-color: #2f6395; box-shadow: 0 0 0 4px rgba(47, 99, 149,0.12); }
-.inp::placeholder { color: #a89a7d; }
+.inp:focus   { border-color: #0172cb; box-shadow: 0 0 0 4px rgba(1, 114, 203,0.12); }
+.inp::placeholder { color: #94a3af; }
 .inp.err     { border-color: #ef4444; }
 
 /* ── Primary button — subtle gradient + lift instead of a flat fill ── */
 .btn-primary {
-  background: linear-gradient(135deg, #0080da 0%, #2f6395 55%, #005fa3 100%);
+  background: linear-gradient(135deg, #0080da 0%, #0172cb 55%, #015aa3 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -495,16 +464,16 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(47, 99, 149,0.25);
+  box-shadow: 0 2px 8px rgba(1, 114, 203,0.25);
   transition: all 0.2s var(--ease-premium);
 }
-.btn-primary:hover  { background: linear-gradient(135deg, #0090ee 0%, #0080da 55%, #006bb3 100%); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(47, 99, 149,0.38); }
+.btn-primary:hover  { background: linear-gradient(135deg, #0090ee 0%, #0080da 55%, #006bb3 100%); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(1, 114, 203,0.38); }
 .btn-primary:active { transform: scale(0.98); }
 
 /* ── White card ── */
 .wcard {
   background: white;
-  border: 1px solid #e6dcc3;
+  border: 1px solid #dfe7ec;
   border-radius: 16px;
 }
 
@@ -546,31 +515,31 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
 
 /* ── Tour tier badges — luxury reads navy+gold, not magenta ── */
 .badge-tier-economy  { background: #e9f3ea; color: #2e6b3a; }
-.badge-tier-standard { background: #eaf1fb; color: #003580; }
+.badge-tier-standard { background: #eaf1fb; color: #252a31; }
 .badge-tier-comfort  { background: #fdf3dc; color: #8a5c17; }
 .badge-tier-luxury   {
-  background: linear-gradient(135deg, #00112b, #002a5e);
-  color: #e6c988;
-  border: 1px solid rgba(207, 156, 63, 0.45);
+  background: linear-gradient(135deg, #14181d, #002a5e);
+  color: #61d1bf;
+  border: 1px solid rgba(0, 152, 130, 0.45);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.12),
-    inset 0 0 0 1px rgba(207, 156, 63,0.16),
+    inset 0 0 0 1px rgba(0, 152, 130,0.16),
     0 2px 8px -2px rgba(0,17,43,0.45);
 }
 
 /* ── Admin "Nightdesk" surfaces — brand navy night with faint blue/gold air ── */
 .night-bg {
   background:
-    radial-gradient(60rem 40rem at 12% -10%, rgba(47, 99, 149, 0.14), transparent 60%),
-    radial-gradient(50rem 36rem at 95% 0%, rgba(207, 156, 63, 0.05), transparent 55%),
-    #00112b;
+    radial-gradient(60rem 40rem at 12% -10%, rgba(1, 114, 203, 0.14), transparent 60%),
+    radial-gradient(50rem 36rem at 95% 0%, rgba(0, 152, 130, 0.05), transparent 55%),
+    #14181d;
 }
 .night-side  { background: #000d22; border-color: rgba(143, 180, 255, 0.10); }
 .night-panel {
-  background: linear-gradient(180deg, #001c47, #001536);
+  background: linear-gradient(180deg, #1b2026, #001536);
   border: 1px solid rgba(143, 180, 255, 0.10);
 }
-.night-panel-hover:hover { border-color: rgba(217, 164, 62, 0.28); }
+.night-panel-hover:hover { border-color: rgba(0, 165, 142, 0.28); }
 .night-inset { background: rgba(143, 180, 255, 0.05); border: 1px solid rgba(143, 180, 255, 0.08); }
 .inp-night {
   background: rgba(255, 255, 255, 0.05);
@@ -580,35 +549,20 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
 .inp-night::placeholder { color: rgba(255, 255, 255, 0.35); }
 .inp-night:focus {
   outline: none;
-  border-color: rgba(217, 164, 62, 0.55);
-  box-shadow: 0 0 0 3px rgba(217, 164, 62, 0.12);
+  border-color: rgba(0, 165, 142, 0.55);
+  box-shadow: 0 0 0 3px rgba(0, 165, 142, 0.12);
 }
 .badge-ok-night     { color: #86d29a; background: rgba(134, 210, 154, 0.10); border: 1px solid rgba(134, 210, 154, 0.22); }
-.badge-warn-night   { color: #e6c988; background: rgba(217, 164, 62, 0.10);  border: 1px solid rgba(217, 164, 62, 0.25); }
+.badge-warn-night   { color: #61d1bf; background: rgba(0, 165, 142, 0.10);  border: 1px solid rgba(0, 165, 142, 0.25); }
 .badge-danger-night { color: #ff9c8a; background: rgba(255, 156, 138, 0.10); border: 1px solid rgba(255, 156, 138, 0.22); }
 .text-ok-n     { color: #86d29a; }
-.text-warn-n   { color: #e6c988; }
+.text-warn-n   { color: #61d1bf; }
 .text-danger-n { color: #ff9c8a; }
 
 /* ── Photo-card light sweep on hover — decorative ::after, transform/opacity only ── */
+/* Formerly a glossy hover sweep — cards are now flat (Kiwi style), the class
+   is kept as a harmless no-op so components don't need touching */
 .card-sheen { position: relative; overflow: hidden; }
-.card-sheen::after {
-  content: '';
-  position: absolute;
-  top: -20%; bottom: -20%; left: -30%;
-  width: 45%;
-  background: linear-gradient(75deg, transparent, rgba(255, 255, 255, 0.30), transparent);
-  transform: translateX(-160%) skewX(-18deg);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-.card-sheen:hover::after { animation: cardSheen 0.9s var(--ease-premium) forwards; }
-@keyframes cardSheen {
-  0%   { opacity: 0; }
-  15%  { opacity: 1; }
-  100% { opacity: 0; transform: translateX(360%) skewX(-18deg); }
-}
 
 /* ── Scroll-driven section entrance — progressive enhancement: browsers
    without animation-timeline (or with reduced motion) render fully visible ── */
@@ -639,7 +593,7 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   position: absolute;
   inset: 10px;
   border-radius: 15px;
-  border: 1px solid rgba(207, 156, 63,0.26);
+  border: 1px solid rgba(0, 152, 130,0.26);
   box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset;
   pointer-events: none;
 }
@@ -648,9 +602,9 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
    the way a maison mounts a photograph. Framed 'artwork' surfaces only. ── */
 .edge-gilded {
   box-shadow:
-    0 0 0 1px rgba(181, 132, 39,0.55),
+    0 0 0 1px rgba(0, 127, 109,0.55),
     0 0 0 5px #fdfaf1,
-    0 0 0 6px rgba(181, 132, 39,0.30),
+    0 0 0 6px rgba(0, 127, 109,0.30),
     0 2px 6px rgba(16,24,40,0.05),
     0 28px 52px -18px rgba(16,24,40,0.16);
 }
@@ -663,7 +617,7 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   position: absolute;
   width: 26px;
   height: 26px;
-  border: 1px solid rgba(207, 156, 63,0.60);
+  border: 1px solid rgba(0, 152, 130,0.60);
   pointer-events: none;
   z-index: 2;
 }
@@ -692,13 +646,13 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   height: 2.75em;
   border-radius: 9999px;
   color: #6e4b0e;
-  background: radial-gradient(circle at 32% 28%, #fff3cf 0%, #e6c988 34%, #e8ab2d 64%, #b87e1a 100%);
+  background: radial-gradient(circle at 32% 28%, #fff3cf 0%, #61d1bf 34%, #e8ab2d 64%, #007f6d 100%);
   box-shadow:
     0 1px 0 rgba(255,255,255,0.65) inset,
     0 -2px 6px rgba(122,84,16,0.40) inset,
-    0 0 0 1px rgba(184,126,26,0.50),
-    0 0 0 5px rgba(207, 156, 63,0.12),
-    0 6px 16px -4px rgba(184,126,26,0.45);
+    0 0 0 1px rgba(0, 122, 104,0.50),
+    0 0 0 5px rgba(0, 152, 130,0.12),
+    0 6px 16px -4px rgba(0, 122, 104,0.45);
 }
 
 /* ── Laid linen — whisper crosshatch turns the reviews band into paper stock ── */
@@ -718,8 +672,8 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
 .shadow-vitrine {
   box-shadow:
     0 1px 2px rgba(58,42,10,0.10),
-    0 10px 24px -8px rgba(0,34,80,0.22),
-    0 30px 70px -20px rgba(184,126,26,0.48);
+    0 10px 24px -8px rgba(28, 33, 39,0.22),
+    0 30px 70px -20px rgba(0, 122, 104,0.48);
 }
 
 /* ── Faceted gem for .divider-lux — a cut stone instead of a font glyph ── */
@@ -728,11 +682,11 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   width: 9px;
   height: 9px;
   transform: rotate(45deg);
-  background: linear-gradient(135deg, #ecd9a8 0%, #d9a43e 45%, #b87e1a 100%);
+  background: linear-gradient(135deg, #cdeee7 0%, #00a58e 45%, #007f6d 100%);
   box-shadow:
-    0 0 0 3px rgba(207, 156, 63,0.14),
+    0 0 0 3px rgba(0, 152, 130,0.14),
     0 1px 0 rgba(255,255,255,0.5) inset,
-    0 0 10px rgba(207, 156, 63,0.45);
+    0 0 10px rgba(0, 152, 130,0.45);
 }
 
 /* ── Eyebrow system — diamond + letter-spaced small caps + fading gold hairline ── */
@@ -744,23 +698,23 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.24em;
-  color: #a8701c;
+  color: #006a5b;
 }
 .eyebrow-lux::before {
   content: '\25C6';
   font-size: 7px;
-  color: #b58427;
+  color: #007f6d;
   transform: translateY(-1px);
 }
 .eyebrow-lux::after {
   content: '';
   height: 1px;
   width: 56px;
-  background: linear-gradient(90deg, rgba(181, 132, 39,0.6), transparent);
+  background: linear-gradient(90deg, rgba(0, 127, 109,0.6), transparent);
 }
-.eyebrow-lux--light { color: #e6c988; }
-.eyebrow-lux--light::before { color: #d9a43e; }
-.eyebrow-lux--light::after { background: linear-gradient(90deg, rgba(207, 156, 63,0.55), transparent); }
+.eyebrow-lux--light { color: #61d1bf; }
+.eyebrow-lux--light::before { color: #00a58e; }
+.eyebrow-lux--light::after { background: linear-gradient(90deg, rgba(0, 152, 130,0.55), transparent); }
 
 /* ── Editorial section heading — Fraunces, tight leading, balanced wrap ── */
 .h-editorial {
@@ -784,7 +738,7 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   letter-spacing: -0.03em;
   white-space: nowrap;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(207, 156, 63,0.09);
+  -webkit-text-stroke: 1px rgba(0, 152, 130,0.09);
   /* fade the letter tops so the outline never fights the small print above it */
   -webkit-mask-image: linear-gradient(to top, black 45%, transparent 96%);
   mask-image: linear-gradient(to top, black 45%, transparent 96%);
@@ -807,7 +761,7 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   font-size: 92px;
   font-weight: 600;
   line-height: 0.7;
-  color: #b58427;
+  color: #007f6d;
   opacity: 0.30;
   pointer-events: none;
   user-select: none;
@@ -820,7 +774,7 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  background: linear-gradient(135deg, #ecd9a8 0%, #cf9c3f 45%, #c98f24 100%);
+  background: linear-gradient(135deg, #cdeee7 0%, #009882 45%, #006a5b 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -38,7 +38,7 @@ export default function GlobalSearch() {
     )).slice(0, 5).map(p => ({ type: 'package', icon: Package, title: p.name, sub: `${p.destination} · ${p.duration} days · ${fmt(p.price)}`, action: () => navigate('/hot-tours') })),
   ];
 
-  const TYPE_COLOR = { flight: 'bg-[#eaf3f4] text-[#2d6a6f]', package: 'bg-[#f6f1e4] text-[#a45e00]' };
+  const TYPE_COLOR = { flight: 'bg-[#eaf3f4] text-[#2d6a6f]', package: 'bg-[#eef2f5] text-[#007f6d]' };
 
   const handleSelect = (item) => { item.action(); setOpen(false); setQuery(''); };
 
@@ -52,7 +52,7 @@ export default function GlobalSearch() {
     <>
       {/* Trigger Button */}
       <button onClick={() => { setQuery(''); setOpen(true); }}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/15 bg-white/[0.07] hover:bg-white/15 hover:border-[#cf9c3f]/40 transition-all text-white/55 text-sm">
+        className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/15 bg-white/[0.07] hover:bg-white/15 hover:border-[#009882]/40 transition-all text-white/55 text-sm">
         <Search className="w-4 h-4" />
         {/* Full label only on very wide screens — long-locale nav rows need the room */}
         <span className="hidden 2xl:block text-[12px]">{t('ui.search.trigger')}</span>
@@ -65,8 +65,8 @@ export default function GlobalSearch() {
           <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden"
             onClick={e => e.stopPropagation()}>
             {/* Search Input */}
-            <div className="flex items-center gap-3 px-4 py-4 border-b border-[#efe6d2]">
-              <Search className="w-5 h-5 text-[#93876f] shrink-0" />
+            <div className="flex items-center gap-3 px-4 py-4 border-b border-[#e8edf1]">
+              <Search className="w-5 h-5 text-[#697d95] shrink-0" />
               <input
                 ref={inputRef}
                 autoFocus
@@ -74,22 +74,22 @@ export default function GlobalSearch() {
                 onChange={e => { setQuery(e.target.value); setActiveIndex(0); }}
                 onKeyDown={onInputKeyDown}
                 placeholder={t('ui.search.placeholder')}
-                className="flex-1 text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#d9c9a3]"
+                className="flex-1 text-[15px] text-[#252a31] outline-none placeholder:text-[#bac7d1]"
               />
-              {query && <button onClick={() => setQuery('')}><X className="w-4 h-4 text-[#d9c9a3]" /></button>}
-              <kbd className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#f6f1e4] border border-[#e6dcc3] text-[#d9c9a3]">ESC</kbd>
+              {query && <button onClick={() => setQuery('')}><X className="w-4 h-4 text-[#bac7d1]" /></button>}
+              <kbd className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#eef2f5] border border-[#dfe7ec] text-[#bac7d1]">ESC</kbd>
             </div>
 
             {/* Results */}
             <div className="max-h-96 overflow-y-auto">
               {q.length < 2 ? (
                 <div className="px-4 py-8 text-center">
-                  <Search className="w-8 h-8 mx-auto mb-3 text-[#e6dcc3]" />
-                  <p className="text-[#93876f] text-sm">{t('ui.search.hint')}</p>
+                  <Search className="w-8 h-8 mx-auto mb-3 text-[#dfe7ec]" />
+                  <p className="text-[#697d95] text-sm">{t('ui.search.hint')}</p>
                 </div>
               ) : results.length === 0 ? (
                 <div className="px-4 py-8 text-center">
-                  <p className="text-[#93876f] text-sm">{t('ui.search.noResults')} "<strong>{query}</strong>"</p>
+                  <p className="text-[#697d95] text-sm">{t('ui.search.noResults')} "<strong>{query}</strong>"</p>
                 </div>
               ) : (
                 <div className="py-2">
@@ -98,19 +98,19 @@ export default function GlobalSearch() {
                     return (
                       <button key={i} onClick={() => handleSelect(item)}
                         onMouseEnter={() => setActiveIndex(i)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 transition-all group text-left ${i === activeIndex ? 'bg-[#f6f1e4]' : 'hover:bg-[#f6f1e4]'}`}>
-                        <div className="w-9 h-9 rounded-xl bg-[#faf6ed] flex items-center justify-center shrink-0">
-                          <Icon className="w-4 h-4 text-[#5c5245]" />
+                        className={`w-full flex items-center gap-3 px-4 py-3 transition-all group text-left ${i === activeIndex ? 'bg-[#eef2f5]' : 'hover:bg-[#eef2f5]'}`}>
+                        <div className="w-9 h-9 rounded-xl bg-[#f5f7f9] flex items-center justify-center shrink-0">
+                          <Icon className="w-4 h-4 text-[#4a5867]" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[13px] font-bold text-[#1a1a1a] truncate">{item.title}</p>
-                          <p className="text-[11px] text-[#93876f] truncate">{item.sub}</p>
+                          <p className="text-[13px] font-bold text-[#252a31] truncate">{item.title}</p>
+                          <p className="text-[11px] text-[#697d95] truncate">{item.sub}</p>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
                           <span className={`text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest ${TYPE_COLOR[item.type]}`}>
                             {item.type}
                           </span>
-                          <ArrowRight className="w-3.5 h-3.5 text-[#d9c9a3] group-hover:text-[#2f6395] transition-all" />
+                          <ArrowRight className="w-3.5 h-3.5 text-[#bac7d1] group-hover:text-[#0172cb] transition-all" />
                         </div>
                       </button>
                     );
@@ -120,7 +120,7 @@ export default function GlobalSearch() {
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-2.5 border-t border-[#efe6d2] flex items-center gap-4 text-[10px] text-[#d9c9a3] font-bold">
+            <div className="px-4 py-2.5 border-t border-[#e8edf1] flex items-center gap-4 text-[10px] text-[#bac7d1] font-bold">
               <span>↑↓ {t('ui.search.navigate')}</span>
               <span>↵ {t('ui.search.openHint')}</span>
               <span>ESC {t('ui.search.closeHint')}</span>

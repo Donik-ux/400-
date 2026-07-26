@@ -164,13 +164,13 @@ export default function Flights() {
   }, [altDates, altWeather]);
 
   return (
-    <div className="relative bg-[#faf6ed] min-h-screen -mt-[64px] overflow-hidden">
+    <div className="relative bg-[#f5f7f9] min-h-screen -mt-[64px] overflow-hidden">
       {/* ── soft, airy ambient tints ── */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[820px]"
         style={{
           background:
-            'radial-gradient(46rem 40rem at 10% 0%, rgba(47, 99, 149,0.06) 0%, transparent 60%), radial-gradient(42rem 38rem at 94% 2%, rgba(207, 156, 63,0.06) 0%, transparent 60%)',
+            'radial-gradient(46rem 40rem at 10% 0%, rgba(1, 114, 203,0.06) 0%, transparent 60%), radial-gradient(42rem 38rem at 94% 2%, rgba(0, 152, 130,0.06) 0%, transparent 60%)',
         }}
       />
 
@@ -183,15 +183,15 @@ export default function Flights() {
           style={{ backgroundImage: `url(${heroFor('maldives')})` }}
         />
         {/* navy gradient for white-text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#001a3d]/85 via-[#002250]/70 to-[#003580]/55" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#001a3d]/85 via-[#1c2127]/70 to-[#252a31]/55" />
         {/* fade INTO the light page */}
-        <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent to-[#faf6ed]" />
+        <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent to-[#f5f7f9]" />
         <Plane className="absolute right-[6%] top-[120px] w-40 h-40 text-white/[0.08] -rotate-[25deg] animate-float pointer-events-none hidden md:block" />
-        <div className="absolute -right-24 -bottom-12 w-80 h-80 rounded-full bg-[#d9a43e]/12 blur-3xl pointer-events-none" />
+        <div className="absolute -right-24 -bottom-12 w-80 h-80 rounded-full bg-[#00a58e]/12 blur-3xl pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="max-w-2xl mb-7">
             <div className="badge-editorial px-3.5 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.14em] mb-4">
-              <Plane className="w-3.5 h-3.5 text-[#e6c988]" /> {t('flights.badge') || t('flightsPage.hero.badge')}
+              <Plane className="w-3.5 h-3.5 text-[#61d1bf]" /> {t('flights.badge') || t('flightsPage.hero.badge')}
             </div>
             <h1 className="font-display text-[40px] md:text-[62px] font-semibold tracking-[-0.03em] leading-[1.0] mb-3 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.28)]">
               {t('flightsPage.hero.titleLine1')}<br className="hidden md:block" /> <span className="italic font-medium text-gradient-gold gold-animate">{t('flightsPage.hero.titleLine2')}</span>
@@ -224,13 +224,13 @@ export default function Flights() {
             { icon: Headphones,   t: t('flightsPage.trust.support'),   s: t('flightsPage.trust.supportSub') },
             { icon: ThumbsUp,     t: t('flightsPage.trust.rating'),    s: t('flightsPage.trust.ratingSub') },
           ].map((f, i) => (
-            <div key={i} className="bg-white border border-[#e6dcc3] rounded-2xl p-4 flex items-center gap-3 hover:border-[#2f6395]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all duration-300">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f0f5ff] to-[#dceaff] text-[#2f6395] flex items-center justify-center shrink-0 shadow-soft">
+            <div key={i} className="bg-white border border-[#dfe7ec] rounded-2xl p-4 flex items-center gap-3 hover:border-[#0172cb]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all duration-300">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#e8f4fd] to-[#d6ebfb] text-[#0172cb] flex items-center justify-center shrink-0 shadow-soft">
                 <f.icon className="w-5 h-5" />
               </div>
               <div className="min-w-0">
-                <div className="text-[13px] font-black text-[#1a1a1a] leading-snug line-clamp-2">{f.t}</div>
-                <div className="text-[11px] font-semibold text-[#93876f] leading-snug line-clamp-2">{f.s}</div>
+                <div className="text-[13px] font-black text-[#252a31] leading-snug line-clamp-2">{f.t}</div>
+                <div className="text-[11px] font-semibold text-[#697d95] leading-snug line-clamp-2">{f.s}</div>
               </div>
             </div>
           ))}
@@ -244,7 +244,7 @@ export default function Flights() {
           <div className="mt-2 space-y-3">
             <div className="h-6 w-48 rounded-md shimmer mb-3" />
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-5">
+              <div key={i} className="bg-white border border-[#dfe7ec] shadow-soft rounded-2xl p-5">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl shimmer" />
                   <div className="flex-1 space-y-2">
@@ -263,9 +263,9 @@ export default function Flights() {
           <div className="grid lg:grid-cols-4 gap-6 mt-4">
             {/* Filters sidebar */}
             <aside className="lg:col-span-1 space-y-3 lg:sticky lg:top-[80px] self-start max-h-[80vh] overflow-auto pr-1">
-              <div className="bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-4">
+              <div className="bg-white border border-[#dfe7ec] shadow-soft rounded-2xl p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-[13px] font-black uppercase tracking-widest text-[#93876f]">{t('flightsPage.filters.title')}</h3>
+                  <h3 className="text-[13px] font-black uppercase tracking-widest text-[#697d95]">{t('flightsPage.filters.title')}</h3>
                   {hasFilters && (
                     <button onClick={clearFilters} className="text-[11px] font-black text-danger hover:underline">{t('flightsPage.filters.clearAll')}</button>
                   )}
@@ -288,8 +288,8 @@ export default function Flights() {
                     min={priceRange[0]} max={priceRange[1]} step={10}
                     value={maxPrice ?? priceRange[1]}
                     onChange={e => setMaxPrice(Number(e.target.value))}
-                    className="w-full accent-[#2f6395] cursor-pointer" />
-                  <div className="flex justify-between text-[10px] font-bold text-[#93876f] mt-1">
+                    className="w-full accent-[#0172cb] cursor-pointer" />
+                  <div className="flex justify-between text-[10px] font-bold text-[#697d95] mt-1">
                     <span>{fmt(priceRange[0])}</span>
                     <span>{fmt(priceRange[1])}</span>
                   </div>
@@ -303,10 +303,10 @@ export default function Flights() {
                       return (
                         <button key={a} onClick={() => setAirlineFilter(airlineFilter === a ? null : a)}
                           className={`w-full text-left flex items-center justify-between px-2.5 py-1.5 rounded-xl text-[12px] font-bold transition active:scale-[0.98] ${
-                            airlineFilter === a ? 'bg-[#003580] text-white shadow-soft' : 'hover:bg-[#f0f5ff] text-[#1a1a1a]'
+                            airlineFilter === a ? 'bg-[#252a31] text-white shadow-soft' : 'hover:bg-[#e8f4fd] text-[#252a31]'
                           }`}>
                           <span className="truncate">{a}</span>
-                          <span className={airlineFilter === a ? 'text-white/80' : 'text-[#93876f]'}>{fmt(minP)}</span>
+                          <span className={airlineFilter === a ? 'text-white/80' : 'text-[#697d95]'}>{fmt(minP)}</span>
                         </button>
                       );
                     })}
@@ -316,8 +316,8 @@ export default function Flights() {
 
               {/* Quick insights */}
               {cheapest != null && (
-                <div className="bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-4 space-y-2.5">
-                  <h3 className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">{t('flightsPage.highlights.title')}</h3>
+                <div className="bg-white border border-[#dfe7ec] shadow-soft rounded-2xl p-4 space-y-2.5">
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-2">{t('flightsPage.highlights.title')}</h3>
                   <Insight icon={<Wallet className="w-3.5 h-3.5" />} label={t('flightsPage.highlights.cheapest')} val={fmt(cheapest)} sub={flights.find(f => f.price === cheapest)?.airline} />
                   <Insight icon={<Plane className="w-3.5 h-3.5" />}  label={t('flightsPage.highlights.nonstop') || 'Non-stop'} val={`${flights.filter(f => f.stops === 0).length}`} sub={t('flightsPage.results.direct') || 'direct'} />
                 </div>
@@ -328,16 +328,16 @@ export default function Flights() {
             <div className="lg:col-span-3">
               <div className="flex items-end justify-between mb-4 flex-wrap gap-3">
                 <div>
-                  <h2 className="text-[20px] font-black text-[#1a1a1a]">{formData.from} → {formData.to}</h2>
-                  <div className="text-[12px] text-[#5c5245] font-medium">
+                  <h2 className="text-[20px] font-black text-[#252a31]">{formData.from} → {formData.to}</h2>
+                  <div className="text-[12px] text-[#4a5867] font-medium">
                     <strong>{filtered.length}</strong> {t('flightsPage.results.matchPrefix')} {flights.length} {t('flightsPage.results.matchSuffix')}
-                    {cheapest && <> · {t('flightsPage.results.from')} <strong className="text-[#003580]">{fmt(cheapest)}</strong></>}
+                    {cheapest && <> · {t('flightsPage.results.from')} <strong className="text-[#252a31]">{fmt(cheapest)}</strong></>}
                   </div>
                 </div>
                 <button
                   onClick={() => handleSearch({ formData })}
                   disabled={loading || aiRefining}
-                  className="px-3.5 py-2 rounded-xl border-2 border-[#2f6395] text-[#2f6395] hover:bg-[#f0f5ff] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shadow-soft hover:shadow-float"
+                  className="px-3.5 py-2 rounded-xl border-2 border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shadow-soft hover:shadow-float"
                   title={t('flightsPage.results.refreshTitle')}>
                   <Sparkles className={`w-3.5 h-3.5 ${aiRefining ? 'animate-pulse' : ''}`} />
                   {aiRefining ? t('flightsPage.results.aiRefining') : t('flightsPage.results.refreshWithAI')}
@@ -361,28 +361,28 @@ export default function Flights() {
                 </div>
               )}
               {aiRefining && source !== 'amadeus' && (
-                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#f0f5ff] to-[#dceaff] border border-[#2f6395]/20 shadow-soft flex items-center gap-2.5">
-                  <Sparkles className="w-4 h-4 text-[#2f6395] animate-pulse shrink-0" />
-                  <div className="text-[12px] text-[#003580] font-bold">
+                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#e8f4fd] to-[#d6ebfb] border border-[#0172cb]/20 shadow-soft flex items-center gap-2.5">
+                  <Sparkles className="w-4 h-4 text-[#0172cb] animate-pulse shrink-0" />
+                  <div className="text-[12px] text-[#252a31] font-bold">
                     {t('flightsPage.banners.grokRefining')}
                   </div>
                 </div>
               )}
               {!aiRefining && source === 'grok' && aiSource && (
-                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#fff7e6] to-white border border-[#e6c988] shadow-soft flex items-center gap-2.5">
-                  <BadgeCheck className="w-4 h-4 text-[#a45e00] shrink-0" />
+                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#e6f6f3] to-white border border-[#61d1bf] shadow-soft flex items-center gap-2.5">
+                  <BadgeCheck className="w-4 h-4 text-[#007f6d] shrink-0" />
                   <div className="text-[12px] font-bold text-[#7c4a00] leading-snug">
                     <strong>{t('flightsPage.banners.aiEstimateTitle')}</strong> · {t('flightsPage.banners.aiEstimateMedian')} <strong>{fmt(aiSource.median)}</strong> · {t('flightsPage.banners.aiEstimateRange')} {fmt(aiSource.low)}–{fmt(aiSource.high)}{aiSource.note ? ` · ${aiSource.note}` : ''}
                     <br/>
-                    <span className="font-semibold text-[#a45e00]/85">{t('flightsPage.banners.aiEstimateNote')}</span>
+                    <span className="font-semibold text-[#007f6d]/85">{t('flightsPage.banners.aiEstimateNote')}</span>
                   </div>
                 </div>
               )}
 
               {altDates.length > 1 && (
-                <div className="mb-4 bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-4">
-                  <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-3">
-                    <Wand2 className="w-3.5 h-3.5 text-[#2f6395]" /> {t('flightsPage.smartDates.title')}
+                <div className="mb-4 bg-white border border-[#dfe7ec] shadow-soft rounded-2xl p-4">
+                  <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-3">
+                    <Wand2 className="w-3.5 h-3.5 text-[#0172cb]" /> {t('flightsPage.smartDates.title')}
                   </div>
                   <div className="flex gap-2 overflow-x-auto pt-2 pb-1 -mx-1 px-1 snap-x">
                     {altDates.map((d, i) => {
@@ -396,34 +396,34 @@ export default function Flights() {
                           onClick={() => handleSearch({ formData: { ...formData, date: d.iso } })}
                           className={`relative shrink-0 snap-start w-[110px] rounded-xl border-2 px-2.5 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
                             isToday
-                              ? 'border-[#2f6395] bg-[#f0f5ff] ring-4 ring-[#2f6395]/10'
-                              : 'border-[#e6dcc3] bg-white hover:border-[#2f6395]/50'
+                              ? 'border-[#0172cb] bg-[#e8f4fd] ring-4 ring-[#0172cb]/10'
+                              : 'border-[#dfe7ec] bg-white hover:border-[#0172cb]/50'
                           }`}>
                           {i === altBestIdx && !isToday && (
-                            <span className="absolute -top-2 left-2 bg-[#7cc4d9] text-[#00214f] text-[8.5px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft">
+                            <span className="absolute -top-2 left-2 bg-[#7cc4d9] text-[#20262e] text-[8.5px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft">
                               {t('flightsPage.smartDates.aiPick')}
                             </span>
                           )}
                           <div className="flex items-center justify-between gap-1">
-                            <div className="text-[9.5px] font-black uppercase tracking-wider text-[#2f6395]">
+                            <div className="text-[9.5px] font-black uppercase tracking-wider text-[#0172cb]">
                               {isToday ? t('flightsPage.smartDates.searched') : d.date.toLocaleDateString(lang || 'en', { weekday: 'short' })}
                             </div>
                             {WeatherIcon && (
-                              <div className="flex items-center gap-0.5 text-[#5c5245]" title={wmo.label}>
+                              <div className="flex items-center gap-0.5 text-[#4a5867]" title={wmo.label}>
                                 <WeatherIcon className="w-3 h-3" />
                                 <span className="text-[9.5px] font-bold">{Math.round(weather.tempMax)}°</span>
                               </div>
                             )}
                           </div>
-                          <div className="text-[13px] font-black text-[#1a1a1a] mt-0.5">
+                          <div className="text-[13px] font-black text-[#252a31] mt-0.5">
                             {d.date.toLocaleDateString(lang || 'en', { day: 'numeric', month: 'short' })}
                           </div>
-                          <div className="text-[13px] font-black text-[#003580] mt-1 whitespace-nowrap">~{fmt(d.price)}</div>
+                          <div className="text-[13px] font-black text-[#252a31] mt-1 whitespace-nowrap">~{fmt(d.price)}</div>
                         </button>
                       );
                     })}
                   </div>
-                  <p className="text-[10.5px] font-semibold text-[#93876f] mt-2.5 leading-snug">{t('flightsPage.smartDates.disclaimer')}</p>
+                  <p className="text-[10.5px] font-semibold text-[#697d95] mt-2.5 leading-snug">{t('flightsPage.smartDates.disclaimer')}</p>
                 </div>
               )}
 
@@ -435,12 +435,12 @@ export default function Flights() {
                     </motion.div>
                   ))
                 ) : (
-                  <div className="text-center py-12 bg-white rounded-2xl border border-[#e6dcc3] shadow-soft">
-                    <Filter className="w-10 h-10 mx-auto mb-3 text-[#d9c9a3]" />
-                    <p className="text-[#1a1a1a] font-bold mb-1">{t('flightsPage.results.noMatchTitle')}</p>
-                    <p className="text-[#93876f] text-sm mb-4">{t('flightsPage.results.noMatchSub')}</p>
+                  <div className="text-center py-12 bg-white rounded-2xl border border-[#dfe7ec] shadow-soft">
+                    <Filter className="w-10 h-10 mx-auto mb-3 text-[#bac7d1]" />
+                    <p className="text-[#252a31] font-bold mb-1">{t('flightsPage.results.noMatchTitle')}</p>
+                    <p className="text-[#697d95] text-sm mb-4">{t('flightsPage.results.noMatchSub')}</p>
                     <button onClick={clearFilters}
-                      className="px-4 py-2 rounded-xl bg-[#2f6395] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft hover:shadow-float">
+                      className="px-4 py-2 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft hover:shadow-float">
                       {t('flightsPage.results.clearFilters')}
                     </button>
                   </div>
@@ -459,7 +459,7 @@ export default function Flights() {
                   <div className="eyebrow-lux mb-2">
                     <TrendingDown className="w-3.5 h-3.5" /> {t('flightsPage.inspiration.eyebrow')}
                   </div>
-                  <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flightsPage.inspiration.title')}</h2>
+                  <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#252a31] tracking-tight">{t('flightsPage.inspiration.title')}</h2>
                 </div>
               </div>
 
@@ -471,15 +471,15 @@ export default function Flights() {
                       handleSearch({ formData: { from: r.from, to: r.to, date: '' } });
                       window.scrollTo({ top: 80, behavior: 'smooth' });
                     }}
-                    className="group card-sheen relative shrink-0 w-48 md:w-56 aspect-[4/5] snap-start overflow-hidden rounded-3xl bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 border border-[#e6dcc3] transition-all duration-300 active:scale-[0.98]"
+                    className="group card-sheen relative shrink-0 w-48 md:w-56 aspect-[4/5] snap-start overflow-hidden rounded-3xl bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 border border-[#dfe7ec] transition-all duration-300 active:scale-[0.98]"
                     style={{ backgroundImage: `url(${heroFor(r.city)})` }}>
                     <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url(${heroFor(r.city)})` }} />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
                     <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end text-left text-white">
-                      <div className="text-[10px] font-black uppercase tracking-widest text-[#d9a43e] mb-1">{r.country}</div>
+                      <div className="text-[10px] font-black uppercase tracking-widest text-[#00a58e] mb-1">{r.country}</div>
                       <div className="font-display text-[18px] md:text-[21px] font-bold leading-tight">{r.city}</div>
                       <div className="text-[10px] text-white/75 font-bold mb-2.5">{r.from.split(' (')[0]} → {r.to.split(' (')[0]}</div>
-                      <div className="inline-flex items-center gap-1.5 bg-[#d9a43e] text-[#1a1a1a] font-black px-2.5 py-1 rounded-lg w-fit text-[11px] shadow-soft group-hover:gap-2.5 transition-all">
+                      <div className="inline-flex items-center gap-1.5 bg-[#00a58e] text-white font-black px-2.5 py-1 rounded-lg w-fit text-[11px] shadow-soft group-hover:gap-2.5 transition-all">
                         <Plane className="w-3 h-3" /> {t('flightsPage.inspiration.from')} ${r.from$}
                       </div>
                     </div>
@@ -490,11 +490,11 @@ export default function Flights() {
 
             {/* AI Trip CTA — rich blue/gold accent band */}
             <section className="mt-10 reveal">
-              <div className="relative overflow-hidden bg-gradient-to-br from-[#003580] via-[#2f6395] to-[#003580] rounded-3xl p-6 md:p-9 text-white shadow-float">
-                <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#d9a43e]/30 blur-3xl pointer-events-none animate-float" />
+              <div className="relative overflow-hidden bg-gradient-to-br from-[#252a31] via-[#0172cb] to-[#252a31] rounded-3xl p-6 md:p-9 text-white shadow-float">
+                <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#00a58e]/30 blur-3xl pointer-events-none animate-float" />
                 <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
                   <div className="max-w-xl">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d9a43e] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-3">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-widest mb-3">
                       <Sparkles className="w-3.5 h-3.5" /> {t('flightsPage.aiCta.badge')}
                     </div>
                     <h2 className="h-editorial text-2xl md:text-[34px] mb-2">
@@ -520,23 +520,23 @@ export default function Flights() {
           <div className="eyebrow-lux mb-2">
             <BadgeCheck className="w-3.5 h-3.5" /> {t('flightsPage.direct.official')}
           </div>
-          <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flightsPage.direct.title')}</h2>
-          <p className="text-[#5c5245] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
+          <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#252a31] tracking-tight">{t('flightsPage.direct.title')}</h2>
+          <p className="text-[#4a5867] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
             {t('flightsPage.direct.sub')}
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {Object.values(AIRLINE_LINKS).map((al) => (
               <a key={al.name} href={al.homepage} target="_blank" rel="noopener noreferrer"
-                className="bg-white border border-[#e6dcc3] hover:border-[#2e7d4f]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 rounded-2xl p-4 flex flex-col gap-2 transition-all duration-300 group active:scale-[0.98]">
+                className="bg-white border border-[#dfe7ec] hover:border-[#2e7d4f]/40 shadow-soft hover:shadow-float hover:-translate-y-0.5 rounded-2xl p-4 flex flex-col gap-2 transition-all duration-300 group active:scale-[0.98]">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-[#f6f1e4] border border-[#e6dcc3] flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+                    <div className="w-10 h-10 rounded-xl bg-[#eef2f5] border border-[#dfe7ec] flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
                       {al.flag}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[13px] font-black text-[#1a1a1a] leading-tight line-clamp-2">{al.name}</p>
-                      <p className="text-[10.5px] text-[#2f6395] font-bold truncate">{al.domain}</p>
+                      <p className="text-[13px] font-black text-[#252a31] leading-tight line-clamp-2">{al.name}</p>
+                      <p className="text-[10.5px] text-[#0172cb] font-bold truncate">{al.domain}</p>
                     </div>
                   </div>
                   <BadgeCheck className="w-4 h-4 text-[#2e7d4f] shrink-0 mt-0.5" title={t('flightsPage.direct.officialAirline')} />
@@ -561,8 +561,8 @@ export default function Flights() {
           <div className="eyebrow-lux mb-2">
             <Globe className="w-3.5 h-3.5" /> {t('flightsPage.aggregators.thirdParty')}
           </div>
-          <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('flights.bookingSites') || 'Compare on aggregators'}</h2>
-          <p className="text-[#5c5245] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
+          <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#252a31] tracking-tight">{t('flights.bookingSites') || 'Compare on aggregators'}</h2>
+          <p className="text-[#4a5867] text-[13px] md:text-[14px] font-medium mb-6 mt-2 max-w-2xl leading-relaxed">
             {t('flights.bookingSub') || 'Open the platform with the best fare for your route. Sometimes 10–30% cheaper than the airline itself.'}
           </p>
 
@@ -570,7 +570,7 @@ export default function Flights() {
             {BOOKING_SITES.map((site) => (
               <a key={site.name} href={site.url} target="_blank" rel="noopener noreferrer"
                 style={{ '--brand': site.color }}
-                className="group relative bg-white border border-[#e6dcc3] shadow-soft rounded-2xl p-5 flex flex-col gap-3.5 overflow-hidden hover:border-[#d9c9a3] hover:shadow-lift hover:-translate-y-1 transition-all duration-300">
+                className="group relative bg-white border border-[#dfe7ec] shadow-soft rounded-2xl p-5 flex flex-col gap-3.5 overflow-hidden hover:border-[#bac7d1] hover:shadow-lift hover:-translate-y-1 transition-all duration-300">
                 {/* brand glow on hover — a whisper, the card itself stays on-brand ivory */}
                 <div className="absolute -top-14 -right-14 w-32 h-32 rounded-full opacity-0 group-hover:opacity-30 blur-2xl transition-opacity duration-500 pointer-events-none"
                   style={{ background: site.color }} />
@@ -589,20 +589,20 @@ export default function Flights() {
                       <site.icon className="relative w-[26px] h-[26px] text-white drop-shadow-sm" strokeWidth={2.2} />
                     </div>
                     <div>
-                      <p className="text-[15px] font-black text-[#1a1a1a] leading-tight">{site.name}</p>
-                      <div className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 rounded-md bg-[#fff7e6]">
-                        <Star className="w-3 h-3 text-[#d9a43e] fill-[#d9a43e]" />
-                        <span className="text-[11px] font-black text-[#a45e00]">{site.rating}</span>
+                      <p className="text-[15px] font-black text-[#252a31] leading-tight">{site.name}</p>
+                      <div className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 rounded-md bg-[#e6f6f3]">
+                        <Star className="w-3 h-3 text-[#00a58e] fill-[#00a58e]" />
+                        <span className="text-[11px] font-black text-[#007f6d]">{site.rating}</span>
                       </div>
                     </div>
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-wider bg-[#d9a43e] text-[#1a1a1a] px-2 py-1 rounded-md shrink-0">{site.badge}</span>
+                  <span className="text-[9px] font-black uppercase tracking-wider bg-[#00a58e] text-white px-2 py-1 rounded-md shrink-0">{site.badge}</span>
                 </div>
 
-                <p className="relative text-[13px] text-[#5c5245] leading-relaxed flex-1">{site.desc}</p>
+                <p className="relative text-[13px] text-[#4a5867] leading-relaxed flex-1">{site.desc}</p>
 
-                <div className="relative flex items-center justify-between pt-3 border-t border-[#efe6d2]">
-                  <span className="text-[12px] font-black text-[#003580] group-hover:text-[#2f6395] transition-colors">
+                <div className="relative flex items-center justify-between pt-3 border-t border-[#e8edf1]">
+                  <span className="text-[12px] font-black text-[#252a31] group-hover:text-[#0172cb] transition-colors">
                     {t('flights.searchOn') || 'Search on'} {site.name}
                   </span>
                   <span className="w-7 h-7 rounded-lg flex items-center justify-center text-white shadow-soft group-hover:translate-x-0.5 transition-transform duration-300"
@@ -614,10 +614,10 @@ export default function Flights() {
             ))}
           </div>
 
-          <div className="mt-5 bg-[#fff7e6] border border-[#e6c988] rounded-2xl p-4 flex items-start gap-3 shadow-soft">
+          <div className="mt-5 bg-[#e6f6f3] border border-[#61d1bf] rounded-2xl p-4 flex items-start gap-3 shadow-soft">
             <div className="text-xl shrink-0">💡</div>
             <div>
-              <p className="text-[13px] font-black text-[#a45e00] mb-1">{t('flights.proTip') || 'Pro tip: compare before you buy'}</p>
+              <p className="text-[13px] font-black text-[#007f6d] mb-1">{t('flights.proTip') || 'Pro tip: compare before you buy'}</p>
               <p className="text-[12px] text-[#7c4a00] font-semibold">{t('flights.proTipSub') || 'Prices vary 10-30% between sites. Open 2-3 platforms before booking, then verify on the airline\'s own site.'}</p>
             </div>
           </div>
@@ -631,7 +631,7 @@ export default function Flights() {
 /* ── Subcomponents ── */
 const FilterGroup = ({ title, children }) => (
   <div className="mb-4 last:mb-0">
-    <p className="text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">{title}</p>
+    <p className="text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-2">{title}</p>
     <div className="flex flex-wrap gap-1.5">{children}</div>
   </div>
 );
@@ -639,19 +639,19 @@ const FilterGroup = ({ title, children }) => (
 const FilterChip = ({ active, onClick, children }) => (
   <button onClick={onClick}
     className={`px-3 py-1.5 rounded-xl text-[12px] font-black border transition active:scale-95 ${
-      active ? 'bg-[#003580] text-white border-[#003580] shadow-soft' : 'bg-white border-[#e6dcc3] text-[#1a1a1a] hover:border-[#2f6395]'
+      active ? 'bg-[#252a31] text-white border-[#252a31] shadow-soft' : 'bg-white border-[#dfe7ec] text-[#252a31] hover:border-[#0172cb]'
     }`}>
     {children}
   </button>
 );
 
 const Insight = ({ icon, label, val, sub }) => (
-  <div className="flex items-center gap-2.5 p-2 rounded-xl bg-[#f6f1e4] border border-[#efe6d2]">
-    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#f0f5ff] to-[#dceaff] flex items-center justify-center text-[#2f6395] shrink-0 shadow-soft">{icon}</div>
+  <div className="flex items-center gap-2.5 p-2 rounded-xl bg-[#eef2f5] border border-[#e8edf1]">
+    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#e8f4fd] to-[#d6ebfb] flex items-center justify-center text-[#0172cb] shrink-0 shadow-soft">{icon}</div>
     <div className="min-w-0">
-      <div className="text-[9.5px] font-black uppercase tracking-widest text-[#93876f]">{label}</div>
-      <div className="text-[13px] font-black text-[#003580] leading-tight">{val}</div>
-      {sub && <div className="text-[10px] text-[#5c5245] font-semibold truncate">{sub}</div>}
+      <div className="text-[9.5px] font-black uppercase tracking-widest text-[#697d95]">{label}</div>
+      <div className="text-[13px] font-black text-[#252a31] leading-tight">{val}</div>
+      {sub && <div className="text-[10px] text-[#4a5867] font-semibold truncate">{sub}</div>}
     </div>
   </div>
 );

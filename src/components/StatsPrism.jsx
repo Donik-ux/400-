@@ -44,16 +44,16 @@ export default function StatsPrism({ faces }) {
           {faces.map((f, i) => (
             <div
               key={i}
-              className="absolute inset-0 overflow-hidden rounded-2xl bg-gradient-to-br from-[#00214f] to-[#001427] shadow-lift"
+              className="absolute inset-0 overflow-hidden rounded-2xl bg-gradient-to-br from-[#20262e] to-[#12161a] shadow-lift"
               style={{ transform: `rotateX(${i * FACE_ANGLE}deg) translateZ(${HEIGHT / 2}px)`, backfaceVisibility: 'hidden' }}
             >
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#cf9c3f]/70 to-transparent" />
-              <div className="absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-[#d9a43e]/10 blur-2xl pointer-events-none" />
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#009882]/70 to-transparent" />
+              <div className="absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-[#00a58e]/10 blur-2xl pointer-events-none" />
 
               <div className="relative h-full flex items-center">
                 {/* Stat half */}
                 <div className="flex-1 min-w-0 flex items-center justify-center gap-3 md:gap-4 px-3 md:px-8">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#cf9c3f]/12 text-[#e6c988] flex items-center justify-center shrink-0 ring-1 ring-[#cf9c3f]/25">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#009882]/12 text-[#61d1bf] flex items-center justify-center shrink-0 ring-1 ring-[#009882]/25">
                     <f.stat.icon className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
                   <div className="min-w-0">
@@ -63,7 +63,7 @@ export default function StatsPrism({ faces }) {
                 </div>
 
                 {/* Divider */}
-                <div className="self-stretch my-5 w-px bg-gradient-to-b from-transparent via-[#cf9c3f]/40 to-transparent shrink-0" />
+                <div className="self-stretch my-5 w-px bg-gradient-to-b from-transparent via-[#009882]/40 to-transparent shrink-0" />
 
                 {/* Trust half */}
                 <div className="flex-1 min-w-0 flex items-center justify-center gap-3 md:gap-4 px-3 md:px-8">
@@ -88,7 +88,7 @@ export default function StatsPrism({ faces }) {
             key={i}
             aria-label={`Slide ${i + 1}`}
             onClick={() => setStep((s) => s + ((i - (((s % faces.length) + faces.length) % faces.length) + faces.length) % faces.length))}
-            className={`h-1.5 rounded-full transition-all ${i === active ? 'w-5 bg-[#cf9c3f]' : 'w-1.5 bg-[#d9c9a3] hover:bg-[#b8a888]'}`}
+            className={`h-1.5 rounded-full transition-all ${i === active ? 'w-5 bg-[#009882]' : 'w-1.5 bg-[#bac7d1] hover:bg-[#b8a888]'}`}
           />
         ))}
       </div>

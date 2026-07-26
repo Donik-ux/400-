@@ -37,8 +37,8 @@ const TourCard = ({ tour, budget }) => {
       transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
       className={`group lift card-sheen bg-white rounded-2xl border overflow-hidden shadow-soft flex flex-col ${
         hasBudget && !fits
-          ? 'border-[#e6dcc3] opacity-65 hover:opacity-100'
-          : fits ? 'border-[#cfe3d2]' : 'border-[#e6dcc3]'
+          ? 'border-[#dfe7ec] opacity-65 hover:opacity-100'
+          : fits ? 'border-[#cfe3d2]' : 'border-[#dfe7ec]'
       }`}
     >
       {/* Image */}
@@ -59,7 +59,7 @@ const TourCard = ({ tour, budget }) => {
         {/* Budget-fit badge */}
         {hasBudget && (
           <div className={`absolute top-4 right-4 px-2.5 py-1 rounded-full text-[10px] font-black shadow-lg ${
-            fits ? 'bg-[#2e7d4f] text-white' : 'bg-gradient-to-r from-[#d9a43e] to-[#cf9c3f] text-[#1a1a1a]'
+            fits ? 'bg-[#2e7d4f] text-white' : 'bg-gradient-to-r from-[#00a58e] to-[#009882] text-[#252a31]'
           }`}>
             {fits ? `✓ ${t('exoticTours.inBudget')}` : `+${fmt(over)}`}
           </div>
@@ -74,43 +74,43 @@ const TourCard = ({ tour, budget }) => {
 
       <div className="p-5 flex flex-col flex-1">
         {/* Temperature route */}
-        <div className="flex items-center gap-2 mb-4 p-2.5 rounded-xl bg-gradient-to-r from-[#fdf1e8] via-white to-[#eaf3f4] border border-[#efe6d2]">
+        <div className="flex items-center gap-2 mb-4 p-2.5 rounded-xl bg-gradient-to-r from-[#fdf1e8] via-white to-[#eaf3f4] border border-[#e8edf1]">
           <div className="text-center px-1 shrink-0">
             <div className="text-[18px] leading-none">{tour.from.icon}</div>
-            <div className="text-[11px] font-black text-[#1a1a1a] mt-0.5">{tour.from.city}</div>
+            <div className="text-[11px] font-black text-[#252a31] mt-0.5">{tour.from.city}</div>
             <div className="text-[10px] font-black text-[#c26d4a]">{tour.from.temp}</div>
           </div>
           <div className="flex-1 flex items-center">
-            <div className="flex-1 h-[3px] rounded-full bg-gradient-to-r from-[#c9962f] to-[#2d6a6f]" />
-            <Plane className="w-4 h-4 text-[#2f6395] mx-1 rotate-45 shrink-0" />
+            <div className="flex-1 h-[3px] rounded-full bg-gradient-to-r from-[#009882] to-[#2d6a6f]" />
+            <Plane className="w-4 h-4 text-[#0172cb] mx-1 rotate-45 shrink-0" />
           </div>
           <div className="text-center px-1 shrink-0">
             <div className="text-[18px] leading-none">{tour.to.icon}</div>
-            <div className="text-[11px] font-black text-[#1a1a1a] mt-0.5">{tour.to.city}</div>
+            <div className="text-[11px] font-black text-[#252a31] mt-0.5">{tour.to.city}</div>
             <div className="text-[10px] font-black text-[#2d6a6f]">{tour.to.temp}</div>
           </div>
         </div>
 
         {/* Meta pills */}
         <div className="flex flex-wrap items-center gap-1.5 mb-3">
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#faf6ed] text-[11px] font-bold text-[#5c5245]">
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#f5f7f9] text-[11px] font-bold text-[#4a5867]">
             <Clock className="w-3 h-3" />{tour.days} {t('exotic.days')}
           </span>
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#fff7e6] text-[11px] font-bold text-[#a45e00]">
-            <Star className="w-3 h-3 fill-[#d9a43e] text-[#d9a43e]" />{tour.rating} ({tour.reviews})
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#e6f6f3] text-[11px] font-bold text-[#007f6d]">
+            <Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" />{tour.rating} ({tour.reviews})
           </span>
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#faf6ed] text-[11px] font-bold text-[#5c5245]">
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#f5f7f9] text-[11px] font-bold text-[#4a5867]">
             <Users className="w-3 h-3" />{tour.groupSize}
           </span>
         </div>
 
         {/* Description */}
-        <p className="text-[13px] text-[#5c5245] leading-relaxed mb-3">{tour.desc}</p>
+        <p className="text-[13px] text-[#4a5867] leading-relaxed mb-3">{tour.desc}</p>
 
         {/* Highlights toggle */}
         <button
           onClick={() => setExpanded(v => !v)}
-          className="text-[12px] font-bold text-[#2f6395] hover:underline mb-2 flex items-center gap-1 self-start"
+          className="text-[12px] font-bold text-[#0172cb] hover:underline mb-2 flex items-center gap-1 self-start"
         >
           {expanded ? t('exotic.hideHighlights') : t('exotic.showHighlights')} <ArrowRight className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-90' : ''}`} />
         </button>
@@ -118,8 +118,8 @@ const TourCard = ({ tour, budget }) => {
         {expanded && (
           <ul className="mb-3 space-y-1.5">
             {tour.highlights.map((h, i) => (
-              <li key={i} className="flex items-center gap-2 text-[13px] text-[#5c5245]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#2f6395] shrink-0" />
+              <li key={i} className="flex items-center gap-2 text-[13px] text-[#4a5867]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0172cb] shrink-0" />
                 {h}
               </li>
             ))}
@@ -127,10 +127,10 @@ const TourCard = ({ tour, budget }) => {
         )}
 
         {/* Price + CTA */}
-        <div className="flex items-center justify-between gap-3 pt-3 mt-auto border-t border-[#efe6d2]">
+        <div className="flex items-center justify-between gap-3 pt-3 mt-auto border-t border-[#e8edf1]">
           <div>
-            <div className="text-[10px] text-[#93876f] font-bold uppercase tracking-wider">{t('exotic.perPerson')}</div>
-            <div className="text-[22px] font-black text-[#003580] leading-none"><Price amount={price} /></div>
+            <div className="text-[10px] text-[#697d95] font-bold uppercase tracking-wider">{t('exotic.perPerson')}</div>
+            <div className="text-[22px] font-black text-[#252a31] leading-none"><Price amount={price} /></div>
           </div>
           <button
             onClick={openTour}
@@ -175,15 +175,15 @@ const ExoticTours = () => {
     : 0;
 
   return (
-    <div className="min-h-screen bg-[#f6f1e4]">
+    <div className="min-h-screen bg-[#eef2f5]">
 
       {/* Hero */}
-      <div className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#003580] overflow-hidden">
+      <div className="relative bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#252a31] overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[200%] bg-white/10 blur-[120px] rounded-full" />
-          <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[200%] bg-[#2f6395]/30 blur-[100px] rounded-full" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[200%] bg-[#0172cb]/30 blur-[100px] rounded-full" />
         </div>
-        <div className="absolute top-10 right-[12%] w-64 h-64 rounded-full bg-[#d9a43e]/10 blur-3xl pointer-events-none animate-float" />
+        <div className="absolute top-10 right-[12%] w-64 h-64 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none animate-float" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-28 pb-20">
           <motion.div
@@ -200,7 +200,7 @@ const ExoticTours = () => {
 
             <h1 className="font-display text-[clamp(38px,10vw,72px)] font-semibold text-white leading-[0.95] tracking-[-0.03em] text-balance break-words mb-6">
               {t('exotic.title1')}<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e6c988] to-[#7fc4c9]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#61d1bf] to-[#7fc4c9]">
                 {t('exotic.title2')}
               </span>
             </h1>
@@ -229,7 +229,7 @@ const ExoticTours = () => {
         {/* Wave divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 60L1440 60L1440 20C1200 60 720 0 0 40V60Z" fill="#f6f1e4" />
+            <path d="M0 60L1440 60L1440 20C1200 60 720 0 0 40V60Z" fill="#eef2f5" />
           </svg>
         </div>
       </div>
@@ -238,25 +238,25 @@ const ExoticTours = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-10">
 
         {/* Budget finder */}
-        <div className="bg-white border border-[#e6dcc3] rounded-2xl p-5 mb-6 flex flex-col md:flex-row md:items-center gap-4 shadow-soft">
+        <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 mb-6 flex flex-col md:flex-row md:items-center gap-4 shadow-soft">
           <div className="flex items-center gap-3 shrink-0">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#2f6395] to-[#003580] flex items-center justify-center shadow-sm">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0172cb] to-[#252a31] flex items-center justify-center shadow-sm">
               <Wallet className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-[14px] font-black text-[#1a1a1a]">{t('exoticTours.budgetFinderTitle')}</p>
-              <p className="text-[12px] text-[#93876f]">{t('exoticTours.budgetFinderSub')}</p>
+              <p className="text-[14px] font-black text-[#252a31]">{t('exoticTours.budgetFinderTitle')}</p>
+              <p className="text-[12px] text-[#697d95]">{t('exoticTours.budgetFinderSub')}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#2f6395] transition flex-1 md:max-w-[240px]">
-            <span className="text-[16px] font-black text-[#5c5245]">$</span>
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus-within:border-[#0172cb] transition flex-1 md:max-w-[240px]">
+            <span className="text-[16px] font-black text-[#4a5867]">$</span>
             <input
               type="number" min="0" step="500" value={budget || ''}
               onChange={e => setBudget(Math.max(0, Number(e.target.value)))}
               placeholder={t('exoticTours.budgetPlaceholder')}
-              className="flex-1 w-full text-[15px] font-black text-[#1a1a1a] outline-none placeholder:text-[#d9c9a3] placeholder:font-medium" />
+              className="flex-1 w-full text-[15px] font-black text-[#252a31] outline-none placeholder:text-[#bac7d1] placeholder:font-medium" />
             {budget > 0 && (
-              <button onClick={() => setBudget(0)} className="text-[#93876f] hover:text-[#1a1a1a]">
+              <button onClick={() => setBudget(0)} className="text-[#697d95] hover:text-[#252a31]">
                 <X className="w-4 h-4" />
               </button>
             )}
@@ -280,14 +280,14 @@ const ExoticTours = () => {
               onClick={() => setActiveFilter(f.key)}
               className={`px-5 py-2.5 rounded-full text-[13px] font-bold transition-all border ${
                 activeFilter === f.key
-                  ? 'bg-[#003580] text-white border-[#003580] shadow-md'
-                  : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#003580] hover:text-[#003580]'
+                  ? 'bg-[#252a31] text-white border-[#252a31] shadow-md'
+                  : 'bg-white text-[#4a5867] border-[#dfe7ec] hover:border-[#252a31] hover:text-[#252a31]'
               }`}
             >
               {f.label}
             </button>
           ))}
-          <span className="ml-auto self-center text-[13px] text-[#93876f] font-medium">
+          <span className="ml-auto self-center text-[13px] text-[#697d95] font-medium">
             {visible.length} {t('exotic.toursFound')}
           </span>
         </div>
@@ -302,8 +302,8 @@ const ExoticTours = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="relative mt-20 bg-gradient-to-br from-[#002250] via-[#003580] to-[#003580] rounded-[32px] p-10 md:p-16 text-center overflow-hidden shadow-lift">
-          <div className="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-[#d9a43e]/10 blur-3xl pointer-events-none animate-float" />
+        <div className="relative mt-20 bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#252a31] rounded-[32px] p-10 md:p-16 text-center overflow-hidden shadow-lift">
+          <div className="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none animate-float" />
           <div className="relative">
             <h2 className="text-[36px] font-black text-white mb-4">
               {t('exotic.ctaTitle')}

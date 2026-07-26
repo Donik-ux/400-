@@ -14,7 +14,7 @@ import SmartImage from '../components/SmartImage';
 import { usePriceFormatter } from '../components/Price';
 
 const STATUS_META = (t) => ({
-  saved:     { cls: 'bg-[#f0f5ff] text-[#2f6395] border-[#dceaff]',  icon: BookOpen,    label: t('lists.bookings.statusSaved') },
+  saved:     { cls: 'bg-[#e8f4fd] text-[#0172cb] border-[#d6ebfb]',  icon: BookOpen,    label: t('lists.bookings.statusSaved') },
   confirmed: { cls: 'badge-ok',     icon: CheckCircle, label: t('bookings.status.confirmed') || 'Confirmed' },
   pending:   { cls: 'badge-warn',   icon: Clock,       label: t('bookings.status.pending')   || 'Pending'   },
   cancelled: { cls: 'badge-danger', icon: XCircle,     label: t('bookings.status.cancelled') || 'Cancelled' },
@@ -79,14 +79,14 @@ export default function MyBookings() {
   }, [bookings, filter, search]);
 
   return (
-    <div className="bg-[#faf6ed] min-h-screen -mt-[64px]">
+    <div className="bg-[#f5f7f9] min-h-screen -mt-[64px]">
       {/* ── Hero header ── */}
-      <section className="relative bg-gradient-to-br from-[#002250] via-[#003580] to-[#2f6395] text-white overflow-hidden pt-[100px] pb-14">
+      <section className="relative bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#0172cb] text-white overflow-hidden pt-[100px] pb-14">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #2f6395 0%, transparent 45%), radial-gradient(circle at 75% 70%, #d9a43e 0%, transparent 35%)' }} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#d9a43e]/15 blur-3xl pointer-events-none animate-float" />
+             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0172cb 0%, transparent 45%), radial-gradient(circle at 75% 70%, #00a58e 0%, transparent 35%)' }} />
+        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#00a58e]/15 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#d9a43e] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <BookOpen className="w-3.5 h-3.5" /> {t('bookings.badge') || 'Travel History'}
           </div>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-[1.05] mb-2">
@@ -104,17 +104,17 @@ export default function MyBookings() {
         {bookings.length > 0 && (
           <div className="mb-6 flex flex-col md:flex-row gap-3 md:items-center">
             <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#93876f]" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#697d95]" />
               <input
                 type="text"
                 placeholder={t('lists.bookings.searchPh')}
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full bg-white border-2 border-[#e6dcc3] focus:border-[#2f6395] rounded-xl pl-10 pr-4 py-2.5 text-[14px] font-semibold text-[#1a1a1a] placeholder:text-[#a89a7d] outline-none transition"
+                className="w-full bg-white border-2 border-[#dfe7ec] focus:border-[#0172cb] rounded-xl pl-10 pr-4 py-2.5 text-[14px] font-semibold text-[#252a31] placeholder:text-[#94a3af] outline-none transition"
               />
             </div>
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
-              <Filter className="w-4 h-4 text-[#93876f] shrink-0" />
+              <Filter className="w-4 h-4 text-[#697d95] shrink-0" />
               {[
                 { v: 'all',       l: t('lists.bookings.filterAll'),       n: counts.all       },
                 { v: 'saved',     l: t('lists.bookings.filterSaved'),     n: counts.saved     },
@@ -125,10 +125,10 @@ export default function MyBookings() {
                 <button key={v} onClick={() => setFilter(v)}
                   className={`px-3.5 py-2 rounded-xl text-[12px] font-black border whitespace-nowrap transition ${
                     filter === v
-                      ? 'bg-[#003580] text-white border-[#003580]'
-                      : 'bg-white border-[#e6dcc3] text-[#1a1a1a] hover:border-[#2f6395]'
+                      ? 'bg-[#252a31] text-white border-[#252a31]'
+                      : 'bg-white border-[#dfe7ec] text-[#252a31] hover:border-[#0172cb]'
                   }`}>
-                  {l} <span className={filter === v ? 'text-white/70' : 'text-[#93876f]'}>· {n}</span>
+                  {l} <span className={filter === v ? 'text-white/70' : 'text-[#697d95]'}>· {n}</span>
                 </button>
               ))}
             </div>
@@ -137,15 +137,15 @@ export default function MyBookings() {
 
         {/* ── Empty state ── */}
         {bookings.length === 0 && (
-          <div className="bg-white border border-[#e6dcc3] rounded-3xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#2f6395]/15 blur-3xl pointer-events-none animate-float" />
-            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#d9a43e]/10 blur-3xl pointer-events-none" />
+          <div className="bg-white border border-[#dfe7ec] rounded-3xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#0172cb]/15 blur-3xl pointer-events-none animate-float" />
+            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none" />
             <div className="relative">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#003580] to-[#2f6395] flex items-center justify-center mx-auto mb-5 -rotate-3 shadow-lift">
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#252a31] to-[#0172cb] flex items-center justify-center mx-auto mb-5 -rotate-3 shadow-lift">
                 <BookOpen className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] mb-2">{t('bookings.empty') || 'No plans saved yet'}</h2>
-              <p className="text-[14px] text-[#5c5245] font-medium mb-7 max-w-md mx-auto leading-relaxed">
+              <h2 className="text-2xl md:text-3xl font-black text-[#252a31] mb-2">{t('bookings.empty') || 'No plans saved yet'}</h2>
+              <p className="text-[14px] text-[#4a5867] font-medium mb-7 max-w-md mx-auto leading-relaxed">
                 {t('bookings.emptySub') || 'When you save a trip plan, it lands here so you can revisit, print, or share it anytime.'}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -154,7 +154,7 @@ export default function MyBookings() {
                   <Sparkles className="w-4 h-4" /> {t('lists.bookings.startStudio')}
                 </button>
                 <button onClick={() => navigate('/flights')}
-                  className="px-6 py-3.5 rounded-xl border-2 border-[#e6dcc3] hover:border-[#2f6395] hover:bg-[#f0f5ff] text-[#1a1a1a] text-[13px] font-black flex items-center justify-center gap-2 transition active:scale-95">
+                  className="px-6 py-3.5 rounded-xl border-2 border-[#dfe7ec] hover:border-[#0172cb] hover:bg-[#e8f4fd] text-[#252a31] text-[13px] font-black flex items-center justify-center gap-2 transition active:scale-95">
                   <Plane className="w-4 h-4" /> {t('lists.bookings.searchFlights')}
                 </button>
               </div>
@@ -175,7 +175,7 @@ export default function MyBookings() {
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.28, delay: i * 0.04 }}
-                  className="group bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft lift flex flex-col"
+                  className="group bg-white border border-[#dfe7ec] rounded-2xl overflow-hidden shadow-soft lift flex flex-col"
                 >
                   {/* Destination hero */}
                   <div className="relative overflow-hidden">
@@ -186,10 +186,10 @@ export default function MyBookings() {
 
                     <span className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${
                       b.type === 'flight'
-                        ? 'bg-[#2f6395] text-white'
+                        ? 'bg-[#0172cb] text-white'
                         : b.type === 'plan'
-                        ? 'bg-[#d9a43e] text-[#1a1a1a]'
-                        : 'bg-white text-[#003580]'
+                        ? 'bg-[#00a58e] text-white'
+                        : 'bg-white text-[#252a31]'
                     }`}>
                       {b.type === 'flight' ? <Plane className="w-3 h-3" /> : b.type === 'plan' ? <FileText className="w-3 h-3" /> : <Package className="w-3 h-3" />}
                       {b.type === 'plan' ? t('lists.bookings.tripPlanTag') : b.type}
@@ -201,36 +201,36 @@ export default function MyBookings() {
 
                     <div className="absolute bottom-3 left-3 right-3 text-white">
                       <div className="flex items-center gap-1 text-[11px] font-bold text-white/85 mb-0.5">
-                        <MapPin className="w-3 h-3 text-[#d9a43e]" /> {dest || t('lists.bookings.destination')}
+                        <MapPin className="w-3 h-3 text-[#00a58e]" /> {dest || t('lists.bookings.destination')}
                       </div>
                       <p className="text-[15px] font-black leading-tight line-clamp-1">{b.itemName}</p>
                     </div>
                   </div>
 
                   <div className="p-4 flex flex-col flex-1">
-                    <div className="flex items-center justify-between text-[11px] text-[#5c5245] font-bold mb-3 flex-wrap gap-x-3 gap-y-1">
+                    <div className="flex items-center justify-between text-[11px] text-[#4a5867] font-bold mb-3 flex-wrap gap-x-3 gap-y-1">
                       {b.date && (
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5 text-[#2f6395]" />
+                          <Calendar className="w-3.5 h-3.5 text-[#0172cb]" />
                           {new Date(b.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
                         </span>
                       )}
                       <span className="flex items-center gap-1">
-                        <Users className="w-3.5 h-3.5 text-[#2f6395]" />{fill(t('lists.bookings.paxValue'), { count: b.passengers })}
+                        <Users className="w-3.5 h-3.5 text-[#0172cb]" />{fill(t('lists.bookings.paxValue'), { count: b.passengers })}
                       </span>
                     </div>
 
                     {b.confirmCode && (
-                      <div className="text-[10px] font-bold text-[#93876f] uppercase tracking-widest mb-2">
+                      <div className="text-[10px] font-bold text-[#697d95] uppercase tracking-widest mb-2">
                         {t('lists.bookings.confirmation')}{' '}
-                        <span className="font-mono text-[#1a1a1a] tracking-wider">{b.confirmCode}</span>
+                        <span className="font-mono text-[#252a31] tracking-wider">{b.confirmCode}</span>
                       </div>
                     )}
 
-                    <div className="mt-auto flex items-end justify-between pt-3 border-t border-[#efe6d2]">
+                    <div className="mt-auto flex items-end justify-between pt-3 border-t border-[#e8edf1]">
                       <div>
-                        <div className="text-[10px] text-[#93876f] font-bold uppercase">{t('lists.bookings.total')}</div>
-                        <div className="text-[20px] font-black text-[#003580] leading-none">{fmt(b.total || 0)}</div>
+                        <div className="text-[10px] text-[#697d95] font-bold uppercase">{t('lists.bookings.total')}</div>
+                        <div className="text-[20px] font-black text-[#252a31] leading-none">{fmt(b.total || 0)}</div>
                       </div>
                       <button onClick={() => navigate('/trip-plan', { state: {
                           item: { id: b.itemId || b.id, name: b.itemName, destination: dest, duration: b.plan?.days?.length || 5, price: b.total, image: heroFor(dest) },
@@ -238,7 +238,7 @@ export default function MyBookings() {
                           savedPlan: b.plan || undefined,
                           startDate: b.date || undefined,
                         } })}
-                        className="px-4 py-2.5 rounded-xl bg-[#2f6395] hover:bg-[#005fa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
+                        className="px-4 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
                         {t('lists.bookings.open')} <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                       </button>
                     </div>
@@ -251,14 +251,14 @@ export default function MyBookings() {
 
         {/* No matches in filter sub-state */}
         {bookings.length > 0 && filtered.length === 0 && (
-          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-12 text-center shadow-soft">
-            <div className="w-14 h-14 rounded-2xl bg-[#f6f1e4] border border-[#e6dcc3] flex items-center justify-center mx-auto mb-4">
-              <Search className="w-7 h-7 text-[#d9c9a3]" />
+          <div className="bg-white border border-[#dfe7ec] rounded-2xl p-12 text-center shadow-soft">
+            <div className="w-14 h-14 rounded-2xl bg-[#eef2f5] border border-[#dfe7ec] flex items-center justify-center mx-auto mb-4">
+              <Search className="w-7 h-7 text-[#bac7d1]" />
             </div>
-            <p className="text-[#1a1a1a] font-black mb-1">{t('lists.bookings.noMatchTitle')}</p>
-            <p className="text-[#93876f] text-sm mb-4">{t('lists.bookings.noMatchSub')}</p>
+            <p className="text-[#252a31] font-black mb-1">{t('lists.bookings.noMatchTitle')}</p>
+            <p className="text-[#697d95] text-sm mb-4">{t('lists.bookings.noMatchSub')}</p>
             <button onClick={() => { setFilter('all'); setSearch(''); }}
-              className="px-5 py-2.5 rounded-xl bg-[#2f6395] hover:bg-[#005fa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft">
+              className="px-5 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft">
               {t('lists.bookings.clearFilters')}
             </button>
           </div>

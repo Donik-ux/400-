@@ -18,15 +18,15 @@ const BUDGET_TIERS = [
  
 const Field = ({ label, icon: Icon, children }) => (
   <div>
-    <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] block mb-1.5">{label}</label>
+    <label className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] block mb-1.5">{label}</label>
     <div className="relative">
-      <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#93876f] pointer-events-none" />
+      <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#697d95] pointer-events-none" />
       {children}
     </div>
   </div>
 );
 
-const inputCls = "w-full bg-white border border-[#e6dcc3] rounded-xl pl-10 pr-4 py-3 text-[14px] text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#2f6395] focus:ring-4 focus:ring-[#2f6395]/10 transition-premium";
+const inputCls = "w-full bg-white border border-[#dfe7ec] rounded-xl pl-10 pr-4 py-3 text-[14px] text-[#252a31] placeholder:text-[#bac7d1] focus:outline-none focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 transition-premium";
 
 /* ── Destination Preview Card ─────────────────────────────────────────────── */
 const DestPreview = ({ destination }) => {
@@ -36,7 +36,7 @@ const DestPreview = ({ destination }) => {
   const hero = entry.hero;
 
   return (
-    <div className="mt-2 rounded-xl overflow-hidden border border-[#e6dcc3] shadow-soft page-fade">
+    <div className="mt-2 rounded-xl overflow-hidden border border-[#dfe7ec] shadow-soft page-fade">
       {/* Mini hero */}
       <div className="relative h-20 w-full">
         <SmartImage src={hero} alt={destination} wrapperClassName="absolute inset-0" />
@@ -46,7 +46,7 @@ const DestPreview = ({ destination }) => {
           <div>
             <p className="text-white font-black text-[14px] leading-tight">{entry.country}</p>
             {entry.visa ? (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#cf9c3f]/95 text-[#5c3d0e] rounded-full px-2 py-0.5 mt-0.5">
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#009882]/95 text-[#5c3d0e] rounded-full px-2 py-0.5 mt-0.5">
                 <AlertTriangle className="w-2.5 h-2.5" /> {t('plannerPage.form.visaRequiredBadge')}
               </span>
             ) : (
@@ -76,11 +76,11 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-white border border-[#e6dcc3] rounded-2xl p-6 md:p-8 shadow-lift"
+      className="bg-white border border-[#dfe7ec] rounded-2xl p-6 md:p-8 shadow-lift"
     >
       {/* ── Route: From → To ── */}
       <div className="mb-5">
-        <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] block mb-2">{t('plannerPage.form.route')}</label>
+        <label className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] block mb-2">{t('plannerPage.form.route')}</label>
         <div className="flex items-center gap-2">
           <CityAutocomplete
             className="flex-1"
@@ -91,9 +91,9 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
             onChange={(val) => onChange({ ...formData, fromCity: val })}
           />
           <div className="flex flex-col items-center gap-0.5 px-1 shrink-0">
-            <div className="w-5 h-px bg-[#d9c9a3]" />
-            <span className="text-[11px] text-[#93876f] font-black">✈</span>
-            <div className="w-5 h-px bg-[#d9c9a3]" />
+            <div className="w-5 h-px bg-[#bac7d1]" />
+            <span className="text-[11px] text-[#697d95] font-black">✈</span>
+            <div className="w-5 h-px bg-[#bac7d1]" />
           </div>
           <CityAutocomplete
             className="flex-1"
@@ -110,8 +110,8 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
 
         {/* Route badge */}
         {formData.fromCity && formData.destination && (
-          <div className="mt-2 px-3 py-2 bg-[#f0f5ff] border border-[#2f6395]/20 rounded-xl flex items-center gap-2">
-            <span className="text-[12px] text-[#2f6395] font-bold">
+          <div className="mt-2 px-3 py-2 bg-[#e8f4fd] border border-[#0172cb]/20 rounded-xl flex items-center gap-2">
+            <span className="text-[12px] text-[#0172cb] font-bold">
               ✈️ {formData.fromCity} → {formData.destination}
             </span>
           </div>
@@ -121,7 +121,7 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
       {/* ── Visa Warning (detailed) ── */}
       {visaInfo && (
         <div className="mb-5 flex items-start gap-3 p-4 note-warn rounded-xl">
-          <AlertTriangle className="w-5 h-5 text-[#c9962f] shrink-0 mt-0.5" />
+          <AlertTriangle className="w-5 h-5 text-[#009882] shrink-0 mt-0.5" />
           <div>
             <p className="text-[13px] font-black text-warn mb-1">
               ⚠️ {t('plannerPage.form.visaTitle')} {visaInfo.country}
@@ -161,7 +161,7 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
 
         {/* Budget tiers + input — full width */}
         <div className="sm:col-span-2">
-          <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] block mb-2">
+          <label className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] block mb-2">
             {t('plannerPage.form.budgetLevel')}
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-3">
@@ -174,12 +174,12 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
                   onClick={() => applyTier(tier)}
                   className={`flex flex-col items-center gap-1 px-2 py-3 rounded-xl border text-center transition-premium ${
                     active
-                      ? 'bg-[#003580] border-[#003580] text-white shadow-float -translate-y-0.5'
-                      : 'bg-white border-[#e6dcc3] text-[#5c5245] hover:border-[#2f6395] hover:text-[#003580] hover:-translate-y-0.5 hover:shadow-soft'
+                      ? 'bg-[#252a31] border-[#252a31] text-white shadow-float -translate-y-0.5'
+                      : 'bg-white border-[#dfe7ec] text-[#4a5867] hover:border-[#0172cb] hover:text-[#252a31] hover:-translate-y-0.5 hover:shadow-soft'
                   }`}
                 >
                   <span className="text-[13px] font-black leading-tight">{t(`plannerPage.form.tiers.${tier.labelKey}`)}</span>
-                  <span className={`text-[10px] leading-tight ${active ? 'text-white/70' : 'text-[#93876f]'}`}>
+                  <span className={`text-[10px] leading-tight ${active ? 'text-white/70' : 'text-[#697d95]'}`}>
                     ~${tier.budget.toLocaleString()}
                   </span>
                 </button>
@@ -199,7 +199,7 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
             />
           </Field>
           {activeTier && (
-            <p className="text-[11px] text-[#2f6395] mt-1 font-medium">
+            <p className="text-[11px] text-[#0172cb] mt-1 font-medium">
               {t(`plannerPage.form.tiers.${activeTier.labelKey}`)} · {t(`plannerPage.form.tiers.${activeTier.descKey}`)}
             </p>
           )}
@@ -214,7 +214,7 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
         >
           {loading ? (
             <>
-              <span className="w-4 h-4 border-2 border-[#1a1a1a]/25 border-t-[#1a1a1a] rounded-full animate-spin" />
+              <span className="w-4 h-4 border-2 border-[#252a31]/25 border-t-[#252a31] rounded-full animate-spin" />
               {t('planner.form.generating')}
             </>
           ) : (

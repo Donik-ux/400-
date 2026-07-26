@@ -30,13 +30,13 @@ export default function BudgetAdvisory({ balance, className = '' }) {
   ].map(s => ({ ...s, months: Math.max(1, Math.ceil(gap / s.perMonth)) }));
 
   return (
-    <div className={`relative overflow-hidden rounded-2xl border shadow-soft ${isTiny ? 'border-[#eccfc7] bg-gradient-to-br from-[#faeae6] to-white' : 'border-[#ffe6a8] bg-gradient-to-br from-[#fff7e6] to-white'} ${className}`}>
-      <div className={`absolute -right-12 -top-12 w-44 h-44 rounded-full blur-3xl pointer-events-none ${isTiny ? 'bg-[#d98a75]/40' : 'bg-[#d9a43e]/30'}`} />
-      <div className={`absolute left-0 top-0 bottom-0 w-1 ${isTiny ? 'bg-[#b3402e]' : 'bg-gradient-to-b from-[#d9a43e] to-[#c08c33]'}`} />
+    <div className={`relative overflow-hidden rounded-2xl border shadow-soft ${isTiny ? 'border-[#eccfc7] bg-gradient-to-br from-[#faeae6] to-white' : 'border-[#ffe6a8] bg-gradient-to-br from-[#e6f6f3] to-white'} ${className}`}>
+      <div className={`absolute -right-12 -top-12 w-44 h-44 rounded-full blur-3xl pointer-events-none ${isTiny ? 'bg-[#d98a75]/40' : 'bg-[#00a58e]/30'}`} />
+      <div className={`absolute left-0 top-0 bottom-0 w-1 ${isTiny ? 'bg-[#b3402e]' : 'bg-gradient-to-b from-[#00a58e] to-[#008f77]'}`} />
 
       <div className="relative p-4 md:p-5">
         <div className="flex items-start gap-3 mb-3">
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${isTiny ? 'bg-[#b3402e] text-white' : 'bg-gradient-to-br from-[#d9a43e] to-[#c08c33] text-[#1a1a1a]'}`}>
+          <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${isTiny ? 'bg-[#b3402e] text-white' : 'bg-gradient-to-br from-[#00a58e] to-[#008f77] text-[#252a31]'}`}>
             {isTiny ? <AlertTriangle className="w-6 h-6" /> : <PiggyBank className="w-6 h-6" />}
           </div>
           <div className="min-w-0">
@@ -45,23 +45,23 @@ export default function BudgetAdvisory({ balance, className = '' }) {
                 ? `$${b} — ${t('ui.budget.headlineTiny')}`
                 : `$${b} — ${t('ui.budget.headlineTight')}`}
             </p>
-            <p className={`text-[12px] md:text-[13px] font-semibold mt-1 leading-snug ${isTiny ? 'text-[#8a3526]' : 'text-[#a45e00]'}`}>
+            <p className={`text-[12px] md:text-[13px] font-semibold mt-1 leading-snug ${isTiny ? 'text-[#8a3526]' : 'text-[#007f6d]'}`}>
               {t('ui.budget.advice')}
             </p>
           </div>
         </div>
 
         {/* Savings calculator */}
-        <div className={`rounded-xl border backdrop-blur-sm ${isTiny ? 'border-[#f3ded8] bg-white/90' : 'border-[#d9a43e]/30 bg-white/85'} p-3 md:p-4 shadow-soft`}>
-          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2.5">
+        <div className={`rounded-xl border backdrop-blur-sm ${isTiny ? 'border-[#f3ded8] bg-white/90' : 'border-[#00a58e]/30 bg-white/85'} p-3 md:p-4 shadow-soft`}>
+          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-2.5">
             <TrendingUp className="w-3 h-3 text-[#2e7d4f]" />
             {`${t('ui.budget.saveHeader')} $${target}`}
           </div>
           <div className="grid grid-cols-3 gap-2">
             {scenarios.map(s => (
-              <div key={s.perMonth} className="rounded-lg bg-[#f6f1e4] border border-[#e6dcc3] p-2.5 text-center transition-premium hover:border-[#003580]/20 hover:bg-white hover:shadow-soft">
-                <div className="text-[10px] text-[#93876f] font-bold uppercase tracking-wider">{t('ui.budget.putAside')}</div>
-                <div className="text-[13px] font-black text-[#003580] leading-tight my-0.5">{s.label}</div>
+              <div key={s.perMonth} className="rounded-lg bg-[#eef2f5] border border-[#dfe7ec] p-2.5 text-center transition-premium hover:border-[#252a31]/20 hover:bg-white hover:shadow-soft">
+                <div className="text-[10px] text-[#697d95] font-bold uppercase tracking-wider">{t('ui.budget.putAside')}</div>
+                <div className="text-[13px] font-black text-[#252a31] leading-tight my-0.5">{s.label}</div>
                 <div className="flex items-center justify-center gap-1 text-[11px] font-black text-[#2e7d4f] mt-1">
                   <Calendar className="w-3 h-3" />
                   {s.months} {t('ui.budget.monthsShort')}

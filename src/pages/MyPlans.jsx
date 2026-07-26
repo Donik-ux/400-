@@ -50,14 +50,14 @@ export default function MyPlans() {
   };
 
   return (
-    <div className="bg-[#faf6ed] min-h-screen -mt-[64px]">
+    <div className="bg-[#f5f7f9] min-h-screen -mt-[64px]">
       {/* ── Hero header ── */}
-      <section className="relative bg-gradient-to-br from-[#002250] via-[#002a63] to-[#003580] text-white overflow-hidden pt-[100px] pb-14">
+      <section className="relative bg-gradient-to-br from-[#1c2127] via-[#002a63] to-[#252a31] text-white overflow-hidden pt-[100px] pb-14">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #2f6395 0%, transparent 45%), radial-gradient(circle at 75% 70%, #cf9c3f 0%, transparent 35%)' }} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#cf9c3f]/15 blur-3xl pointer-events-none animate-float" />
+             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0172cb 0%, transparent 45%), radial-gradient(circle at 75% 70%, #009882 0%, transparent 35%)' }} />
+        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#009882]/15 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#cf9c3f] text-[#002250] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#009882] text-[#1c2127] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <Sparkles className="w-3.5 h-3.5" /> {t('lists.plans.badge')}
           </div>
           <div className="flex items-end justify-between gap-4 flex-wrap">
@@ -80,15 +80,15 @@ export default function MyPlans() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         {/* ── Empty state ── */}
         {plans.length === 0 && (
-          <div className="bg-white border border-[#e6dcc3] rounded-3xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#cf9c3f]/20 blur-3xl pointer-events-none animate-float" />
-            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#2f6395]/10 blur-3xl pointer-events-none" />
+          <div className="bg-white border border-[#dfe7ec] rounded-3xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#009882]/20 blur-3xl pointer-events-none animate-float" />
+            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#0172cb]/10 blur-3xl pointer-events-none" />
             <div className="relative">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#cf9c3f] to-[#b58427] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-lift">
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#009882] to-[#007f6d] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-lift">
                 <Map className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a] mb-2">{t('lists.plans.emptyTitle')}</h2>
-              <p className="text-[14px] text-[#5c5245] font-medium mb-7 max-w-md mx-auto leading-relaxed">
+              <h2 className="text-2xl md:text-3xl font-black text-[#252a31] mb-2">{t('lists.plans.emptyTitle')}</h2>
+              <p className="text-[14px] text-[#4a5867] font-medium mb-7 max-w-md mx-auto leading-relaxed">
                 {t('lists.plans.emptySubA')} <strong>“{t('lists.plans.emptySubBtn')}”</strong>{t('lists.plans.emptySubB')}
               </p>
               <button onClick={() => navigate('/planner')}
@@ -110,14 +110,14 @@ export default function MyPlans() {
               const isAi   = plan.meta?.source === 'grok';
               return (
                 <div key={plan.id}
-                  className="group bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft lift flex flex-col">
+                  className="group bg-white border border-[#dfe7ec] rounded-2xl overflow-hidden shadow-soft lift flex flex-col">
                   <div className="relative overflow-hidden">
                     <div className="transition-transform duration-500 ease-out group-hover:scale-[1.05]">
                       <SmartImage src={heroFor(dest)} alt={dest} aspect="aspect-[16/10]" />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
                     <span className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${
-                      isAi ? 'bg-[#cf9c3f] text-[#002250]' : 'bg-[#2f6395] text-white'
+                      isAi ? 'bg-[#009882] text-[#1c2127]' : 'bg-[#0172cb] text-white'
                     }`}>
                       <Sparkles className="w-3 h-3" /> {isAi ? t('lists.plans.aiPlanTag') : t('lists.plans.planTag')}
                     </span>
@@ -132,31 +132,31 @@ export default function MyPlans() {
                   </div>
 
                   <div className="p-4 flex flex-col flex-1">
-                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] font-bold text-[#5c5245] mb-3">
-                      <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#2f6395]" /> {fill(t('lists.plans.daysValue'), { days })}</span>
-                      {budget > 0 && <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-[#2f6395]" /> {fill(t('lists.plans.budgetValue'), { budget: fmt(budget) })}</span>}
-                      <span className="flex items-center gap-1 text-[#93876f]"><Clock className="w-3 h-3" /> {fmtDate(plan.savedAt)}</span>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] font-bold text-[#4a5867] mb-3">
+                      <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#0172cb]" /> {fill(t('lists.plans.daysValue'), { days })}</span>
+                      {budget > 0 && <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-[#0172cb]" /> {fill(t('lists.plans.budgetValue'), { budget: fmt(budget) })}</span>}
+                      <span className="flex items-center gap-1 text-[#697d95]"><Clock className="w-3 h-3" /> {fmtDate(plan.savedAt)}</span>
                     </div>
 
-                    <div className="mt-auto flex items-end justify-between pt-3 border-t border-[#efe6d2]">
+                    <div className="mt-auto flex items-end justify-between pt-3 border-t border-[#e8edf1]">
                       <div>
                         {total != null ? (
                           <>
-                            <div className="text-[10px] text-[#93876f] font-bold uppercase">{t('lists.plans.planCost')}</div>
-                            <div className="text-[20px] font-black text-[#003580] leading-none">{fmt(total)}</div>
+                            <div className="text-[10px] text-[#697d95] font-bold uppercase">{t('lists.plans.planCost')}</div>
+                            <div className="text-[20px] font-black text-[#252a31] leading-none">{fmt(total)}</div>
                           </>
                         ) : (
-                          <div className="text-[12px] text-[#93876f] font-bold">{t('lists.plans.openToView')}</div>
+                          <div className="text-[12px] text-[#697d95] font-bold">{t('lists.plans.openToView')}</div>
                         )}
                       </div>
                       <div className="flex items-center gap-2">
                         <button onClick={() => downloadPlanPdf(plan)}
-                          className="px-3 py-2.5 rounded-xl border-2 border-[#2f6395] text-[#2f6395] hover:bg-[#f0f5ff] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95"
+                          className="px-3 py-2.5 rounded-xl border-2 border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95"
                           title={t('lists.plans.downloadPdf') || 'Download PDF'}>
                           <Download className="w-3.5 h-3.5" /> PDF
                         </button>
                         <button onClick={() => openPlan(plan)}
-                          className="px-4 py-2.5 rounded-xl bg-[#2f6395] hover:bg-[#005fa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
+                          className="px-4 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
                           {t('lists.plans.open')} <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                         </button>
                       </div>

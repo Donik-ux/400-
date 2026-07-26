@@ -41,22 +41,22 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf6ed] grid lg:grid-cols-2">
+    <div className="min-h-screen bg-[#f5f7f9] grid lg:grid-cols-2">
 
       {/* Brand panel */}
-      <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#003580] via-[#00306f] to-[#002250] p-12 text-white">
+      <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#252a31] via-[#00306f] to-[#1c2127] p-12 text-white">
         {/* Floating accents */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="animate-float absolute -top-10 -right-10 w-72 h-72 rounded-full bg-[#2f6395]/30 blur-3xl" />
-          <div className="animate-float absolute bottom-0 -left-16 w-80 h-80 rounded-full bg-[#d9a43e]/15 blur-3xl" style={{ animationDelay: '1.5s' }} />
+          <div className="animate-float absolute -top-10 -right-10 w-72 h-72 rounded-full bg-[#0172cb]/30 blur-3xl" />
+          <div className="animate-float absolute bottom-0 -left-16 w-80 h-80 rounded-full bg-[#00a58e]/15 blur-3xl" style={{ animationDelay: '1.5s' }} />
           <Plane className="animate-float absolute top-24 right-24 w-10 h-10 text-white/15" style={{ animationDelay: '0.6s' }} />
           <Globe2 className="animate-float absolute bottom-28 left-24 w-12 h-12 text-white/10" style={{ animationDelay: '2.2s' }} />
         </div>
 
         <div className="relative z-10 flex items-center gap-2.5">
-          <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#e6c988] via-[#cf9c3f] to-[#b58427] flex items-center justify-center shadow-[0_4px_16px_rgba(207, 156, 63,0.5)] ring-1 ring-white/30">
+          <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#61d1bf] via-[#009882] to-[#007f6d] flex items-center justify-center shadow-[0_4px_16px_rgba(0, 152, 130,0.5)] ring-1 ring-white/30">
             <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
-            <Compass className="relative w-5 h-5 text-[#002250]" strokeWidth={2.5} />
+            <Compass className="relative w-5 h-5 text-[#1c2127]" strokeWidth={2.5} />
           </div>
           <span className="text-xl font-black tracking-tight">MAFTRAVEL</span>
         </div>
@@ -69,8 +69,8 @@ export default function Login() {
             {t('auth.login.heroSub')}
           </p>
           <div className="flex flex-col gap-3 text-sm text-white/80">
-            <div className="flex items-center gap-3"><ShieldCheck className="w-4 h-4 text-[#d9a43e] shrink-0" /> {t('auth.login.trustSecure')}</div>
-            <div className="flex items-center gap-3"><Globe2 className="w-4 h-4 text-[#d9a43e] shrink-0" /> {t('auth.login.trustTravelers')}</div>
+            <div className="flex items-center gap-3"><ShieldCheck className="w-4 h-4 text-[#00a58e] shrink-0" /> {t('auth.login.trustSecure')}</div>
+            <div className="flex items-center gap-3"><Globe2 className="w-4 h-4 text-[#00a58e] shrink-0" /> {t('auth.login.trustTravelers')}</div>
           </div>
         </div>
 
@@ -83,16 +83,16 @@ export default function Login() {
 
         {/* Logo */}
         <div className="flex items-center gap-2 justify-center mb-8 lg:hidden">
-          <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#e6c988] via-[#cf9c3f] to-[#b58427] flex items-center justify-center shadow-[0_4px_16px_rgba(207, 156, 63,0.5)] ring-1 ring-white/30">
+          <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#61d1bf] via-[#009882] to-[#007f6d] flex items-center justify-center shadow-[0_4px_16px_rgba(0, 152, 130,0.5)] ring-1 ring-white/30">
             <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
-            <Compass className="relative w-[18px] h-[18px] text-[#002250]" strokeWidth={2.5} />
+            <Compass className="relative w-[18px] h-[18px] text-[#1c2127]" strokeWidth={2.5} />
           </div>
-          <span className="text-xl font-black text-[#003580]">MAFTRAVEL</span>
+          <span className="text-xl font-black text-[#252a31]">MAFTRAVEL</span>
         </div>
 
-        <div className="corner-gilt bg-white border border-[#e6dcc3] rounded-2xl p-7 shadow-vitrine">
-          <h1 className="font-display text-engraved text-[26px] font-bold text-[#1a1a1a] mb-1">{t('auth.login.title')}</h1>
-          <p className="text-[#93876f] text-sm mb-6">{t('auth.login.sub')}</p>
+        <div className="corner-gilt bg-white border border-[#dfe7ec] rounded-2xl p-7 shadow-vitrine">
+          <h1 className="font-display text-engraved text-[26px] font-bold text-[#252a31] mb-1">{t('auth.login.title')}</h1>
+          <p className="text-[#697d95] text-sm mb-6">{t('auth.login.sub')}</p>
 
           {error && (
             <div className="flex items-center gap-2 note-danger rounded-xl px-4 py-3 mb-5">
@@ -103,40 +103,40 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] mb-1.5 block">
                 {t('auth.login.email')}
               </label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#d9c9a3]" />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#bac7d1]" />
                 <input type="email" required value={form.email}
                   onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                   placeholder={t('auth.login.emailPlaceholder')}
-                  className="w-full bg-white border-[1.5px] border-[#e6dcc3] rounded-xl pl-10 pr-4 py-3 text-sm text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#2f6395] focus:ring-2 focus:ring-[#2f6395]/10 transition-all"
+                  className="w-full bg-white border-[1.5px] border-[#dfe7ec] rounded-xl pl-10 pr-4 py-3 text-sm text-[#252a31] placeholder:text-[#bac7d1] focus:outline-none focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/10 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1.5 block">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] mb-1.5 block">
                 {t('auth.login.password')}
               </label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#d9c9a3]" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#bac7d1]" />
                 <input type={show ? 'text' : 'password'} required value={form.password}
                   onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
                   placeholder={t('auth.login.passwordPlaceholder')}
-                  className="w-full bg-white border-[1.5px] border-[#e6dcc3] rounded-xl pl-10 pr-10 py-3 text-sm text-[#1a1a1a] placeholder:text-[#d9c9a3] focus:outline-none focus:border-[#2f6395] focus:ring-2 focus:ring-[#2f6395]/10 transition-all"
+                  className="w-full bg-white border-[1.5px] border-[#dfe7ec] rounded-xl pl-10 pr-10 py-3 text-sm text-[#252a31] placeholder:text-[#bac7d1] focus:outline-none focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/10 transition-all"
                 />
                 <button type="button" onClick={() => setShow(v => !v)}
                   aria-label={show ? t('auth.login.hidePassword') : t('auth.login.showPassword')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#d9c9a3] hover:text-[#5c5245] transition-all">
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#bac7d1] hover:text-[#4a5867] transition-all">
                   {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
             <button type="submit" disabled={loading}
-              className="w-full py-3 rounded-xl bg-[#2f6395] text-white text-[14px] font-bold hover:bg-[#005fa3] transition-premium disabled:opacity-50 disabled:cursor-not-allowed mt-1 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(47, 99, 149,0.3)]">
+              className="w-full py-3 rounded-xl bg-[#0172cb] text-white text-[14px] font-bold hover:bg-[#015aa3] transition-premium disabled:opacity-50 disabled:cursor-not-allowed mt-1 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(1, 114, 203,0.3)]">
               {loading ? (
                 <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('auth.login.submitting')}</>
               ) : (
@@ -145,14 +145,14 @@ export default function Login() {
             </button>
           </form>
 
-          <p className="text-center text-[#93876f] text-sm mt-5">
+          <p className="text-center text-[#697d95] text-sm mt-5">
             {t('auth.login.noAccount')}{' '}
-            <Link to="/register" className="text-[#2f6395] hover:text-[#003580] font-bold transition-all">{t('auth.login.create')}</Link>
+            <Link to="/register" className="text-[#0172cb] hover:text-[#252a31] font-bold transition-all">{t('auth.login.create')}</Link>
           </p>
 
           <button type="button" onClick={handleGuest}
-            className="w-full mt-3 py-3 rounded-xl border-[1.5px] border-[#e6dcc3] bg-white text-[#1a1a1a] text-[14px] font-bold hover:border-[#2f6395]/40 hover:bg-[#f6f1e4] transition-premium flex items-center justify-center gap-2">
-            <UserCheck className="w-4 h-4 text-[#2f6395]" />
+            className="w-full mt-3 py-3 rounded-xl border-[1.5px] border-[#dfe7ec] bg-white text-[#252a31] text-[14px] font-bold hover:border-[#0172cb]/40 hover:bg-[#eef2f5] transition-premium flex items-center justify-center gap-2">
+            <UserCheck className="w-4 h-4 text-[#0172cb]" />
             {t('auth.login.guest')}
           </button>
         </div>

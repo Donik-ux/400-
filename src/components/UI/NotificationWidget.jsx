@@ -94,16 +94,16 @@ export default function NotificationWidget() {
       {/* Permission Banner */}
       {showBanner && (
         <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-[200] w-[calc(100%-24px)] max-w-sm animate-slide-up">
-          <div className="bg-[#003580] text-white rounded-2xl px-3.5 py-3 sm:p-4 shadow-2xl flex items-center sm:items-start gap-3 border border-[#cf9c3f]/25">
+          <div className="bg-[#252a31] text-white rounded-2xl px-3.5 py-3 sm:p-4 shadow-2xl flex items-center sm:items-start gap-3 border border-[#009882]/25">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-              <BellRing className="w-4 h-4 text-[#e6c988]" />
+              <BellRing className="w-4 h-4 text-[#61d1bf]" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[13px] sm:text-sm font-bold leading-snug">{t('ui.notify.title')}</p>
               <p className="hidden sm:block text-white/60 text-xs">{t('ui.notify.body')}</p>
               <div className="flex gap-2 mt-2 sm:mt-3">
                 <button onClick={requestPermission}
-                  className="px-3.5 py-1.5 rounded-lg bg-white text-[#003580] text-[11px] sm:text-xs font-black uppercase tracking-widest hover:bg-white/90 transition-all">
+                  className="px-3.5 py-1.5 rounded-lg bg-white text-[#252a31] text-[11px] sm:text-xs font-black uppercase tracking-widest hover:bg-white/90 transition-all">
                   {t('ui.notify.allow')}
                 </button>
                 <button onClick={deny}
@@ -122,16 +122,16 @@ export default function NotificationWidget() {
       {/* Deal Toast */}
       {toast && (
         <div className="fixed top-6 right-4 left-4 sm:left-auto z-[200] w-auto sm:w-80 animate-slide-in-right">
-          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-4 shadow-2xl flex items-start gap-3">
+          <div className="bg-white border border-[#dfe7ec] rounded-2xl p-4 shadow-2xl flex items-start gap-3">
             <div className="text-2xl shrink-0">{toast.icon}</div>
             <div className="flex-1">
-              <p className="text-sm font-black text-[#1a1a1a] mb-0.5">{toast.title}</p>
-              <p className="text-xs text-[#5c5245]">{toast.body}</p>
-              <span className="inline-block mt-2 text-[9px] font-black px-2 py-0.5 rounded-full bg-[#2f6395]/10 text-[#2f6395] uppercase tracking-widest">
+              <p className="text-sm font-black text-[#252a31] mb-0.5">{toast.title}</p>
+              <p className="text-xs text-[#4a5867]">{toast.body}</p>
+              <span className="inline-block mt-2 text-[9px] font-black px-2 py-0.5 rounded-full bg-[#0172cb]/10 text-[#0172cb] uppercase tracking-widest">
                 {toast.tag}
               </span>
             </div>
-            <button onClick={() => setToast(null)} className="text-[#d9c9a3] hover:text-[#5c5245] mt-0.5">
+            <button onClick={() => setToast(null)} className="text-[#bac7d1] hover:text-[#4a5867] mt-0.5">
               <X className="w-4 h-4" />
             </button>
           </div>

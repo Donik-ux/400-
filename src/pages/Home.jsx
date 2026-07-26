@@ -240,7 +240,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf6ed] -mt-[64px]">
+    <div className="min-h-screen bg-[#f5f7f9] -mt-[64px]">
 
       {/* ─── HERO + SEARCH (Editorial luxe) ───────────────────── */}
       <section ref={heroRef} onMouseMove={onHeroMove} className="relative aurora-bg pt-[100px] pb-32 md:pb-40 overflow-hidden">
@@ -251,14 +251,14 @@ const Home = () => {
         <div className="pattern-lux" />
         <GoldDust className="absolute inset-0" />
         <div className="absolute inset-0 sheen-top pointer-events-none" />
-        <div className="absolute -left-32 top-10 w-96 h-96 rounded-full bg-[#2f6395]/30 blur-3xl pointer-events-none parallax-layer" style={{ '--depth': 26 }} />
-        <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#d9a43e]/15 blur-3xl pointer-events-none parallax-layer" style={{ '--depth': 18 }} />
+        <div className="absolute -left-32 top-10 w-96 h-96 rounded-full bg-[#0172cb]/30 blur-3xl pointer-events-none parallax-layer" style={{ '--depth': 26 }} />
+        <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#00a58e]/15 blur-3xl pointer-events-none parallax-layer" style={{ '--depth': 18 }} />
 
         {/* 3D point globe — the world drawn in gold + ice-blue dots, live flight
             arcs pulsing between MAFTRAVEL destinations */}
         <div className="hidden lg:block absolute right-[1%] xl:right-[4%] top-[54px] w-[460px] h-[460px] parallax-layer" style={{ '--depth': 34 }}>
-          <div className="absolute inset-10 rounded-full bg-[#2f6395]/25 blur-3xl" />
-          <div className="absolute inset-16 rounded-full bg-[#d9a43e]/10 blur-3xl" />
+          <div className="absolute inset-10 rounded-full bg-[#0172cb]/25 blur-3xl" />
+          <div className="absolute inset-16 rounded-full bg-[#00a58e]/10 blur-3xl" />
           <GlobePoints className="absolute inset-0" />
         </div>
 
@@ -269,7 +269,7 @@ const Home = () => {
             transition={{ duration: 0.5, ease: 'easeOut' }}
             className="text-white max-w-3xl">
             <div className="badge-editorial px-4 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.16em] mb-5">
-              <Sparkles className="w-3.5 h-3.5 text-[#e6c988]" /> {t('homePage.hero.badge')}
+              <Sparkles className="w-3.5 h-3.5 text-[#61d1bf]" /> {t('homePage.hero.badge')}
             </div>
             <h1 className="font-display text-[clamp(40px,6.6vw,84px)] font-semibold tracking-[-0.045em] leading-[0.95] text-balance break-words mb-5 [text-shadow:0_2px_30px_rgba(0,0,0,0.30)]">
               {t('homePage.hero.titleLead')} <span className="italic font-medium text-gradient-gold gold-animate">{t('homePage.hero.titleHighlight')}</span>,<br className="hidden md:block" /> {t('homePage.hero.titleTail')}
@@ -287,7 +287,7 @@ const Home = () => {
           transition={{ duration: 0.45, delay: 0.12, ease: 'easeOut' }}
           className="relative max-w-6xl mx-auto px-4 md:px-8 -mb-24 md:-mb-28">
           {/* ambient gold glow behind the card */}
-          <div className="absolute inset-x-8 md:inset-x-12 -top-6 bottom-0 bg-gradient-to-b from-[#d9a43e]/35 via-[#d9a43e]/12 to-transparent rounded-[28px] blur-2xl pointer-events-none" aria-hidden="true" />
+          <div className="absolute inset-x-8 md:inset-x-12 -top-6 bottom-0 bg-gradient-to-b from-[#00a58e]/35 via-[#00a58e]/12 to-transparent rounded-[28px] blur-2xl pointer-events-none" aria-hidden="true" />
           <div className="frame-lux relative bg-white rounded-2xl shadow-vitrine">
             <div className="flex items-center gap-1 px-2 pt-2">
               <div className="flex items-center gap-0.5 sm:gap-1 overflow-x-auto min-w-0">
@@ -297,14 +297,14 @@ const Home = () => {
                 {/* Antarctica spotlight — sits right next to AI Trip, label always
                     visible (mobile included) so nobody has to scroll to find it */}
                 <button type="button" onClick={() => navigate('/antarctica')}
-                  className="shrink-0 flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-4 py-2.5 rounded-t-xl text-[12px] sm:text-[13px] font-black whitespace-nowrap transition active:scale-95 text-[#2f6395] bg-[#eaf6fb]/70 hover:bg-[#eaf6fb] hover:text-[#003580]">
+                  className="shrink-0 flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-4 py-2.5 rounded-t-xl text-[12px] sm:text-[13px] font-black whitespace-nowrap transition active:scale-95 text-[#0172cb] bg-[#eaf6fb]/70 hover:bg-[#eaf6fb] hover:text-[#252a31]">
                   <Snowflake className="w-4 h-4 text-[#4aa3c0]" />
                   Antarctica
                 </button>
               </div>
               {/* Kept outside the scroll area so it's always reachable, not scrolled off on mobile */}
               <button type="button" onClick={() => setServicesOpen(true)}
-                className="ml-auto shrink-0 flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-t-xl text-[13px] font-black whitespace-nowrap transition text-[#5c5245] hover:bg-[#f0f5ff] hover:text-[#2f6395]">
+                className="ml-auto shrink-0 flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-t-xl text-[13px] font-black whitespace-nowrap transition text-[#4a5867] hover:bg-[#e8f4fd] hover:text-[#0172cb]">
                 <LayoutGrid className="w-4 h-4" />
                 <span className="hidden sm:inline">{t('homePage.tabs.services')}</span>
               </button>
@@ -362,7 +362,7 @@ const Home = () => {
                     onChange={setFlightFrom}
                   />
                   <button type="button" onClick={() => { const tmp = flightFrom; setFlightFrom(flightTo); setFlightTo(tmp); }}
-                    className="md:col-span-1 flex items-center justify-center self-center mx-auto md:mx-0 -my-1 md:my-0 w-9 h-9 rounded-full bg-white border-2 border-[#2f6395] text-[#2f6395] hover:bg-[#f0f5ff] hover:rotate-180 active:scale-95 transition-all duration-300 shadow-soft"
+                    className="md:col-span-1 flex items-center justify-center self-center mx-auto md:mx-0 -my-1 md:my-0 w-9 h-9 rounded-full bg-white border-2 border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] hover:rotate-180 active:scale-95 transition-all duration-300 shadow-soft"
                     aria-label="Swap from and to">
                     <ArrowRightLeft className="w-4 h-4" />
                   </button>
@@ -439,7 +439,7 @@ const Home = () => {
                   {/* Use my current location → fills the From field */}
                   <div className="px-1">
                     <button type="button" onClick={useMyLocationForAi} disabled={locatingFrom}
-                      className="inline-flex items-center gap-1.5 text-[12px] font-black text-[#2f6395] hover:text-[#003580] disabled:opacity-60 transition active:scale-95">
+                      className="inline-flex items-center gap-1.5 text-[12px] font-black text-[#0172cb] hover:text-[#252a31] disabled:opacity-60 transition active:scale-95">
                       {locatingFrom ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Navigation className="w-3.5 h-3.5" />}
                       {locatingFrom ? t('tripRec.locating') : t('tripRec.useLocation')}
                     </button>
@@ -466,12 +466,12 @@ const Home = () => {
                       onChange={aiSync.onChangeDays}
                     />
                     {!aiDest && (
-                      <label className="md:col-span-5 block border-2 border-[#e6dcc3] hover:border-[#2f6395] focus-within:border-[#2f6395] focus-within:ring-2 focus-within:ring-[#2f6395]/15 bg-white rounded-xl px-3 py-2.5 transition">
-                        <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-0.5">
-                          <Compass className="w-4 h-4 text-[#2f6395]" />{t('homePage.search.vibeLabel')}
+                      <label className="md:col-span-5 block border-2 border-[#dfe7ec] hover:border-[#0172cb] focus-within:border-[#0172cb] focus-within:ring-2 focus-within:ring-[#0172cb]/15 bg-white rounded-xl px-3 py-2.5 transition">
+                        <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-0.5">
+                          <Compass className="w-4 h-4 text-[#0172cb]" />{t('homePage.search.vibeLabel')}
                         </div>
                         <select value={aiVibe} onChange={e => setAiVibe(e.target.value)}
-                          className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a] cursor-pointer">
+                          className="w-full bg-transparent outline-none text-[14px] font-bold text-[#252a31] cursor-pointer">
                           <option value="any">{t('homePage.vibes.any')}</option>
                           <option value="warm">{t('homePage.vibes.warm')}</option>
                           <option value="beach">{t('homePage.vibes.beach')}</option>
@@ -495,10 +495,10 @@ const Home = () => {
 
                   {/* Quick day chips for AI */}
                   <div className="flex items-center flex-wrap gap-1.5 pt-0.5 px-1">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[#93876f] self-center">{t('homePage.search.quickDays')}</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#697d95] self-center">{t('homePage.search.quickDays')}</span>
                     {[3, 5, 7, 10, 14].map(n => (
                       <button key={n} type="button" onClick={() => aiSync.onChangeDays(n)}
-                        className={`px-2.5 py-1 rounded-full text-[11px] font-black transition ${Number(aiDays) === n ? 'bg-[#003580] text-white' : 'bg-[#f0f5ff] text-[#2f6395] hover:bg-[#dceaff]'}`}>
+                        className={`px-2.5 py-1 rounded-full text-[11px] font-black transition ${Number(aiDays) === n ? 'bg-[#252a31] text-white' : 'bg-[#e8f4fd] text-[#0172cb] hover:bg-[#d6ebfb]'}`}>
                         {n}{t('homePage.search.daySuffix')}
                       </button>
                     ))}
@@ -512,7 +512,7 @@ const Home = () => {
               {/* Quick destination chips — fills the destination field of the CURRENT tab, never switches */}
               {tab !== 'flights' && (
                 <div className="flex items-center flex-wrap gap-1.5 pt-3 px-1">
-                  <span className="text-[11px] font-black uppercase tracking-widest text-[#93876f]">{t('homePage.search.popular')}</span>
+                  <span className="text-[11px] font-black uppercase tracking-widest text-[#697d95]">{t('homePage.search.popular')}</span>
                   {['Dubai', 'Bukhara', 'New York', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Paris', 'Antarctica'].map(c => {
                     const currentValue = tab === 'ai' ? aiDest : dest;
                     const active = String(currentValue || '').toLowerCase() === c.toLowerCase();
@@ -525,7 +525,7 @@ const Home = () => {
                           else              setDest(c);
                         }}
                         className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition active:scale-95 ${
-                          active ? 'bg-[#003580] text-white shadow-md' : 'bg-[#f0f5ff] text-[#2f6395] hover:bg-[#dceaff]'
+                          active ? 'bg-[#252a31] text-white shadow-md' : 'bg-[#e8f4fd] text-[#0172cb] hover:bg-[#d6ebfb]'
                         }`}
                       >{c === 'Antarctica' ? '❄ Antarctica' : c}</button>
                     );
@@ -536,7 +536,7 @@ const Home = () => {
               {/* Quick flight routes for flights tab */}
               {tab === 'flights' && (
                 <div className="flex items-center flex-wrap gap-1.5 pt-3 px-1">
-                  <span className="text-[11px] font-black uppercase tracking-widest text-[#93876f]">{t('homePage.search.popular')}</span>
+                  <span className="text-[11px] font-black uppercase tracking-widest text-[#697d95]">{t('homePage.search.popular')}</span>
                   {[
                     { from: 'Dubai (DXB)', to: 'Maldives (MLE)', label: 'DXB → MLE' },
                     { from: 'Dubai (DXB)', to: 'Bali (DPS)', label: 'DXB → DPS' },
@@ -549,7 +549,7 @@ const Home = () => {
                       <button key={r.label} type="button"
                         onClick={() => { setFlightFrom(r.from); setFlightTo(r.to); }}
                         className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition active:scale-95 ${
-                          active ? 'bg-[#003580] text-white shadow-md' : 'bg-[#f0f5ff] text-[#2f6395] hover:bg-[#dceaff]'
+                          active ? 'bg-[#252a31] text-white shadow-md' : 'bg-[#e8f4fd] text-[#0172cb] hover:bg-[#d6ebfb]'
                         }`}>
                         {r.label}
                       </button>
@@ -560,7 +560,7 @@ const Home = () => {
             </form>
 
             {(tab === 'ai' && aiDest) || (tab === 'tours' && dest) || (tab === 'flights' && flightTo) ? (
-              <div className="border-t border-[#e6dcc3] mt-2 pt-2">
+              <div className="border-t border-[#dfe7ec] mt-2 pt-2">
                 <WeatherWidget city={tab === 'ai' ? aiDest : tab === 'flights' ? flightTo : dest} />
               </div>
             ) : null}
@@ -593,35 +593,35 @@ const Home = () => {
             <div className="eyebrow-lux mb-2">
               <Sparkles className="w-3.5 h-3.5" /> {t('homePage.valueProps.eyebrow')}
             </div>
-            <h2 className="h-editorial text-engraved text-[28px] md:text-[40px] text-[#1a1a1a] mb-2">
+            <h2 className="h-editorial text-engraved text-[28px] md:text-[40px] text-[#252a31] mb-2">
               {t('homePage.valueProps.heading')}
             </h2>
-            <p className="text-[14px] md:text-[15px] text-[#5c5245] font-medium leading-relaxed mb-6 max-w-xl">
+            <p className="text-[14px] md:text-[15px] text-[#4a5867] font-medium leading-relaxed mb-6 max-w-xl">
               {t('homePage.valueProps.subtitle')}
             </p>
 
             <div className="grid sm:grid-cols-2 gap-3 mb-6">
-              <div className="bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-5 lift">
-                <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] text-[#2f6395] flex items-center justify-center mb-3">
+              <div className="bg-white border border-[#dfe7ec] rounded-2xl shadow-soft p-5 lift">
+                <div className="w-11 h-11 rounded-xl bg-[#e8f4fd] text-[#0172cb] flex items-center justify-center mb-3">
                   <Wallet className="w-5 h-5" />
                 </div>
-                <h3 className="text-[15px] font-black text-[#1a1a1a] mb-1.5 leading-snug">{t('homePage.valueProps.budgetTitle')}</h3>
-                <p className="text-[13px] text-[#5c5245] font-medium leading-relaxed">{t('homePage.valueProps.budgetBody')}</p>
+                <h3 className="text-[15px] font-black text-[#252a31] mb-1.5 leading-snug">{t('homePage.valueProps.budgetTitle')}</h3>
+                <p className="text-[13px] text-[#4a5867] font-medium leading-relaxed">{t('homePage.valueProps.budgetBody')}</p>
               </div>
-              <div className="bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-5 lift">
-                <div className="w-11 h-11 rounded-xl bg-[#fff7e6] text-[#b8860b] flex items-center justify-center mb-3">
+              <div className="bg-white border border-[#dfe7ec] rounded-2xl shadow-soft p-5 lift">
+                <div className="w-11 h-11 rounded-xl bg-[#e6f6f3] text-[#008f77] flex items-center justify-center mb-3">
                   <FileText className="w-5 h-5" />
                 </div>
-                <h3 className="text-[15px] font-black text-[#1a1a1a] mb-1.5 leading-snug">{t('homePage.valueProps.pdfTitle')}</h3>
-                <p className="text-[13px] text-[#5c5245] font-medium leading-relaxed">{t('homePage.valueProps.pdfBody')}</p>
+                <h3 className="text-[15px] font-black text-[#252a31] mb-1.5 leading-snug">{t('homePage.valueProps.pdfTitle')}</h3>
+                <p className="text-[13px] text-[#4a5867] font-medium leading-relaxed">{t('homePage.valueProps.pdfBody')}</p>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <button onClick={() => navigate('/hot-tours')} className="btn-gold px-6 py-3 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
+              <button onClick={() => navigate('/hot-tours')} className="btn-gold px-6 py-3 rounded-xl text-[#252a31] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
                 <Wand2 className="w-4 h-4" /> {t('homePage.valueProps.ctaPlan')}
               </button>
-              <button onClick={() => navigate('/my-plans')} className="px-6 py-3 rounded-xl bg-white border border-[#e6dcc3] hover:border-[#2f6395] text-[#003580] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
+              <button onClick={() => navigate('/my-plans')} className="px-6 py-3 rounded-xl bg-white border border-[#dfe7ec] hover:border-[#0172cb] text-[#252a31] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
                 <Download className="w-4 h-4" /> {t('homePage.valueProps.ctaPlans')}
               </button>
             </div>
@@ -634,12 +634,12 @@ const Home = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
             className="relative flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#2f6395]/10 to-[#d9a43e]/10 rounded-3xl blur-2xl pointer-events-none" />
-            <div className="corner-gilt relative w-full max-w-md bg-white rounded-2xl shadow-float border border-[#e6dcc3] overflow-hidden">
-              <span className="absolute top-4 right-4 z-10 inline-flex items-center gap-1 bg-[#d9a43e] text-[#1a1a1a] text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-float">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0172cb]/10 to-[#00a58e]/10 rounded-3xl blur-2xl pointer-events-none" />
+            <div className="corner-gilt relative w-full max-w-md bg-white rounded-2xl shadow-float border border-[#dfe7ec] overflow-hidden">
+              <span className="absolute top-4 right-4 z-10 inline-flex items-center gap-1 bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-float">
                 <FileText className="w-3.5 h-3.5" /> {t('homePage.valueProps.pdfBadge')}
               </span>
-              <div className="bg-gradient-to-br from-[#001026] via-[#002250] to-[#003580] text-white p-6">
+              <div className="bg-gradient-to-br from-[#001026] via-[#1c2127] to-[#252a31] text-white p-6">
                 <div className="label-gold">✦ {t('homePage.valueProps.pdfPreviewBrand')}</div>
                 <div className="text-[22px] font-black mt-2 leading-tight">{t('homePage.valueProps.pdfPreviewTitle')}</div>
                 <div className="text-[12px] text-white/80 font-semibold mt-1">{t('homePage.valueProps.pdfPreviewMeta')}</div>
@@ -651,16 +651,16 @@ const Home = () => {
                   t('homePage.valueProps.pdfPreviewLine3'),
                 ].map((line, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="mt-0.5 w-6 h-6 rounded-lg bg-[#f0f5ff] text-[#2f6395] flex items-center justify-center shrink-0">
+                    <span className="mt-0.5 w-6 h-6 rounded-lg bg-[#e8f4fd] text-[#0172cb] flex items-center justify-center shrink-0">
                       <Check className="w-3.5 h-3.5" />
                     </span>
-                    <span className="text-[13px] font-bold text-[#1a1a1a] leading-snug">{line}</span>
+                    <span className="text-[13px] font-bold text-[#252a31] leading-snug">{line}</span>
                   </div>
                 ))}
                 <div className="pt-2">
-                  <div className="h-2 bg-[#efe6d2] rounded-full w-full mb-2" />
-                  <div className="h-2 bg-[#efe6d2] rounded-full w-4/5 mb-2" />
-                  <div className="h-2 bg-[#efe6d2] rounded-full w-2/3" />
+                  <div className="h-2 bg-[#e8edf1] rounded-full w-full mb-2" />
+                  <div className="h-2 bg-[#e8edf1] rounded-full w-4/5 mb-2" />
+                  <div className="h-2 bg-[#e8edf1] rounded-full w-2/3" />
                 </div>
               </div>
             </div>
@@ -679,9 +679,9 @@ const Home = () => {
             <div className="eyebrow-lux mb-1">
               <Flame className="w-3.5 h-3.5" /> {t('homePage.hotTours.eyebrow')}
             </div>
-            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.hotTours.heading')}</h2>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31]">{t('homePage.hotTours.heading')}</h2>
           </div>
-          <button onClick={() => navigate('/hot-tours')} className="group hidden md:flex items-center gap-1 text-[13px] font-bold text-[#2f6395] hover:underline">
+          <button onClick={() => navigate('/hot-tours')} className="group hidden md:flex items-center gap-1 text-[13px] font-bold text-[#0172cb] hover:underline">
             {t('homePage.hotTours.viewAll')} <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
@@ -697,7 +697,7 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
-                className="group card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft cursor-pointer h-full"
+                className="group card-sheen bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] shadow-soft cursor-pointer h-full"
                 onClick={() => navigate('/hot-tours')}
               >
                 <div className="relative h-44 overflow-hidden"
@@ -705,7 +705,7 @@ const Home = () => {
                   <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                  <span className="absolute top-2.5 left-2.5 bg-[#d9a43e] text-[#1a1a1a] text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">-{discount}%</span>
+                  <span className="absolute top-2.5 left-2.5 bg-[#00a58e] text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">-{discount}%</span>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -717,24 +717,24 @@ const Home = () => {
                     className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 flex items-center justify-center shadow-float hover:scale-110 active:scale-95 transition"
                     aria-label={isInWishlist(p.id, 'package') ? t('homePage.wishlist.removeAria') : t('homePage.wishlist.saveAria')}
                   >
-                    <Heart className={`w-4 h-4 ${isInWishlist(p.id, 'package') ? 'fill-red-500 text-red-500' : 'text-[#5c5245]'}`} />
+                    <Heart className={`w-4 h-4 ${isInWishlist(p.id, 'package') ? 'fill-red-500 text-red-500' : 'text-[#4a5867]'}`} />
                   </button>
                 </div>
                 <div className="p-4">
-                  <div className="flex items-center gap-1 text-[11px] text-[#5c5245] font-bold mb-1">
-                    <MapPin className="w-3 h-3 text-[#2f6395]" /> {p.destination}
+                  <div className="flex items-center gap-1 text-[11px] text-[#4a5867] font-bold mb-1">
+                    <MapPin className="w-3 h-3 text-[#0172cb]" /> {p.destination}
                   </div>
-                  <h3 className="text-[15px] font-black text-[#1a1a1a] mb-1.5 line-clamp-1">{p.name}</h3>
-                  <div className="flex items-center gap-2 text-[11px] text-[#5c5245] mb-3">
-                    <span className="flex items-center gap-0.5"><Star className="w-3 h-3 fill-[#d9a43e] text-[#d9a43e]" /> {p.rating}</span>
+                  <h3 className="text-[15px] font-black text-[#252a31] mb-1.5 line-clamp-1">{p.name}</h3>
+                  <div className="flex items-center gap-2 text-[11px] text-[#4a5867] mb-3">
+                    <span className="flex items-center gap-0.5"><Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" /> {p.rating}</span>
                     <span>· {p.duration} {t('homePage.common.days')}</span>
                   </div>
                   <div className="flex items-end justify-between">
                     <div>
-                      <div className="text-[11px] text-[#93876f] line-through font-bold"><Price amount={original} /></div>
-                      <div className="text-[18px] font-black text-[#003580]"><Price amount={p.price} /></div>
+                      <div className="text-[11px] text-[#697d95] line-through font-bold"><Price amount={original} /></div>
+                      <div className="text-[18px] font-black text-[#252a31]"><Price amount={p.price} /></div>
                     </div>
-                    <span className="text-[11px] font-black text-[#2f6395] flex items-center gap-0.5">
+                    <span className="text-[11px] font-black text-[#0172cb] flex items-center gap-0.5">
                       {t('homePage.common.book')} <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                     </span>
                   </div>
@@ -746,7 +746,7 @@ const Home = () => {
         </AutoStrip>
 
         <div className="md:hidden mt-4 text-center">
-          <button onClick={() => navigate('/hot-tours')} className="text-[14px] font-black text-[#2f6395]">{t('homePage.hotTours.viewAllDeals')}</button>
+          <button onClick={() => navigate('/hot-tours')} className="text-[14px] font-black text-[#0172cb]">{t('homePage.hotTours.viewAllDeals')}</button>
         </div>
       </section>
 
@@ -763,7 +763,7 @@ const Home = () => {
             src="https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?auto=format&fit=crop&w=1800&q=80"
             alt="Antarctica" loading="lazy" onError={handleImgError}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#001026]/95 via-[#001c47]/75 to-[#00295c]/30 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#001026]/95 via-[#1b2026]/75 to-[#00295c]/30 pointer-events-none" />
           <div className="film-grain" />
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#7cc4d9]/60 to-transparent pointer-events-none" />
 
@@ -784,12 +784,12 @@ const Home = () => {
               ].map((s, i) => (
                 <span key={i} className="px-3 py-1.5 rounded-full bg-white/[0.08] border border-[#7cc4d9]/30 text-[11.5px] font-bold text-[#cfeaf4]">{s}</span>
               ))}
-              <span className="px-3 py-1.5 rounded-full bg-[#d9a43e]/15 border border-[#d9a43e]/40 text-[11.5px] font-black text-[#e6c988]">
+              <span className="px-3 py-1.5 rounded-full bg-[#00a58e]/15 border border-[#00a58e]/40 text-[11.5px] font-black text-[#61d1bf]">
                 {t('homePage.antarctica.statFrom')} <Price amount={8990} />
               </span>
             </div>
             <button onClick={() => navigate('/antarctica')}
-              className="btn-gold px-6 py-3 rounded-xl text-[#1a1a1a] font-black text-[14px] inline-flex items-center gap-2 active:scale-95 transition">
+              className="btn-gold px-6 py-3 rounded-xl text-[#252a31] font-black text-[14px] inline-flex items-center gap-2 active:scale-95 transition">
               <Snowflake className="w-4 h-4" /> {t('homePage.antarctica.cta')} <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
@@ -803,13 +803,13 @@ const Home = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.35 }}
-          className="panel-inlay relative overflow-hidden bg-gradient-to-r from-[#002250] via-[#0058b1] to-[#2f6395] rounded-3xl p-7 md:p-12 text-white shadow-float">
+          className="panel-inlay relative overflow-hidden bg-gradient-to-r from-[#1c2127] via-[#0058b1] to-[#0172cb] rounded-3xl p-7 md:p-12 text-white shadow-float">
           <div className="pattern-lux" />
-          <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#d9a43e]/30 blur-3xl pointer-events-none depth-up" />
-          <div className="absolute -left-24 -bottom-24 w-72 h-72 rounded-full bg-[#2f6395]/40 blur-3xl pointer-events-none depth-down" />
+          <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#00a58e]/30 blur-3xl pointer-events-none depth-up" />
+          <div className="absolute -left-24 -bottom-24 w-72 h-72 rounded-full bg-[#0172cb]/40 blur-3xl pointer-events-none depth-down" />
           <div className="relative grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#d9a43e] text-[#1a1a1a] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
                 <Wand2 className="w-3.5 h-3.5" /> {t('homePage.aiCta.badge')}
               </div>
               <h2 className="h-editorial text-3xl md:text-[40px] mb-3">
@@ -819,7 +819,7 @@ const Home = () => {
                 {t('homePage.aiCta.body')}
               </p>
               <div className="flex flex-wrap gap-2">
-                <button onClick={() => navigate('/hot-tours')} className="btn-gold px-6 py-3 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center gap-2">
+                <button onClick={() => navigate('/hot-tours')} className="btn-gold px-6 py-3 rounded-xl text-[#252a31] font-black text-[14px] flex items-center gap-2">
                   <Sparkles className="w-4 h-4" /> {t('homePage.aiCta.tryBtn')}
                 </button>
                 <button onClick={() => navigate('/planner')} className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 font-black text-[14px] active:scale-95 transition">
@@ -841,7 +841,7 @@ const Home = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: 0.1 + i * 0.07 }}
                   className="group bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/15 hover:bg-white/15 hover:border-white/30 transition">
-                  <f.icon className="w-5 h-5 text-[#d9a43e] mb-2 group-hover:scale-110 transition-transform" />
+                  <f.icon className="w-5 h-5 text-[#00a58e] mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-[13px] font-semibold leading-snug">{f.label}</p>
                 </motion.div>
               ))}
@@ -860,23 +860,23 @@ const Home = () => {
             <div className="eyebrow-lux mb-1">
               <Sparkles className="w-3.5 h-3.5" /> {t('servicesHome.eyebrow')}
             </div>
-            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('servicesHome.heading')}</h2>
-            <p className="text-[14px] text-[#5c5245] font-medium max-w-xl mt-1">{t('servicesHome.subtitle')}</p>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31]">{t('servicesHome.heading')}</h2>
+            <p className="text-[14px] text-[#4a5867] font-medium max-w-xl mt-1">{t('servicesHome.subtitle')}</p>
           </div>
-          <button onClick={() => navigate('/services')} className="group hidden md:flex items-center gap-1 text-[13px] font-bold text-[#2f6395] hover:underline">
+          <button onClick={() => navigate('/services')} className="group hidden md:flex items-center gap-1 text-[13px] font-bold text-[#0172cb] hover:underline">
             {t('servicesHome.cta')} <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {[
             { icon: FileCheck,   label: t('servicesPage.visa.title'),     accent: 'bg-[#f0fdf4] text-[#008009]' },
-            { icon: Wallet,      label: t('servicesPage.budget.title'),   accent: 'bg-[#f0f5ff] text-[#2f6395]' },
-            { icon: Plane,       label: t('servicesPage.flightPredict.title'), accent: 'bg-[#fff7e6] text-[#b8860b]' },
+            { icon: Wallet,      label: t('servicesPage.budget.title'),   accent: 'bg-[#e8f4fd] text-[#0172cb]' },
+            { icon: Plane,       label: t('servicesPage.flightPredict.title'), accent: 'bg-[#e6f6f3] text-[#008f77]' },
             { icon: Hotel,       label: t('servicesPage.hotelPredict.title'),  accent: 'bg-[#fdf2f8] text-[#be185d]' },
             { icon: ShieldCheck, label: t('servicesPage.insurance.title'), accent: 'bg-[#f0fdf4] text-[#008009]' },
-            { icon: Wifi,        label: t('servicesPage.esim.title'),      accent: 'bg-[#f0f5ff] text-[#2f6395]' },
-            { icon: Car,         label: t('servicesPage.transfer.title'),  accent: 'bg-[#fff7e6] text-[#b8860b]' },
-            { icon: Award,       label: t('servicesPage.lounge.title'),    accent: 'bg-[#f0f5ff] text-[#2f6395]' },
+            { icon: Wifi,        label: t('servicesPage.esim.title'),      accent: 'bg-[#e8f4fd] text-[#0172cb]' },
+            { icon: Car,         label: t('servicesPage.transfer.title'),  accent: 'bg-[#e6f6f3] text-[#008f77]' },
+            { icon: Award,       label: t('servicesPage.lounge.title'),    accent: 'bg-[#e8f4fd] text-[#0172cb]' },
           ].map((s, i) => (
             <motion.button
               key={i}
@@ -885,16 +885,16 @@ const Home = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.28, delay: (i % 4) * 0.05 }}
-              className="group bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-4 flex items-center gap-3 hover:border-[#2f6395] lift text-left">
+              className="group bg-white border border-[#dfe7ec] rounded-2xl shadow-soft p-4 flex items-center gap-3 hover:border-[#0172cb] lift text-left">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform ${s.accent}`}>
                 <s.icon className="w-5 h-5" />
               </div>
-              <div className="text-[13px] font-black text-[#1a1a1a] leading-snug">{s.label}</div>
+              <div className="text-[13px] font-black text-[#252a31] leading-snug">{s.label}</div>
             </motion.button>
           ))}
         </div>
         <div className="md:hidden mt-4 text-center">
-          <button onClick={() => navigate('/services')} className="text-[14px] font-black text-[#2f6395]">{t('servicesHome.cta')}</button>
+          <button onClick={() => navigate('/services')} className="text-[14px] font-black text-[#0172cb]">{t('servicesHome.cta')}</button>
         </div>
       </section>
 
@@ -905,7 +905,7 @@ const Home = () => {
             <div className="eyebrow-lux mb-1">
               <TrendingUp className="w-3.5 h-3.5" /> {t('homePage.trending.eyebrow')}
             </div>
-            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.trending.heading')}</h2>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31]">{t('homePage.trending.heading')}</h2>
           </div>
         </div>
 
@@ -926,7 +926,7 @@ const Home = () => {
                 <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end text-left text-white">
                   <div className="text-[16px] md:text-[18px] font-black leading-tight">{d.city}</div>
                   <div className="text-[11px] text-white/75 font-semibold mb-1.5">{d.country}</div>
-                  <div className="text-[11px] inline-flex items-center gap-1 bg-white/95 text-[#003580] font-black px-2 py-0.5 rounded-md w-fit shadow-float group-hover:bg-[#d9a43e] group-hover:text-[#1a1a1a] transition-colors">
+                  <div className="text-[11px] inline-flex items-center gap-1 bg-white/95 text-[#252a31] font-black px-2 py-0.5 rounded-md w-fit shadow-float group-hover:bg-[#00a58e] group-hover:text-white transition-colors">
                     <Plane className="w-3 h-3" /> {t('homePage.common.from')} <Price amount={d.from} />
                   </div>
                 </div>
@@ -943,7 +943,7 @@ const Home = () => {
             <div className="eyebrow-lux mb-1">
               <Globe className="w-3.5 h-3.5" /> {t('homePage.map.eyebrow') || 'Explore'}
             </div>
-            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.map.heading') || 'Destinations worldwide'}</h2>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31]">{t('homePage.map.heading') || 'Destinations worldwide'}</h2>
           </div>
         </div>
         <DestinationMap destinations={TRENDING} className="edge-gilded" />
@@ -955,8 +955,8 @@ const Home = () => {
 
       {/* ─── BROWSE BY THEME ─────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
-        <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a] mb-1">{t('homePage.themesSection.heading')}</h2>
-        <p className="text-[14px] text-[#5c5245] font-medium mb-6">{t('homePage.themesSection.subtitle')}</p>
+        <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31] mb-1">{t('homePage.themesSection.heading')}</h2>
+        <p className="text-[14px] text-[#4a5867] font-medium mb-6">{t('homePage.themesSection.subtitle')}</p>
 
         <AutoStrip className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {THEMES.map((th, i) => (
@@ -967,13 +967,13 @@ const Home = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.28, delay: (i % 6) * 0.04 }}
-              className="group shrink-0 w-40 md:w-44 snap-start bg-white rounded-2xl border border-[#e6dcc3] shadow-soft hover:border-[#2f6395] overflow-hidden lift">
+              className="group shrink-0 w-40 md:w-44 snap-start bg-white rounded-2xl border border-[#dfe7ec] shadow-soft hover:border-[#0172cb] overflow-hidden lift">
               <div className="aspect-[4/3] overflow-hidden">
                 <div className="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-[600ms]" style={{ backgroundImage:`url(${th.img})` }} />
               </div>
               <div className="p-3 flex items-center gap-2">
-                <th.icon className="w-4 h-4 text-[#2f6395] shrink-0 group-hover:scale-110 transition-transform" />
-                <div className="text-[13px] font-black text-[#1a1a1a]">{t(`homePage.${th.labelKey}`)}</div>
+                <th.icon className="w-4 h-4 text-[#0172cb] shrink-0 group-hover:scale-110 transition-transform" />
+                <div className="text-[13px] font-black text-[#252a31]">{t(`homePage.${th.labelKey}`)}</div>
               </div>
             </motion.button>
           ))}
@@ -984,8 +984,8 @@ const Home = () => {
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
         <div className="flex items-end justify-between mb-5">
           <div>
-            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.recommended.heading')}</h2>
-            <p className="text-[14px] text-[#5c5245] font-medium">{t('homePage.recommended.subtitle')}</p>
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31]">{t('homePage.recommended.heading')}</h2>
+            <p className="text-[14px] text-[#4a5867] font-medium">{t('homePage.recommended.subtitle')}</p>
           </div>
         </div>
 
@@ -997,32 +997,32 @@ const Home = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
-              className="card-sheen shrink-0 w-72 snap-start bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft lift group cursor-pointer"
+              className="card-sheen shrink-0 w-72 snap-start bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] shadow-soft lift group cursor-pointer"
               onClick={() => navigate('/hot-tours')}>
               <div className="relative h-44 overflow-hidden"
                 onClick={(e) => { e.stopPropagation(); setLightbox({ destination: p.destination, image: p.image }); }}>
                 <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                {p.featured && <span className="absolute top-2.5 left-2.5 bg-white text-[#2f6395] text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">{t('homePage.recommended.bestseller')}</span>}
+                {p.featured && <span className="absolute top-2.5 left-2.5 bg-white text-[#0172cb] text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">{t('homePage.recommended.bestseller')}</span>}
               </div>
               <div className="p-4">
-                <h3 className="text-[15px] font-black text-[#1a1a1a] mb-1 line-clamp-1">{p.name}</h3>
-                <div className="flex items-center gap-1 text-[11px] text-[#5c5245] font-semibold mb-2">
-                  <MapPin className="w-3 h-3 text-[#2f6395]" /> {p.destination}
+                <h3 className="text-[15px] font-black text-[#252a31] mb-1 line-clamp-1">{p.name}</h3>
+                <div className="flex items-center gap-1 text-[11px] text-[#4a5867] font-semibold mb-2">
+                  <MapPin className="w-3 h-3 text-[#0172cb]" /> {p.destination}
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-[#5c5245] mb-3">
+                <div className="flex items-center justify-between text-[11px] text-[#4a5867] mb-3">
                   <span className="flex items-center gap-1 font-bold">
-                    <span className="bg-[#003580] text-white px-1.5 py-0.5 rounded text-[10px] font-black">{p.rating}</span>
+                    <span className="bg-[#252a31] text-white px-1.5 py-0.5 rounded text-[10px] font-black">{p.rating}</span>
                     <span className="font-bold">{p.rating >= 4.8 ? t('homePage.recommended.exceptional') : t('homePage.recommended.veryGood')}</span>
-                    <span className="text-[#93876f]">· {p.reviews} {t('homePage.recommended.reviews')}</span>
+                    <span className="text-[#697d95]">· {p.reviews} {t('homePage.recommended.reviews')}</span>
                   </span>
                 </div>
-                <div className="flex items-end justify-between border-t border-[#efe6d2] pt-3">
+                <div className="flex items-end justify-between border-t border-[#e8edf1] pt-3">
                   <div>
-                    <div className="text-[10px] text-[#93876f] font-bold uppercase">{p.duration} {t('homePage.recommended.daysPerPerson')}</div>
-                    <div className="text-[20px] font-black text-[#1a1a1a]"><Price amount={p.price} /></div>
+                    <div className="text-[10px] text-[#697d95] font-bold uppercase">{p.duration} {t('homePage.recommended.daysPerPerson')}</div>
+                    <div className="text-[20px] font-black text-[#252a31]"><Price amount={p.price} /></div>
                   </div>
-                  <span className="text-[12px] font-black text-white bg-[#2f6395] group-hover:bg-[#005fa3] px-3 py-2 rounded-lg transition shadow-soft">{t('homePage.recommended.viewDeal')}</span>
+                  <span className="text-[12px] font-black text-white bg-[#0172cb] group-hover:bg-[#015aa3] px-3 py-2 rounded-lg transition shadow-soft">{t('homePage.recommended.viewDeal')}</span>
                 </div>
               </div>
             </motion.div>
@@ -1031,14 +1031,14 @@ const Home = () => {
       </section>
 
       {/* ─── REVIEWS (real, visitor-submitted — see api/reviews.js) ──── */}
-      <section className="paper-linen bg-white border-y border-[#e6dcc3]">
+      <section className="paper-linen bg-white border-y border-[#dfe7ec]">
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-1 text-[#d9a43e] mb-2">
-              {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-[#d9a43e]" />)}
+            <div className="inline-flex items-center gap-1 text-[#00a58e] mb-2">
+              {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-[#00a58e]" />)}
             </div>
-            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('homePage.reviews.heading')}</h2>
-            <p className="text-[14px] text-[#5c5245] font-medium">
+            <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31]">{t('homePage.reviews.heading')}</h2>
+            <p className="text-[14px] text-[#4a5867] font-medium">
               {reviews.length > 0
                 ? fill(t('homePage.reviews.subtitleCount'), {
                     count: reviews.length,
@@ -1049,7 +1049,7 @@ const Home = () => {
             </p>
             {!showReviewForm && (
               <button onClick={() => setShowReviewForm(true)}
-                className="mt-4 inline-flex items-center gap-2 bg-[#003580] hover:bg-[#2f6395] text-white text-[13px] font-black rounded-xl px-4 py-2.5 transition active:scale-95 shadow-soft">
+                className="mt-4 inline-flex items-center gap-2 bg-[#252a31] hover:bg-[#0172cb] text-white text-[13px] font-black rounded-xl px-4 py-2.5 transition active:scale-95 shadow-soft">
                 <Star className="w-4 h-4" /> {t('homePage.reviews.leaveReviewCta')}
               </button>
             )}
@@ -1062,16 +1062,16 @@ const Home = () => {
                 onSubmitted={(review) => { setReviews((prev) => [review, ...prev]); setShowReviewForm(false); }}
               />
               <button onClick={() => setShowReviewForm(false)}
-                className="mt-2 text-[12px] font-bold text-[#93876f] hover:text-[#1a1a1a] transition mx-auto block">
+                className="mt-2 text-[12px] font-bold text-[#697d95] hover:text-[#252a31] transition mx-auto block">
                 {t('homePage.reviews.cancel')}
               </button>
             </div>
           )}
 
           {!reviewsLoading && reviews.length === 0 && !showReviewForm && (
-            <div className="max-w-md mx-auto text-center bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] p-6">
-              <div className="font-black text-[#1a1a1a] mb-1">{t('homePage.reviews.emptyTitle')}</div>
-              <p className="text-[13px] text-[#5c5245] font-medium">{t('homePage.reviews.emptyBody')}</p>
+            <div className="max-w-md mx-auto text-center bg-[#eef2f5] rounded-2xl border border-[#dfe7ec] p-6">
+              <div className="font-black text-[#252a31] mb-1">{t('homePage.reviews.emptyTitle')}</div>
+              <p className="text-[13px] text-[#4a5867] font-medium">{t('homePage.reviews.emptyBody')}</p>
             </div>
           )}
 
@@ -1084,23 +1084,23 @@ const Home = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: (i % 6) * 0.08 }}
-                  className="quote-lux relative shrink-0 w-[85vw] sm:w-80 snap-start bg-[#f6f1e4] rounded-2xl border border-[#e6dcc3] shadow-soft p-5 pt-9 lift">
+                  className="quote-lux relative shrink-0 w-[85vw] sm:w-80 snap-start bg-[#eef2f5] rounded-2xl border border-[#dfe7ec] shadow-soft p-5 pt-9 lift">
                   {r.destination && (
-                    <div className="absolute top-3 right-3 text-[10px] font-black uppercase tracking-wide bg-white text-[#2f6395] px-2 py-1 rounded-md shadow-soft flex items-center gap-1">
+                    <div className="absolute top-3 right-3 text-[10px] font-black uppercase tracking-wide bg-white text-[#0172cb] px-2 py-1 rounded-md shadow-soft flex items-center gap-1">
                       <MapPin className="w-2.5 h-2.5" /> {r.destination}
                     </div>
                   )}
-                  <div className="flex items-center gap-1 mb-2 text-[#d9a43e]">
-                    {Array.from({ length: r.rating || 5 }).map((_, k) => <Star key={k} className="w-3.5 h-3.5 fill-[#d9a43e]" />)}
+                  <div className="flex items-center gap-1 mb-2 text-[#00a58e]">
+                    {Array.from({ length: r.rating || 5 }).map((_, k) => <Star key={k} className="w-3.5 h-3.5 fill-[#00a58e]" />)}
                   </div>
-                  <p className="font-display italic text-[16px] text-[#1a1a1a] leading-relaxed mb-3">{r.text}</p>
+                  <p className="font-display italic text-[16px] text-[#252a31] leading-relaxed mb-3">{r.text}</p>
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-[#003580] text-white text-[11px] font-black flex items-center justify-center shadow-soft">
+                    <div className="w-8 h-8 rounded-full bg-[#252a31] text-white text-[11px] font-black flex items-center justify-center shadow-soft">
                       {r.name.charAt(0)}
                     </div>
                     <div className="text-[12px]">
-                      <div className="font-black text-[#1a1a1a]">{r.name}</div>
-                      {r.city && <div className="text-[#93876f] font-semibold">{r.city}</div>}
+                      <div className="font-black text-[#252a31]">{r.name}</div>
+                      {r.city && <div className="text-[#697d95] font-semibold">{r.city}</div>}
                     </div>
                   </div>
                 </motion.div>
@@ -1117,20 +1117,20 @@ const Home = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.35 }}
-          className="bg-gradient-to-br from-[#002250] to-[#003580] rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-float">
+          className="bg-gradient-to-br from-[#1c2127] to-[#252a31] rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-float">
           <div className="pattern-lux" />
-          <div className="absolute right-0 top-0 w-72 h-72 rounded-full bg-[#d9a43e]/20 blur-3xl pointer-events-none depth-up" />
-          <div className="absolute -left-16 bottom-0 w-64 h-64 rounded-full bg-[#2f6395]/30 blur-3xl pointer-events-none depth-down" />
+          <div className="absolute right-0 top-0 w-72 h-72 rounded-full bg-[#00a58e]/20 blur-3xl pointer-events-none depth-up" />
+          <div className="absolute -left-16 bottom-0 w-64 h-64 rounded-full bg-[#0172cb]/30 blur-3xl pointer-events-none depth-down" />
           <div className="relative grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <Mail className="w-8 h-8 text-[#d9a43e] mb-3" />
+              <Mail className="w-8 h-8 text-[#00a58e] mb-3" />
               <h2 className="h-editorial text-[26px] md:text-[34px] mb-2">{t('homePage.newsletter.heading')}</h2>
               <p className="text-[14px] text-white/80 font-medium">{t('homePage.newsletter.body')}</p>
             </div>
             <form onSubmit={e => { e.preventDefault(); toast.success(t('homePage.newsletter.toastTitle'), t('homePage.newsletter.toastBody')); }}
               className="flex gap-2 bg-white/10 backdrop-blur rounded-xl p-1.5 border border-white/15 focus-within:border-white/40 transition">
               <input type="email" required placeholder={t('footer.emailPlaceholder')} className="flex-1 min-w-0 bg-transparent px-3 py-3 text-[14px] font-bold placeholder:text-white/50 outline-none" />
-              <button className="btn-gold shrink-0 px-4 sm:px-5 py-3 rounded-lg text-[#1a1a1a] font-black text-[12px] sm:text-[13px] uppercase tracking-wider whitespace-nowrap">
+              <button className="btn-gold shrink-0 px-4 sm:px-5 py-3 rounded-lg text-[#252a31] font-black text-[12px] sm:text-[13px] uppercase tracking-wider whitespace-nowrap">
                 {t('homePage.newsletter.subscribe')}
               </button>
             </form>
@@ -1152,19 +1152,19 @@ const Tab = ({ active, onClick, icon, label, highlight, newLabel }) => (
   <button type="button" onClick={onClick}
     className={`shrink-0 flex items-center gap-1.5 px-1.5 sm:px-4 py-2.5 rounded-t-xl text-[12px] sm:text-[13px] font-black whitespace-nowrap transition active:scale-95 ${
       active
-        ? 'bg-white text-[#003580] shadow-[0_-3px_0_#2f6395_inset]'
-        : 'text-[#5c5245] hover:bg-[#f0f5ff] hover:text-[#2f6395]'
+        ? 'bg-white text-[#252a31] shadow-[0_-3px_0_#0172cb_inset]'
+        : 'text-[#4a5867] hover:bg-[#e8f4fd] hover:text-[#0172cb]'
     }`}>
     {/* On phones the icons go — four labelled tabs have to fit with no scrolling */}
     <span className="hidden sm:inline-flex">{icon}</span>{label}
-    {highlight && !active && <span className="ml-1 px-1 sm:px-1.5 py-0.5 rounded bg-[#d9a43e] text-[#1a1a1a] text-[9px] font-black uppercase animate-pulse">{newLabel}</span>}
+    {highlight && !active && <span className="ml-1 px-1 sm:px-1.5 py-0.5 rounded bg-[#00a58e] text-white text-[9px] font-black uppercase animate-pulse">{newLabel}</span>}
   </button>
 );
 
 const SearchInput = ({ icon, label, placeholder, type = 'text', value, onChange, className = '', min, max }) => (
-  <label className={`block border-2 border-[#e6dcc3] hover:border-[#2f6395] focus-within:border-[#2f6395] focus-within:ring-2 focus-within:ring-[#2f6395]/15 bg-white rounded-xl px-3 py-2.5 transition ${className}`}>
-    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-0.5">
-      <span className="text-[#2f6395]">{icon}</span>{label}
+  <label className={`block border-2 border-[#dfe7ec] hover:border-[#0172cb] focus-within:border-[#0172cb] focus-within:ring-2 focus-within:ring-[#0172cb]/15 bg-white rounded-xl px-3 py-2.5 transition ${className}`}>
+    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-0.5">
+      <span className="text-[#0172cb]">{icon}</span>{label}
     </div>
     <input
       type={type}
@@ -1173,13 +1173,13 @@ const SearchInput = ({ icon, label, placeholder, type = 'text', value, onChange,
       min={min}
       max={max}
       onChange={e => onChange?.(e.target.value)}
-      className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a] placeholder:text-[#a89a7d]"
+      className="w-full bg-transparent outline-none text-[14px] font-bold text-[#252a31] placeholder:text-[#94a3af]"
     />
   </label>
 );
 
 const SearchButton = ({ className = '', icon, label }) => (
-  <button type="submit" className={`group flex items-center justify-center gap-2 bg-gradient-to-b from-[#2f6395] to-[#005fa3] hover:from-[#0079d0] hover:to-[#2f6395] text-white font-black text-[14px] rounded-xl py-3 px-5 shadow-soft hover:shadow-lift transition active:scale-95 ${className}`}>
+  <button type="submit" className={`group flex items-center justify-center gap-2 bg-gradient-to-b from-[#0172cb] to-[#015aa3] hover:from-[#0079d0] hover:to-[#0172cb] text-white font-black text-[14px] rounded-xl py-3 px-5 shadow-soft hover:shadow-lift transition active:scale-95 ${className}`}>
     <span className="group-hover:scale-110 transition-transform">{icon || <Search className="w-5 h-5" />}</span>
     <span className="md:hidden">{label}</span>
   </button>
@@ -1190,13 +1190,13 @@ const SearchButton = ({ className = '', icon, label }) => (
 const ServicesDrawer = ({ open, onClose, t, navigate }) => {
   const items = [
     { icon: FileCheck,   label: t('servicesPage.visa.title'),           accent: 'bg-[#f0fdf4] text-[#008009]' },
-    { icon: Wallet,      label: t('servicesPage.budget.title'),         accent: 'bg-[#f0f5ff] text-[#2f6395]' },
-    { icon: Plane,       label: t('servicesPage.flightPredict.title'),  accent: 'bg-[#fff7e6] text-[#b8860b]' },
+    { icon: Wallet,      label: t('servicesPage.budget.title'),         accent: 'bg-[#e8f4fd] text-[#0172cb]' },
+    { icon: Plane,       label: t('servicesPage.flightPredict.title'),  accent: 'bg-[#e6f6f3] text-[#008f77]' },
     { icon: Hotel,       label: t('servicesPage.hotelPredict.title'),   accent: 'bg-[#fdf2f8] text-[#be185d]' },
     { icon: ShieldCheck, label: t('servicesPage.insurance.title'),      accent: 'bg-[#f0fdf4] text-[#008009]' },
-    { icon: Wifi,        label: t('servicesPage.esim.title'),           accent: 'bg-[#f0f5ff] text-[#2f6395]' },
-    { icon: Car,         label: t('servicesPage.transfer.title'),       accent: 'bg-[#fff7e6] text-[#b8860b]' },
-    { icon: Award,       label: t('servicesPage.lounge.title'),         accent: 'bg-[#f0f5ff] text-[#2f6395]' },
+    { icon: Wifi,        label: t('servicesPage.esim.title'),           accent: 'bg-[#e8f4fd] text-[#0172cb]' },
+    { icon: Car,         label: t('servicesPage.transfer.title'),       accent: 'bg-[#e6f6f3] text-[#008f77]' },
+    { icon: Award,       label: t('servicesPage.lounge.title'),         accent: 'bg-[#e8f4fd] text-[#0172cb]' },
   ];
 
   const go = () => { navigate('/services'); onClose(); };
@@ -1216,10 +1216,10 @@ const ServicesDrawer = ({ open, onClose, t, navigate }) => {
             transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
             className="fixed top-0 right-0 bottom-0 w-full sm:w-[420px] bg-white z-[91] shadow-2xl overflow-y-auto"
           >
-            <div className="sticky top-0 z-10 bg-gradient-to-br from-[#002250] via-[#003580] to-[#003580] text-white p-5">
+            <div className="sticky top-0 z-10 bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#252a31] text-white p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-[#cf9c3f]">{t('homePage.servicesDrawer.eyebrow')}</div>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#009882]">{t('homePage.servicesDrawer.eyebrow')}</div>
                   <div className="text-[19px] font-black mt-0.5">{t('homePage.servicesDrawer.heading')}</div>
                   <p className="text-[12px] text-white/70 font-medium mt-1 max-w-[280px]">{t('homePage.servicesDrawer.sub')}</p>
                 </div>
@@ -1233,17 +1233,17 @@ const ServicesDrawer = ({ open, onClose, t, navigate }) => {
             <div className="p-5 grid grid-cols-2 gap-3">
               {items.map((s, i) => (
                 <button key={i} onClick={go}
-                  className="group bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-4 flex flex-col items-start gap-2.5 hover:border-[#2f6395] lift text-left">
+                  className="group bg-white border border-[#dfe7ec] rounded-2xl shadow-soft p-4 flex flex-col items-start gap-2.5 hover:border-[#0172cb] lift text-left">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform ${s.accent}`}>
                     <s.icon className="w-5 h-5" />
                   </div>
-                  <div className="text-[13px] font-black text-[#1a1a1a] leading-snug">{s.label}</div>
+                  <div className="text-[13px] font-black text-[#252a31] leading-snug">{s.label}</div>
                 </button>
               ))}
             </div>
 
             <div className="px-5 pb-6">
-              <button onClick={go} className="btn-gold w-full py-3.5 rounded-xl text-[#1a1a1a] font-black text-[13px] flex items-center justify-center gap-2">
+              <button onClick={go} className="btn-gold w-full py-3.5 rounded-xl text-[#252a31] font-black text-[13px] flex items-center justify-center gap-2">
                 {t('homePage.servicesDrawer.cta')} <ArrowRight className="w-4 h-4" />
               </button>
             </div>

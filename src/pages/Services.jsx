@@ -16,14 +16,14 @@ import { usePriceFormatter } from '../components/Price';
 /* ── Shared shells ─────────────────────────────────────────────────── */
  
 const Shell = ({ icon: Icon, title, desc, children }) => (
-  <div className="bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-5 md:p-6 lift flex flex-col">
+  <div className="bg-white border border-[#dfe7ec] rounded-2xl shadow-soft p-5 md:p-6 lift flex flex-col">
     <div className="flex items-start gap-3 mb-4">
-      <div className="w-11 h-11 rounded-xl bg-[#f0f5ff] text-[#2f6395] flex items-center justify-center shrink-0">
+      <div className="w-11 h-11 rounded-xl bg-[#e8f4fd] text-[#0172cb] flex items-center justify-center shrink-0">
         <Icon className="w-5 h-5" />
       </div>
       <div>
-        <h3 className="text-[16px] font-black text-[#1a1a1a] leading-tight">{title}</h3>
-        <p className="text-[12px] text-[#93876f] font-medium mt-0.5 leading-snug">{desc}</p>
+        <h3 className="text-[16px] font-black text-[#252a31] leading-tight">{title}</h3>
+        <p className="text-[12px] text-[#697d95] font-medium mt-0.5 leading-snug">{desc}</p>
       </div>
     </div>
     {children}
@@ -32,20 +32,20 @@ const Shell = ({ icon: Icon, title, desc, children }) => (
 
 const Field = ({ label, value, onChange, placeholder, type = 'text', min }) => (
   <label className="block">
-    <span className="text-[11px] font-black uppercase tracking-widest text-[#93876f]">{label}</span>
+    <span className="text-[11px] font-black uppercase tracking-widest text-[#697d95]">{label}</span>
     <input
       type={type} value={value} min={min} placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] focus:ring-2 focus:ring-[#2f6395]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition placeholder:text-[#a89a7d]"
+      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/15 outline-none text-[14px] font-bold text-[#252a31] bg-white transition placeholder:text-[#94a3af]"
     />
   </label>
 );
 
 const Select = ({ label, value, onChange, options }) => (
   <label className="block">
-    <span className="text-[11px] font-black uppercase tracking-widest text-[#93876f]">{label}</span>
+    <span className="text-[11px] font-black uppercase tracking-widest text-[#697d95]">{label}</span>
     <select value={value} onChange={(e) => onChange(e.target.value)}
-      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#e6dcc3] focus:border-[#2f6395] focus:ring-2 focus:ring-[#2f6395]/15 outline-none text-[14px] font-bold text-[#1a1a1a] bg-white transition cursor-pointer">
+      className="mt-1 w-full px-3 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/15 outline-none text-[14px] font-bold text-[#252a31] bg-white transition cursor-pointer">
       {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
     </select>
   </label>
@@ -53,7 +53,7 @@ const Select = ({ label, value, onChange, options }) => (
 
 const RunButton = ({ onClick, loading, disabled, label, loadingLabel }) => (
   <button onClick={onClick} disabled={loading || disabled}
-    className="w-full flex items-center justify-center gap-2 bg-gradient-to-b from-[#2f6395] to-[#005fa3] hover:from-[#0079d0] hover:to-[#2f6395] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-[14px] rounded-xl py-2.5 px-5 shadow-soft hover:shadow-lift transition active:scale-95">
+    className="w-full flex items-center justify-center gap-2 bg-gradient-to-b from-[#0172cb] to-[#015aa3] hover:from-[#0079d0] hover:to-[#0172cb] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-[14px] rounded-xl py-2.5 px-5 shadow-soft hover:shadow-lift transition active:scale-95">
     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
     {loading ? loadingLabel : label}
   </button>
@@ -70,7 +70,7 @@ const TrendBadge = ({ trend }) => {
   const map = {
     rising:  { icon: TrendingUp,   cls: 'text-danger bg-[#faeae6]',   label: t('servicesPage.trendRising') },
     falling: { icon: TrendingDown, cls: 'text-ok bg-[#e9f3ea]', label: t('servicesPage.trendFalling') },
-    stable:  { icon: Minus,        cls: 'text-[#2f6395] bg-[#f0f5ff]', label: t('servicesPage.trendStable') },
+    stable:  { icon: Minus,        cls: 'text-[#0172cb] bg-[#e8f4fd]', label: t('servicesPage.trendStable') },
   };
   const m = map[trend] || map.stable;
   return (
@@ -102,10 +102,10 @@ const PriceRange = ({ data, unit }) => {
   return (
     <div className="grid grid-cols-3 gap-2 mt-3">
       {[['low', data.low], ['typical', data.typical], ['high', data.high]].map(([k, v]) => (
-        <div key={k} className={`rounded-xl p-3 text-center border ${k === 'typical' ? 'bg-[#003580] text-white border-[#003580]' : 'bg-[#f6f1e4] border-[#e6dcc3]'}`}>
-          <div className={`text-[9px] font-black uppercase tracking-widest ${k === 'typical' ? 'text-white/60' : 'text-[#93876f]'}`}>{k}</div>
-          <div className={`text-[18px] font-black leading-tight ${k === 'typical' ? 'text-white' : 'text-[#1a1a1a]'}`}>{fmt(Math.round(v))}</div>
-          {unit && <div className={`text-[9px] font-bold ${k === 'typical' ? 'text-white/50' : 'text-[#93876f]'}`}>{unit}</div>}
+        <div key={k} className={`rounded-xl p-3 text-center border ${k === 'typical' ? 'bg-[#252a31] text-white border-[#252a31]' : 'bg-[#eef2f5] border-[#dfe7ec]'}`}>
+          <div className={`text-[9px] font-black uppercase tracking-widest ${k === 'typical' ? 'text-white/60' : 'text-[#697d95]'}`}>{k}</div>
+          <div className={`text-[18px] font-black leading-tight ${k === 'typical' ? 'text-white' : 'text-[#252a31]'}`}>{fmt(Math.round(v))}</div>
+          {unit && <div className={`text-[9px] font-bold ${k === 'typical' ? 'text-white/50' : 'text-[#697d95]'}`}>{unit}</div>}
         </div>
       ))}
     </div>
@@ -121,10 +121,10 @@ function VisaChecker() {
 
   const statusMap = {
     visa_free:        { label: t('servicesPage.visa.statusFree'),     cls: 'badge-ok' },
-    visa_on_arrival:  { label: t('servicesPage.visa.statusArrival'),  cls: 'bg-[#f0f5ff] text-[#2f6395] border-[#bcd9ff]' },
-    e_visa:           { label: t('servicesPage.visa.statusEvisa'),    cls: 'bg-[#f0f5ff] text-[#2f6395] border-[#bcd9ff]' },
+    visa_on_arrival:  { label: t('servicesPage.visa.statusArrival'),  cls: 'bg-[#e8f4fd] text-[#0172cb] border-[#bcd9ff]' },
+    e_visa:           { label: t('servicesPage.visa.statusEvisa'),    cls: 'bg-[#e8f4fd] text-[#0172cb] border-[#bcd9ff]' },
     visa_required:    { label: t('servicesPage.visa.statusRequired'), cls: 'badge-warn' },
-    unknown:          { label: t('servicesPage.visa.statusUnknown'),  cls: 'bg-[#f6f1e4] text-[#5c5245] border-[#e6dcc3]' },
+    unknown:          { label: t('servicesPage.visa.statusUnknown'),  cls: 'bg-[#eef2f5] text-[#4a5867] border-[#dfe7ec]' },
   };
   const d = ai.data;
   const st = d && (statusMap[d.status] || statusMap.unknown);
@@ -143,7 +143,7 @@ function VisaChecker() {
             <div className={`inline-flex items-center gap-1.5 text-[12px] font-black px-3 py-1.5 rounded-full border ${st.cls}`}>
               <Check className="w-3.5 h-3.5" /> {st.label}
             </div>
-            <p className="text-[13px] font-bold text-[#1a1a1a] leading-snug">{d.summary}</p>
+            <p className="text-[13px] font-bold text-[#252a31] leading-snug">{d.summary}</p>
             <div className="grid grid-cols-3 gap-2">
               <Stat label={t('servicesPage.visa.stay')} value={d.stayDuration} />
               <Stat label={t('servicesPage.visa.cost')} value={d.estimatedCost} />
@@ -151,17 +151,17 @@ function VisaChecker() {
             </div>
             {Array.isArray(d.documents) && d.documents.length > 0 && (
               <div>
-                <div className="text-[11px] font-black uppercase tracking-widest text-[#93876f] mb-1">{t('servicesPage.visa.documents')}</div>
+                <div className="text-[11px] font-black uppercase tracking-widest text-[#697d95] mb-1">{t('servicesPage.visa.documents')}</div>
                 <ul className="space-y-1">
                   {d.documents.map((x, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#5c5245]">
-                      <Check className="w-3.5 h-3.5 text-[#2f6395] shrink-0 mt-0.5" /> {x}
+                    <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#4a5867]">
+                      <Check className="w-3.5 h-3.5 text-[#0172cb] shrink-0 mt-0.5" /> {x}
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            <p className="text-[11px] text-[#93876f] italic">{d.disclaimer || t('servicesPage.common.disclaimer')}</p>
+            <p className="text-[11px] text-[#697d95] italic">{d.disclaimer || t('servicesPage.common.disclaimer')}</p>
           </div>
         )}
       </div>
@@ -170,9 +170,9 @@ function VisaChecker() {
 }
 
 const Stat = ({ label, value }) => (
-  <div className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-2.5 text-center">
-    <div className="text-[9px] font-black uppercase tracking-widest text-[#93876f]">{label}</div>
-    <div className="text-[12px] font-black text-[#1a1a1a] leading-tight mt-0.5">{value || '—'}</div>
+  <div className="bg-[#eef2f5] border border-[#dfe7ec] rounded-xl p-2.5 text-center">
+    <div className="text-[9px] font-black uppercase tracking-widest text-[#697d95]">{label}</div>
+    <div className="text-[12px] font-black text-[#252a31] leading-tight mt-0.5">{value || '—'}</div>
   </div>
 );
 
@@ -209,9 +209,9 @@ function BudgetOptimizer() {
         {d && (
           <div className="space-y-2.5 pt-1">
             <div className="flex items-center justify-between">
-              <span className="text-[13px] font-black text-[#003580]">{verdictLabel}</span>
+              <span className="text-[13px] font-black text-[#252a31]">{verdictLabel}</span>
               {Number.isFinite(d.perDay) && (
-                <span className="text-[12px] font-bold text-[#5c5245]">{fmt(Math.round(d.perDay))} / {t('servicesPage.budget.perDay').toLowerCase()}</span>
+                <span className="text-[12px] font-bold text-[#4a5867]">{fmt(Math.round(d.perDay))} / {t('servicesPage.budget.perDay').toLowerCase()}</span>
               )}
             </div>
             {Array.isArray(d.breakdown) && (
@@ -219,11 +219,11 @@ function BudgetOptimizer() {
                 {d.breakdown.map((b, i) => (
                   <div key={i}>
                     <div className="flex items-center justify-between text-[12px] font-bold mb-0.5">
-                      <span className="text-[#1a1a1a]">{b.category}</span>
-                      <span className="text-[#5c5245]">{fmt(Math.round(b.amount))}</span>
+                      <span className="text-[#252a31]">{b.category}</span>
+                      <span className="text-[#4a5867]">{fmt(Math.round(b.amount))}</span>
                     </div>
-                    <div className="h-1.5 rounded-full bg-[#efe6d2] overflow-hidden">
-                      <div className="h-full rounded-full bg-gradient-to-r from-[#2f6395] to-[#003580]" style={{ width: `${Math.min(100, b.pct || 0)}%` }} />
+                    <div className="h-1.5 rounded-full bg-[#e8edf1] overflow-hidden">
+                      <div className="h-full rounded-full bg-gradient-to-r from-[#0172cb] to-[#252a31]" style={{ width: `${Math.min(100, b.pct || 0)}%` }} />
                     </div>
                   </div>
                 ))}
@@ -231,17 +231,17 @@ function BudgetOptimizer() {
             )}
             {Array.isArray(d.tips) && (
               <div>
-                <div className="text-[11px] font-black uppercase tracking-widest text-[#93876f] mb-1">{t('servicesPage.budget.tips')}</div>
+                <div className="text-[11px] font-black uppercase tracking-widest text-[#697d95] mb-1">{t('servicesPage.budget.tips')}</div>
                 <ul className="space-y-1">
                   {d.tips.map((x, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#5c5245]">
-                      <Sparkles className="w-3.5 h-3.5 text-[#d9a43e] shrink-0 mt-0.5" /> {x}
+                    <li key={i} className="flex items-start gap-2 text-[12px] font-medium text-[#4a5867]">
+                      <Sparkles className="w-3.5 h-3.5 text-[#00a58e] shrink-0 mt-0.5" /> {x}
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            <p className="text-[11px] text-[#93876f] italic">{t('servicesPage.common.disclaimer')}</p>
+            <p className="text-[11px] text-[#697d95] italic">{t('servicesPage.common.disclaimer')}</p>
           </div>
         )}
       </div>
@@ -255,7 +255,7 @@ function CheapestMonth() {
   const [destination, setDestination] = useState('');
   const ai = useAI((a) => cheapestMonth(a));
   const d = ai.data;
-  const levelCls = { low: 'bg-[#2e7d4f]', medium: 'bg-[#d9a43e]', high: 'bg-[#b3402e]' };
+  const levelCls = { low: 'bg-[#2e7d4f]', medium: 'bg-[#00a58e]', high: 'bg-[#b3402e]' };
 
   return (
     <Shell icon={CalendarRange} title={t('servicesPage.cheapest.title')} desc={t('servicesPage.cheapest.desc')}>
@@ -275,14 +275,14 @@ function CheapestMonth() {
               <div className="flex items-end gap-1 h-16 pt-1">
                 {d.months.map((m, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center justify-end gap-1" title={m.level}>
-                    <div className={`w-full rounded-t ${levelCls[m.level] || 'bg-[#e6dcc3]'}`}
+                    <div className={`w-full rounded-t ${levelCls[m.level] || 'bg-[#dfe7ec]'}`}
                       style={{ height: m.level === 'high' ? '100%' : m.level === 'medium' ? '60%' : '30%' }} />
-                    <span className="text-[8px] font-bold text-[#93876f]">{String(m.month).slice(0, 1)}</span>
+                    <span className="text-[8px] font-bold text-[#697d95]">{String(m.month).slice(0, 1)}</span>
                   </div>
                 ))}
               </div>
             )}
-            {d.summary && <p className="text-[12px] font-medium text-[#5c5245] leading-snug">{d.summary}</p>}
+            {d.summary && <p className="text-[12px] font-medium text-[#4a5867] leading-snug">{d.summary}</p>}
           </div>
         )}
       </div>
@@ -314,11 +314,11 @@ function FlightPredict() {
           <div className="space-y-2.5 pt-1">
             <div className="flex items-center justify-between"><TrendBadge trend={d.trend} /></div>
             <PriceRange data={d} />
-            <div className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3">
-              <div className="text-[10px] font-black uppercase tracking-widest text-[#93876f]">{t('servicesPage.flightPredict.window')}</div>
-              <div className="text-[13px] font-black text-[#1a1a1a]">{d.bestBookingWindow}</div>
+            <div className="bg-[#eef2f5] border border-[#dfe7ec] rounded-xl p-3">
+              <div className="text-[10px] font-black uppercase tracking-widest text-[#697d95]">{t('servicesPage.flightPredict.window')}</div>
+              <div className="text-[13px] font-black text-[#252a31]">{d.bestBookingWindow}</div>
             </div>
-            {d.advice && <p className="text-[12px] font-medium text-[#5c5245] leading-snug">{d.advice}</p>}
+            {d.advice && <p className="text-[12px] font-medium text-[#4a5867] leading-snug">{d.advice}</p>}
           </div>
         )}
       </div>
@@ -355,8 +355,8 @@ function HotelPredict() {
           <div className="space-y-2.5 pt-1">
             <div className="flex items-center justify-between"><TrendBadge trend={d.trend} /></div>
             <PriceRange data={d} unit={t('servicesPage.hotelPredict.perNight')} />
-            {d.areaTip && <p className="text-[12px] font-medium text-[#5c5245] leading-snug">📍 {d.areaTip}</p>}
-            {d.advice && <p className="text-[12px] font-medium text-[#5c5245] leading-snug">{d.advice}</p>}
+            {d.areaTip && <p className="text-[12px] font-medium text-[#4a5867] leading-snug">📍 {d.areaTip}</p>}
+            {d.advice && <p className="text-[12px] font-medium text-[#4a5867] leading-snug">{d.advice}</p>}
           </div>
         )}
       </div>
@@ -374,12 +374,12 @@ function BookableCard({ icon: Icon, title, desc, accent, message }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
-      className="group bg-white border border-[#e6dcc3] rounded-2xl shadow-soft p-5 lift flex flex-col">
+      className="group bg-white border border-[#dfe7ec] rounded-2xl shadow-soft p-5 lift flex flex-col">
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${accent}`}>
         <Icon className="w-6 h-6" />
       </div>
-      <h3 className="text-[16px] font-black text-[#1a1a1a] leading-tight mb-1">{title}</h3>
-      <p className="text-[13px] text-[#5c5245] font-medium leading-snug mb-4 flex-1">{desc}</p>
+      <h3 className="text-[16px] font-black text-[#252a31] leading-tight mb-1">{title}</h3>
+      <p className="text-[13px] text-[#4a5867] font-medium leading-snug mb-4 flex-1">{desc}</p>
       {WHATSAPP_CONFIGURED ? (
         <a href={whatsappLink(message)} target="_blank" rel="noopener noreferrer"
           className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5b] text-white font-black text-[13px] rounded-xl py-2.5 px-4 shadow-soft transition active:scale-95">
@@ -406,20 +406,20 @@ export default function Services() {
 
   const bookables = [
     { icon: ShieldCheck, accent: 'bg-[#f0fdf4] text-[#008009]', title: t('servicesPage.insurance.title'), desc: t('servicesPage.insurance.desc'), message: 'Hi MAFTRAVEL! I want a travel insurance quote.' },
-    { icon: Wifi,        accent: 'bg-[#f0f5ff] text-[#2f6395]', title: t('servicesPage.esim.title'),      desc: t('servicesPage.esim.desc'),      message: 'Hi MAFTRAVEL! I want a travel eSIM.' },
-    { icon: Car,         accent: 'bg-[#fff7e6] text-[#b8860b]', title: t('servicesPage.transfer.title'),  desc: t('servicesPage.transfer.desc'),  message: 'Hi MAFTRAVEL! I want to book an airport transfer.' },
+    { icon: Wifi,        accent: 'bg-[#e8f4fd] text-[#0172cb]', title: t('servicesPage.esim.title'),      desc: t('servicesPage.esim.desc'),      message: 'Hi MAFTRAVEL! I want a travel eSIM.' },
+    { icon: Car,         accent: 'bg-[#e6f6f3] text-[#008f77]', title: t('servicesPage.transfer.title'),  desc: t('servicesPage.transfer.desc'),  message: 'Hi MAFTRAVEL! I want to book an airport transfer.' },
     { icon: Armchair,    accent: 'bg-[#fdf3dc] text-[#8a5c17]', title: t('servicesPage.lounge.title'),    desc: t('servicesPage.lounge.desc'),    message: 'Hi MAFTRAVEL! I want an airport lounge pass.' },
   ];
 
   return (
-    <div className="bg-[#faf6ed] min-h-screen">
+    <div className="bg-[#f5f7f9] min-h-screen">
       {/* Hero */}
       <section className="relative aurora-bg text-white overflow-hidden">
         <div className="film-grain" />
         <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-10">
           <div className="badge-editorial inline-flex px-3.5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-[#e6c988]" /> {t('servicesPage.hero.badge')}
+            <Sparkles className="w-3.5 h-3.5 text-[#61d1bf]" /> {t('servicesPage.hero.badge')}
           </div>
           <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-[-0.03em] leading-[1.05] mb-2 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
             {t('servicesPage.hero.title1')} <span className="italic font-medium text-gradient-gold gold-animate">{t('servicesPage.hero.title2')}</span>
@@ -434,7 +434,7 @@ export default function Services() {
           <div className="eyebrow-lux mb-1">
             <Sparkles className="w-3.5 h-3.5" /> {t('servicesPage.aiSection')}
           </div>
-          <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('servicesPage.aiSectionSub')}</h2>
+          <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31]">{t('servicesPage.aiSectionSub')}</h2>
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           <VisaChecker />
@@ -451,7 +451,7 @@ export default function Services() {
           <div className="eyebrow-lux mb-1">
             <TrendingUp className="w-3.5 h-3.5" /> {t('servicesPage.bookSection')}
           </div>
-          <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a]">{t('servicesPage.bookSectionSub')}</h2>
+          <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31]">{t('servicesPage.bookSectionSub')}</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {bookables.map((b, i) => <BookableCard key={i} {...b} />)}

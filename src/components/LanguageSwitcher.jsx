@@ -123,17 +123,17 @@ export default function LanguageSwitcher({ align = 'right', showName = true, ful
                 key={l.code}
                 onClick={() => choose(l.code)}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-premium ${
-                  lang === l.code ? 'bg-[#cf9c3f]/15' : 'hover:bg-white/[0.06]'
+                  lang === l.code ? 'bg-[#009882]/15' : 'hover:bg-white/[0.06]'
                 }`}
               >
                 <span className="text-[18px] leading-none w-6 text-center">{l.flag}</span>
                 <span className="flex-1 min-w-0">
-                  <span className={`block text-[13px] font-bold truncate ${lang === l.code ? 'text-[#cf9c3f]' : 'text-white'}`}>
+                  <span className={`block text-[13px] font-bold truncate ${lang === l.code ? 'text-[#009882]' : 'text-white'}`}>
                     {l.native}
                   </span>
                   <span className="block text-[11px] text-white/40 truncate">{l.name}</span>
                 </span>
-                {lang === l.code && <Check className="w-4 h-4 text-[#cf9c3f] shrink-0" />}
+                {lang === l.code && <Check className="w-4 h-4 text-[#009882] shrink-0" />}
               </button>
             ))}
           </div>

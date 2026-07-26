@@ -58,16 +58,16 @@ function DestinationCard({ dest, days, budget }) {
 
   return (
     <div className={`group card-sheen bg-white border rounded-2xl overflow-hidden flex flex-col lift shadow-soft ${
-      dest.fits ? 'border-[#cfe3d2]' : 'border-[#e6dcc3] opacity-80 hover:opacity-100'
+      dest.fits ? 'border-[#cfe3d2]' : 'border-[#dfe7ec] opacity-80 hover:opacity-100'
     }`}>
       <div className="relative">
         <SmartImage src={heroFor(dest.city)} alt={dest.city} aspect="aspect-[16/10]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-transparent pointer-events-none" />
-        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[10px] font-black text-[#003580] shadow-soft">
+        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[10px] font-black text-[#252a31] shadow-soft">
           {regionLabel}
         </span>
         <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-black shadow-float ${
-          dest.fits ? 'bg-[#2e7d4f] text-white' : 'bg-[#d9a43e] text-[#1a1a1a]'
+          dest.fits ? 'bg-[#2e7d4f] text-white' : 'bg-[#00a58e] text-white'
         }`}>
           {dest.fits ? t('whereToGo.card.fits') : `+${usd(Math.abs(dest.spare))}`}
         </span>
@@ -78,33 +78,33 @@ function DestinationCard({ dest, days, budget }) {
       </div>
 
       <div className="p-4 flex flex-col flex-1">
-        <p className="text-[12px] text-[#5c5245] leading-snug mb-3">{dest.blurb}</p>
+        <p className="text-[12px] text-[#4a5867] leading-snug mb-3">{dest.blurb}</p>
 
         <div className="flex flex-wrap gap-1.5 mb-3">
           {dest.tags.map(tag => (
-            <span key={tag} className="text-[10px] font-bold text-[#2f6395] bg-[#f0f5ff] rounded-full px-2 py-0.5">#{tag}</span>
+            <span key={tag} className="text-[10px] font-bold text-[#0172cb] bg-[#e8f4fd] rounded-full px-2 py-0.5">#{tag}</span>
           ))}
         </div>
 
         {/* Cost breakdown */}
-        <div className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-3 mb-3 text-[11px] font-bold text-[#5c5245]">
+        <div className="bg-[#eef2f5] border border-[#dfe7ec] rounded-xl p-3 mb-3 text-[11px] font-bold text-[#4a5867]">
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5"><Plane className="w-3 h-3 text-[#2f6395]" /> {t('whereToGo.card.flight')}</span>
+            <span className="flex items-center gap-1.5"><Plane className="w-3 h-3 text-[#0172cb]" /> {t('whereToGo.card.flight')}</span>
             <span>{usd(dest.flight)}</span>
           </div>
           <div className="flex items-center justify-between mt-1.5">
-            <span className="flex items-center gap-1.5"><Hotel className="w-3 h-3 text-[#2f6395]" /> {days} {t('whereToGo.card.daysOnSite')}</span>
+            <span className="flex items-center gap-1.5"><Hotel className="w-3 h-3 text-[#0172cb]" /> {days} {t('whereToGo.card.daysOnSite')}</span>
             <span>{usd(dest.ground)}</span>
           </div>
           <div className="hairline my-2" />
-          <div className="flex items-center justify-between text-[#1a1a1a]">
+          <div className="flex items-center justify-between text-[#252a31]">
             <span className="font-black">{t('whereToGo.card.total')}</span>
             <span className="text-[15px] font-black text-gradient">{usd(dest.total)}</span>
           </div>
         </div>
 
         <button onClick={handlePlan}
-          className="mt-auto w-full py-2.5 rounded-xl bg-[#003580] text-white text-[12px] font-black flex items-center justify-center gap-1.5 hover:bg-[#2f6395] transition-premium active:scale-[0.98] shadow-soft group-hover:shadow-float">
+          className="mt-auto w-full py-2.5 rounded-xl bg-[#252a31] text-white text-[12px] font-black flex items-center justify-center gap-1.5 hover:bg-[#0172cb] transition-premium active:scale-[0.98] shadow-soft group-hover:shadow-float">
           <Sparkles className="w-3.5 h-3.5" /> {t('whereToGo.card.plan')} <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
@@ -141,15 +141,15 @@ export default function WhereToGo() {
   const filtersActive = region || vibe;
 
   return (
-    <div className="bg-[#faf6ed] min-h-screen">
+    <div className="bg-[#f5f7f9] min-h-screen">
 
       {/* Hero + search */}
-      <section className="relative bg-[#002250] text-white overflow-hidden">
+      <section className="relative bg-[#1c2127] text-white overflow-hidden">
         <div className="absolute inset-0 opacity-30 pointer-events-none animate-float"
-             style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #2f6395 0%, transparent 45%), radial-gradient(circle at 80% 70%, #cf9c3f 0%, transparent 38%)' }} />
+             style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #0172cb 0%, transparent 45%), radial-gradient(circle at 80% 70%, #009882 0%, transparent 38%)' }} />
         <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#cf9c3f] text-[#002250] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#009882] text-[#1c2127] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <Compass className="w-3.5 h-3.5" /> {t('whereToGo.hero.badge')}
           </div>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-[1.05] mb-2">
@@ -162,36 +162,36 @@ export default function WhereToGo() {
           {/* Search card */}
           <div className="bg-white rounded-2xl p-4 md:p-5 flex flex-col md:flex-row md:items-end gap-4 max-w-3xl shadow-lift">
             <label className="flex-1">
-              <span className="flex items-center gap-1.5 text-[12px] font-black text-[#1a1a1a] mb-1.5">
-                <Wallet className="w-3.5 h-3.5 text-[#2f6395]" /> {t('whereToGo.hero.budgetLabel')}
+              <span className="flex items-center gap-1.5 text-[12px] font-black text-[#252a31] mb-1.5">
+                <Wallet className="w-3.5 h-3.5 text-[#0172cb]" /> {t('whereToGo.hero.budgetLabel')}
               </span>
-              <div className="flex items-center gap-2 px-3.5 py-3 rounded-xl border-2 border-[#e6dcc3] focus-within:border-[#2f6395] focus-within:ring-4 focus-within:ring-[#2f6395]/10 transition-premium">
-                <span className="text-[16px] font-black text-[#5c5245]">$</span>
+              <div className="flex items-center gap-2 px-3.5 py-3 rounded-xl border-2 border-[#dfe7ec] focus-within:border-[#0172cb] focus-within:ring-4 focus-within:ring-[#0172cb]/10 transition-premium">
+                <span className="text-[16px] font-black text-[#4a5867]">$</span>
                 <input type="number" min="0" step="100" value={budget}
                   onChange={e => setBudget(Math.max(0, Number(e.target.value)))}
-                  className="flex-1 w-full text-[16px] font-black text-[#1a1a1a] outline-none" />
+                  className="flex-1 w-full text-[16px] font-black text-[#252a31] outline-none" />
               </div>
             </label>
 
             <div>
-              <span className="flex items-center gap-1.5 text-[12px] font-black text-[#1a1a1a] mb-1.5">
-                <Calendar className="w-3.5 h-3.5 text-[#2f6395]" /> {t('whereToGo.hero.daysLabel')}
+              <span className="flex items-center gap-1.5 text-[12px] font-black text-[#252a31] mb-1.5">
+                <Calendar className="w-3.5 h-3.5 text-[#0172cb]" /> {t('whereToGo.hero.daysLabel')}
               </span>
               <div className="flex items-center gap-2">
                 <button onClick={() => setDays(v => Math.max(1, v - 1))}
-                  className="w-10 h-[46px] rounded-xl border-2 border-[#e6dcc3] flex items-center justify-center hover:border-[#2f6395] hover:bg-[#f0f5ff] transition-premium active:scale-90">
-                  <Minus className="w-4 h-4 text-[#5c5245]" />
+                  className="w-10 h-[46px] rounded-xl border-2 border-[#dfe7ec] flex items-center justify-center hover:border-[#0172cb] hover:bg-[#e8f4fd] transition-premium active:scale-90">
+                  <Minus className="w-4 h-4 text-[#4a5867]" />
                 </button>
-                <span className="text-[16px] font-black text-[#1a1a1a] w-8 text-center tabular-nums">{days}</span>
+                <span className="text-[16px] font-black text-[#252a31] w-8 text-center tabular-nums">{days}</span>
                 <button onClick={() => setDays(v => Math.min(30, v + 1))}
-                  className="w-10 h-[46px] rounded-xl border-2 border-[#e6dcc3] flex items-center justify-center hover:border-[#2f6395] hover:bg-[#f0f5ff] transition-premium active:scale-90">
-                  <Plus className="w-4 h-4 text-[#5c5245]" />
+                  className="w-10 h-[46px] rounded-xl border-2 border-[#dfe7ec] flex items-center justify-center hover:border-[#0172cb] hover:bg-[#e8f4fd] transition-premium active:scale-90">
+                  <Plus className="w-4 h-4 text-[#4a5867]" />
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 px-3.5 py-3 rounded-xl bg-[#f6f1e4] border border-[#e6dcc3] text-[12px] font-bold text-[#5c5245]">
-              <Plane className="w-3.5 h-3.5 text-[#2f6395] rotate-45" /> {t('whereToGo.hero.fromPrefix')} {ORIGIN.city} ({ORIGIN.code})
+            <div className="flex items-center gap-1.5 px-3.5 py-3 rounded-xl bg-[#eef2f5] border border-[#dfe7ec] text-[12px] font-bold text-[#4a5867]">
+              <Plane className="w-3.5 h-3.5 text-[#0172cb] rotate-45" /> {t('whereToGo.hero.fromPrefix')} {ORIGIN.city} ({ORIGIN.code})
             </div>
           </div>
         </div>
@@ -207,8 +207,8 @@ export default function WhereToGo() {
               <button key={v.key} onClick={() => setVibe(vibe === v.key ? null : v.key)}
                 className={`px-3.5 py-1.5 rounded-full text-[12px] font-bold border transition-premium ${
                   vibe === v.key
-                    ? 'bg-[#003580] text-white border-[#003580] shadow-float'
-                    : 'bg-white text-[#5c5245] border-[#e6dcc3] hover:border-[#2f6395] hover:text-[#003580] shadow-soft'
+                    ? 'bg-[#252a31] text-white border-[#252a31] shadow-float'
+                    : 'bg-white text-[#4a5867] border-[#dfe7ec] hover:border-[#0172cb] hover:text-[#252a31] shadow-soft'
                 }`}>
                 {v.emoji} {t(`whereToGo.vibes.${v.key}`)}
               </button>
@@ -219,8 +219,8 @@ export default function WhereToGo() {
               <button key={r.value} onClick={() => setRegion(region === r.value ? null : r.value)}
                 className={`px-3.5 py-1.5 rounded-full text-[11px] font-bold border transition-premium ${
                   region === r.value
-                    ? 'bg-[#2f6395] text-white border-[#2f6395] shadow-float'
-                    : 'bg-white text-[#93876f] border-[#e6dcc3] hover:border-[#2f6395] hover:text-[#2f6395]'
+                    ? 'bg-[#0172cb] text-white border-[#0172cb] shadow-float'
+                    : 'bg-white text-[#697d95] border-[#dfe7ec] hover:border-[#0172cb] hover:text-[#0172cb]'
                 }`}>
                 {t(`whereToGo.regions.${r.tKey}`)}
               </button>
@@ -235,12 +235,12 @@ export default function WhereToGo() {
         </div>
 
         <div className="flex items-baseline gap-2 mb-5">
-          <h2 className="text-[18px] font-black text-[#1a1a1a]">
+          <h2 className="text-[18px] font-black text-[#252a31]">
             {affordable.length > 0
               ? `${affordable.length} ${affordable.length === 1 ? t('whereToGo.results.headingOne') : t('whereToGo.results.headingMany')}`
               : t('whereToGo.results.headingNone')}
           </h2>
-          <span className="text-[13px] text-[#93876f] font-medium">· {budget ? usd(budget) : '—'} · {days} {t('whereToGo.results.daysSuffix')}</span>
+          <span className="text-[13px] text-[#697d95] font-medium">· {budget ? usd(budget) : '—'} · {days} {t('whereToGo.results.daysSuffix')}</span>
         </div>
 
         {affordable.length > 0 ? (
@@ -252,20 +252,20 @@ export default function WhereToGo() {
             ))}
           </div>
         ) : (
-          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-10 text-center mb-8 shadow-soft">
-            <div className="w-16 h-16 rounded-2xl bg-[#f0f5ff] flex items-center justify-center mx-auto mb-4">
-              <Compass className="w-8 h-8 text-[#2f6395] animate-float" />
+          <div className="bg-white border border-[#dfe7ec] rounded-2xl p-10 text-center mb-8 shadow-soft">
+            <div className="w-16 h-16 rounded-2xl bg-[#e8f4fd] flex items-center justify-center mx-auto mb-4">
+              <Compass className="w-8 h-8 text-[#0172cb] animate-float" />
             </div>
-            <p className="text-[15px] font-black text-[#1a1a1a] mb-1">{t('whereToGo.results.emptyTitle')}</p>
-            <p className="text-[13px] text-[#93876f]">{t('whereToGo.results.emptySub')}</p>
+            <p className="text-[15px] font-black text-[#252a31] mb-1">{t('whereToGo.results.emptyTitle')}</p>
+            <p className="text-[13px] text-[#697d95]">{t('whereToGo.results.emptySub')}</p>
           </div>
         )}
 
         {/* Near misses */}
         {nearMiss.length > 0 && (
           <>
-            <h2 className="text-[18px] font-black text-[#1a1a1a] mt-10 mb-1">{t('whereToGo.results.nearMissTitle')}</h2>
-            <p className="text-[13px] text-[#93876f] mb-5">{t('whereToGo.results.nearMissSub')}</p>
+            <h2 className="text-[18px] font-black text-[#252a31] mt-10 mb-1">{t('whereToGo.results.nearMissTitle')}</h2>
+            <p className="text-[13px] text-[#697d95] mb-5">{t('whereToGo.results.nearMissSub')}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {nearMiss.map((dest, i) => (
                 <div key={dest.city} className="page-fade" style={{ animationDelay: `${Math.min(i, 8) * 0.05}s` }}>
@@ -276,7 +276,7 @@ export default function WhereToGo() {
           </>
         )}
 
-        <p className="flex items-center gap-1.5 text-[11px] text-[#93876f] mt-8">
+        <p className="flex items-center gap-1.5 text-[11px] text-[#697d95] mt-8">
           <CheckCircle2 className="w-3.5 h-3.5" />
           {t('whereToGo.results.disclaimer')}
         </p>

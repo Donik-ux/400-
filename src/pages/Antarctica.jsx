@@ -215,7 +215,7 @@ export default function Antarctica() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#faf6ed] -mt-[64px]">
+    <div className="min-h-screen bg-[#f5f7f9] -mt-[64px]">
 
       {/* ─── HERO — the ice at night ─────────────────────────────── */}
       <section className="relative aurora-bg text-white overflow-hidden pt-[120px] pb-20 md:pb-28">
@@ -225,7 +225,7 @@ export default function Antarctica() {
         <div className="absolute inset-0 sheen-top pointer-events-none" />
         <GoldDust className="absolute inset-0" density={0.8} />
         <div className="absolute -left-32 top-10 w-96 h-96 rounded-full bg-[#7cc4d9]/25 blur-3xl pointer-events-none animate-float" />
-        <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#d9a43e]/12 blur-3xl pointer-events-none" />
+        <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#00a58e]/12 blur-3xl pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <motion.div
@@ -243,7 +243,7 @@ export default function Antarctica() {
               {t('antarctica.hero.subtitle')}
             </p>
             <div className="flex flex-wrap gap-3">
-              <button onClick={scrollToBuilder} className="btn-gold px-7 py-3.5 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
+              <button onClick={scrollToBuilder} className="btn-gold px-7 py-3.5 rounded-xl text-[#252a31] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
                 <Sparkles className="w-4 h-4" /> {t('antarctica.hero.ctaPlan')}
               </button>
             </div>
@@ -258,7 +258,7 @@ export default function Antarctica() {
             <motion.div key={i}
               initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.06 }}
-              className="relative overflow-hidden bg-gradient-to-br from-[#00214f] to-[#001427] rounded-2xl shadow-lift p-4 md:p-5 text-center lift">
+              className="relative overflow-hidden bg-gradient-to-br from-[#20262e] to-[#12161a] rounded-2xl shadow-lift p-4 md:p-5 text-center lift">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#7cc4d9]/70 to-transparent" />
               <div className="relative w-10 h-10 mx-auto rounded-xl bg-[#7cc4d9]/12 text-[#7cc4d9] flex items-center justify-center mb-2 ring-1 ring-[#7cc4d9]/25">
                 <s.icon className="w-5 h-5" />
@@ -272,14 +272,14 @@ export default function Antarctica() {
 
       {/* ─── EXPEDITION BUILDER ──────────────────────────────────── */}
       <section id="expedition-builder" className="max-w-7xl mx-auto px-4 md:px-8 pt-12 scroll-mt-24 reveal">
-        <div className="relative overflow-hidden bg-white rounded-3xl border border-[#e6dcc3] shadow-float">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#7cc4d9] via-[#d9a43e] to-[#7cc4d9]" />
+        <div className="relative overflow-hidden bg-white rounded-3xl border border-[#dfe7ec] shadow-float">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#7cc4d9] via-[#00a58e] to-[#7cc4d9]" />
           <div className="p-5 md:p-8">
             <div className="eyebrow-lux mb-2">
               <Compass className="w-3.5 h-3.5" /> {t('antarctica.builder.eyebrow')}
             </div>
-            <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('antarctica.builder.heading')}</h2>
-            <p className="text-[14px] text-[#5c5245] font-medium max-w-2xl mt-2 mb-6">{t('antarctica.builder.sub')}</p>
+            <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#252a31] tracking-tight">{t('antarctica.builder.heading')}</h2>
+            <p className="text-[14px] text-[#4a5867] font-medium max-w-2xl mt-2 mb-6">{t('antarctica.builder.sub')}</p>
 
             {/* From / return cities */}
             <div className="grid md:grid-cols-2 gap-3 mb-5">
@@ -300,32 +300,32 @@ export default function Antarctica() {
             </div>
 
             {/* Duration 8 / 9 / 10 days */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-2">
-              <Calendar className="w-3.5 h-3.5 text-[#2f6395]" /> {t('antarctica.builder.durationLabel')}
+            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-2">
+              <Calendar className="w-3.5 h-3.5 text-[#0172cb]" /> {t('antarctica.builder.durationLabel')}
             </div>
             <div className="grid grid-cols-3 gap-2 md:gap-3 mb-6">
               {DURATIONS.map((d) => (
                 <button key={d} type="button" onClick={() => setDays(d)}
                   className={`rounded-xl border-2 px-3 py-3 text-left transition active:scale-[0.98] ${
                     days === d
-                      ? 'border-[#2f6395] bg-[#f0f5ff] ring-4 ring-[#2f6395]/10 shadow-soft'
-                      : 'border-[#e6dcc3] bg-white hover:border-[#2f6395]/50'
+                      ? 'border-[#0172cb] bg-[#e8f4fd] ring-4 ring-[#0172cb]/10 shadow-soft'
+                      : 'border-[#dfe7ec] bg-white hover:border-[#0172cb]/50'
                   }`}>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="font-display text-[26px] font-bold text-[#003580] leading-none">{d}</span>
-                    <span className="text-[11px] font-black uppercase tracking-wider text-[#93876f]">{t('antarctica.builder.daysWord')}</span>
+                    <span className="font-display text-[26px] font-bold text-[#252a31] leading-none">{d}</span>
+                    <span className="text-[11px] font-black uppercase tracking-wider text-[#697d95]">{t('antarctica.builder.daysWord')}</span>
                   </div>
-                  <div className="text-[11px] font-bold text-[#5c5245] mt-1 leading-snug">{t(`antarctica.builder.d${d}`)}</div>
+                  <div className="text-[11px] font-bold text-[#4a5867] mt-1 leading-snug">{t(`antarctica.builder.d${d}`)}</div>
                 </button>
               ))}
             </div>
 
             {/* Departure dates — fare calendar */}
             <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
-              <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f]">
-                <CalendarDays className="w-3.5 h-3.5 text-[#2f6395]" /> {t('antarctica.builder.datesLabel')}
+              <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95]">
+                <CalendarDays className="w-3.5 h-3.5 text-[#0172cb]" /> {t('antarctica.builder.datesLabel')}
               </div>
-              <span className="text-[11px] font-bold text-[#93876f]">{t('antarctica.builder.datesHint')}</span>
+              <span className="text-[11px] font-bold text-[#697d95]">{t('antarctica.builder.datesHint')}</span>
             </div>
             {/* pt-2.5 keeps the floating "best price" badge (-top-2) from being
                 clipped by the overflow-x scroll container */}
@@ -342,11 +342,11 @@ export default function Antarctica() {
                     onClick={() => setPickedIdx(i)}
                     className={`relative shrink-0 snap-start w-[136px] rounded-xl border-2 px-3 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
                       isSel
-                        ? 'border-[#2f6395] bg-[#f0f5ff] ring-4 ring-[#2f6395]/10 shadow-soft'
-                        : 'border-[#e6dcc3] bg-white hover:border-[#2f6395]/50'
+                        ? 'border-[#0172cb] bg-[#e8f4fd] ring-4 ring-[#0172cb]/10 shadow-soft'
+                        : 'border-[#dfe7ec] bg-white hover:border-[#0172cb]/50'
                     }`}>
                     {i === bestValueIdx ? (
-                      <span className="absolute -top-2 left-2 bg-[#7cc4d9] text-[#00214f] text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft flex items-center gap-0.5">
+                      <span className="absolute -top-2 left-2 bg-[#7cc4d9] text-[#20262e] text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft flex items-center gap-0.5">
                         <Wand2 className="w-2.5 h-2.5" /> {t('antarctica.builder.bestValue')}
                       </span>
                     ) : i === cheapestIdx && (
@@ -355,25 +355,25 @@ export default function Antarctica() {
                       </span>
                     )}
                     <div className="flex items-center justify-between gap-1">
-                      <div className="text-[10px] font-black uppercase tracking-wider text-[#2f6395]">
+                      <div className="text-[10px] font-black uppercase tracking-wider text-[#0172cb]">
                         {o.off === 0 ? t('antarctica.builder.today') : inDaysLabel(o.off)}
                       </div>
                       {WeatherIcon && (
-                        <div className="flex items-center gap-0.5 text-[#5c5245]" title={wmo.label}>
+                        <div className="flex items-center gap-0.5 text-[#4a5867]" title={wmo.label}>
                           <WeatherIcon className="w-3 h-3" />
                           <span className="text-[10px] font-bold">{Math.round(weather.tempMax)}°</span>
                         </div>
                       )}
                     </div>
-                    <div className="text-[15px] font-black text-[#1a1a1a] mt-0.5">
+                    <div className="text-[15px] font-black text-[#252a31] mt-0.5">
                       {fmtDay(o.date, { day: 'numeric', month: 'short' })}
-                      <span className="text-[11px] font-bold text-[#93876f] ml-1">{fmtDay(o.date, { weekday: 'short' })}</span>
+                      <span className="text-[11px] font-bold text-[#697d95] ml-1">{fmtDay(o.date, { weekday: 'short' })}</span>
                     </div>
-                    <div className="text-[15px] font-black text-[#003580] mt-1 whitespace-nowrap">{fmtCompact(fare)}</div>
+                    <div className="text-[15px] font-black text-[#252a31] mt-1 whitespace-nowrap">{fmtCompact(fare)}</div>
                     {saving > 0 && (
                       <>
                         <div className="text-[10.5px] font-black text-[#2e7d4f] mt-0.5 whitespace-nowrap">−{fmtCompact(saving)}</div>
-                        <div className="text-[9.5px] font-bold text-[#93876f] leading-tight">{t('antarctica.builder.saveVsToday')}</div>
+                        <div className="text-[9.5px] font-bold text-[#697d95] leading-tight">{t('antarctica.builder.saveVsToday')}</div>
                       </>
                     )}
                   </button>
@@ -394,30 +394,30 @@ export default function Antarctica() {
                 <button type="button"
                   onClick={() => setPickedIdx(null)}
                   className="mt-3 w-full flex items-center gap-2.5 rounded-xl border border-[#7cc4d9]/50 bg-[#f0f9fb] px-3.5 py-2.5 text-left hover:bg-[#e3f3f7] transition">
-                  <Wand2 className="w-4 h-4 text-[#2f6395] shrink-0" />
+                  <Wand2 className="w-4 h-4 text-[#0172cb] shrink-0" />
                   <span className="text-[12px] font-bold text-[#00435c] leading-snug">{msg}</span>
                 </button>
               );
             })()}
 
             {Boolean(cleanCity(fromCity)) && aiFareNote?.advice && (
-              <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#fff7e6] border border-[#e6c988]/60 px-3.5 py-2.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#a45e00] shrink-0 mt-0.5" />
+              <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#e6f6f3] border border-[#61d1bf]/60 px-3.5 py-2.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#007f6d] shrink-0 mt-0.5" />
                 <span className="text-[11.5px] font-semibold text-[#7c4a00] leading-snug">{aiFareNote.advice}</span>
               </div>
             )}
 
             {/* Summary + CTA */}
-            <div className="mt-5 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#00214f] to-[#001427] text-white p-5 md:p-6 shadow-float">
+            <div className="mt-5 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#20262e] to-[#12161a] text-white p-5 md:p-6 shadow-float">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#7cc4d9]/70 to-transparent" />
               <div className="relative flex flex-col md:flex-row md:items-center gap-5 justify-between">
                 <div className="min-w-0">
                   <div className="text-[10px] font-black uppercase tracking-widest text-[#7cc4d9] mb-1.5">{t('antarctica.builder.summaryLabel')}</div>
                   <div className="flex items-center gap-2 text-[15px] md:text-[17px] font-black flex-wrap">
                     <span className={fromClean ? '' : 'text-white/40'}>{fromClean || t('antarctica.builder.yourCity')}</span>
-                    <ArrowRight className="w-4 h-4 text-[#d9a43e] shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#00a58e] shrink-0" />
                     <span className="text-gradient-gold">Antarctica</span>
-                    <ArrowRight className="w-4 h-4 text-[#d9a43e] shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#00a58e] shrink-0" />
                     <span className={backClean ? '' : 'text-white/40'}>{backClean || t('antarctica.builder.yourCity')}</span>
                   </div>
                   <div className="text-[12px] font-bold text-white/60 mt-1.5">
@@ -431,7 +431,7 @@ export default function Antarctica() {
                     <div className="text-[10.5px] font-bold text-white/50 max-w-[220px]">{t('antarctica.builder.perPerson')}</div>
                   </div>
                   <div className="flex flex-col items-stretch gap-1.5">
-                    <button onClick={() => buildPlan()} className="btn-gold px-6 py-3.5 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center justify-center gap-2 active:scale-95 transition">
+                    <button onClick={() => buildPlan()} className="btn-gold px-6 py-3.5 rounded-xl text-[#252a31] font-black text-[14px] flex items-center justify-center gap-2 active:scale-95 transition">
                       <Sparkles className="w-4 h-4" /> {t('antarctica.builder.cta')}
                     </button>
                     <span className="text-[10.5px] font-bold text-white/50 text-center">{t('antarctica.builder.ctaHint')}</span>
@@ -448,34 +448,34 @@ export default function Antarctica() {
         <div className="eyebrow-lux mb-2">
           <Compass className="w-3.5 h-3.5" /> {t('antarctica.routes.eyebrow')}
         </div>
-        <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight">{t('antarctica.routes.heading')}</h2>
-        <p className="text-[14px] text-[#5c5245] font-medium max-w-2xl mt-2 mb-7">{t('antarctica.routes.sub')}</p>
+        <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#252a31] tracking-tight">{t('antarctica.routes.heading')}</h2>
+        <p className="text-[14px] text-[#4a5867] font-medium max-w-2xl mt-2 mb-7">{t('antarctica.routes.sub')}</p>
 
         <div className="grid md:grid-cols-3 gap-4">
           {routes.map((r, i) => (
             <motion.div key={i}
               initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.06 }}
-              className={`group lift card-sheen bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] flex flex-col ${i === 2 ? 'edge-gilded' : 'shadow-soft'}`}>
+              className={`group lift card-sheen bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] flex flex-col ${i === 2 ? 'edge-gilded' : 'shadow-soft'}`}>
               <div className="relative h-44 overflow-hidden">
                 <img src={r.img} alt={r.title} loading="lazy" onError={handleImgError}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
-                <span className="absolute top-2.5 left-2.5 bg-[#d9a43e] text-[#1a1a1a] text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">{r.tag}</span>
+                <span className="absolute top-2.5 left-2.5 bg-[#00a58e] text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">{r.tag}</span>
                 <div className="absolute bottom-2.5 left-3 flex items-center gap-1.5 text-white">
-                  <r.icon className="w-4 h-4 text-[#e6c988]" />
+                  <r.icon className="w-4 h-4 text-[#61d1bf]" />
                   <span className="text-[15px] font-black [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">{r.title}</span>
                 </div>
               </div>
               <div className="p-4 flex flex-col flex-1">
-                <p className="text-[13px] text-[#5c5245] font-medium leading-relaxed flex-1">{r.desc}</p>
-                <div className="flex items-end justify-between border-t border-[#efe6d2] pt-3 mt-4">
+                <p className="text-[13px] text-[#4a5867] font-medium leading-relaxed flex-1">{r.desc}</p>
+                <div className="flex items-end justify-between border-t border-[#e8edf1] pt-3 mt-4">
                   <div>
-                    <div className="text-[10px] text-[#93876f] font-bold uppercase">{r.days} {t('antarctica.routes.daysLabel')} · {t('antarctica.routes.fromLabel')}</div>
-                    <div className="text-[20px] font-black text-[#003580] whitespace-nowrap">{fmtCompact(r.price)}</div>
+                    <div className="text-[10px] text-[#697d95] font-bold uppercase">{r.days} {t('antarctica.routes.daysLabel')} · {t('antarctica.routes.fromLabel')}</div>
+                    <div className="text-[20px] font-black text-[#252a31] whitespace-nowrap">{fmtCompact(r.price)}</div>
                   </div>
                   <button onClick={() => buildPlan({ days: r.days, price: r.price })}
-                    className="text-[12px] font-black text-white bg-[#2f6395] hover:bg-[#005fa3] px-3 py-2 rounded-lg transition shadow-soft flex items-center gap-1 active:scale-95">
+                    className="text-[12px] font-black text-white bg-[#0172cb] hover:bg-[#015aa3] px-3 py-2 rounded-lg transition shadow-soft flex items-center gap-1 active:scale-95">
                     {t('antarctica.hero.ctaPlan').split(' ')[0]} <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>
@@ -487,7 +487,7 @@ export default function Antarctica() {
 
       {/* ─── SEASON ──────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-6 reveal">
-        <div className="relative overflow-hidden bg-gradient-to-br from-[#00214f] to-[#001427] rounded-3xl p-7 md:p-10 text-white shadow-float">
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#20262e] to-[#12161a] rounded-3xl p-7 md:p-10 text-white shadow-float">
           <div className="pattern-lux" />
           <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#7cc4d9]/20 blur-3xl pointer-events-none" />
           <div className="relative">
@@ -515,22 +515,22 @@ export default function Antarctica() {
             <div className="eyebrow-lux mb-2">
               <Check className="w-3.5 h-3.5" /> {t('antarctica.included.eyebrow')}
             </div>
-            <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#1a1a1a] tracking-tight mb-2">{t('antarctica.included.heading')}</h2>
-            <p className="text-[14px] text-[#5c5245] font-medium mb-6 max-w-xl">{t('antarctica.included.sub')}</p>
+            <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#252a31] tracking-tight mb-2">{t('antarctica.included.heading')}</h2>
+            <p className="text-[14px] text-[#4a5867] font-medium mb-6 max-w-xl">{t('antarctica.included.sub')}</p>
             <div className="grid sm:grid-cols-2 gap-2.5">
               {included.map((line, i) => (
-                <div key={i} className="flex items-start gap-2.5 bg-white border border-[#e6dcc3] rounded-xl px-3.5 py-3 shadow-soft">
+                <div key={i} className="flex items-start gap-2.5 bg-white border border-[#dfe7ec] rounded-xl px-3.5 py-3 shadow-soft">
                   <span className="mt-0.5 w-5 h-5 rounded-md bg-[#e9f3ea] text-[#2e7d4f] flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3" strokeWidth={3} />
                   </span>
-                  <span className="text-[12.5px] font-bold text-[#1a1a1a] leading-snug">{line}</span>
+                  <span className="text-[12.5px] font-bold text-[#252a31] leading-snug">{line}</span>
                 </div>
               ))}
             </div>
           </div>
           <div className="note-warn rounded-2xl p-6 shadow-soft">
             <div className="flex items-start gap-3">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#d9a43e] to-[#c08c33] text-[#1a1a1a] flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#00a58e] to-[#008f77] text-[#252a31] flex items-center justify-center shrink-0">
                 <Lightbulb className="w-5 h-5" />
               </div>
               <div>
@@ -551,7 +551,7 @@ export default function Antarctica() {
             <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-[-0.02em] mb-3 text-balance">{t('antarctica.cta.heading')}</h2>
             <p className="text-[14px] md:text-[15px] text-white/80 font-medium mb-7 leading-relaxed">{t('antarctica.cta.body')}</p>
             <div className="flex flex-wrap justify-center gap-3">
-              <button onClick={() => buildPlan()} className="btn-gold px-7 py-3.5 rounded-xl text-[#1a1a1a] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
+              <button onClick={() => buildPlan()} className="btn-gold px-7 py-3.5 rounded-xl text-[#252a31] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
                 <Sparkles className="w-4 h-4" /> {t('antarctica.cta.btnPlan')}
               </button>
             </div>

@@ -27,8 +27,8 @@ export const toast = {
 const STYLE = {
   success: { icon: CheckCircle, bar: 'bg-[#2e7d4f]',  iconCls: 'text-[#2e7d4f]', tint: 'bg-[#e9f3ea]'  },
   error:   { icon: AlertCircle, bar: 'bg-[#b3402e]',  iconCls: 'text-danger',    tint: 'bg-[#faeae6]'  },
-  info:    { icon: Info,        bar: 'bg-[#2f6395]',  iconCls: 'text-[#2f6395]', tint: 'bg-[#f0f5ff]'  },
-  ai:      { icon: Sparkles,    bar: 'bg-[#d9a43e]',  iconCls: 'text-[#a45e00]', tint: 'bg-[#fff7e6]'  },
+  info:    { icon: Info,        bar: 'bg-[#0172cb]',  iconCls: 'text-[#0172cb]', tint: 'bg-[#e8f4fd]'  },
+  ai:      { icon: Sparkles,    bar: 'bg-[#00a58e]',  iconCls: 'text-[#007f6d]', tint: 'bg-[#e6f6f3]'  },
 };
 
 const ToastItem = ({ t, onClose }) => {
@@ -52,17 +52,17 @@ const ToastItem = ({ t, onClose }) => {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, x: 80, transition: { duration: 0.2 } }}
       transition={{ type: 'spring', stiffness: 320, damping: 26 }}
-      className="bg-white border border-[#e6dcc3] rounded-2xl shadow-xl overflow-hidden flex min-w-[260px] max-w-sm pointer-events-auto"
+      className="bg-white border border-[#dfe7ec] rounded-2xl shadow-xl overflow-hidden flex min-w-[260px] max-w-sm pointer-events-auto"
       role="status"
     >
       <div className={`w-1.5 ${S.bar}`} />
       <div className={`p-3 flex items-start gap-3 flex-1 ${S.tint}`}>
         <div className={`mt-0.5 ${S.iconCls}`}><Icon className="w-5 h-5" /></div>
         <div className="flex-1 min-w-0">
-          <p className="text-[13.5px] font-black text-[#1a1a1a] leading-tight">{t.title}</p>
-          {t.description && <p className="text-[12px] font-semibold text-[#5c5245] mt-0.5 leading-snug">{t.description}</p>}
+          <p className="text-[13.5px] font-black text-[#252a31] leading-tight">{t.title}</p>
+          {t.description && <p className="text-[12px] font-semibold text-[#4a5867] mt-0.5 leading-snug">{t.description}</p>}
         </div>
-        <button onClick={onClose} className="p-1 -mr-1 rounded-md hover:bg-black/5 text-[#93876f] shrink-0" aria-label={tr('ui.toast.dismiss')}>
+        <button onClick={onClose} className="p-1 -mr-1 rounded-md hover:bg-black/5 text-[#697d95] shrink-0" aria-label={tr('ui.toast.dismiss')}>
           <X className="w-3.5 h-3.5" />
         </button>
       </div>

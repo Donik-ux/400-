@@ -77,7 +77,7 @@ export default function SmartImage({
       {/* Shimmer placeholder */}
       {!loaded && (
         <div
-          className="absolute inset-0 bg-gradient-to-r from-[#efe6d2] via-[#f6f1e4] to-[#efe6d2]"
+          className="absolute inset-0 bg-gradient-to-r from-[#e8edf1] via-[#eef2f5] to-[#e8edf1]"
           style={{
             backgroundSize: '200% 100%',
             animation: 'sm-shimmer 1.4s linear infinite',

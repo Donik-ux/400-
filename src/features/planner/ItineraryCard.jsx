@@ -24,13 +24,13 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
 
   return (
     <div
-      className="bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft lift page-fade"
+      className="bg-white border border-[#dfe7ec] rounded-2xl overflow-hidden shadow-soft lift page-fade"
       style={{ animationDelay: `${index * 0.07}s` }}
     >
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-[#003580] to-[#002250] px-5 py-4 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-[#252a31] to-[#1c2127] px-5 py-4 overflow-hidden">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 90% 10%, #2f6395 0%, transparent 55%)' }} />
+             style={{ backgroundImage: 'radial-gradient(circle at 90% 10%, #0172cb 0%, transparent 55%)' }} />
         <div className="relative flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-white/15 ring-1 ring-white/20 flex items-center justify-center shrink-0">
@@ -49,13 +49,13 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
       </div>
 
       {/* Place */}
-      <div className="flex items-center gap-2 px-5 py-3 bg-[#f6f1e4] border-b border-[#efe6d2]">
-        <MapPin className="w-3.5 h-3.5 text-[#2f6395] shrink-0" />
-        <span className="text-[13px] font-bold text-[#5c5245] truncate">{dayPlan.place}</span>
+      <div className="flex items-center gap-2 px-5 py-3 bg-[#eef2f5] border-b border-[#e8edf1]">
+        <MapPin className="w-3.5 h-3.5 text-[#0172cb] shrink-0" />
+        <span className="text-[13px] font-bold text-[#4a5867] truncate">{dayPlan.place}</span>
       </div>
 
       {/* Events */}
-      <div className="divide-y divide-[#f6f1e4]">
+      <div className="divide-y divide-[#eef2f5]">
         {hasEvents ? dayPlan.events.map((ev, i) => {
           const { emoji } = TYPE_CFG[ev.type] || TYPE_CFG.attraction;
           const mapsQuery = ev.address ? encodeURIComponent(ev.address) : null;
@@ -66,11 +66,11 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
             : null;
 
           return (
-            <div key={i} className="px-5 py-3.5 hover:bg-[#f6f1e4] transition-premium">
+            <div key={i} className="px-5 py-3.5 hover:bg-[#eef2f5] transition-premium">
               <div className="flex items-start gap-3">
                 {/* Time badge */}
                 <div className="shrink-0 mt-0.5">
-                  <span className="text-[10px] font-black text-[#2f6395] bg-[#f0f5ff] ring-1 ring-[#2f6395]/10 px-2 py-1 rounded-md whitespace-nowrap">
+                  <span className="text-[10px] font-black text-[#0172cb] bg-[#e8f4fd] ring-1 ring-[#0172cb]/10 px-2 py-1 rounded-md whitespace-nowrap">
                     {ev.time || '—'}
                   </span>
                 </div>
@@ -78,11 +78,11 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
                 <div className="flex-1 min-w-0">
                   {/* Name + price */}
                   <div className="flex items-start justify-between gap-2 mb-0.5">
-                    <p className="text-[13px] font-bold text-[#1a1a1a] leading-snug">
+                    <p className="text-[13px] font-bold text-[#252a31] leading-snug">
                       <span className="mr-1">{emoji}</span>{ev.name}
                     </p>
                     {ev.price && (
-                      <span className="text-[11px] font-bold text-[#003580] shrink-0 whitespace-nowrap">
+                      <span className="text-[11px] font-bold text-[#252a31] shrink-0 whitespace-nowrap">
                         {ev.price}
                       </span>
                     )}
@@ -90,16 +90,16 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
 
                   {/* Address — prominent */}
                   {ev.address && (
-                    <div className="flex items-start gap-1.5 mt-1 bg-[#f0f7ff] border border-[#dceaff] rounded-lg px-2 py-1.5">
-                      <MapPin className="w-3 h-3 text-[#2f6395] shrink-0 mt-0.5" />
-                      <p className="text-[11px] text-[#003580] leading-snug font-semibold">{ev.address}</p>
+                    <div className="flex items-start gap-1.5 mt-1 bg-[#f0f7ff] border border-[#d6ebfb] rounded-lg px-2 py-1.5">
+                      <MapPin className="w-3 h-3 text-[#0172cb] shrink-0 mt-0.5" />
+                      <p className="text-[11px] text-[#252a31] leading-snug font-semibold">{ev.address}</p>
                     </div>
                   )}
 
                   {/* Duration + Navigate */}
                   <div className="flex items-center gap-3 mt-1.5 flex-wrap">
                     {ev.duration && (
-                      <span className="flex items-center gap-1 text-[10px] text-[#93876f] font-semibold">
+                      <span className="flex items-center gap-1 text-[10px] text-[#697d95] font-semibold">
                         <Clock className="w-3 h-3" />{ev.duration}
                       </span>
                     )}
@@ -108,7 +108,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
                         href={mapsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-[10px] text-[#2f6395] font-bold hover:text-[#003580] transition-colors"
+                        className="flex items-center gap-1 text-[10px] text-[#0172cb] font-bold hover:text-[#252a31] transition-colors"
                       >
                         <Navigation className="w-3 h-3" />
                         {transportMode === 'car' ? t('plannerPage.card.navigate') : t('plannerPage.card.directions')}
@@ -128,8 +128,8 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
               { label: t('planner.results.evening'),   value: dayPlan.evening   },
             ].filter(s => s.value).map(s => (
               <div key={s.label}>
-                <p className="text-[9px] font-black uppercase tracking-widest text-[#93876f] mb-0.5">{s.label}</p>
-                <p className="text-[13px] text-[#5c5245]">{s.value}</p>
+                <p className="text-[9px] font-black uppercase tracking-widest text-[#697d95] mb-0.5">{s.label}</p>
+                <p className="text-[13px] text-[#4a5867]">{s.value}</p>
               </div>
             ))}
           </div>
@@ -157,11 +157,11 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
 
       {/* Car nav apps strip */}
       {transportMode === 'car' && navApps.length > 0 && (
-        <div className="border-t border-[#efe6d2] px-4 py-3 bg-[#f6f1e4]">
-          <p className="text-[9px] font-black uppercase tracking-widest text-[#93876f] mb-2">{t('plannerPage.card.navApps')}</p>
+        <div className="border-t border-[#e8edf1] px-4 py-3 bg-[#eef2f5]">
+          <p className="text-[9px] font-black uppercase tracking-widest text-[#697d95] mb-2">{t('plannerPage.card.navApps')}</p>
           <div className="flex flex-wrap gap-2">
             {navApps.slice(0, 3).map(app => (
-              <span key={app.name} className="flex items-center gap-1 text-[10px] font-bold text-[#5c5245] bg-white border border-[#e6dcc3] px-2 py-1 rounded-lg">
+              <span key={app.name} className="flex items-center gap-1 text-[10px] font-bold text-[#4a5867] bg-white border border-[#dfe7ec] px-2 py-1 rounded-lg">
                 <span>{app.icon}</span>{app.name}
               </span>
             ))}

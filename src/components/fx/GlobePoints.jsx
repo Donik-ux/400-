@@ -96,7 +96,7 @@ export default function GlobePoints({ className = '' }) {
         const front = z > 0;
         const a = front ? 0.26 + z * 0.62 : 0.07;
         ctx.fillStyle = p[3]
-          ? `rgba(207, 156, 63,${Math.min(1, a * 1.25).toFixed(3)})`
+          ? `rgba(0, 152, 130,${Math.min(1, a * 1.25).toFixed(3)})`
           : `rgba(170,206,255,${a.toFixed(3)})`;
         ctx.beginPath();
         ctx.arc(sx, sy, front ? 1.2 + z * 1.3 : 0.8, 0, Math.PI * 2);
@@ -132,7 +132,7 @@ export default function GlobePoints({ className = '' }) {
         const lift = 1 + 0.3 * Math.sin(Math.PI * tp);
         const p = project(v[0] * lift, v[1] * lift, v[2] * lift, ang);
         if (p[2] > -0.05) {
-          ctx.fillStyle = 'rgba(230, 201, 136,0.95)';
+          ctx.fillStyle = 'rgba(97, 209, 191,0.95)';
           ctx.shadowColor = 'rgba(255,187,2,0.9)';
           ctx.shadowBlur = 8;
           ctx.beginPath();

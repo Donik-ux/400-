@@ -28,9 +28,9 @@ export default function DisclaimerModal() {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
       <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full my-8 max-h-[calc(100vh-4rem)] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="bg-[#003580] px-7 py-5 flex items-center justify-between gap-3">
+        <div className="bg-[#252a31] px-7 py-5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Shield className="w-6 h-6 text-[#e6c988] shrink-0" />
+            <Shield className="w-6 h-6 text-[#61d1bf] shrink-0" />
             <div>
               <h2 className="text-white font-black text-[17px] leading-tight">MAFTRAVEL</h2>
               <p className="text-white/60 text-[11px] uppercase tracking-widest font-bold">{t('ui.disclaimer.eyebrow')}</p>
@@ -39,56 +39,56 @@ export default function DisclaimerModal() {
           <LanguageSwitcher align="right" />
 
         </div>
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#cf9c3f]/70 to-transparent" aria-hidden="true" />
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#009882]/70 to-transparent" aria-hidden="true" />
 
         {/* Body */}
         <div className="px-7 py-6 flex-1 min-h-0 overflow-y-auto">
           <div className="flex items-start gap-3 mb-5 p-4 note-warn rounded-2xl">
-            <AlertTriangle className="w-5 h-5 text-[#c9962f] shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-[#009882] shrink-0 mt-0.5" />
             <p className="text-[13px] font-bold text-warn">
               {t('ui.disclaimer.warning')}
             </p>
           </div>
 
-          <div className="space-y-4 text-[13px] text-[#5c5245] leading-relaxed">
+          <div className="space-y-4 text-[13px] text-[#4a5867] leading-relaxed">
             <p>
-              <strong className="text-[#1a1a1a]">{t('ui.disclaimer.s1Title')}</strong>{' '}
+              <strong className="text-[#252a31]">{t('ui.disclaimer.s1Title')}</strong>{' '}
               {t('ui.disclaimer.s1Body')}
             </p>
             <p>
-              <strong className="text-[#1a1a1a]">{t('ui.disclaimer.s2Title')}</strong>{' '}
+              <strong className="text-[#252a31]">{t('ui.disclaimer.s2Title')}</strong>{' '}
               {t('ui.disclaimer.s2Body')}
             </p>
             <p>
-              <strong className="text-[#1a1a1a]">{t('ui.disclaimer.s3Title')}</strong>{' '}
+              <strong className="text-[#252a31]">{t('ui.disclaimer.s3Title')}</strong>{' '}
               {t('ui.disclaimer.s3Body')}
             </p>
             <p>
-              <strong className="text-[#1a1a1a]">{t('ui.disclaimer.s4Title')}</strong>{' '}
+              <strong className="text-[#252a31]">{t('ui.disclaimer.s4Title')}</strong>{' '}
               {t('ui.disclaimer.s4Body')}
             </p>
             <p>
-              <strong className="text-[#1a1a1a]">{t('ui.disclaimer.s5Title')}</strong>{' '}
+              <strong className="text-[#252a31]">{t('ui.disclaimer.s5Title')}</strong>{' '}
               {t('ui.disclaimer.s5Body')}
             </p>
             <p>
-              <strong className="text-[#1a1a1a]">{t('ui.disclaimer.s6Title')}</strong>{' '}
+              <strong className="text-[#252a31]">{t('ui.disclaimer.s6Title')}</strong>{' '}
               {t('ui.disclaimer.s6Body')}
             </p>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="px-7 py-5 border-t border-[#efe6d2] bg-[#f6f1e4]">
+        <div className="px-7 py-5 border-t border-[#e8edf1] bg-[#eef2f5]">
           <label onClick={() => setRead(v => !v)} className="flex items-start gap-3 cursor-pointer mb-5 select-none">
             <div
               className={`w-5 h-5 rounded shrink-0 mt-0.5 border-2 flex items-center justify-center transition-all ${
-                read ? 'bg-[#003580] border-[#003580]' : 'border-[#d9c9a3] bg-white'
+                read ? 'bg-[#252a31] border-[#252a31]' : 'border-[#bac7d1] bg-white'
               }`}
             >
               {read && <CheckCircle className="w-3.5 h-3.5 text-white" />}
             </div>
-            <span className="text-[13px] text-[#5c5245] leading-snug">
+            <span className="text-[13px] text-[#4a5867] leading-snug">
               {t('ui.disclaimer.checkbox')}
             </span>
           </label>
@@ -98,14 +98,14 @@ export default function DisclaimerModal() {
             disabled={!read}
             className={`w-full py-3.5 rounded-2xl font-black text-[14px] uppercase tracking-wider transition-all ${
               read
-                ? 'bg-[#003580] text-white hover:bg-[#002060] active:scale-95'
-                : 'bg-[#e6dcc3] text-[#93876f] cursor-not-allowed'
+                ? 'bg-[#252a31] text-white hover:bg-[#313b46] active:scale-95'
+                : 'bg-[#dfe7ec] text-[#697d95] cursor-not-allowed'
             }`}
           >
             {t('ui.disclaimer.accept')}
           </button>
 
-          <p className="text-center text-[11px] text-[#93876f] mt-3">
+          <p className="text-center text-[11px] text-[#697d95] mt-3">
             {t('ui.disclaimer.footnote')}
           </p>
         </div>

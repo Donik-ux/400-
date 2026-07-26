@@ -33,7 +33,7 @@ function WeatherInner({ city }) {
 
   if (error) {
     return (
-      <div className="text-[11px] text-[#93876f] font-medium px-3 py-2">
+      <div className="text-[11px] text-[#697d95] font-medium px-3 py-2">
         {t('ui.weather.unavailable')}
       </div>
     );
@@ -41,7 +41,7 @@ function WeatherInner({ city }) {
 
   if (!data) {
     return (
-      <div className="flex items-center gap-2 px-3 py-2 text-[11px] text-[#93876f] font-medium">
+      <div className="flex items-center gap-2 px-3 py-2 text-[11px] text-[#697d95] font-medium">
         <Loader2 className="w-3 h-3 animate-spin" /> {t('ui.weather.loading')}
       </div>
     );
@@ -55,14 +55,14 @@ function WeatherInner({ city }) {
   return (
     <div className="flex items-center gap-4 px-3 py-2">
       <div className="flex items-center gap-2">
-        <Icon className="w-6 h-6 text-[#2f6395]" />
-        <span className="text-[20px] font-black text-[#1a1a1a]">{Math.round(current.temperature)}°C</span>
+        <Icon className="w-6 h-6 text-[#0172cb]" />
+        <span className="text-[20px] font-black text-[#252a31]">{Math.round(current.temperature)}°C</span>
       </div>
-      <div className="flex items-center gap-3 text-[11px] font-bold text-[#5c5245]">
+      <div className="flex items-center gap-3 text-[11px] font-bold text-[#4a5867]">
         {daily && daily.time?.slice(1).map((day, i) => (
           <span key={day} className="flex items-center gap-1">
             {new Date(day).toLocaleDateString('en', { weekday: 'short' })}
-            <span className="text-[#1a1a1a]">{Math.round(daily.temperature_2m_max[i + 1])}°</span>
+            <span className="text-[#252a31]">{Math.round(daily.temperature_2m_max[i + 1])}°</span>
           </span>
         ))}
       </div>

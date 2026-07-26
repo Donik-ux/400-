@@ -10,13 +10,13 @@ const TYPE_ICON = {
 
 const SEVERITY_STYLE = {
   info:    'border-[#7fb2e5]/20 bg-[#7fb2e5]/[0.05]',
-  warning: 'border-[#d9a43e]/25 bg-[#d9a43e]/[0.06]',
+  warning: 'border-[#00a58e]/25 bg-[#00a58e]/[0.06]',
   error:   'border-[#ff9c8a]/25 bg-[#ff9c8a]/[0.06]',
 };
 
 const SEVERITY_DOT = {
   info:    'bg-[#7fb2e5]',
-  warning: 'bg-[#e6c988]',
+  warning: 'bg-[#61d1bf]',
   error:   'bg-[#ff9c8a]',
 };
 
@@ -48,7 +48,7 @@ export default function NotificationsTab() {
           <Bell className="w-4 h-4 text-white/40" />
           <span className="text-sm font-black text-white/60">{notifications.length} total</span>
           {unread > 0 && (
-            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[#d9a43e]/15 text-[#e6c988] uppercase tracking-widest">
+            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[#00a58e]/15 text-[#61d1bf] uppercase tracking-widest">
               {unread} unread
             </span>
           )}
@@ -82,7 +82,7 @@ export default function NotificationsTab() {
                   <Icon className="w-4 h-4 text-white/40" />
                 </div>
                 {!n.read && (
-                  <span className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ${SEVERITY_DOT[severity]} border-2 border-[#00112b]`} />
+                  <span className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ${SEVERITY_DOT[severity]} border-2 border-[#14181d]`} />
                 )}
               </div>
               <div className="flex-1 min-w-0">

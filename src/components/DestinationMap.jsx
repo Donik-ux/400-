@@ -28,7 +28,7 @@ export default function DestinationMap({ destinations = [], className = '' }) {
   if (!markers.length) return null;
 
   return (
-    <div className={`relative z-0 [isolation:isolate] rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft ${className}`}>
+    <div className={`relative z-0 [isolation:isolate] rounded-2xl overflow-hidden border border-[#dfe7ec] shadow-soft ${className}`}>
       <MapContainer
         center={DEFAULT_CENTER}
         zoom={DEFAULT_ZOOM}
@@ -44,8 +44,8 @@ export default function DestinationMap({ destinations = [], className = '' }) {
             {m.city || m.name ? (
               <Popup>
                 <div className="text-[13px] font-bold">{m.city || m.name}</div>
-                {m.country && <div className="text-[11px] text-[#5c5245]">{m.country}</div>}
-                {m.code && <div className="text-[10px] text-[#2f6395] font-black">{m.code}</div>}
+                {m.country && <div className="text-[11px] text-[#4a5867]">{m.country}</div>}
+                {m.code && <div className="text-[10px] text-[#0172cb] font-black">{m.code}</div>}
               </Popup>
             ) : null}
           </Marker>

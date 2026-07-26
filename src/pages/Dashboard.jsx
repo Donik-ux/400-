@@ -48,23 +48,23 @@ export default function Dashboard() {
 
   const statCards = [
     { label: t('dashboard.totalSpent'),  value: fmt(stats.totalSpent), icon: DollarSign, color: 'text-[#5c7a4f]', bg: 'bg-[#eef3e7]' },
-    { label: t('dashboard.confirmed'),   value: stats.confirmed,                          icon: Star,       color: 'text-[#b8860b]', bg: 'bg-[#fdf6e3]' },
-    { label: t('dashboard.pending'),     value: stats.pending,                            icon: Clock,      color: 'text-[#2f6395]', bg: 'bg-[#f0f5ff]' },
+    { label: t('dashboard.confirmed'),   value: stats.confirmed,                          icon: Star,       color: 'text-[#008f77]', bg: 'bg-[#fdf6e3]' },
+    { label: t('dashboard.pending'),     value: stats.pending,                            icon: Clock,      color: 'text-[#0172cb]', bg: 'bg-[#e8f4fd]' },
     { label: t('dashboard.countries'),   value: stats.countries || 0,                     icon: MapPin,     color: 'text-[#7d5a8c]', bg: 'bg-[#f5eef8]' },
   ];
 
   return (
-    <div className="bg-[#f6f1e4] min-h-screen">
+    <div className="bg-[#eef2f5] min-h-screen">
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-[#003580] via-[#00306f] to-[#002250] text-white overflow-hidden">
+      <div className="relative bg-gradient-to-br from-[#252a31] via-[#00306f] to-[#1c2127] text-white overflow-hidden">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="animate-float absolute -top-16 right-[8%] w-72 h-72 rounded-full bg-[#2f6395]/30 blur-3xl" />
-          <div className="animate-float absolute -bottom-24 left-[20%] w-80 h-80 rounded-full bg-[#d9a43e]/10 blur-3xl" style={{ animationDelay: '1.5s' }} />
+          <div className="animate-float absolute -top-16 right-[8%] w-72 h-72 rounded-full bg-[#0172cb]/30 blur-3xl" />
+          <div className="animate-float absolute -bottom-24 left-[20%] w-80 h-80 rounded-full bg-[#00a58e]/10 blur-3xl" style={{ animationDelay: '1.5s' }} />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-20">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center text-2xl font-black border border-white/20 shadow-2xl text-[#d9a43e]">
+              <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center text-2xl font-black border border-white/20 shadow-2xl text-[#00a58e]">
                 {user.avatar || user.name?.[0]}
               </div>
               <div>
@@ -87,12 +87,12 @@ export default function Dashboard() {
         {/* Stats Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {statCards.map((s, i) => (
-            <div key={i} className="lift bg-white border border-[#efe6d2] rounded-2xl p-5 shadow-soft page-fade" style={{animationDelay: `${i*100}ms`}}>
+            <div key={i} className="lift bg-white border border-[#e8edf1] rounded-2xl p-5 shadow-soft page-fade" style={{animationDelay: `${i*100}ms`}}>
               <div className={`w-10 h-10 rounded-xl ${s.bg} ${s.color} flex items-center justify-center mb-4`}>
                 <s.icon className="w-5 h-5" />
               </div>
-              <p className="text-[11px] font-bold uppercase tracking-widest text-[#93876f] mb-1">{s.label}</p>
-              <p className="text-2xl font-black text-[#1a1a1a]">{s.value}</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] mb-1">{s.label}</p>
+              <p className="text-2xl font-black text-[#252a31]">{s.value}</p>
             </div>
           ))}
         </div>
@@ -100,45 +100,45 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Recent Bookings */}
           <div className="lg:col-span-8 flex flex-col gap-6">
-            <div className="bg-white border border-[#efe6d2] rounded-3xl p-6 shadow-soft overflow-hidden">
+            <div className="bg-white border border-[#e8edf1] rounded-3xl p-6 shadow-soft overflow-hidden">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-lg font-black text-[#1a1a1a]">{t('dashboard.recentBookings')}</h2>
-                  <p className="text-[11px] text-[#93876f] font-bold uppercase tracking-widest">
+                  <h2 className="text-lg font-black text-[#252a31]">{t('dashboard.recentBookings')}</h2>
+                  <p className="text-[11px] text-[#697d95] font-bold uppercase tracking-widest">
                     {t('dashboard.recentBookingsSub')}
                   </p>
                 </div>
-                <button onClick={() => navigate('/my-bookings')} className="text-sm font-bold text-[#2f6395] hover:underline flex items-center gap-1">
+                <button onClick={() => navigate('/my-bookings')} className="text-sm font-bold text-[#0172cb] hover:underline flex items-center gap-1">
                   {t('dashboard.viewBookings')} <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
 
               {bookings.length === 0 ? (
                 <div className="py-12 text-center">
-                  <PieChart className="w-12 h-12 text-[#efe6d2] mx-auto mb-4" />
-                  <p className="text-[#93876f] text-sm font-bold">{t('dashboard.noBookings')}</p>
-                  <p className="text-[#d9c9a3] text-xs mt-1">{t('dashboard.noBookingsSub')}</p>
+                  <PieChart className="w-12 h-12 text-[#e8edf1] mx-auto mb-4" />
+                  <p className="text-[#697d95] text-sm font-bold">{t('dashboard.noBookings')}</p>
+                  <p className="text-[#bac7d1] text-xs mt-1">{t('dashboard.noBookingsSub')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {bookings.slice(0, 5).map((b) => (
-                    <div key={b.id} className="group flex items-center gap-4 p-4 rounded-2xl bg-[#f6f1e4] border border-[#efe6d2] hover:bg-white hover:border-[#2f6395]/20 hover:shadow-soft transition-all cursor-pointer"
+                    <div key={b.id} className="group flex items-center gap-4 p-4 rounded-2xl bg-[#eef2f5] border border-[#e8edf1] hover:bg-white hover:border-[#0172cb]/20 hover:shadow-soft transition-all cursor-pointer"
                       onClick={() => navigate('/my-bookings')}>
-                      <div className="w-12 h-12 rounded-xl bg-white border border-[#efe6d2] flex items-center justify-center shrink-0">
-                        {b.type === 'flight' ? <Plane className="w-6 h-6 text-[#2f6395]" /> :
+                      <div className="w-12 h-12 rounded-xl bg-white border border-[#e8edf1] flex items-center justify-center shrink-0">
+                        {b.type === 'flight' ? <Plane className="w-6 h-6 text-[#0172cb]" /> :
                          b.type === 'package' ? <Package className="w-6 h-6 text-[#7d5a8c]" /> :
-                         <Hotel className="w-6 h-6 text-[#b8860b]" />}
+                         <Hotel className="w-6 h-6 text-[#008f77]" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-black text-[#1a1a1a] truncate mb-0.5">{b.itemName}</p>
-                        <div className="flex items-center gap-3 text-[11px] text-[#93876f] font-bold uppercase">
+                        <p className="text-sm font-black text-[#252a31] truncate mb-0.5">{b.itemName}</p>
+                        <div className="flex items-center gap-3 text-[11px] text-[#697d95] font-bold uppercase">
                           <span>{b.type}</span>
                           <span>•</span>
                           <span>{new Date(b.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</span>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-[15px] font-black text-[#1a1a1a] mb-0.5">{fmt(b.total)}</p>
+                        <p className="text-[15px] font-black text-[#252a31] mb-0.5">{fmt(b.total)}</p>
                         <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${
                           b.status === 'confirmed' ? 'bg-[#e9f3ea] text-ok' :
                           b.status === 'pending' ? 'bg-[#fdf3dc] text-warn' :
@@ -156,8 +156,8 @@ export default function Dashboard() {
             </div>
 
             {/* Travel Insight */}
-            <div className="bg-gradient-to-br from-[#003580] via-[#00306f] to-[#002250] rounded-3xl p-8 text-white relative overflow-hidden group shadow-lift">
-              <div className="pointer-events-none absolute -top-10 right-10 w-56 h-56 rounded-full bg-[#d9a43e]/15 blur-3xl animate-float" />
+            <div className="bg-gradient-to-br from-[#252a31] via-[#00306f] to-[#1c2127] rounded-3xl p-8 text-white relative overflow-hidden group shadow-lift">
+              <div className="pointer-events-none absolute -top-10 right-10 w-56 h-56 rounded-full bg-[#00a58e]/15 blur-3xl animate-float" />
               <div className="relative z-10 max-w-sm">
                 <h3 className="text-2xl font-black leading-tight mb-4 tracking-tighter">
                   {t('dashboard.insightProTitle')}
@@ -180,19 +180,19 @@ export default function Dashboard() {
 
           {/* Sidebar */}
           <div className="lg:col-span-4 flex flex-col gap-6">
-            <div className="bg-white border border-[#efe6d2] rounded-3xl p-6 shadow-soft">
-              <h3 className="text-sm font-black text-[#1a1a1a] mb-5 uppercase tracking-widest">
+            <div className="bg-white border border-[#e8edf1] rounded-3xl p-6 shadow-soft">
+              <h3 className="text-sm font-black text-[#252a31] mb-5 uppercase tracking-widest">
                 {t('dashboard.quickActions')}
               </h3>
               <div className="grid grid-cols-1 gap-2">
                 {quickActions.map((item, i) => (
                   <button key={i} onClick={() => navigate(item.to)}
-                    className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-[#f6f1e4] border border-transparent hover:bg-white hover:border-[#efe6d2] hover:shadow-sm transition-all group">
+                    className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-[#eef2f5] border border-transparent hover:bg-white hover:border-[#e8edf1] hover:shadow-sm transition-all group">
                     <div className="flex items-center gap-3">
                       <item.icon className={`w-4 h-4 ${item.color}`} />
-                      <span className="text-sm font-bold text-[#5c5245] group-hover:text-[#1a1a1a]">{item.label}</span>
+                      <span className="text-sm font-bold text-[#4a5867] group-hover:text-[#252a31]">{item.label}</span>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-[#d9c9a3] group-hover:text-[#1a1a1a]" />
+                    <ChevronRight className="w-4 h-4 text-[#bac7d1] group-hover:text-[#252a31]" />
                   </button>
                 ))}
               </div>
@@ -200,7 +200,7 @@ export default function Dashboard() {
 
             {/* Rewards */}
             <div className="relative overflow-hidden bg-gradient-to-br from-[#5c3d6b] via-[#4a2f5c] to-[#1f1338] rounded-3xl p-6 text-white shadow-lift">
-              <div className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full bg-[#d9a43e]/15 blur-2xl animate-float" />
+              <div className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full bg-[#00a58e]/15 blur-2xl animate-float" />
               <div className="relative w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
                 <Sparkles className="w-6 h-6 text-[#e3c6f0]" />
               </div>

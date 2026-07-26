@@ -225,18 +225,18 @@ const HotTours = () => {
   const greeting = user?.name ? `, ${user.name.split(' ')[0]}` : '';
 
   return (
-    <div className="min-h-screen bg-[#faf6ed]">
+    <div className="min-h-screen bg-[#f5f7f9]">
 
       {/* ── HERO + STUDIO INPUTS ─────────────────────────────────── */}
       <section className="relative aurora-bg text-white overflow-hidden">
         <div className="film-grain" />
         <GoldDust className="absolute inset-0" density={0.55} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#d9a43e]/10 blur-3xl pointer-events-none animate-float" />
+        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6">
               <div className="badge-editorial px-3.5 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.14em] mb-4">
-                <Cpu className="w-3.5 h-3.5 text-[#e6c988]" /> {t('hotTours.hero.badge')} · {aiAvailable ? t('hotTours.hero.poweredGrok') : t('hotTours.hero.smartMatch')}
+                <Cpu className="w-3.5 h-3.5 text-[#61d1bf]" /> {t('hotTours.hero.badge')} · {aiAvailable ? t('hotTours.hero.poweredGrok') : t('hotTours.hero.smartMatch')}
               </div>
               <h1 className="font-display text-4xl md:text-6xl font-semibold tracking-[-0.03em] leading-[1.03] mb-3 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
                 {t('hotTours.hero.title1')}{greeting}.<br className="hidden md:block" />
@@ -248,12 +248,12 @@ const HotTours = () => {
             </div>
 
             <div className="frame-lux lg:col-span-6 rounded-2xl">
-              <div className="bg-white text-[#1a1a1a] rounded-2xl shadow-vitrine overflow-hidden">
-                <div className="bg-[#d9a43e] text-[#1a1a1a] px-5 py-2.5 flex items-center justify-between">
+              <div className="bg-white text-[#252a31] rounded-2xl shadow-vitrine overflow-hidden">
+                <div className="bg-[#00a58e] text-white px-5 py-2.5 flex items-center justify-between">
                   <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest">
                     <Wand2 className="w-3.5 h-3.5" /> {t('hotTours.form.buildTitle')}
                   </div>
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-[#1a1a1a]/70">{t('hotTours.form.noPayment')}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-[#252a31]/70">{t('hotTours.form.noPayment')}</div>
                 </div>
 
                 <div className="p-5 md:p-6 space-y-4">
@@ -263,30 +263,30 @@ const HotTours = () => {
                   <BudgetAdvisory balance={balance} />
 
                   <div>
-                    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#93876f] mb-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-[#2f6395]" /> {t('hotTours.form.daysQuestion')}
+                    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-[#0172cb]" /> {t('hotTours.form.daysQuestion')}
                     </div>
                     <div className="grid grid-cols-3 gap-1.5 mb-2">
                       {[3, 5, 10].map(n => (
                         <button key={n} type="button" onClick={() => sync.onChangeDays(n)}
                           className={`py-3 rounded-xl text-[14px] font-black transition active:scale-95 ${
                             Number(days) === n
-                              ? 'bg-[#003580] text-white shadow-md ring-2 ring-[#003580]/30'
-                              : 'bg-[#f6f1e4] border border-[#e6dcc3] text-[#1a1a1a] hover:border-[#2f6395] hover:bg-[#f0f5ff]'
+                              ? 'bg-[#252a31] text-white shadow-md ring-2 ring-[#252a31]/30'
+                              : 'bg-[#eef2f5] border border-[#dfe7ec] text-[#252a31] hover:border-[#0172cb] hover:bg-[#e8f4fd]'
                           }`}>
                           {n} {t('hotTours.form.daysSuffix')}
                         </button>
                       ))}
                     </div>
-                    <div className="flex items-center gap-2 bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl px-3 py-2">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-[#93876f]">{t('hotTours.form.customLabel')}</span>
+                    <div className="flex items-center gap-2 bg-[#eef2f5] border border-[#dfe7ec] rounded-xl px-3 py-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-[#697d95]">{t('hotTours.form.customLabel')}</span>
                       <button type="button" onClick={() => sync.onChangeDays(Math.max(1, Number(days) - 1))}
-                        className="w-10 h-10 rounded-lg bg-white border border-[#e6dcc3] text-[#2f6395] text-[18px] font-black hover:border-[#2f6395] active:scale-95 transition">−</button>
+                        className="w-10 h-10 rounded-lg bg-white border border-[#dfe7ec] text-[#0172cb] text-[18px] font-black hover:border-[#0172cb] active:scale-95 transition">−</button>
                       <input type="number" min="1" max="21" value={days} onChange={e => sync.onChangeDays(e.target.value)}
-                        className="w-12 bg-transparent outline-none text-[16px] font-black text-[#003580] text-center" />
+                        className="w-12 bg-transparent outline-none text-[16px] font-black text-[#252a31] text-center" />
                       <button type="button" onClick={() => sync.onChangeDays(Math.min(21, Number(days) + 1))}
-                        className="w-10 h-10 rounded-lg bg-white border border-[#e6dcc3] text-[#2f6395] text-[18px] font-black hover:border-[#2f6395] active:scale-95 transition">+</button>
-                      <span className="text-[11px] text-[#93876f] font-bold ml-auto">{t('hotTours.form.daysUnit')}</span>
+                        className="w-10 h-10 rounded-lg bg-white border border-[#dfe7ec] text-[#0172cb] text-[18px] font-black hover:border-[#0172cb] active:scale-95 transition">+</button>
+                      <span className="text-[11px] text-[#697d95] font-bold ml-auto">{t('hotTours.form.daysUnit')}</span>
                     </div>
                   </div>
 
@@ -313,20 +313,20 @@ const HotTours = () => {
                       <input type="date" value={startDate}
                         min={new Date().toISOString().split('T')[0]}
                         onChange={e => sync.onChangeDeparture(e.target.value)}
-                        className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a]" />
+                        className="w-full bg-transparent outline-none text-[14px] font-bold text-[#252a31]" />
                     </Field>
                     <Field icon={<Calendar className="w-4 h-4" />} label={t('hotTours.form.returnLabel')}>
                       <input type="date" value={sync.returnDate}
                         min={startDate || new Date().toISOString().split('T')[0]}
                         onChange={e => sync.onChangeReturn(e.target.value)}
-                        className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a]" />
+                        className="w-full bg-transparent outline-none text-[14px] font-bold text-[#252a31]" />
                     </Field>
                   </div>
 
                   {!destInput && (
                     <Field icon={<Globe2 className="w-4 h-4" />} label={t('hotTours.form.vibeLabel')}>
                       <select value={vibe} onChange={e => setVibe(e.target.value)}
-                        className="w-full bg-transparent outline-none text-[14px] font-bold text-[#1a1a1a] cursor-pointer">
+                        className="w-full bg-transparent outline-none text-[14px] font-bold text-[#252a31] cursor-pointer">
                         <option value="any">{t('hotTours.form.vibeAny')}</option>
                         <option value="warm">{t('hotTours.form.vibeWarm')}</option>
                         <option value="beach">{t('hotTours.form.vibeBeach')}</option>
@@ -339,17 +339,17 @@ const HotTours = () => {
                   )}
 
                   <div className="flex flex-wrap gap-1.5 pt-1">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[#93876f] self-center">{t('hotTours.form.quickBalance')}</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#697d95] self-center">{t('hotTours.form.quickBalance')}</span>
                     {[500, 1000, 2000, 3500, 6000].map(v => (
                       <button key={v} type="button" onClick={() => setBalance(v)}
-                        className={`px-3.5 py-2 rounded-full text-[12px] font-black transition active:scale-95 ${Number(balance) === v ? 'bg-[#003580] text-white' : 'bg-[#f0f5ff] text-[#2f6395] hover:bg-[#dceaff]'}`}>
+                        className={`px-3.5 py-2 rounded-full text-[12px] font-black transition active:scale-95 ${Number(balance) === v ? 'bg-[#252a31] text-white' : 'bg-[#e8f4fd] text-[#0172cb] hover:bg-[#d6ebfb]'}`}>
                         ${v}
                       </button>
                     ))}
                   </div>
 
                   <button onClick={onGenerate} disabled={loading || !balance || !days}
-                    className="w-full py-3.5 rounded-xl bg-[#003580] hover:bg-[#002a66] text-white font-black text-[14px] flex items-center justify-center gap-2 transition active:scale-[0.99] disabled:opacity-60">
+                    className="w-full py-3.5 rounded-xl bg-[#252a31] hover:bg-[#002a66] text-white font-black text-[14px] flex items-center justify-center gap-2 transition active:scale-[0.99] disabled:opacity-60">
                     {loading
                       ? (<><Loader2 className="w-5 h-5 animate-spin" /> {t('hotTours.form.crafting')} {days}-{destInput ? t('hotTours.form.craftingPlanDay') : t('hotTours.form.craftingPlanDays')}…</>)
                       : destInput
@@ -358,7 +358,7 @@ const HotTours = () => {
                   </button>
 
                   {error && <p className="text-[12px] text-danger font-bold text-center">{error}</p>}
-                  <p className="text-[11px] text-[#93876f] font-semibold text-center">
+                  <p className="text-[11px] text-[#697d95] font-semibold text-center">
                     {destInput
                       ? t('hotTours.form.directHint')
                       : (aiAvailable ? t('hotTours.form.aiHint') : t('hotTours.form.smartHint'))}
@@ -377,7 +377,7 @@ const HotTours = () => {
             <div className="eyebrow-lux mb-1">
               <Zap className="w-3.5 h-3.5" /> {t('hotTours.grid.curatedFor')} ${balance} · {days} {Number(days) === 1 ? t('hotTours.grid.daySingular') : t('hotTours.grid.dayPlural')}
             </div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-[#252a31] tracking-tight">
               {loading
                 ? `${t('hotTours.grid.building')} ${days}-${t('hotTours.grid.buildingMid')} $${balance}…`
                 : result?.packages?.length
@@ -386,7 +386,7 @@ const HotTours = () => {
             </h2>
           </div>
           <button onClick={regenerate} disabled={loading}
-            className="px-4 py-2.5 rounded-xl border-2 border-[#e6dcc3] hover:border-[#2f6395] hover:bg-[#f0f5ff] text-[13px] font-black text-[#1a1a1a] flex items-center gap-2 transition disabled:opacity-50">
+            className="px-4 py-2.5 rounded-xl border-2 border-[#dfe7ec] hover:border-[#0172cb] hover:bg-[#e8f4fd] text-[13px] font-black text-[#252a31] flex items-center gap-2 transition disabled:opacity-50">
             <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> {t('hotTours.grid.regenerate')}
           </button>
         </div>
@@ -395,7 +395,7 @@ const HotTours = () => {
         {loading && (
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft">
+              <div key={i} className="bg-white border border-[#dfe7ec] rounded-2xl overflow-hidden shadow-soft">
                 <div className="h-44 shimmer" />
                 <div className="p-4 space-y-3">
                   <div className="h-3 shimmer rounded w-1/3" />
@@ -421,7 +421,7 @@ const HotTours = () => {
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: i * 0.07, ease: [0.4, 0, 0.2, 1] }}
-                  className="group lift card-sheen bg-white border border-[#e6dcc3] rounded-2xl overflow-hidden shadow-soft flex flex-col"
+                  className="group lift card-sheen bg-white border border-[#dfe7ec] rounded-2xl overflow-hidden shadow-soft flex flex-col"
                 >
                   <div className="relative h-44 overflow-hidden">
                     <img src={p.image} alt={`${p.destination}, ${p.country}`} loading="lazy" onError={handleImgError}
@@ -432,7 +432,7 @@ const HotTours = () => {
                         <Sparkles className="w-3 h-3" /> {t(`hotTours.styleBadge.${p.style}`) ?? badge.label}
                       </span>
                       {p.saving > 0 && (
-                        <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#d9a43e] to-[#cf9c3f] text-[#1a1a1a] text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">
+                        <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#00a58e] to-[#009882] text-[#252a31] text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">
                           <BadgePercent className="w-3 h-3" /> {t('hotTours.grid.savesPrefix')} {fmt(p.saving)}
                         </span>
                       )}
@@ -448,7 +448,7 @@ const HotTours = () => {
                       className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition"
                       aria-label={isInWishlist(fakeId, 'package') ? 'Remove from wishlist' : 'Save to wishlist'}
                     >
-                      <Heart className={`w-4 h-4 ${isInWishlist(fakeId, 'package') ? 'fill-red-500 text-red-500' : 'text-[#5c5245]'}`} />
+                      <Heart className={`w-4 h-4 ${isInWishlist(fakeId, 'package') ? 'fill-red-500 text-red-500' : 'text-[#4a5867]'}`} />
                     </button>
                     <div className="absolute bottom-2 right-2 glass-dark text-white text-[10px] font-black px-2 py-1 rounded-md shadow-sm">
                       {p.tagline}
@@ -456,13 +456,13 @@ const HotTours = () => {
                   </div>
 
                   <div className="p-4 flex flex-col flex-1">
-                    <div className="flex items-center gap-1 text-[11px] text-[#5c5245] font-bold mb-1">
-                      <MapPin className="w-3 h-3 text-[#2f6395]" /> {p.destination}, {p.country}
+                    <div className="flex items-center gap-1 text-[11px] text-[#4a5867] font-bold mb-1">
+                      <MapPin className="w-3 h-3 text-[#0172cb]" /> {p.destination}, {p.country}
                     </div>
-                    <h3 className="text-[16px] font-black text-[#1a1a1a] leading-tight mb-1.5">{p.days}-{t('hotTours.grid.dayTrip')} {p.tier.split(' ')[0]} {t('hotTours.grid.tripSuffix')}</h3>
+                    <h3 className="text-[16px] font-black text-[#252a31] leading-tight mb-1.5">{p.days}-{t('hotTours.grid.dayTrip')} {p.tier.split(' ')[0]} {t('hotTours.grid.tripSuffix')}</h3>
 
-                    <div className="flex items-center gap-2 text-[11px] text-[#5c5245] mb-3">
-                      <span className="flex items-center gap-0.5"><Star className="w-3 h-3 fill-[#d9a43e] text-[#d9a43e]" /> {p.rating}</span>
+                    <div className="flex items-center gap-2 text-[11px] text-[#4a5867] mb-3">
+                      <span className="flex items-center gap-0.5"><Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" /> {p.rating}</span>
                       <span>·</span>
                       <span>{p.reviews} {t('hotTours.grid.reviews')}</span>
                       <span>·</span>
@@ -471,16 +471,16 @@ const HotTours = () => {
 
                     <ul className="space-y-1 mb-3">
                       {(p.includes || []).slice(0, 3).map((inc, k) => (
-                        <li key={k} className="flex items-start gap-1.5 text-[11.5px] text-[#1a1a1a] font-semibold">
+                        <li key={k} className="flex items-start gap-1.5 text-[11.5px] text-[#252a31] font-semibold">
                           <Check className="w-3 h-3 text-[#2e7d4f] mt-0.5 shrink-0" strokeWidth={3} /> {inc}
                         </li>
                       ))}
                     </ul>
 
                     {/* ── Money breakdown so user sees what each $ goes to ── */}
-                    <div className="bg-[#f6f1e4] border border-[#efe6d2] rounded-xl p-2.5 mb-3">
-                      <div className="text-[9.5px] font-black uppercase tracking-widest text-[#93876f] mb-1.5 flex items-center gap-1">
-                        <Wallet className="w-3 h-3 text-[#2f6395]" /> {t('hotTours.grid.whereGoes1')} {fmt(p.price)} {t('hotTours.grid.whereGoes2')}
+                    <div className="bg-[#eef2f5] border border-[#e8edf1] rounded-xl p-2.5 mb-3">
+                      <div className="text-[9.5px] font-black uppercase tracking-widest text-[#697d95] mb-1.5 flex items-center gap-1">
+                        <Wallet className="w-3 h-3 text-[#0172cb]" /> {t('hotTours.grid.whereGoes1')} {fmt(p.price)} {t('hotTours.grid.whereGoes2')}
                       </div>
                       <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[11px]">
                         <BreakdownRow icon={<Plane className="w-3 h-3" />}    label={t('hotTours.grid.flight')} val={p.breakdown?.flight} />
@@ -490,14 +490,14 @@ const HotTours = () => {
                       </div>
                     </div>
 
-                    <div className="mt-auto pt-2 border-t border-[#efe6d2]">
+                    <div className="mt-auto pt-2 border-t border-[#e8edf1]">
                       <div className="flex items-end justify-between mb-2">
                         <div>
-                          <div className="text-[10px] text-[#93876f] font-bold uppercase">{t('hotTours.grid.totalAllIn')}</div>
-                          <div className="text-[22px] font-black text-[#003580] leading-none"><Price amount={p.price} /></div>
+                          <div className="text-[10px] text-[#697d95] font-bold uppercase">{t('hotTours.grid.totalAllIn')}</div>
+                          <div className="text-[22px] font-black text-[#252a31] leading-none"><Price amount={p.price} /></div>
                         </div>
                         <div className="text-right">
-                          <div className="text-[10px] text-[#93876f] font-bold uppercase">{t('hotTours.grid.yourBalance')}</div>
+                          <div className="text-[10px] text-[#697d95] font-bold uppercase">{t('hotTours.grid.yourBalance')}</div>
                           <div className="text-[12px] text-[#2e7d4f] font-black flex items-center justify-end gap-0.5">
                             <Check className="w-3 h-3" strokeWidth={3} /> {t('hotTours.grid.fits')}
                           </div>
@@ -506,7 +506,7 @@ const HotTours = () => {
                       </div>
                       <div className="grid grid-cols-2 gap-1.5">
                         <button onClick={() => openPlanForPkg(i, p)}
-                          className="px-2 py-2 rounded-lg border-2 border-[#2f6395] text-[#2f6395] text-[11px] font-black hover:bg-[#f0f5ff] transition active:scale-95 flex items-center justify-center gap-1">
+                          className="px-2 py-2 rounded-lg border-2 border-[#0172cb] text-[#0172cb] text-[11px] font-black hover:bg-[#e8f4fd] transition active:scale-95 flex items-center justify-center gap-1">
                           <Activity className="w-3.5 h-3.5" /> {t('hotTours.grid.dayPlan')}
                         </button>
                         <button onClick={() => bookPackage(p)}
@@ -538,12 +538,12 @@ const HotTours = () => {
 
         {/* Empty / error */}
         {!loading && !result?.packages?.length && (
-          <div className="bg-white border border-[#e6dcc3] rounded-2xl p-12 text-center shadow-soft">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[#d9a43e]/20 to-[#cf9c3f]/10 flex items-center justify-center animate-float">
-              <Sparkles className="w-8 h-8 text-[#cf9c3f]" />
+          <div className="bg-white border border-[#dfe7ec] rounded-2xl p-12 text-center shadow-soft">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[#00a58e]/20 to-[#009882]/10 flex items-center justify-center animate-float">
+              <Sparkles className="w-8 h-8 text-[#009882]" />
             </div>
-            <p className="text-[#1a1a1a] font-black text-[17px] mb-1">{t('hotTours.grid.emptyTitle')}</p>
-            <p className="text-[#5c5245] text-sm font-medium">{t('hotTours.grid.emptySub')}</p>
+            <p className="text-[#252a31] font-black text-[17px] mb-1">{t('hotTours.grid.emptyTitle')}</p>
+            <p className="text-[#4a5867] text-sm font-medium">{t('hotTours.grid.emptySub')}</p>
           </div>
         )}
       </section>
@@ -554,7 +554,7 @@ const HotTours = () => {
           <div className="eyebrow-lux mb-3">
             <TrendingDown className="w-3.5 h-3.5" /> {t('hotTours.tiers.badge')}
           </div>
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">{t('hotTours.tiers.title')}</h2>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-[#252a31] tracking-tight">{t('hotTours.tiers.title')}</h2>
         </div>
         <AutoStrip className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {[
@@ -565,11 +565,11 @@ const HotTours = () => {
             { lab: t('hotTours.tiers.luxurySignature'), min: 5000, max: 12000,  img: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=600&q=80' },
           ].map((b, i) => (
             <button key={i} onClick={() => { const v = Math.round((b.min + b.max) / 2); setBalance(v); runStudio(v); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group lift card-sheen relative shrink-0 w-44 md:w-48 snap-start overflow-hidden rounded-2xl aspect-[4/5] shadow-soft border border-[#e6dcc3]">
+              className="group lift card-sheen relative shrink-0 w-44 md:w-48 snap-start overflow-hidden rounded-2xl aspect-[4/5] shadow-soft border border-[#dfe7ec]">
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" style={{ backgroundImage:`url(${b.img})` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               <div className="absolute inset-0 p-4 flex flex-col justify-end text-left text-white">
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#d9a43e]">{b.lab}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#00a58e]">{b.lab}</span>
                 <span className="text-[17px] font-black leading-tight mt-0.5">${b.min}–{b.max >= 12000 ? '12K+' : `$${b.max}`}</span>
                 <span className="text-[11px] font-semibold text-white/75 mt-1.5 flex items-center gap-1">
                   {t('hotTours.tiers.runAi')} <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition" />
@@ -587,7 +587,7 @@ const HotTours = () => {
             <div className="eyebrow-lux mb-1">
               <Flame className="w-3.5 h-3.5" /> {t('hotTours.deals.badge')}
             </div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">{t('hotTours.deals.title')}</h2>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-[#252a31] tracking-tight">{t('hotTours.deals.title')}</h2>
           </div>
         </div>
 
@@ -599,19 +599,19 @@ const HotTours = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.05, ease: [0.4, 0, 0.2, 1] }}
-              className="group lift card-sheen shrink-0 w-80 snap-start bg-white rounded-2xl overflow-hidden border border-[#e6dcc3] shadow-soft"
+              className="group lift card-sheen shrink-0 w-80 snap-start bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] shadow-soft"
             >
               <div className="relative h-48 overflow-hidden cursor-pointer" onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
                 <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                  <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#d9a43e] to-[#c08c33] text-[#1a1a1a] text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
+                  <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#00a58e] to-[#008f77] text-[#252a31] text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
                     <BadgePercent className="w-3 h-3" /> -{p.discount}%
                   </span>
                   {p.featured && (
-                    <span className="inline-flex items-center gap-1 bg-white/95 backdrop-blur text-[#2f6395] text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
-                      <Star className="w-3 h-3 fill-[#d9a43e] text-[#d9a43e]" /> {t('hotTours.deals.bestseller')}
+                    <span className="inline-flex items-center gap-1 bg-white/95 backdrop-blur text-[#0172cb] text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
+                      <Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" /> {t('hotTours.deals.bestseller')}
                     </span>
                   )}
                 </div>
@@ -625,26 +625,26 @@ const HotTours = () => {
                   className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition"
                   aria-label={isInWishlist(p.id, 'package') ? 'Remove from wishlist' : 'Save to wishlist'}
                 >
-                  <Heart className={`w-4 h-4 ${isInWishlist(p.id, 'package') ? 'fill-red-500 text-red-500' : 'text-[#5c5245]'}`} />
+                  <Heart className={`w-4 h-4 ${isInWishlist(p.id, 'package') ? 'fill-red-500 text-red-500' : 'text-[#4a5867]'}`} />
                 </button>
                 <div className="absolute bottom-3 left-3 flex items-center gap-1 glass-dark text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm">
                   <Clock className="w-3 h-3" /> {t('hotTours.deals.endsIn')} {p.hoursLeft}h
                 </div>
               </div>
               <div className="p-5">
-                <div className="flex items-center gap-1 text-[12px] text-[#5c5245] font-semibold mb-1">
-                  <MapPin className="w-3.5 h-3.5 text-[#2f6395]" /> {p.destination}
+                <div className="flex items-center gap-1 text-[12px] text-[#4a5867] font-semibold mb-1">
+                  <MapPin className="w-3.5 h-3.5 text-[#0172cb]" /> {p.destination}
                 </div>
-                <h3 className="text-[16px] font-black text-[#1a1a1a] mb-2 line-clamp-1">{p.name}</h3>
-                <div className="flex items-center gap-3 text-[12px] text-[#5c5245] mb-4">
+                <h3 className="text-[16px] font-black text-[#252a31] mb-2 line-clamp-1">{p.name}</h3>
+                <div className="flex items-center gap-3 text-[12px] text-[#4a5867] mb-4">
                   <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{p.duration} {t('hotTours.deals.days')}</span>
-                  <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 fill-[#d9a43e] text-[#d9a43e]" />{p.rating}</span>
+                  <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 fill-[#00a58e] text-[#00a58e]" />{p.rating}</span>
                   <span className="text-danger font-bold">{t('hotTours.deals.only')} {p.seatsLeft} {t('hotTours.deals.leftSuffix')}</span>
                 </div>
                 <div className="flex items-end justify-between gap-3">
                   <div>
-                    <div className="text-[11px] text-[#93876f] line-through font-semibold"><Price amount={p.originalPrice} /></div>
-                    <div className="text-[22px] font-black text-[#003580] leading-tight"><Price amount={p.price} /><span className="text-[11px] font-bold text-[#5c5245]"> {t('hotTours.deals.perPerson')}</span></div>
+                    <div className="text-[11px] text-[#697d95] line-through font-semibold"><Price amount={p.originalPrice} /></div>
+                    <div className="text-[22px] font-black text-[#252a31] leading-tight"><Price amount={p.price} /><span className="text-[11px] font-bold text-[#4a5867]"> {t('hotTours.deals.perPerson')}</span></div>
                   </div>
                   <button
                     onClick={() => navigate('/trip-plan', { state: { item: p, type: 'package' } })}
@@ -671,29 +671,29 @@ const HotTours = () => {
 
 const BreakdownRow = ({ icon, label, val }) => (
   <div className="flex items-center justify-between">
-    <span className="flex items-center gap-1 text-[#5c5245] font-semibold">
-      <span className="text-[#2f6395]">{icon}</span>{label}
+    <span className="flex items-center gap-1 text-[#4a5867] font-semibold">
+      <span className="text-[#0172cb]">{icon}</span>{label}
     </span>
-    <span className="text-[#1a1a1a] font-black"><Price amount={val || 0} /></span>
+    <span className="text-[#252a31] font-black"><Price amount={val || 0} /></span>
   </div>
 );
 
 const Field = ({ icon, label, children }) => (
-  <label className="block bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl px-3.5 py-2.5 focus-within:border-[#2f6395] focus-within:ring-4 focus-within:ring-[#2f6395]/10 transition">
-    <div className="flex items-center gap-1.5 text-[9.5px] font-black uppercase tracking-widest text-[#93876f] mb-1">
-      <span className="text-[#2f6395]">{icon}</span> {label}
+  <label className="block bg-[#eef2f5] border border-[#dfe7ec] rounded-xl px-3.5 py-2.5 focus-within:border-[#0172cb] focus-within:ring-4 focus-within:ring-[#0172cb]/10 transition">
+    <div className="flex items-center gap-1.5 text-[9.5px] font-black uppercase tracking-widest text-[#697d95] mb-1">
+      <span className="text-[#0172cb]">{icon}</span> {label}
     </div>
     {children}
   </label>
 );
 
 const BalanceField = ({ value, onChange, label }) => (
-  <label className="block bg-[#003580] text-white rounded-xl px-4 py-3 border-2 border-[#d9a43e]/40 focus-within:border-[#d9a43e] focus-within:ring-4 focus-within:ring-[#d9a43e]/25 transition">
+  <label className="block bg-[#252a31] text-white rounded-xl px-4 py-3 border-2 border-[#00a58e]/40 focus-within:border-[#00a58e] focus-within:ring-4 focus-within:ring-[#00a58e]/25 transition">
     <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-white/70 mb-1">
-      <Wallet className="w-3.5 h-3.5 text-[#d9a43e]" /> {label}
+      <Wallet className="w-3.5 h-3.5 text-[#00a58e]" /> {label}
     </div>
     <div className="flex items-center">
-      <span className="text-[32px] font-black text-[#d9a43e] mr-1">$</span>
+      <span className="text-[32px] font-black text-[#00a58e] mr-1">$</span>
       <input type="number" min="200" step="50" value={value} onChange={e => onChange(e.target.value)}
         className="w-full bg-transparent outline-none text-[32px] font-black tracking-tight" />
     </div>
@@ -724,9 +724,9 @@ const DayPlanDrawer = ({ pkg, state, balance, t, onClose, onBook }) => {
       >
         <div className="relative h-52 bg-cover bg-center" style={{ backgroundImage:`url(${pkg.image})` }}>
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-          <button onClick={onClose} className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 flex items-center justify-center text-[#1a1a1a] font-black active:scale-95">✕</button>
+          <button onClick={onClose} className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 flex items-center justify-center text-[#252a31] font-black active:scale-95">✕</button>
           <div className="absolute bottom-4 left-5 right-5 text-white">
-            <div className="text-[11px] font-black uppercase tracking-widest text-[#d9a43e] mb-1">{pkg.tier} · {pkg.style}</div>
+            <div className="text-[11px] font-black uppercase tracking-widest text-[#00a58e] mb-1">{pkg.tier} · {pkg.style}</div>
             <h3 className="text-2xl md:text-3xl font-black leading-tight">{pkg.destination}, {pkg.country}</h3>
             <p className="text-[13px] font-semibold text-white/85 mt-1">{pkg.days}-{t('hotTours.drawer.planSuffix')} · {fmt(pkg.price)} {t('hotTours.drawer.perPerson')} {fmt(balance)} {t('hotTours.drawer.balanceSuffix')}</p>
           </div>
@@ -735,8 +735,8 @@ const DayPlanDrawer = ({ pkg, state, balance, t, onClose, onBook }) => {
         <div className="p-5 md:p-6">
           {loading && (
             <div className="py-12 text-center">
-              <Loader2 className="w-8 h-8 animate-spin text-[#2f6395] mx-auto mb-2" />
-              <p className="text-[13px] font-bold text-[#5c5245]">{t('hotTours.drawer.laying')}</p>
+              <Loader2 className="w-8 h-8 animate-spin text-[#0172cb] mx-auto mb-2" />
+              <p className="text-[13px] font-bold text-[#4a5867]">{t('hotTours.drawer.laying')}</p>
             </div>
           )}
 
@@ -752,29 +752,29 @@ const DayPlanDrawer = ({ pkg, state, balance, t, onClose, onBook }) => {
                   { icon: Activity,    label: t('hotTours.drawer.activities'), key: 'activities' },
                   { icon: ShoppingBag, label: t('hotTours.drawer.shopping'),   key: 'shopping' },
                 ].map((s, i) => (
-                  <div key={i} className="bg-[#f6f1e4] border border-[#e6dcc3] rounded-xl p-2.5 text-center">
-                    <s.icon className="w-3.5 h-3.5 text-[#2f6395] mx-auto mb-1" />
-                    <div className="text-[10px] uppercase tracking-widest font-black text-[#93876f]">{s.label}</div>
-                    <div className="text-[13px] font-black text-[#003580]">{fmt(plan.budgetBreakdown?.[s.key] || 0)}</div>
+                  <div key={i} className="bg-[#eef2f5] border border-[#dfe7ec] rounded-xl p-2.5 text-center">
+                    <s.icon className="w-3.5 h-3.5 text-[#0172cb] mx-auto mb-1" />
+                    <div className="text-[10px] uppercase tracking-widest font-black text-[#697d95]">{s.label}</div>
+                    <div className="text-[13px] font-black text-[#252a31]">{fmt(plan.budgetBreakdown?.[s.key] || 0)}</div>
                   </div>
                 ))}
               </div>
 
               {/* Days */}
-              <h4 className="text-[12px] font-black uppercase tracking-widest text-[#93876f] mb-2">{t('hotTours.drawer.dayByDay')}</h4>
+              <h4 className="text-[12px] font-black uppercase tracking-widest text-[#697d95] mb-2">{t('hotTours.drawer.dayByDay')}</h4>
               <div className="space-y-2.5 mb-5 max-h-72 overflow-y-auto pr-1">
                 {(plan.days || []).map(d => (
-                  <div key={d.day} className="p-3 rounded-xl bg-[#f6f1e4] border border-[#efe6d2]">
+                  <div key={d.day} className="p-3 rounded-xl bg-[#eef2f5] border border-[#e8edf1]">
                     <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-[#003580] text-white text-[12px] font-black flex items-center justify-center shrink-0">D{d.day}</div>
+                      <div className="w-9 h-9 rounded-lg bg-[#252a31] text-white text-[12px] font-black flex items-center justify-center shrink-0">D{d.day}</div>
                       <div className="min-w-0 flex-1">
-                        <div className="text-[14px] font-black text-[#1a1a1a]">{d.title || `${t('hotTours.drawer.dayPrefix')} ${d.day}`}</div>
-                        <div className="text-[12px] text-[#5c5245] font-semibold">{d.place} · {t('hotTours.drawer.estPrefix')} {fmt(d.cost)}</div>
+                        <div className="text-[14px] font-black text-[#252a31]">{d.title || `${t('hotTours.drawer.dayPrefix')} ${d.day}`}</div>
+                        <div className="text-[12px] text-[#4a5867] font-semibold">{d.place} · {t('hotTours.drawer.estPrefix')} {fmt(d.cost)}</div>
                         {Array.isArray(d.events) && d.events.length > 0 && (
                           <ul className="mt-1.5 space-y-0.5">
                             {d.events.slice(0, 3).map((ev, j) => (
-                              <li key={j} className="text-[11.5px] text-[#5c5245] font-medium truncate">
-                                <span className="font-black text-[#2f6395] mr-1">{ev.time}</span>{ev.name}
+                              <li key={j} className="text-[11.5px] text-[#4a5867] font-medium truncate">
+                                <span className="font-black text-[#0172cb] mr-1">{ev.time}</span>{ev.name}
                               </li>
                             ))}
                           </ul>
@@ -789,8 +789,8 @@ const DayPlanDrawer = ({ pkg, state, balance, t, onClose, onBook }) => {
               {plan.travelTips?.length > 0 && (
                 <div className="grid sm:grid-cols-2 gap-2 mb-5">
                   {plan.travelTips.slice(0, 4).map((tip, i) => (
-                    <div key={i} className="text-[12px] text-[#5c5245] font-semibold flex items-start gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-[#d9a43e] mt-0.5 shrink-0" /> {tip}
+                    <div key={i} className="text-[12px] text-[#4a5867] font-semibold flex items-start gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-[#00a58e] mt-0.5 shrink-0" /> {tip}
                     </div>
                   ))}
                 </div>
@@ -798,9 +798,9 @@ const DayPlanDrawer = ({ pkg, state, balance, t, onClose, onBook }) => {
             </>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t border-[#efe6d2]">
+          <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t border-[#e8edf1]">
             <button onClick={onClose}
-              className="flex-1 py-3 rounded-xl border-2 border-[#e6dcc3] hover:border-[#2f6395] text-[13px] font-black text-[#1a1a1a] transition active:scale-95">
+              className="flex-1 py-3 rounded-xl border-2 border-[#dfe7ec] hover:border-[#0172cb] text-[13px] font-black text-[#252a31] transition active:scale-95">
               {t('hotTours.drawer.compareOthers')}
             </button>
             <button onClick={onBook}

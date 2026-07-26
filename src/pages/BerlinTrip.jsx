@@ -60,7 +60,7 @@ const DAY_COLORS = {
   1: 'bg-[#8a7a63]',
   2: 'bg-[#3d6b8a]',
   3: 'bg-[#7d5a8c]',
-  4: 'bg-[#c9962f]',
+  4: 'bg-[#009882]',
   5: 'bg-[#6b8f5e]',
   6: 'bg-[#b56576]',
   7: 'bg-[#2d6a6f]',
@@ -186,7 +186,7 @@ const budgetRows = [
   { label: 'Accommodation', amount: BUDGET.accommodation,  icon: Hotel,            color: 'bg-[#7d5a8c]' },
   { label: 'Food',          amount: BUDGET.food,           icon: UtensilsCrossed,  color: 'bg-[#c26d4a]' },
   { label: 'Transport',     amount: BUDGET.transport,      icon: Car,              color: 'bg-[#6b8f5e]' },
-  { label: 'Attractions',   amount: BUDGET.activities,     icon: Activity,         color: 'bg-[#c9962f]' },
+  { label: 'Attractions',   amount: BUDGET.activities,     icon: Activity,         color: 'bg-[#009882]' },
   { label: 'Shopping',      amount: BUDGET.shopping,       icon: Wallet,           color: 'bg-[#b56576]' },
 ];
 
@@ -203,7 +203,7 @@ function FitBounds({ locations }) {
 }
 
 // Custom numbered marker
-function createNumberedIcon(num, color = '#2f6395') {
+function createNumberedIcon(num, color = '#0172cb') {
   return L.divIcon({
     className: '',
     html: `<div style="
@@ -221,7 +221,7 @@ function createNumberedIcon(num, color = '#2f6395') {
 
 /* Mirrors DAY_COLORS above — same per-day jewel tones, as hex for the map pins. */
 const DAY_COLOR_HEX = {
-  1: '#8a7a63', 2: '#3d6b8a', 3: '#7d5a8c', 4: '#c9962f',
+  1: '#8a7a63', 2: '#3d6b8a', 3: '#7d5a8c', 4: '#009882',
   5: '#6b8f5e', 6: '#b56576', 7: '#2d6a6f', 8: '#c26d4a',
 };
 
@@ -300,7 +300,7 @@ const BerlinTrip = () => {
               <ArrowLeft className="w-3.5 h-3.5" />
               {t('berlinTrip.back')}
             </button>
-            <div className="inline-flex items-center gap-2 mb-3 px-3 py-1.5 rounded-full bg-[#d9a43e] text-[#1a1a1a] shadow-[0_4px_14px_rgba(207, 156, 63,0.35)]">
+            <div className="inline-flex items-center gap-2 mb-3 px-3 py-1.5 rounded-full bg-[#00a58e] text-white shadow-[0_4px_14px_rgba(0, 152, 130,0.35)]">
               <Calendar className="w-3.5 h-3.5" />
               <span className="text-[10px] font-black uppercase tracking-[0.2em]">
                 {t('berlin.dates')} · {t('berlin.days')}
@@ -344,9 +344,9 @@ const BerlinTrip = () => {
             { label: t('berlin.datesLabel'), title: t('berlin.dates'), sub: t('berlin.datesSub') },
             { label: t('berlin.routeLabel'), title: t('berlin.route'), sub: t('berlin.routeSub') },
           ].map((c) => (
-            <div key={c.label} className="group bg-gradient-to-b from-[#141414] to-[#0f0f0f] border border-white/[0.08] rounded-3xl p-6 shadow-[0_32px_80px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d9a43e]/30">
+            <div key={c.label} className="group bg-gradient-to-b from-[#141414] to-[#0f0f0f] border border-white/[0.08] rounded-3xl p-6 shadow-[0_32px_80px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#00a58e]/30">
               <div className="flex items-center gap-2 mb-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#d9a43e]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00a58e]" />
                 <div className="text-[10px] font-black uppercase tracking-[0.25em] text-white/30">{c.label}</div>
               </div>
               <div className="text-[20px] font-black text-white">{c.title}</div>
@@ -436,13 +436,13 @@ const BerlinTrip = () => {
                     <Marker
                       key={loc.name}
                       position={[loc.lat, loc.lng]}
-                      icon={createNumberedIcon(i + 1, DAY_COLOR_HEX[loc.day] || '#2f6395')}
+                      icon={createNumberedIcon(i + 1, DAY_COLOR_HEX[loc.day] || '#0172cb')}
                     >
                       <Popup>
                         <div style={{ minWidth: 180 }}>
                           <div style={{ fontSize: 18, marginBottom: 4 }}>{loc.emoji} <strong>{loc.name}</strong></div>
                           <div style={{ fontSize: 12, color: '#555', marginBottom: 4 }}>{loc.address}</div>
-                          <div style={{ fontSize: 12, fontWeight: 700, color: '#003580' }}>{t('berlinTrip.day')} {loc.day} · {loc.price}</div>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: '#252a31' }}>{t('berlinTrip.day')} {loc.day} · {loc.price}</div>
                         </div>
                       </Popup>
                     </Marker>
@@ -460,7 +460,7 @@ const BerlinTrip = () => {
                     <div key={loc.name} className="flex gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all">
                       <div
                         className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[11px] font-black shrink-0 mt-0.5"
-                        style={{ background: DAY_COLOR_HEX[loc.day] || '#2f6395' }}
+                        style={{ background: DAY_COLOR_HEX[loc.day] || '#0172cb' }}
                       >
                         {i + 1}
                       </div>
@@ -491,12 +491,12 @@ const BerlinTrip = () => {
             {/* Budget + Tips */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
               <div className="lg:col-span-2 relative bg-gradient-to-br from-[#141414] to-[#0e0e0e] border border-white/[0.07] rounded-2xl p-8 overflow-hidden">
-                <div className="absolute -top-24 -right-20 w-64 h-64 rounded-full bg-[#d9a43e]/[0.06] blur-3xl pointer-events-none" />
+                <div className="absolute -top-24 -right-20 w-64 h-64 rounded-full bg-[#00a58e]/[0.06] blur-3xl pointer-events-none" />
                 <div className="relative z-10">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7">
                     <div>
                       <div className="flex items-center gap-2 mb-1.5">
-                        <Wallet className="w-3.5 h-3.5 text-[#d9a43e]" />
+                        <Wallet className="w-3.5 h-3.5 text-[#00a58e]" />
                         <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('berlin.budget')}</div>
                       </div>
                       <div className="flex items-baseline gap-2">
@@ -573,9 +573,9 @@ const BerlinTrip = () => {
 
             {/* Total cost */}
             <div className="flex justify-center pb-8">
-              <div className="inline-flex items-center gap-4 px-9 py-4 rounded-2xl bg-gradient-to-br from-[#141414] to-[#0e0e0e] border border-[#d9a43e]/20 shadow-[0_12px_40px_rgba(0,0,0,0.4)]">
-                <div className="w-10 h-10 rounded-xl bg-[#d9a43e]/10 flex items-center justify-center">
-                  <Wallet className="w-5 h-5 text-[#d9a43e]" />
+              <div className="inline-flex items-center gap-4 px-9 py-4 rounded-2xl bg-gradient-to-br from-[#141414] to-[#0e0e0e] border border-[#00a58e]/20 shadow-[0_12px_40px_rgba(0,0,0,0.4)]">
+                <div className="w-10 h-10 rounded-xl bg-[#00a58e]/10 flex items-center justify-center">
+                  <Wallet className="w-5 h-5 text-[#00a58e]" />
                 </div>
                 <div>
                   <div className="text-[9px] font-black uppercase tracking-[0.2em] text-white/30">{t('berlin.totalCost')}</div>

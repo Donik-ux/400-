@@ -44,7 +44,7 @@ export default function PhotoLightbox({ destination, mainImage, onClose }) {
     <div onClick={onClose} className="fixed inset-0 z-[110] bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-4">
       <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-white">
         <div className="flex items-center gap-1.5 text-[13px] font-black">
-          <MapPin className="w-4 h-4 text-[#d9a43e]" /> {destination}
+          <MapPin className="w-4 h-4 text-[#00a58e]" /> {destination}
           <span className="text-white/50 font-bold ml-2">{index + 1} / {photos.length}</span>
         </div>
         <button onClick={onClose} aria-label="Close"
@@ -74,7 +74,7 @@ export default function PhotoLightbox({ destination, mainImage, onClose }) {
       <div className="mt-4 flex gap-2 overflow-x-auto max-w-full px-2" onClick={(e) => e.stopPropagation()}>
         {photos.map((p, i) => (
           <button key={p} onClick={() => setIndex(i)}
-            className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition ${i === index ? 'border-[#d9a43e]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+            className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition ${i === index ? 'border-[#00a58e]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
             <img src={p} alt="" className="w-full h-full object-cover" />
           </button>
         ))}

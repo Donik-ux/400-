@@ -72,8 +72,8 @@ export default {
         from: 'from',
       },
       trust: {
-        bestPriceTitle: 'Best Price Guarantee',
-        bestPriceSub: 'We refund the difference',
+        bestPriceTitle: 'Smart Price Search',
+        bestPriceSub: 'We compare multiple sources for the lowest fare',
         secureTitle: 'Secure Bookings',
         secureSub: 'SSL · 2FA · PCI compliant',
         supportTitle: '24 / 7 Support',
@@ -268,8 +268,8 @@ export default {
         from: 'dan',
       },
       trust: {
-        bestPriceTitle: 'Eng yaxshi narx kafolati',
-        bestPriceSub: 'Farqni qaytarib beramiz',
+        bestPriceTitle: 'Aqlli narx qidiruvi',
+        bestPriceSub: 'Eng past narx uchun bir nechta manbani solishtiramiz',
         secureTitle: 'Xavfsiz bronlar',
         secureSub: 'SSL · 2FA · PCI mosligi',
         supportTitle: '24 / 7 qo‘llab-quvvatlash',

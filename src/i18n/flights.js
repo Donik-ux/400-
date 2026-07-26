@@ -12,7 +12,7 @@ export default {
         subtitle: 'Real-time prices from 12+ airlines · smart filters · book on the platform with the best fare.',
       },
       trust: {
-        bestPrice: 'Best Price Guarantee',
+        bestPrice: 'Smart Price Comparison',
         bestPriceSub: '12+ airlines compared',
         secure: 'Secure Bookings',
         secureSub: 'SSL · GDPR · PCI',
@@ -94,7 +94,7 @@ export default {
         bookDirect: 'Book direct',
         officialAirline: 'Official airline',
         whyTitle: 'Why buy direct?',
-        whyBody: 'Earn frequent-flyer miles · cheaper changes & refunds · direct customer service · same-day operational support (delays, cancellations). The price is usually identical to aggregators.',
+        whyBody: 'Earn frequent-flyer miles · cheaper date changes · direct customer service · same-day operational support (delays, cancellations). The price is usually identical to aggregators.',
       },
       aggregators: {
         thirdParty: '3rd-party',
@@ -146,7 +146,7 @@ export default {
         subtitle: '12+ aviakompaniyadan real vaqt narxlari · aqlli filtrlar · eng yaxshi tarif bilan platformada bron qiling.',
       },
       trust: {
-        bestPrice: 'Eng yaxshi narx kafolati',
+        bestPrice: 'Aqlli narx taqqoslash',
         bestPriceSub: '12+ aviakompaniya solishtiriladi',
         secure: 'Xavfsiz bronlar',
         secureSub: 'SSL · GDPR · PCI',
@@ -228,7 +228,7 @@ export default {
         bookDirect: 'To‘g‘ridan-to‘g‘ri bron',
         officialAirline: 'Rasmiy aviakompaniya',
         whyTitle: 'Nega to‘g‘ridan-to‘g‘ri sotib olish kerak?',
-        whyBody: 'Tez-tez uchuvchi millarini to‘plang · arzonroq o‘zgartirish va qaytarishlar · to‘g‘ridan-to‘g‘ri mijozlarga xizmat · kun davomida operatsion yordam (kechikishlar, bekor qilishlar). Narx odatda agregatorlar bilan bir xil.',
+        whyBody: 'Tez-tez uchuvchi millarini to‘plang · arzonroq sana o‘zgartirishlari · to‘g‘ridan-to‘g‘ri mijozlarga xizmat · kun davomida operatsion yordam (kechikishlar, bekor qilishlar). Narx odatda agregatorlar bilan bir xil.',
       },
       aggregators: {
         thirdParty: 'Uchinchi tomon',

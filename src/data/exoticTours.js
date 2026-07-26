@@ -17,7 +17,7 @@ export const TOURS = [
     groupSize: '8–12',
     desc: 'Begin your journey in the ultra-modern skyline of Dubai, then venture to the most remote continent on Earth. Witness emperor penguins, icebergs, and the clearest skies you\'ve ever seen.',
     highlights: ['Dubai city tour & desert safari', 'Flight to Ushuaia, Argentina', 'Antarctic cruise expedition', 'Penguin colony visits', 'Zodiac glacier landings'],
-    image: 'https://images.unsplash.com/photo-1519659528534-7fd733a832a0?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 2,

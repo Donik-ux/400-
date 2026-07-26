@@ -16,7 +16,7 @@ const parsePrice = (s) => {
   return String(s || '').trim().startsWith('€') ? Math.round(n * EUR_TO_USD) : n;
 };
 
-const TourCard = ({ tour, budget }) => {
+const TourCard = ({ tour, budget, anchor = false }) => {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -35,7 +35,7 @@ const TourCard = ({ tour, budget }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20, transition: { duration: 0.15 } }}
       transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
-      className={`group lift card-sheen bg-white rounded-2xl border overflow-hidden shadow-soft flex flex-col ${
+      className={`group lift bg-white rounded-xl border overflow-hidden shadow-soft flex flex-col ${anchor ? 'md:col-span-2' : ''} ${
         hasBudget && !fits
           ? 'border-[#dfe7ec] opacity-65 hover:opacity-100'
           : fits ? 'border-[#cfe3d2]' : 'border-[#dfe7ec]'
@@ -292,11 +292,11 @@ const ExoticTours = () => {
           </span>
         </div>
 
-        {/* Tour grid */}
+        {/* Tour grid — the first card anchors the layout by spanning 2 columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <AnimatePresence>
-            {visible.map(tour => (
-              <TourCard key={tour.id} tour={tour} budget={budget} />
+            {visible.map((tour, i) => (
+              <TourCard key={tour.id} tour={tour} budget={budget} anchor={i === 0} />
             ))}
           </AnimatePresence>
         </div>

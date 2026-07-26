@@ -15,7 +15,7 @@ import useStore from '../store/useStore';
 import { useTranslation } from '../store/useLangStore';
 import useSEO from '../hooks/useSEO';
 import { heroFor } from '../utils/destinationImages';
-import AutoStrip from '../components/AutoStrip';
+
 import { toast } from '../components/Toast';
 import { usePriceFormatter } from '../components/Price';
 import { getWeatherForDates } from '../services/weatherForecast';
@@ -463,29 +463,38 @@ export default function Flights() {
                 </div>
               </div>
 
-              <AutoStrip className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
-                {POPULAR_ROUTES.map((r, i) => (
-                  <button key={i}
-                    onClick={() => {
-                      setFormData({ from: r.from, to: r.to, date: '', returnDate: '' });
-                      handleSearch({ formData: { from: r.from, to: r.to, date: '' } });
-                      window.scrollTo({ top: 80, behavior: 'smooth' });
-                    }}
-                    className="group card-sheen relative shrink-0 w-48 md:w-56 aspect-[4/5] snap-start overflow-hidden rounded-3xl bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 border border-[#dfe7ec] transition-all duration-300 active:scale-[0.98]"
-                    style={{ backgroundImage: `url(${heroFor(r.city)})` }}>
-                    <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url(${heroFor(r.city)})` }} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
-                    <div className="absolute inset-0 p-3 md:p-4 flex flex-col justify-end text-left text-white">
-                      <div className="text-[10px] font-black uppercase tracking-widest text-[#00a58e] mb-1">{r.country}</div>
-                      <div className="font-display text-[18px] md:text-[21px] font-bold leading-tight">{r.city}</div>
-                      <div className="text-[10px] text-white/75 font-bold mb-2.5">{r.from.split(' (')[0]} → {r.to.split(' (')[0]}</div>
-                      <div className="inline-flex items-center gap-1.5 bg-[#00a58e] text-white font-black px-2.5 py-1 rounded-lg w-fit text-[11px] shadow-soft group-hover:gap-2.5 transition-all">
-                        <Plane className="w-3 h-3" /> {t('flightsPage.inspiration.from')} ${r.from$}
+              {/* Kiwi-style mosaic: varied-width photo tiles, name + route over the image */}
+              <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4">
+                {POPULAR_ROUTES.map((r, i) => {
+                  const SPANS = ['md:col-span-3', 'md:col-span-5', 'md:col-span-4', 'md:col-span-4', 'md:col-span-3', 'md:col-span-5', 'md:col-span-5', 'md:col-span-4', 'md:col-span-3', 'md:col-span-12 lg:col-span-3'];
+                  return (
+                    <button key={i}
+                      onClick={() => {
+                        setFormData({ from: r.from, to: r.to, date: '', returnDate: '' });
+                        handleSearch({ formData: { from: r.from, to: r.to, date: '' } });
+                        window.scrollTo({ top: 80, behavior: 'smooth' });
+                      }}
+                      className={`group relative h-40 md:h-52 overflow-hidden rounded-xl bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 transition-all duration-300 active:scale-[0.98] text-left ${SPANS[i] || 'md:col-span-3'}`}
+                      style={{ backgroundImage: `url(${heroFor(r.city)})` }}>
+                      <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${heroFor(r.city)})` }} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 p-3.5 flex items-end justify-between gap-2 text-white">
+                        <div className="min-w-0">
+                          <div className="text-[10px] font-black uppercase tracking-widest text-[#61d1bf] mb-0.5">{r.country}</div>
+                          <div className="text-[18px] font-black leading-tight truncate">{r.city}</div>
+                          <div className="text-[10px] text-white/75 font-bold mb-1.5">{r.from.split(' (')[0]} → {r.to.split(' (')[0]}</div>
+                          <div className="inline-flex items-center gap-1.5 bg-[#00a58e] text-white font-black px-2.5 py-1 rounded-lg w-fit text-[11px] shadow-soft">
+                            <Plane className="w-3 h-3" /> {t('flightsPage.inspiration.from')} ${r.from$}
+                          </div>
+                        </div>
+                        <span className="w-8 h-8 rounded-full bg-white/15 backdrop-blur border border-white/20 flex items-center justify-center shrink-0 group-hover:bg-[#00a58e] group-hover:border-[#00a58e] transition-colors">
+                          <ArrowRight className="w-4 h-4" />
+                        </span>
                       </div>
-                    </div>
-                  </button>
-                ))}
-              </AutoStrip>
+                    </button>
+                  );
+                })}
+              </div>
             </section>
 
             {/* AI Trip CTA — rich blue/gold accent band */}

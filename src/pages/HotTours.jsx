@@ -591,72 +591,16 @@ const HotTours = () => {
           </div>
         </div>
 
-        <AutoStrip className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:auto-rows-fr">
           {hotDeals.map((p, i) => (
-            <motion.div
+            <HotDealCard
               key={p.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.05, ease: [0.4, 0, 0.2, 1] }}
-              className="group lift card-sheen shrink-0 w-80 snap-start bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] shadow-soft"
-            >
-              <div className="relative h-48 overflow-hidden cursor-pointer" onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
-                <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                  <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#00a58e] to-[#008f77] text-[#252a31] text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
-                    <BadgePercent className="w-3 h-3" /> -{p.discount}%
-                  </span>
-                  {p.featured && (
-                    <span className="inline-flex items-center gap-1 bg-white/95 backdrop-blur text-[#0172cb] text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
-                      <Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" /> {t('hotTours.deals.bestseller')}
-                    </span>
-                  )}
-                </div>
-                <button
-                  onClick={() => {
-                    const wasIn = isInWishlist(p.id, 'package');
-                    toggleWishlist('package', p);
-                    if (wasIn) toast.info('Removed from wishlist', p.name);
-                    else       toast.success('Saved to wishlist', p.name);
-                  }}
-                  className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition"
-                  aria-label={isInWishlist(p.id, 'package') ? 'Remove from wishlist' : 'Save to wishlist'}
-                >
-                  <Heart className={`w-4 h-4 ${isInWishlist(p.id, 'package') ? 'fill-red-500 text-red-500' : 'text-[#4a5867]'}`} />
-                </button>
-                <div className="absolute bottom-3 left-3 flex items-center gap-1 glass-dark text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm">
-                  <Clock className="w-3 h-3" /> {t('hotTours.deals.endsIn')} {p.hoursLeft}h
-                </div>
-              </div>
-              <div className="p-5">
-                <div className="flex items-center gap-1 text-[12px] text-[#4a5867] font-semibold mb-1">
-                  <MapPin className="w-3.5 h-3.5 text-[#0172cb]" /> {p.destination}
-                </div>
-                <h3 className="text-[16px] font-black text-[#252a31] mb-2 line-clamp-1">{p.name}</h3>
-                <div className="flex items-center gap-3 text-[12px] text-[#4a5867] mb-4">
-                  <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{p.duration} {t('hotTours.deals.days')}</span>
-                  <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 fill-[#00a58e] text-[#00a58e]" />{p.rating}</span>
-                  <span className="text-danger font-bold">{t('hotTours.deals.only')} {p.seatsLeft} {t('hotTours.deals.leftSuffix')}</span>
-                </div>
-                <div className="flex items-end justify-between gap-3">
-                  <div>
-                    <div className="text-[11px] text-[#697d95] line-through font-semibold"><Price amount={p.originalPrice} /></div>
-                    <div className="text-[22px] font-black text-[#252a31] leading-tight"><Price amount={p.price} /><span className="text-[11px] font-bold text-[#4a5867]"> {t('hotTours.deals.perPerson')}</span></div>
-                  </div>
-                  <button
-                    onClick={() => navigate('/trip-plan', { state: { item: p, type: 'package' } })}
-                    className="btn-gold px-4 py-2.5 rounded-lg text-[13px] flex items-center gap-1.5 shrink-0"
-                  >
-                    {t('hotTours.deals.getPlan')} <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
+              p={p} i={i} total={hotDeals.length}
+              t={t} navigate={navigate} setLightbox={setLightbox}
+              isInWishlist={isInWishlist} toggleWishlist={toggleWishlist}
+            />
           ))}
-        </AutoStrip>
+        </div>
       </section>
 
       {lightbox && (
@@ -668,6 +612,138 @@ const HotTours = () => {
 };
 
 /* ── Sub-components ───────────────────────────────────────────────── */
+
+/* Hot deal tile in three mosaic variants: i===0 renders as the big 2×2 hero
+   tile (text over the photo), the last card as a wide horizontal tile, the
+   rest as compact cards. Texts and actions identical across variants. */
+const HotDealCard = ({ p, i, total, t, navigate, setLightbox, isInWishlist, toggleWishlist }) => {
+  const hero = i === 0;
+  const wide = i === total - 1;
+  const badges = (
+    <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+      <span className="inline-flex items-center gap-1 bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
+        <BadgePercent className="w-3 h-3" /> -{p.discount}%
+      </span>
+      {p.featured && !hero && (
+        <span className="inline-flex items-center gap-1 bg-white/95 backdrop-blur text-[#0172cb] text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
+          <Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" /> {t('hotTours.deals.bestseller')}
+        </span>
+      )}
+    </div>
+  );
+  const heart = (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        const wasIn = isInWishlist(p.id, 'package');
+        toggleWishlist('package', p);
+        if (wasIn) toast.info('Removed from wishlist', p.name);
+        else       toast.success('Saved to wishlist', p.name);
+      }}
+      className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition z-10"
+      aria-label={isInWishlist(p.id, 'package') ? 'Remove from wishlist' : 'Save to wishlist'}
+    >
+      <Heart className={`w-4 h-4 ${isInWishlist(p.id, 'package') ? 'fill-red-500 text-red-500' : 'text-[#4a5867]'}`} />
+    </button>
+  );
+  const planBtn = (cls) => (
+    <button
+      onClick={(e) => { e.stopPropagation(); navigate('/trip-plan', { state: { item: p, type: 'package' } }); }}
+      className={`btn-gold rounded-lg flex items-center gap-1.5 shrink-0 ${cls}`}
+    >
+      {t('hotTours.deals.getPlan')} <ArrowRight className="w-3.5 h-3.5" />
+    </button>
+  );
+
+  if (hero) return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3 }}
+      className="group relative md:col-span-2 md:row-span-2 min-h-[320px] rounded-xl overflow-hidden cursor-pointer"
+      onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
+      <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
+      {badges}
+      {heart}
+      <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+        <div className="flex items-center gap-1.5 mb-1 text-[11px] font-bold text-white/80">
+          <MapPin className="w-3 h-3" /> {p.destination}
+          <span className="flex items-center gap-1 glass-dark px-2 py-0.5 rounded-full"><Clock className="w-3 h-3" /> {t('hotTours.deals.endsIn')} {p.hoursLeft}h</span>
+        </div>
+        <h3 className="text-[24px] font-black leading-tight mb-1.5">{p.name}</h3>
+        <div className="flex items-center gap-3 text-[12px] text-white/85 mb-3">
+          <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{p.duration} {t('hotTours.deals.days')}</span>
+          <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 fill-[#00a58e] text-[#00a58e]" />{p.rating}</span>
+          <span className="font-bold text-[#ffb3a6]">{t('hotTours.deals.only')} {p.seatsLeft} {t('hotTours.deals.leftSuffix')}</span>
+        </div>
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <div className="text-[12px] text-white/60 line-through font-semibold"><Price amount={p.originalPrice} /></div>
+            <div className="text-[26px] font-black leading-tight"><Price amount={p.price} /><span className="text-[11px] font-bold text-white/70"> {t('hotTours.deals.perPerson')}</span></div>
+          </div>
+          {planBtn('px-4 py-2.5 text-[13px]')}
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  if (wide) return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: 0.1 }}
+      className="group md:col-span-2 bg-white rounded-xl overflow-hidden border border-[#dfe7ec] shadow-soft flex">
+      <div className="relative w-2/5 shrink-0 overflow-hidden cursor-pointer" onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
+        <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        {badges}
+      </div>
+      <div className="p-4 flex flex-col justify-center min-w-0 flex-1">
+        <div className="flex items-center gap-1 text-[11px] text-[#4a5867] font-semibold mb-0.5">
+          <MapPin className="w-3 h-3 text-[#0172cb]" /> {p.destination}
+        </div>
+        <h3 className="text-[15px] font-black text-[#252a31] mb-1 line-clamp-1">{p.name}</h3>
+        <div className="flex items-center gap-2.5 text-[11px] text-[#4a5867] mb-2.5">
+          <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{p.duration} {t('hotTours.deals.days')}</span>
+          <span className="flex items-center gap-1"><Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" />{p.rating}</span>
+          <span className="text-danger font-bold">{t('hotTours.deals.only')} {p.seatsLeft} {t('hotTours.deals.leftSuffix')}</span>
+        </div>
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <div className="text-[10px] text-[#697d95] line-through font-semibold"><Price amount={p.originalPrice} /></div>
+            <div className="text-[18px] font-black text-[#252a31] leading-tight"><Price amount={p.price} /></div>
+          </div>
+          {planBtn('px-3 py-2 text-[12px]')}
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
+      className="group bg-white rounded-xl overflow-hidden border border-[#dfe7ec] shadow-soft flex flex-col">
+      <div className="relative h-28 overflow-hidden cursor-pointer shrink-0" onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
+        <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        {badges}
+        {heart}
+      </div>
+      <div className="p-3.5 flex flex-col flex-1">
+        <div className="flex items-center gap-1 text-[10px] text-[#4a5867] font-semibold mb-0.5">
+          <MapPin className="w-3 h-3 text-[#0172cb]" /> {p.destination}
+        </div>
+        <h3 className="text-[13.5px] font-black text-[#252a31] mb-1 line-clamp-1">{p.name}</h3>
+        <div className="flex items-center gap-2 text-[10.5px] text-[#4a5867] mb-2">
+          <span className="flex items-center gap-0.5"><Calendar className="w-3 h-3" />{p.duration} {t('hotTours.deals.days')}</span>
+          <span className="flex items-center gap-0.5"><Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" />{p.rating}</span>
+        </div>
+        <div className="mt-auto flex items-end justify-between gap-2">
+          <div className="text-[15px] font-black text-[#252a31]"><Price amount={p.price} /></div>
+          {planBtn('px-2.5 py-1.5 text-[11px]')}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 const BreakdownRow = ({ icon, label, val }) => (
   <div className="flex items-center justify-between">

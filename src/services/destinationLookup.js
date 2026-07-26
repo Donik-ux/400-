@@ -206,7 +206,7 @@ export const DESTINATION_MAP = [
   // ── Malaysia ──────────────────────────────────────────────────────────────
   {
     keys: ['malaysia','малайзия','kuala lumpur','куала-лумпур','penang','пинанг','langkawi','лангкави'],
-    hero: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f11?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=1400&q=80',
     country: 'Малайзия 🇲🇾',
     visa: false,
     visaText: '',
@@ -242,7 +242,7 @@ export const DESTINATION_MAP = [
   // ── Egypt ─────────────────────────────────────────────────────────────────
   {
     keys: ['egypt','египет','cairo','каир','hurghada','хургада','sharm','шарм','luxor','луксор','aswan','асуан','alexandria','александрия'],
-    hero: 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?auto=format&fit=crop&w=1400&q=80',
     country: 'Египет 🇪🇬',
     visa: false,
     visaText: '',
@@ -377,7 +377,7 @@ export const DESTINATION_MAP = [
   // ── Kazakhstan ────────────────────────────────────────────────────────────
   {
     keys: ['kazakhstan','казахстан','almaty','алматы','astana','астана','nursultan','nur-sultan','shymkent','шымкент'],
-    hero: 'https://images.unsplash.com/photo-1596700698823-51e6a55bb73d?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1548588681-adf41d474533?auto=format&fit=crop&w=1400&q=80',
     country: 'Казахстан 🇰🇿',
     visa: false,
     visaText: '',
@@ -422,7 +422,7 @@ export const DESTINATION_MAP = [
   // ── Belarus ───────────────────────────────────────────────────────────────
   {
     keys: ['belarus','беларусь','minsk','минск','brest','брест','grodno','гродно'],
-    hero: 'https://images.unsplash.com/photo-1597638046743-7e4d1027a3e5?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1591509352193-c3e6676f71c2?auto=format&fit=crop&w=1400&q=80',
     country: 'Беларусь 🇧🇾',
     visa: false,
     visaText: '',
@@ -431,7 +431,7 @@ export const DESTINATION_MAP = [
   // ── Ukraine ───────────────────────────────────────────────────────────────
   {
     keys: ['ukraine','украина','kyiv','киев','lviv','львов','odessa','одесса'],
-    hero: 'https://images.unsplash.com/photo-1580743090610-e6b7879b48f2?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1639341267320-2d062b250c0d?auto=format&fit=crop&w=1400&q=80',
     country: 'Украина 🇺🇦',
     visa: false,
     visaText: '',
@@ -494,7 +494,7 @@ export const DESTINATION_MAP = [
   // ── Sri Lanka ─────────────────────────────────────────────────────────────
   {
     keys: ['sri lanka','шри-ланка','colombo','коломбо','kandy','канди','galle','галле'],
-    hero: 'https://images.unsplash.com/photo-1567447629977-571c7741fc2e?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1612862862126-865765df2ded?auto=format&fit=crop&w=1400&q=80',
     country: 'Шри-Ланка 🇱🇰',
     visa: true,
     visaText: 'Для въезда на Шри-Ланку необходима электронная виза ETA. Оформляется онлайн на eta.gov.lk.',

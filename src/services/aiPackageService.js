@@ -22,7 +22,7 @@ const CATALOG = [
   // Smart Value (≤ $1500)
   { city: 'Bangkok',       country: 'Thailand',           tier: 2, vibe: ['city','warm','food'],              img: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Kuala Lumpur',  country: 'Malaysia',           tier: 2, vibe: ['city','warm'],                     img: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=1200&q=80' },
-  { city: 'Marrakech',     country: 'Morocco',            tier: 2, vibe: ['cultural','warm'],                 img: 'https://images.unsplash.com/photo-1539020140153-e479b8c7d486?auto=format&fit=crop&w=1200&q=80' },
+  { city: 'Marrakech',     country: 'Morocco',            tier: 2, vibe: ['cultural','warm'],                 img: 'https://images.unsplash.com/photo-1653323792487-6ecc6217040b?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Athens',        country: 'Greece',             tier: 2, vibe: ['cultural','warm','city'],          img: 'https://images.unsplash.com/photo-1555993539-1732b0258235?auto=format&fit=crop&w=1200&q=80' },
   { city: 'Goa',           country: 'India',              tier: 2, vibe: ['beach','warm'],                    img: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80' },
 

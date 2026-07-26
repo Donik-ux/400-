@@ -55,7 +55,7 @@ export const TOURS = [
     groupSize: '8–14',
     desc: 'Ride camels through the Sahara dunes at sunset, then cruise through Norway\'s UNESCO-listed fjords. Two of Earth\'s most spectacular landscapes in one unforgettable journey.',
     highlights: ['Sahara camel trek & camp overnight', 'Marrakech medina exploration', 'Oslo city tour', 'Geirangerfjord UNESCO cruise', 'Trolltunga hike'],
-    image: 'https://images.unsplash.com/photo-1574080388890-c8041bfb2017?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1559586616-361e18714958?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 4,

@@ -113,9 +113,9 @@ export const destinations = [
       { icon: '🍻', title: 'Local Beer',      desc: { en: 'Traditional beer gardens and modern craft breweries across the city', ru: 'Традиционные пивные сады и современные крафтовые пивоварни по всему городу', uz: 'Shahar bo‘ylab anʼanaviy pivo bog‘lari va zamonaviy craft pivo zavodlari' } },
     ],
     gallery: [
-      'https://images.unsplash.com/photo-1468067333380-13c4cba5e1da?auto=format&fit=crop&w=700&q=80',
-      'https://images.unsplash.com/photo-1508051123996-69f8caf4891b?auto=format&fit=crop&w=700&q=80',
-      'https://images.unsplash.com/photo-1526512340740-9215f6a0e18f?auto=format&fit=crop&w=700&q=80',
+      'https://images.unsplash.com/photo-1587330979470-3595ac045ab0?auto=format&fit=crop&w=700&q=80',
+      'https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=700&q=80',
+      'https://images.unsplash.com/photo-1538685634737-24b83e3fa2f8?auto=format&fit=crop&w=700&q=80',
     ],
     stats: { bestTime: 'Apr – Oct', language: 'German', currency: 'EUR', population: '3.7M' },
   },
@@ -139,7 +139,7 @@ export const destinations = [
     gallery: [
       'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=700&q=80',
       'https://images.unsplash.com/photo-1526495124232-a04e1849168c?auto=format&fit=crop&w=700&q=80',
-      'https://images.unsplash.com/photo-1467244312836-9a6f4e670a7f?auto=format&fit=crop&w=700&q=80',
+      'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=700&q=80',
     ],
     stats: { bestTime: 'Nov – Mar', language: 'Arabic / English', currency: 'AED', population: '3.5M' },
   },

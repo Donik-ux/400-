@@ -14,7 +14,7 @@ const HEROES = {
   barcelona:   'https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1400&q=80',
   madrid:      'https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=1400&q=80',
   lisbon:      'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?auto=format&fit=crop&w=1400&q=80',
-  amsterdam:   'https://images.unsplash.com/photo-1534351590666-13e3e96c5017?auto=format&fit=crop&w=1400&q=80',
+  amsterdam:   'https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=1400&q=80',
   vienna:      'https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&w=1400&q=80',
   prague:      'https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=1400&q=80',
   budapest:    'https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=1400&q=80',
@@ -31,10 +31,10 @@ const HEROES = {
   'abu dhabi': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80',
   istanbul:    'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=1400&q=80',
   cairo:       'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?auto=format&fit=crop&w=1400&q=80',
-  marrakech:   'https://images.unsplash.com/photo-1539020140153-e479b8c7d486?auto=format&fit=crop&w=1400&q=80',
+  marrakech:   'https://images.unsplash.com/photo-1653323792487-6ecc6217040b?auto=format&fit=crop&w=1400&q=80',
   doha:        'https://images.unsplash.com/photo-1539768942893-daf53e448371?auto=format&fit=crop&w=1400&q=80',
-  amman:       'https://images.unsplash.com/photo-1568384917999-1f0c0c41bdf2?auto=format&fit=crop&w=1400&q=80',
-  petra:       'https://images.unsplash.com/photo-1563177978-4c5d8d5e0a51?auto=format&fit=crop&w=1400&q=80',
+  amman:       'https://images.unsplash.com/photo-1614772067419-1452cf9aeaa3?auto=format&fit=crop&w=1400&q=80',
+  petra:       'https://images.unsplash.com/photo-1579606032821-4e6161c81bd3?auto=format&fit=crop&w=1400&q=80',
   riyadh:      'https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1400&q=80',
 
   // Asia
@@ -87,7 +87,7 @@ const HEROES = {
   moscow:      'https://images.unsplash.com/photo-1547448415-e9f5b28e570d?auto=format&fit=crop&w=1400&q=80',
   baku:        'https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?auto=format&fit=crop&w=1400&q=80',
   tbilisi:     'https://images.unsplash.com/photo-1565008576549-57569a49371d?auto=format&fit=crop&w=1400&q=80',
-  batumi:      'https://images.unsplash.com/photo-1611521648571-4f8ad5b30b0c?auto=format&fit=crop&w=1400&q=80',
+  batumi:      'https://images.unsplash.com/photo-1625566360146-918001e76064?auto=format&fit=crop&w=1400&q=80',
   yerevan:     'https://images.unsplash.com/photo-1611689342806-0863700ce1e4?auto=format&fit=crop&w=1400&q=80',
 };
 

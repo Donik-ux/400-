@@ -749,7 +749,7 @@ export const cityDatabase = {
   // ── AFRICA & MIDDLE EAST ────────────────────────────────────────────────────
   cairo: {
     name: 'Cairo', country: 'Egypt', currency: 'EGP', budgetFactor: 0.55,
-    hero: 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?auto=format&fit=crop&w=1400&q=80',
     transport: {
       luxury:   'Private air-conditioned car with English-speaking driver (~EGP 1500/day).',
       standard: 'Uber & Careem ride-hail + Cairo Metro (EGP 5–10/trip).',
@@ -772,7 +772,7 @@ export const cityDatabase = {
 
   marrakech: {
     name: 'Marrakech', country: 'Morocco', currency: 'MAD', budgetFactor: 0.7,
-    hero: 'https://images.unsplash.com/photo-1597212720291-e8d5c5e9cc1b?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1653323792487-6ecc6217040b?auto=format&fit=crop&w=1400&q=80',
     transport: {
       luxury:   'Private chauffeur + riad concierge for spa & desert excursions.',
       standard: 'Taxis (negotiate fare before boarding) + walking inside Medina.',
@@ -795,7 +795,7 @@ export const cityDatabase = {
 
   doha: {
     name: 'Doha', country: 'Qatar', currency: 'QAR', budgetFactor: 1.2,
-    hero: 'https://images.unsplash.com/photo-1562258482-1c31e7b78a4f?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1539768942893-daf53e448371?auto=format&fit=crop&w=1400&q=80',
     transport: {
       luxury:   'Private chauffeur; Doha Metro Gold-class cars available.',
       standard: 'Doha Metro (QR 2/ride) + Karwa taxis & Uber.',
@@ -819,7 +819,7 @@ export const cityDatabase = {
   // ── ASIA ─────────────────────────────────────────────────────────────────────
   bangkok: {
     name: 'Bangkok', country: 'Thailand', currency: 'THB', budgetFactor: 0.55,
-    hero: 'https://images.unsplash.com/photo-1563492065-1a3d9ab4b1b4?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=1400&q=80',
     transport: {
       luxury:   'Private chauffeur + longtail boat charters on the Chao Phraya.',
       standard: 'BTS Skytrain + MRT Metro Rabbit Card; Grab ride-hail when needed.',
@@ -912,7 +912,7 @@ export const cityDatabase = {
 
   baku: {
     name: 'Baku', country: 'Azerbaijan', currency: 'AZN', budgetFactor: 0.75,
-    hero: 'https://images.unsplash.com/photo-1599499678707-16b9d6e3ba9e?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?auto=format&fit=crop&w=1400&q=80',
     transport: {
       luxury:   'Private chauffeur for Gobustan + Absheron Peninsula trips.',
       standard: 'Bolt / Uber + Baku Metro (AZN 0.40 per ride with BakiKart).',
@@ -935,7 +935,7 @@ export const cityDatabase = {
 
   almaty: {
     name: 'Almaty', country: 'Kazakhstan', currency: 'KZT', budgetFactor: 0.6,
-    hero: 'https://images.unsplash.com/photo-1627894487585-a8a34a2e6b5b?auto=format&fit=crop&w=1400&q=80',
+    hero: 'https://images.unsplash.com/photo-1548588681-adf41d474533?auto=format&fit=crop&w=1400&q=80',
     transport: {
       luxury:   'Private driver for Charyn Canyon & Big Almaty Lake excursions.',
       standard: 'Yandex Go / InDriver ride-hail + Almaty Metro (₸80/ride).',

@@ -634,7 +634,7 @@ const Home = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
             className="relative flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0172cb]/10 to-[#00a58e]/10 rounded-3xl blur-2xl pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0172cb]/10 to-[#00a58e]/10 rounded-2xl blur-2xl pointer-events-none" />
             <div className="corner-gilt relative w-full max-w-md bg-white rounded-2xl shadow-float border border-[#dfe7ec] overflow-hidden">
               <span className="absolute top-4 right-4 z-10 inline-flex items-center gap-1 bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-float">
                 <FileText className="w-3.5 h-3.5" /> {t('homePage.valueProps.pdfBadge')}
@@ -714,7 +714,7 @@ const Home = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
           onClick={() => navigate('/antarctica')}
-          className="group relative overflow-hidden rounded-3xl shadow-float cursor-pointer">
+          className="group relative overflow-hidden rounded-2xl shadow-float cursor-pointer">
           <img
             src="https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?auto=format&fit=crop&w=1800&q=80"
             alt="Antarctica" loading="lazy" onError={handleImgError}
@@ -759,7 +759,7 @@ const Home = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.35 }}
-          className="panel-inlay relative overflow-hidden bg-gradient-to-r from-[#1c2127] via-[#0058b1] to-[#0172cb] rounded-3xl p-7 md:p-12 text-white shadow-float">
+          className="panel-inlay relative overflow-hidden bg-gradient-to-r from-[#1c2127] via-[#0058b1] to-[#0172cb] rounded-2xl p-7 md:p-12 text-white shadow-float">
           <div className="pattern-lux" />
           <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#00a58e]/30 blur-3xl pointer-events-none depth-up" />
           <div className="absolute -left-24 -bottom-24 w-72 h-72 rounded-full bg-[#0172cb]/40 blur-3xl pointer-events-none depth-down" />
@@ -955,7 +955,7 @@ const Home = () => {
               transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
               className="card-sheen shrink-0 w-72 snap-start bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] shadow-soft lift group cursor-pointer"
               onClick={() => navigate('/hot-tours')}>
-              <div className="relative h-44 overflow-hidden"
+              <div className="relative h-44 overflow-hidden bg-[#dfe7ec]"
                 onClick={(e) => { e.stopPropagation(); setLightbox({ destination: p.destination, image: p.image }); }}>
                 <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -1073,7 +1073,7 @@ const Home = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.35 }}
-          className="bg-gradient-to-br from-[#1c2127] to-[#252a31] rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-float">
+          className="bg-gradient-to-br from-[#1c2127] to-[#252a31] rounded-2xl p-8 md:p-12 text-white relative overflow-hidden shadow-float">
           <div className="pattern-lux" />
           <div className="absolute right-0 top-0 w-72 h-72 rounded-full bg-[#00a58e]/20 blur-3xl pointer-events-none depth-up" />
           <div className="absolute -left-16 bottom-0 w-64 h-64 rounded-full bg-[#0172cb]/30 blur-3xl pointer-events-none depth-down" />
@@ -1131,7 +1131,7 @@ const FeaturedDealCard = ({ p, i, discount, original, t, navigate, setLightbox, 
   if (i === 0) return (
     <motion.div
       initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3 }}
-      className="group relative md:col-span-2 md:row-span-2 min-h-[280px] rounded-xl overflow-hidden cursor-pointer"
+      className="group relative md:col-span-2 md:row-span-2 min-h-[280px] rounded-xl overflow-hidden cursor-pointer bg-[#dfe7ec]"
       onClick={() => navigate('/hot-tours')}>
       <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
         className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -1165,7 +1165,7 @@ const FeaturedDealCard = ({ p, i, discount, original, t, navigate, setLightbox, 
       initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: 0.1 }}
       className="group relative md:col-span-2 bg-white rounded-xl overflow-hidden border border-[#dfe7ec] shadow-soft cursor-pointer flex"
       onClick={() => navigate('/hot-tours')}>
-      <div className="relative w-2/5 shrink-0 overflow-hidden"
+      <div className="relative w-2/5 shrink-0 overflow-hidden bg-[#dfe7ec]"
         onClick={(e) => { e.stopPropagation(); setLightbox({ destination: p.destination, image: p.image }); }}>
         <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -1198,7 +1198,7 @@ const FeaturedDealCard = ({ p, i, discount, original, t, navigate, setLightbox, 
       initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.05 }}
       className="group bg-white rounded-xl overflow-hidden border border-[#dfe7ec] shadow-soft cursor-pointer"
       onClick={() => navigate('/hot-tours')}>
-      <div className="relative h-28 overflow-hidden"
+      <div className="relative h-28 overflow-hidden bg-[#dfe7ec]"
         onClick={(e) => { e.stopPropagation(); setLightbox({ destination: p.destination, image: p.image }); }}>
         <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

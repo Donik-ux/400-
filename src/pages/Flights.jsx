@@ -474,7 +474,7 @@ export default function Flights() {
                         handleSearch({ formData: { from: r.from, to: r.to, date: '' } });
                         window.scrollTo({ top: 80, behavior: 'smooth' });
                       }}
-                      className={`group relative h-40 md:h-52 overflow-hidden rounded-xl bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 transition-all duration-300 active:scale-[0.98] text-left ${SPANS[i] || 'md:col-span-3'}`}
+                      className={`group relative h-40 md:h-52 overflow-hidden rounded-xl bg-[#dfe7ec] bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 transition-all duration-300 active:scale-[0.98] text-left ${SPANS[i] || 'md:col-span-3'}`}
                       style={{ backgroundImage: `url(${heroFor(r.city)})` }}>
                       <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${heroFor(r.city)})` }} />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
@@ -499,7 +499,7 @@ export default function Flights() {
 
             {/* AI Trip CTA — rich blue/gold accent band */}
             <section className="mt-10 reveal">
-              <div className="relative overflow-hidden bg-gradient-to-br from-[#252a31] via-[#0172cb] to-[#252a31] rounded-3xl p-6 md:p-9 text-white shadow-float">
+              <div className="relative overflow-hidden bg-gradient-to-br from-[#252a31] via-[#0172cb] to-[#252a31] rounded-2xl p-6 md:p-9 text-white shadow-float">
                 <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#00a58e]/30 blur-3xl pointer-events-none animate-float" />
                 <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
                   <div className="max-w-xl">

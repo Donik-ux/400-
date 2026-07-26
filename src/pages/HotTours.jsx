@@ -658,7 +658,7 @@ const HotDealCard = ({ p, i, total, t, navigate, setLightbox, isInWishlist, togg
   if (hero) return (
     <motion.div
       initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3 }}
-      className="group relative md:col-span-2 md:row-span-2 min-h-[320px] rounded-xl overflow-hidden cursor-pointer"
+      className="group relative md:col-span-2 md:row-span-2 min-h-[320px] rounded-xl overflow-hidden cursor-pointer bg-[#dfe7ec]"
       onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
       <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
         className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -691,7 +691,7 @@ const HotDealCard = ({ p, i, total, t, navigate, setLightbox, isInWishlist, togg
     <motion.div
       initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: 0.1 }}
       className="group md:col-span-2 bg-white rounded-xl overflow-hidden border border-[#dfe7ec] shadow-soft flex">
-      <div className="relative w-2/5 shrink-0 overflow-hidden cursor-pointer" onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
+      <div className="relative w-2/5 shrink-0 overflow-hidden cursor-pointer bg-[#dfe7ec]" onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
         <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         {badges}
@@ -721,7 +721,7 @@ const HotDealCard = ({ p, i, total, t, navigate, setLightbox, isInWishlist, togg
     <motion.div
       initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
       className="group bg-white rounded-xl overflow-hidden border border-[#dfe7ec] shadow-soft flex flex-col">
-      <div className="relative h-28 overflow-hidden cursor-pointer shrink-0" onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
+      <div className="relative h-28 overflow-hidden cursor-pointer shrink-0 bg-[#dfe7ec]" onClick={() => setLightbox({ destination: p.destination, image: p.image })}>
         <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         {badges}
@@ -795,7 +795,7 @@ const DayPlanDrawer = ({ pkg, state, balance, t, onClose, onBook }) => {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.28 }}
-        className="max-w-3xl mx-auto bg-white rounded-3xl overflow-hidden shadow-2xl"
+        className="max-w-3xl mx-auto bg-white rounded-2xl overflow-hidden shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
         <div className="relative h-52 bg-cover bg-center" style={{ backgroundImage:`url(${pkg.image})` }}>

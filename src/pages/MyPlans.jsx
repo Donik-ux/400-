@@ -80,7 +80,7 @@ export default function MyPlans() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         {/* ── Empty state ── */}
         {plans.length === 0 && (
-          <div className="bg-white border border-[#dfe7ec] rounded-3xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
+          <div className="bg-white border border-[#dfe7ec] rounded-2xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
             <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#009882]/20 blur-3xl pointer-events-none animate-float" />
             <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#0172cb]/10 blur-3xl pointer-events-none" />
             <div className="relative">

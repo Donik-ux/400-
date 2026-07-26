@@ -593,7 +593,7 @@ function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
   return (
     <div className="min-h-screen bg-[#f5f7f9] flex items-center justify-center px-4 py-20">
       <div className="max-w-lg w-full page-fade">
-        <div className="bg-white border border-[#dfe7ec] rounded-3xl p-8 md:p-10 shadow-float text-center">
+        <div className="bg-white border border-[#dfe7ec] rounded-2xl p-8 md:p-10 shadow-float text-center">
           <div className="relative mx-auto mb-5 w-20 h-20">
             <div className="absolute inset-0 rounded-full bg-[#008009]/10 animate-ping opacity-50" />
             <div className="relative w-20 h-20 rounded-full bg-[#e8f5e9] border-2 border-[#008009]/30 flex items-center justify-center">

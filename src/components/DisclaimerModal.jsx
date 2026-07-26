@@ -26,7 +26,7 @@ export default function DisclaimerModal() {
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full my-8 max-h-[calc(100vh-4rem)] flex flex-col overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full my-8 max-h-[calc(100vh-4rem)] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="bg-[#252a31] px-7 py-5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">

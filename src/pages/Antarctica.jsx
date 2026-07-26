@@ -272,7 +272,7 @@ export default function Antarctica() {
 
       {/* ─── EXPEDITION BUILDER ──────────────────────────────────── */}
       <section id="expedition-builder" className="max-w-7xl mx-auto px-4 md:px-8 pt-12 scroll-mt-24 reveal">
-        <div className="relative overflow-hidden bg-white rounded-3xl border border-[#dfe7ec] shadow-float">
+        <div className="relative overflow-hidden bg-white rounded-2xl border border-[#dfe7ec] shadow-float">
           <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#7cc4d9] via-[#00a58e] to-[#7cc4d9]" />
           <div className="p-5 md:p-8">
             <div className="eyebrow-lux mb-2">
@@ -487,7 +487,7 @@ export default function Antarctica() {
 
       {/* ─── SEASON ──────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-6 reveal">
-        <div className="relative overflow-hidden bg-gradient-to-br from-[#20262e] to-[#12161a] rounded-3xl p-7 md:p-10 text-white shadow-float">
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#20262e] to-[#12161a] rounded-2xl p-7 md:p-10 text-white shadow-float">
           <div className="pattern-lux" />
           <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#7cc4d9]/20 blur-3xl pointer-events-none" />
           <div className="relative">
@@ -544,7 +544,7 @@ export default function Antarctica() {
 
       {/* ─── FINAL CTA ───────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 pb-14 reveal">
-        <div className="panel-inlay relative overflow-hidden aurora-bg rounded-3xl p-8 md:p-12 text-white shadow-float text-center">
+        <div className="panel-inlay relative overflow-hidden aurora-bg rounded-2xl p-8 md:p-12 text-white shadow-float text-center">
           <div className="film-grain" />
           <div className="relative max-w-2xl mx-auto">
             <Snowflake className="w-8 h-8 text-[#7cc4d9] mx-auto mb-4 animate-float" />

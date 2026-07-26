@@ -86,7 +86,7 @@ export default function TourDetail() {
   if (!tour) {
     return (
       <div className="min-h-screen bg-[#eef2f5] flex flex-col items-center justify-center text-center px-6">
-        <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#0172cb]/15 to-[#252a31]/10 flex items-center justify-center mb-5 animate-float">
+        <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#0172cb]/15 to-[#252a31]/10 flex items-center justify-center mb-5 animate-float">
           <Compass className="w-10 h-10 text-[#0172cb]" />
         </div>
         <h1 className="text-2xl font-black text-[#252a31] mb-2">{t('tourDetail.notFoundTitle')}</h1>

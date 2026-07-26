@@ -344,7 +344,7 @@ const BerlinTrip = () => {
             { label: t('berlin.datesLabel'), title: t('berlin.dates'), sub: t('berlin.datesSub') },
             { label: t('berlin.routeLabel'), title: t('berlin.route'), sub: t('berlin.routeSub') },
           ].map((c) => (
-            <div key={c.label} className="group bg-gradient-to-b from-[#141414] to-[#0f0f0f] border border-white/[0.08] rounded-3xl p-6 shadow-[0_32px_80px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#00a58e]/30">
+            <div key={c.label} className="group bg-gradient-to-b from-[#141414] to-[#0f0f0f] border border-white/[0.08] rounded-2xl p-6 shadow-[0_32px_80px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#00a58e]/30">
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#00a58e]" />
                 <div className="text-[10px] font-black uppercase tracking-[0.25em] text-white/30">{c.label}</div>

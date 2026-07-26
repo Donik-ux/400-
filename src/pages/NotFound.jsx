@@ -16,7 +16,7 @@ const NotFound = () => {
         <Compass className="animate-float absolute bottom-16 left-[12%] w-12 h-12 text-[#00a58e]/15" style={{ animationDelay: '2.1s' }} />
       </div>
 
-      <div className="relative max-w-xl w-full bg-white border border-[#dfe7ec] rounded-3xl shadow-lift p-10 text-center page-fade">
+      <div className="relative max-w-xl w-full bg-white border border-[#dfe7ec] rounded-2xl shadow-lift p-10 text-center page-fade">
         <div className="animate-float w-20 h-20 rounded-2xl bg-gradient-to-br from-[#252a31] to-[#1c2127] text-[#00a58e] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-float">
           <Compass className="w-10 h-10" />
         </div>

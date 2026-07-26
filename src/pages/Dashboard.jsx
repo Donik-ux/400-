@@ -100,7 +100,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Recent Bookings */}
           <div className="lg:col-span-8 flex flex-col gap-6">
-            <div className="bg-white border border-[#e8edf1] rounded-3xl p-6 shadow-soft overflow-hidden">
+            <div className="bg-white border border-[#e8edf1] rounded-2xl p-6 shadow-soft overflow-hidden">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-lg font-black text-[#252a31]">{t('dashboard.recentBookings')}</h2>
@@ -156,7 +156,7 @@ export default function Dashboard() {
             </div>
 
             {/* Travel Insight */}
-            <div className="bg-gradient-to-br from-[#252a31] via-[#00306f] to-[#1c2127] rounded-3xl p-8 text-white relative overflow-hidden group shadow-lift">
+            <div className="bg-gradient-to-br from-[#252a31] via-[#00306f] to-[#1c2127] rounded-2xl p-8 text-white relative overflow-hidden group shadow-lift">
               <div className="pointer-events-none absolute -top-10 right-10 w-56 h-56 rounded-full bg-[#00a58e]/15 blur-3xl animate-float" />
               <div className="relative z-10 max-w-sm">
                 <h3 className="text-2xl font-black leading-tight mb-4 tracking-tighter">
@@ -180,7 +180,7 @@ export default function Dashboard() {
 
           {/* Sidebar */}
           <div className="lg:col-span-4 flex flex-col gap-6">
-            <div className="bg-white border border-[#e8edf1] rounded-3xl p-6 shadow-soft">
+            <div className="bg-white border border-[#e8edf1] rounded-2xl p-6 shadow-soft">
               <h3 className="text-sm font-black text-[#252a31] mb-5 uppercase tracking-widest">
                 {t('dashboard.quickActions')}
               </h3>
@@ -199,7 +199,7 @@ export default function Dashboard() {
             </div>
 
             {/* Rewards */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-[#5c3d6b] via-[#4a2f5c] to-[#1f1338] rounded-3xl p-6 text-white shadow-lift">
+            <div className="relative overflow-hidden bg-gradient-to-br from-[#5c3d6b] via-[#4a2f5c] to-[#1f1338] rounded-2xl p-6 text-white shadow-lift">
               <div className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full bg-[#00a58e]/15 blur-2xl animate-float" />
               <div className="relative w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
                 <Sparkles className="w-6 h-6 text-[#e3c6f0]" />

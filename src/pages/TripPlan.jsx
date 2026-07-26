@@ -220,7 +220,7 @@ export default function TripPlan() {
   if (!item || !type) {
     return (
       <div className="min-h-screen bg-[#f5f7f9] flex items-center justify-center p-6">
-        <div className="bg-white rounded-3xl border border-[#dfe7ec] p-10 max-w-md w-full text-center shadow-float relative overflow-hidden">
+        <div className="bg-white rounded-2xl border border-[#dfe7ec] p-10 max-w-md w-full text-center shadow-float relative overflow-hidden">
           <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-[#00a58e]/15 blur-3xl pointer-events-none animate-float" />
           <div className="relative">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00a58e] to-[#008f77] flex items-center justify-center mx-auto mb-4 rotate-3 shadow-lift">

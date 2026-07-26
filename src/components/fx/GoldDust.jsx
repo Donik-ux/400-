@@ -51,7 +51,7 @@ export default function GoldDust({ className = '', density = 1 }) {
         const x = p.x + Math.sin(t * 0.35 + p.ph) * p.sway;
         const a = 0.16 + 0.28 * (0.5 + 0.5 * Math.sin(t * p.tw + p.ph * 3));
         ctx.fillStyle = p.gold
-          ? `rgba(255,205,92,${a.toFixed(3)})`
+          ? `rgba(97,209,191,${a.toFixed(3)})`
           : `rgba(178,208,255,${(a * 0.6).toFixed(3)})`;
         ctx.beginPath();
         ctx.arc(x, y, p.r, 0, Math.PI * 2);

@@ -686,64 +686,20 @@ const Home = () => {
           </button>
         </div>
 
-        <AutoStrip className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:auto-rows-fr">
           {featured.map((p, i) => {
             const discount = [42, 35, 28, 22][i] || 20;
             const original = Math.round(p.price / (1 - discount / 100));
             return (
-              <Tilt3D key={p.id} max={7} className="shrink-0 w-72 snap-start rounded-2xl">
-              <motion.div
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.05 }}
-                className="group card-sheen bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] shadow-soft cursor-pointer h-full"
-                onClick={() => navigate('/hot-tours')}
-              >
-                <div className="relative h-44 overflow-hidden"
-                  onClick={(e) => { e.stopPropagation(); setLightbox({ destination: p.destination, image: p.image }); }}>
-                  <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                  <span className="absolute top-2.5 left-2.5 bg-[#00a58e] text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">-{discount}%</span>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const wasIn = isInWishlist(p.id, 'package');
-                      toggleWishlist('package', p);
-                      if (wasIn) toast.info(t('homePage.wishlist.removed'), p.name);
-                      else       toast.success(t('homePage.wishlist.saved'), p.name);
-                    }}
-                    className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 flex items-center justify-center shadow-float hover:scale-110 active:scale-95 transition"
-                    aria-label={isInWishlist(p.id, 'package') ? t('homePage.wishlist.removeAria') : t('homePage.wishlist.saveAria')}
-                  >
-                    <Heart className={`w-4 h-4 ${isInWishlist(p.id, 'package') ? 'fill-red-500 text-red-500' : 'text-[#4a5867]'}`} />
-                  </button>
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center gap-1 text-[11px] text-[#4a5867] font-bold mb-1">
-                    <MapPin className="w-3 h-3 text-[#0172cb]" /> {p.destination}
-                  </div>
-                  <h3 className="text-[15px] font-black text-[#252a31] mb-1.5 line-clamp-1">{p.name}</h3>
-                  <div className="flex items-center gap-2 text-[11px] text-[#4a5867] mb-3">
-                    <span className="flex items-center gap-0.5"><Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" /> {p.rating}</span>
-                    <span>· {p.duration} {t('homePage.common.days')}</span>
-                  </div>
-                  <div className="flex items-end justify-between">
-                    <div>
-                      <div className="text-[11px] text-[#697d95] line-through font-bold"><Price amount={original} /></div>
-                      <div className="text-[18px] font-black text-[#252a31]"><Price amount={p.price} /></div>
-                    </div>
-                    <span className="text-[11px] font-black text-[#0172cb] flex items-center gap-0.5">
-                      {t('homePage.common.book')} <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-              </Tilt3D>
+              <FeaturedDealCard
+                key={p.id}
+                p={p} i={i} discount={discount} original={original}
+                t={t} navigate={navigate} setLightbox={setLightbox}
+                isInWishlist={isInWishlist} toggleWishlist={toggleWishlist}
+              />
             );
           })}
-        </AutoStrip>
+        </div>
 
         <div className="md:hidden mt-4 text-center">
           <button onClick={() => navigate('/hot-tours')} className="text-[14px] font-black text-[#0172cb]">{t('homePage.hotTours.viewAllDeals')}</button>
@@ -1148,6 +1104,122 @@ const Home = () => {
 };
 
 /* ── Reusable subcomponents ───────────────────────────────────────── */
+
+/* Featured deal tile in three mosaic variants: i===0 renders as the big hero
+   tile (text over the photo, spans 2×2), i===3 as a wide horizontal tile,
+   the rest as compact cards. Texts and actions are identical across variants. */
+const FeaturedDealCard = ({ p, i, discount, original, t, navigate, setLightbox, isInWishlist, toggleWishlist }) => {
+  const wishlistBtn = (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        const wasIn = isInWishlist(p.id, 'package');
+        toggleWishlist('package', p);
+        if (wasIn) toast.info(t('homePage.wishlist.removed'), p.name);
+        else       toast.success(t('homePage.wishlist.saved'), p.name);
+      }}
+      className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 flex items-center justify-center shadow-float hover:scale-110 active:scale-95 transition z-10"
+      aria-label={isInWishlist(p.id, 'package') ? t('homePage.wishlist.removeAria') : t('homePage.wishlist.saveAria')}
+    >
+      <Heart className={`w-4 h-4 ${isInWishlist(p.id, 'package') ? 'fill-red-500 text-red-500' : 'text-[#4a5867]'}`} />
+    </button>
+  );
+  const discountBadge = (
+    <span className="absolute top-2.5 left-2.5 bg-[#00a58e] text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float z-10">-{discount}%</span>
+  );
+
+  if (i === 0) return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3 }}
+      className="group relative md:col-span-2 md:row-span-2 min-h-[280px] rounded-xl overflow-hidden cursor-pointer"
+      onClick={() => navigate('/hot-tours')}>
+      <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+      {discountBadge}
+      {wishlistBtn}
+      <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+        <div className="flex items-center gap-1 text-[11px] font-bold text-white/80 mb-1">
+          <MapPin className="w-3 h-3" /> {p.destination}
+        </div>
+        <h3 className="text-[22px] font-black leading-tight mb-1.5">{p.name}</h3>
+        <div className="flex items-center gap-2 text-[12px] text-white/80 mb-2.5">
+          <span className="flex items-center gap-0.5"><Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" /> {p.rating}</span>
+          <span>· {p.duration} {t('homePage.common.days')}</span>
+        </div>
+        <div className="flex items-end justify-between">
+          <div>
+            <div className="text-[12px] text-white/60 line-through font-bold"><Price amount={original} /></div>
+            <div className="text-[24px] font-black"><Price amount={p.price} /></div>
+          </div>
+          <span className="text-[12px] font-black bg-white text-[#252a31] px-3.5 py-2 rounded-lg flex items-center gap-1 group-hover:bg-[#00a58e] group-hover:text-white transition-colors">
+            {t('homePage.common.book')} <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  if (i === 3) return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: 0.1 }}
+      className="group relative md:col-span-2 bg-white rounded-xl overflow-hidden border border-[#dfe7ec] shadow-soft cursor-pointer flex"
+      onClick={() => navigate('/hot-tours')}>
+      <div className="relative w-2/5 shrink-0 overflow-hidden"
+        onClick={(e) => { e.stopPropagation(); setLightbox({ destination: p.destination, image: p.image }); }}>
+        <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        {discountBadge}
+      </div>
+      <div className="p-4 flex flex-col justify-center min-w-0">
+        <div className="flex items-center gap-1 text-[11px] text-[#4a5867] font-bold mb-1">
+          <MapPin className="w-3 h-3 text-[#0172cb]" /> {p.destination}
+        </div>
+        <h3 className="text-[15px] font-black text-[#252a31] mb-1 line-clamp-1">{p.name}</h3>
+        <div className="flex items-center gap-2 text-[11px] text-[#4a5867] mb-2">
+          <span className="flex items-center gap-0.5"><Star className="w-3 h-3 fill-[#00a58e] text-[#00a58e]" /> {p.rating}</span>
+          <span>· {p.duration} {t('homePage.common.days')}</span>
+        </div>
+        <div className="flex items-end gap-3">
+          <div>
+            <div className="text-[11px] text-[#697d95] line-through font-bold"><Price amount={original} /></div>
+            <div className="text-[18px] font-black text-[#252a31]"><Price amount={p.price} /></div>
+          </div>
+          <span className="text-[11px] font-black text-[#0172cb] flex items-center gap-0.5 mb-0.5">
+            {t('homePage.common.book')} <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.05 }}
+      className="group bg-white rounded-xl overflow-hidden border border-[#dfe7ec] shadow-soft cursor-pointer"
+      onClick={() => navigate('/hot-tours')}>
+      <div className="relative h-28 overflow-hidden"
+        onClick={(e) => { e.stopPropagation(); setLightbox({ destination: p.destination, image: p.image }); }}>
+        <img src={p.image} alt={p.name} loading="lazy" onError={handleImgError}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        {discountBadge}
+        {wishlistBtn}
+      </div>
+      <div className="p-3.5">
+        <div className="flex items-center gap-1 text-[10px] text-[#4a5867] font-bold mb-0.5">
+          <MapPin className="w-3 h-3 text-[#0172cb]" /> {p.destination}
+        </div>
+        <h3 className="text-[13.5px] font-black text-[#252a31] mb-1 line-clamp-1">{p.name}</h3>
+        <div className="flex items-end justify-between">
+          <div className="text-[15px] font-black text-[#252a31]"><Price amount={p.price} /></div>
+          <span className="text-[10.5px] font-black text-[#0172cb] flex items-center gap-0.5">
+            {t('homePage.common.book')} <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 const Tab = ({ active, onClick, icon, label, highlight, newLabel }) => (
   <button type="button" onClick={onClick}
     className={`shrink-0 flex items-center gap-1.5 px-1.5 sm:px-4 py-2.5 rounded-t-xl text-[12px] sm:text-[13px] font-black whitespace-nowrap transition active:scale-95 ${

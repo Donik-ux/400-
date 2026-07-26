@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Navigation, Loader2, ArrowRight, Sparkles, Plane } from 'lucide-react';
+import { MapPin, Navigation, Loader2, ArrowRight, Sparkles } from 'lucide-react';
 import SmartImage from './SmartImage';
-import AutoStrip from './AutoStrip';
+
 import { useTranslation } from '../store/useLangStore';
 import { detectCurrentLocation } from '../services/geolocation';
 
@@ -103,34 +103,46 @@ export default function RecommendedTrips() {
         {locError && <p className="text-[12px] font-bold text-warn mt-2">{locError}</p>}
       </div>
 
-      {/* Destination recommendations */}
-      <AutoStrip className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
-        {RECOMMENDED.map((d, i) => (
-          <motion.button
-            key={d.city}
-            onClick={() => planTrip(d)}
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: (i % 6) * 0.05 }}
-            className="group relative shrink-0 w-40 md:w-44 aspect-[3/4] snap-start overflow-hidden rounded-2xl shadow-soft transition hover:-translate-y-1.5 hover:shadow-lift text-left">
-            <SmartImage src={d.img} alt={d.city} wrapperClassName="absolute inset-0" className="group-hover:scale-110 transition-transform duration-[600ms]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
-            {d.tag && (
-              <div className="absolute top-2.5 left-2.5 text-[9px] font-black uppercase tracking-wide bg-[#00a58e] text-white px-2 py-1 rounded-md shadow-soft">
-                {d.tag}
+      {/* Destination recommendations — Kiwi-style mosaic: varied card widths,
+          name over the photo with a chevron, texts unchanged */}
+      <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4">
+        {RECOMMENDED.map((d, i) => {
+          // Two mosaic rows on desktop: 3 varied-width cards, then 4 equal.
+          const SPANS = ['md:col-span-3', 'md:col-span-5', 'md:col-span-4', 'md:col-span-3', 'md:col-span-3', 'md:col-span-3', 'md:col-span-3'];
+          return (
+            <motion.button
+              key={d.city}
+              onClick={() => planTrip(d)}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
+              className={`group relative h-44 md:h-56 overflow-hidden rounded-xl transition hover:-translate-y-1 hover:shadow-lift text-left ${SPANS[i] || 'md:col-span-3'}`}>
+              <SmartImage src={d.img} alt={d.city} wrapperClassName="absolute inset-0" className="group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent pointer-events-none" />
+              {d.tag && (
+                <div className="absolute top-2.5 left-2.5 text-[9px] font-black uppercase tracking-wide bg-[#00a58e] text-white px-2 py-1 rounded-md shadow-soft">
+                  {d.tag}
+                </div>
+              )}
+              <div className="absolute inset-x-0 bottom-0 p-3.5 text-white">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <div className="text-[17px] font-black leading-tight truncate">{d.city}</div>
+                    <div className="text-[11px] text-white/75 font-semibold">{d.country}</div>
+                  </div>
+                  <span className="w-8 h-8 rounded-full bg-white/15 backdrop-blur border border-white/20 flex items-center justify-center shrink-0 group-hover:bg-[#00a58e] group-hover:border-[#00a58e] transition-colors">
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+                <div className="mt-2 inline-flex items-center gap-1 text-[10px] font-black bg-white/95 text-[#252a31] px-2 py-1 rounded-md w-fit group-hover:bg-[#00a58e] group-hover:text-white transition-colors">
+                  <Sparkles className="w-3 h-3" /> {t('tripRec.build')}
+                </div>
               </div>
-            )}
-            <div className="absolute inset-0 p-3 flex flex-col justify-end text-white">
-              <div className="text-[15px] font-black leading-tight">{d.city}</div>
-              <div className="text-[11px] text-white/70 font-semibold mb-2">{d.country}</div>
-              <div className="inline-flex items-center gap-1 text-[10px] font-black bg-white/95 text-[#252a31] px-2 py-1 rounded-md w-fit group-hover:bg-[#00a58e] group-hover:text-white transition-colors">
-                <Sparkles className="w-3 h-3" /> {t('tripRec.build')} <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-              </div>
-            </div>
-          </motion.button>
-        ))}
-      </AutoStrip>
+            </motion.button>
+          );
+        })}
+      </div>
     </section>
   );
 }

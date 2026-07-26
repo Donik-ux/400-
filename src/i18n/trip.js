@@ -27,7 +27,7 @@ export default {
       // Summary card
       sectionLabel: 'Travel Plan',
       routeMapLabel: 'Your route on the map',
-      aboutLabel: 'About {destination}',
+      aboutLabel: 'About the city — {destination}',
       upcomingEventLabel: 'Upcoming holiday',
       translatingTitle: 'Rebuilding your plan',
       translatingBody: 'Generating the itinerary in your selected language…',

@@ -50,6 +50,33 @@ export const NAV_APPS = {
 export const isAiAvailable = () => isGrokAvailable();
 const extractJson = extractJsonFromText;
 
+/**
+ * Small standalone AI call for just the destination info (history + what's
+ * on now + nearest real holiday). Used when the full AI plan generation
+ * failed or fell back to the template planner — this request is ~10x
+ * smaller, so it often still fits under a nearly-exhausted rate limit.
+ */
+export const fetchCityInfo = async ({ destination, startDate, lang = 'en' } = {}) => {
+  if (!isGrokAvailable() || !destination) return null;
+  const langName = LANG_MAP[lang]?.target || LANG_MAP[lang]?.name || 'English';
+  const startStr = startDate ? new Date(startDate).toDateString() : 'in the near future';
+  const prompt = `Return ONLY a JSON object about ${destination} for a trip starting ${startStr}:
+{"about": "3-4 real sentences: founding period/age, historical significance, rough number/kind of major attractions", "currentHappenings": "1-2 sentences on what's currently relevant/appealing there right now", "upcomingEvent": {"name": "nearest REAL recurring holiday/festival on or after ${startStr}", "date": "e.g. March 21", "note": "one warm sentence inviting the traveler to arrive a day early for it"}}
+Use ONLY real, well-known facts and events with real dates — set "upcomingEvent" to null if you don't know one within ~2 months.${lang !== 'en' ? ` Write ALL text values in ${langName}; keep JSON keys in English.` : ''}`;
+  try {
+    const raw = await askGrok(prompt, { temperature: 0.4, json: true, maxTokens: 700, timeoutMs: 20000 });
+    const parsed = extractJson(raw);
+    const rawEvent = parsed?.upcomingEvent;
+    const upcomingEvent = (rawEvent && typeof rawEvent === 'object' && rawEvent.name)
+      ? { name: rawEvent.name, date: rawEvent.date || '', note: rawEvent.note || '' }
+      : null;
+    if (!parsed?.about && !parsed?.currentHappenings && !upcomingEvent) return null;
+    return { about: parsed?.about || '', currentHappenings: parsed?.currentHappenings || '', upcomingEvent };
+  } catch {
+    return null;
+  }
+};
+
 const WEEKDAY_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTH_LONG   = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 

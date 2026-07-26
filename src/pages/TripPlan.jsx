@@ -10,7 +10,7 @@ import {
 import { mapsUrlFor, mapsUrlFromAddress, dayMapsUrl } from '../utils/mapsUrl';
 import useAuthStore from '../store/useAuthStore';
 import useAdminStore from '../store/useAdminStore';
-import { generateAiItinerary, isAiAvailable } from '../services/aiPlannerService';
+import { generateAiItinerary, isAiAvailable, fetchCityInfo } from '../services/aiPlannerService';
 import { generateItinerary } from '../services/plannerService';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
@@ -183,6 +183,13 @@ export default function TripPlan() {
         };
       }
       setPlan(result);
+      // Template fallback has no city info — try a much smaller standalone AI
+      // call for it (often fits even when the full plan call was rate-limited).
+      if (!result.cityInfo && isAiAvailable()) {
+        fetchCityInfo({ destination: params.destination, startDate: travelDate, lang }).then((cityInfo) => {
+          if (cityInfo) setPlan((p) => (p && !p.cityInfo ? { ...p, cityInfo } : p));
+        });
+      }
     } catch {
       setError(t('tripPlan.genericError'));
     } finally {

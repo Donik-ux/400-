@@ -17,7 +17,7 @@ import { pickBestValueIndex } from '../utils/dateFareCalendar';
 import { wmoInfo } from '../utils/wmoWeatherCodes';
 import { predictFlightPrice } from '../services/travelServicesService';
 
-const HERO_IMG = 'https://images.unsplash.com/photo-1516569422572-d9e0514b9598?auto=format&fit=crop&w=1800&q=80';
+const HERO_IMG = 'https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?auto=format&fit=crop&w=1800&q=80';
 
 const ROUTE_IMGS = [
   'https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?auto=format&fit=crop&w=900&q=80',

@@ -27,6 +27,7 @@ import ReviewForm from '../components/ReviewForm';
 import { fetchReviews } from '../services/reviewsService';
 import PhotoLightbox from '../components/PhotoLightbox';
 import StatsPrism from '../components/StatsPrism';
+import AutoStrip from '../components/AutoStrip';
 import GlobePoints from '../components/fx/GlobePoints';
 import GoldDust from '../components/fx/GoldDust';
 import Tilt3D from '../components/fx/Tilt3D';
@@ -35,6 +36,9 @@ import { detectCurrentLocation } from '../services/geolocation';
 /* ── Static showcases ─────────────────────────────────────────────── */
 const TRENDING = [
   { city: 'Dubai',     country: 'UAE',         from: 280, img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80' },
+  { city: 'New York',  country: 'USA',         from: 540, img: 'https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=900&q=80' },
+  { city: 'Los Angeles', country: 'USA',       from: 620, img: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=900&q=80' },
+  { city: 'Las Vegas', country: 'USA',         from: 590, img: 'https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?auto=format&fit=crop&w=900&q=80' },
   { city: 'Bali',      country: 'Indonesia',   from: 540, img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=900&q=80' },
   { city: 'Istanbul',  country: 'Turkey',      from: 220, img: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=900&q=80' },
   { city: 'Tokyo',     country: 'Japan',       from: 680, img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=900&q=80' },
@@ -111,23 +115,6 @@ const Home = () => {
   const [reviewsLoading, setReviewsLoading] = useState(true);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [lightbox, setLightbox] = useState(null); // { destination, image }
-
-  // Auto-advance the recommended-packages strip every 5s (pauses while the
-  // visitor's pointer/finger is on it; wraps back to the start at the end).
-  const recommendedRef = useRef(null);
-  const recommendedPaused = useRef(false);
-  useEffect(() => {
-    const id = setInterval(() => {
-      const el = recommendedRef.current;
-      if (!el || recommendedPaused.current) return;
-      const card = el.children[0];
-      if (!card) return;
-      const step = card.getBoundingClientRect().width + 16; // + gap-4
-      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - step / 2;
-      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + step, behavior: 'smooth' });
-    }, 5000);
-    return () => clearInterval(id);
-  }, []);
   useEffect(() => {
     let cancelled = false;
     fetchReviews().then((r) => { if (!cancelled) { setReviews(r); setReviewsLoading(false); } });
@@ -697,7 +684,7 @@ const Home = () => {
           </button>
         </div>
 
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+        <AutoStrip className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {featured.map((p, i) => {
             const discount = [42, 35, 28, 22][i] || 20;
             const original = Math.round(p.price / (1 - discount / 100));
@@ -754,7 +741,7 @@ const Home = () => {
               </Tilt3D>
             );
           })}
-        </div>
+        </AutoStrip>
 
         <div className="md:hidden mt-4 text-center">
           <button onClick={() => navigate('/hot-tours')} className="text-[14px] font-black text-[#0071c2]">{t('homePage.hotTours.viewAllDeals')}</button>
@@ -771,7 +758,7 @@ const Home = () => {
           onClick={() => navigate('/antarctica')}
           className="group relative overflow-hidden rounded-3xl shadow-float cursor-pointer">
           <img
-            src="https://images.unsplash.com/photo-1516569422572-d9e0514b9598?auto=format&fit=crop&w=1800&q=80"
+            src="https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?auto=format&fit=crop&w=1800&q=80"
             alt="Antarctica" loading="lazy" onError={handleImgError}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#001026]/95 via-[#001c47]/75 to-[#00295c]/30 pointer-events-none" />
@@ -920,7 +907,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+        <AutoStrip className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {TRENDING.map((d, i) => (
             <Tilt3D key={i} max={9} className="card-sheen shrink-0 w-56 md:w-64 aspect-[4/3] snap-start rounded-2xl shadow-soft">
               <motion.button
@@ -944,7 +931,7 @@ const Home = () => {
               </motion.button>
             </Tilt3D>
           ))}
-        </div>
+        </AutoStrip>
       </section>
 
       {/* ─── DESTINATION MAP ─────────────────────────────────────── */}
@@ -969,7 +956,7 @@ const Home = () => {
         <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#1a1a1a] mb-1">{t('homePage.themesSection.heading')}</h2>
         <p className="text-[14px] text-[#5c5245] font-medium mb-6">{t('homePage.themesSection.subtitle')}</p>
 
-        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+        <AutoStrip className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {THEMES.map((th, i) => (
             <motion.button
               key={th.id}
@@ -988,7 +975,7 @@ const Home = () => {
               </div>
             </motion.button>
           ))}
-        </div>
+        </AutoStrip>
       </section>
 
       {/* ─── ALL PACKAGES (Booking.com property cards style) ─────── */}
@@ -1000,12 +987,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div ref={recommendedRef}
-          onPointerEnter={() => { recommendedPaused.current = true; }}
-          onPointerLeave={() => { recommendedPaused.current = false; }}
-          onTouchStart={() => { recommendedPaused.current = true; }}
-          onTouchEnd={() => { setTimeout(() => { recommendedPaused.current = false; }, 4000); }}
-          className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+        <AutoStrip className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {allPackages.map((p, i) => (
             <motion.div
               key={p.id}
@@ -1043,7 +1025,7 @@ const Home = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </AutoStrip>
       </section>
 
       {/* ─── REVIEWS (real, visitor-submitted — see api/reviews.js) ──── */}
@@ -1092,7 +1074,7 @@ const Home = () => {
           )}
 
           {reviews.length > 0 && (
-            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+            <AutoStrip className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
               {reviews.slice(0, 20).map((r, i) => (
                 <motion.div
                   key={`${r.name}-${r.createdAt || i}`}
@@ -1121,7 +1103,7 @@ const Home = () => {
                   </div>
                 </motion.div>
               ))}
-            </div>
+            </AutoStrip>
           )}
         </div>
       </section>

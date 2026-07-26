@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MapPin, Navigation, Loader2, ArrowRight, Sparkles, Plane } from 'lucide-react';
 import SmartImage from './SmartImage';
+import AutoStrip from './AutoStrip';
 import { useTranslation } from '../store/useLangStore';
 import { detectCurrentLocation } from '../services/geolocation';
 
@@ -103,7 +104,7 @@ export default function RecommendedTrips() {
       </div>
 
       {/* Destination recommendations */}
-      <div className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+      <AutoStrip className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
         {RECOMMENDED.map((d, i) => (
           <motion.button
             key={d.city}
@@ -129,7 +130,7 @@ export default function RecommendedTrips() {
             </div>
           </motion.button>
         ))}
-      </div>
+      </AutoStrip>
     </section>
   );
 }

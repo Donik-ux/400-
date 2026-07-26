@@ -15,6 +15,7 @@ import useStore from '../store/useStore';
 import { useTranslation } from '../store/useLangStore';
 import useSEO from '../hooks/useSEO';
 import { heroFor } from '../utils/destinationImages';
+import AutoStrip from '../components/AutoStrip';
 import { toast } from '../components/Toast';
 import { usePriceFormatter } from '../components/Price';
 import { getWeatherForDates } from '../services/weatherForecast';
@@ -43,6 +44,8 @@ const POPULAR_ROUTES = [
   { from: 'Doha (DOH)',      to: 'Bali (DPS)',        city: 'Bali',       country: 'Indonesia',   from$: 500 },
   { from: 'Dubai (DXB)',     to: 'Bangkok (BKK)',     city: 'Bangkok',    country: 'Thailand',    from$: 280 },
   { from: 'Abu Dhabi (AUH)', to: 'Maldives (MLE)',    city: 'Maldives',   country: 'Maldives',    from$: 430 },
+  { from: 'Dubai (DXB)',     to: 'New York (JFK)',    city: 'New York',   country: 'USA',         from$: 640 },
+  { from: 'Istanbul (IST)',  to: 'Los Angeles (LAX)', city: 'Los Angeles', country: 'USA',        from$: 720 },
 ];
 
 export default function Flights() {
@@ -459,7 +462,7 @@ export default function Flights() {
                 </div>
               </div>
 
-              <div className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+              <AutoStrip className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
                 {POPULAR_ROUTES.map((r, i) => (
                   <button key={i}
                     onClick={() => {
@@ -481,7 +484,7 @@ export default function Flights() {
                     </div>
                   </button>
                 ))}
-              </div>
+              </AutoStrip>
             </section>
 
             {/* AI Trip CTA — rich blue/gold accent band */}

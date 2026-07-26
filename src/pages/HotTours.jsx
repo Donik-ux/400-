@@ -24,6 +24,7 @@ import CityAutocomplete from '../features/flights/CityAutocomplete';
 import Price, { usePriceFormatter } from '../components/Price';
 import GoldDust from '../components/fx/GoldDust';
 import PhotoLightbox from '../components/PhotoLightbox';
+import AutoStrip from '../components/AutoStrip';
 
 const PREFS_KEY = 'maf_ai_prefs';
 const loadPrefs = () => { try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; } catch { return {}; } };
@@ -555,7 +556,7 @@ const HotTours = () => {
           </div>
           <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a1a] tracking-tight">{t('hotTours.tiers.title')}</h2>
         </div>
-        <div className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+        <AutoStrip className="flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {[
             { lab: t('hotTours.tiers.budgetSaver'),     min: 500,  max: 800,    img: 'https://images.unsplash.com/photo-1715540335937-f54bf332585a?auto=format&fit=crop&w=600&q=80' },
             { lab: t('hotTours.tiers.smartValue'),      min: 800,  max: 1500,   img: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80' },
@@ -576,7 +577,7 @@ const HotTours = () => {
               </div>
             </button>
           ))}
-        </div>
+        </AutoStrip>
       </section>
 
       {/* ── HOT DEALS GRID (admin-seeded, with discounts) ────────── */}
@@ -590,7 +591,7 @@ const HotTours = () => {
           </div>
         </div>
 
-        <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+        <AutoStrip className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
           {hotDeals.map((p, i) => (
             <motion.div
               key={p.id}
@@ -655,7 +656,7 @@ const HotTours = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </AutoStrip>
       </section>
 
       {lightbox && (

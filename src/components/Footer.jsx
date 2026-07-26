@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Compass, Mail, Youtube } from 'lucide-react';
+import { Mail, Youtube } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 import { SUPPORT_EMAIL } from '../config/contact';
 
@@ -39,10 +39,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5 mb-4 cursor-pointer group" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
-              <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#61d1bf] via-[#009882] to-[#007f6d] flex items-center justify-center shadow-[0_4px_16px_rgba(0, 152, 130,0.4)] ring-1 ring-white/30 group-hover:scale-105 group-hover:rotate-[8deg] transition-premium">
-                <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
-                <Compass className="relative w-[18px] h-[18px] text-[#1c2127]" strokeWidth={2.5} />
-              </div>
+              <img src="/images/maf-logo.png" alt="MAF Travel"
+                className="w-11 h-11 rounded-xl object-cover ring-1 ring-white/20 group-hover:scale-105 transition-premium" />
               <div className="flex flex-col">
                 <span className="text-[17px] font-black tracking-tight leading-none">MAFTRAVEL</span>
                 <span className="text-[7px] font-bold text-white/40 uppercase tracking-widest mt-0.5">{t('footer.brandSub')}</span>

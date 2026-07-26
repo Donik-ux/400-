@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Compass, Menu, X, ChevronDown, User, LogOut, BookOpen, ShieldCheck, Heart, LayoutDashboard, Map } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LogOut, BookOpen, ShieldCheck, Heart, LayoutDashboard, Map } from 'lucide-react';
 import { useTranslation } from '../../store/useLangStore';
 import useAuthStore  from '../../store/useAuthStore';
 import useWishlistStore from '../../store/useWishlistStore';
@@ -63,10 +63,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-[64px] flex items-center justify-between gap-2">
           {/* Logo */}
           <button onClick={() => navigate('/')} className="flex items-center gap-2.5 group shrink-0">
-            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#61d1bf] via-[#009882] to-[#007f6d] flex items-center justify-center shadow-[0_4px_16px_rgba(0, 152, 130,0.5)] ring-1 ring-white/30 group-hover:scale-105 group-hover:rotate-[8deg] transition-premium">
-              <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent" />
-              <Compass className="relative w-[19px] h-[19px] text-[#1c2127]" strokeWidth={2.5} />
-            </div>
+            <img src="/images/maf-logo.png" alt="MAF Travel"
+              className="w-11 h-11 rounded-xl object-cover ring-1 ring-white/20 group-hover:scale-105 transition-premium" />
             <div className="hidden sm:flex flex-col leading-none">
               <span className="text-[19px] font-black tracking-tight bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">MAFTRAVEL</span>
               <span className="text-[9px] font-bold text-[#009882] tracking-[0.22em] uppercase mt-1">{t('footer.brandSub')}</span>

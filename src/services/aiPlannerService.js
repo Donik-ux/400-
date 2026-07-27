@@ -328,9 +328,9 @@ CRITICAL RULES — FOLLOW EXACTLY:
    - "🚕 Taxi ~12 min, ~€15"
    The LAST event of each day can leave it empty (end of day).
 4. ALL food recommendations must be 100% HALAL CERTIFIED real restaurants in ${destination}. Add "🥩 Halal" in the name. Halal restaurant entries also need full address.
-5. Include a top-level "hotel" object with: name (real hotel), address (full street + postal), area (district), pricePerNight (local currency), stars. The traveler must know exactly where they sleep.
-6. For each event include: time (HH:MM 24-hour), duration ("1.5 hours"), price in LOCAL currency ("€15", "₺200", "AED 50", "Free"), and type (one of: flight, transport, hotel, attraction, museum, food, nature, shopping, leisure, rest).
-7. Day 1 = arrival flight from ${fromCity || 'home city'}, airport transfer to hotel (with real airport name + hotel name + transport cost), hotel check-in, light dinner. Day ${numDays} = packing + transfer to airport + departure flight to ${returnCity || fromCity || 'home city'}.
+5. Include a top-level "hotel" object with: name (real hotel), address (full street + postal), area (district), pricePerNight (local currency — NEVER empty, give a realistic nightly rate or range like "$40–60/night"), stars. The traveler must know exactly where they sleep.
+6. EVERY single event MUST include its own price — never omit it. Fields per event: time (HH:MM 24-hour), duration ("1.5 hours"), price in LOCAL currency ("€15", "₺200", "AED 50", "Free"), and type (one of: flight, transport, hotel, attraction, museum, food, nature, shopping, leisure, rest). When the exact price varies, give a realistic range ("$300–500" for flights, "€10–15" for a meal). Only genuinely free things (parks, walks, viewpoints) may say "Free" — flights, hotels, taxis and meals are NEVER "Free".
+7. Day 1 = arrival flight from ${fromCity || 'home city'} with a realistic round-trip ticket price range (e.g. "$300–500"), airport transfer to hotel (with real airport name + hotel name + transport cost), hotel check-in (price = the nightly rate), light dinner. Day ${numDays} = packing + transfer to airport + departure flight to ${returnCity || fromCity || 'home city'}.
 8. Middle days = 6–8 events each (more places to visit). If special day, add label like "(Shopping Day)", "(Day Trip to X)", "(Free Day)".
 9. Respect budget: daily ~$${dailyBudget}, food ~$${mealBudget}/day. Choose ${style}-tier experiences. Every individual event price MUST fit the tier above. Sum of all event prices for a day SHOULD NOT exceed daily budget.
 10. Return ONLY a single valid JSON object — no markdown, no code fences, no commentary.
@@ -379,7 +379,7 @@ Return EXACTLY this JSON shape:
           "name": "Real specific place name",
           "address": "Street name + number, postal code City",
           "district": "Neighbourhood name",
-          "price": "Free or local-currency amount",
+          "price": "Local-currency amount or range ('€15', '$300–500'); 'Free' ONLY for genuinely free places",
           "type": "attraction",
           "transportToNext": "🚶 6 min walk via Unter den Linden",
           "halalNote": ""
@@ -417,7 +417,29 @@ Every event MUST have "address" (real street+postal) and "transportToNext" (exce
 
     const finalHotel = normalized.hotel || { name: hotelLabel, address: '', area: destination };
     const hotelImage = hotelPhotoFor(cityData, finalHotel.name);
-    if (hotelImage) { finalHotel.image = hotelImage; finalHotel.recommended = true; }
+    if (hotelImage) {
+      finalHotel.image = hotelImage;
+      finalHotel.recommended = true;
+      if (cityData?.hotelMapUrl) finalHotel.mapUrl = cityData.hotelMapUrl;
+    }
+    // The hotel card and PDF read `pricePerNight`; the AI may return `price`
+    // or nothing — fall back to the budgeted nightly rate so a price always shows.
+    if (!finalHotel.pricePerNight) {
+      finalHotel.pricePerNight = finalHotel.price
+        || (bd.accommodation ? `~$${Math.round(bd.accommodation / nights)}/night` : '');
+    }
+    // Flights and hotel check-ins are never free — when the model left them
+    // priceless (normalize defaults to "Free"), fill a realistic budget-derived figure.
+    const flightRange = bd.flight
+      ? `~$${Math.round(bd.flight * 0.8)}–$${Math.round(bd.flight * 1.2)}`
+      : '';
+    for (const d of normalized.days) {
+      for (const ev of d.events || []) {
+        if (ev.price && ev.price !== 'Free') continue;
+        if (ev.type === 'flight' && flightRange) ev.price = flightRange;
+        else if (ev.type === 'hotel' && finalHotel.pricePerNight) ev.price = finalHotel.pricePerNight;
+      }
+    }
 
     return {
       header:              normalized.header,

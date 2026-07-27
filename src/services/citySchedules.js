@@ -1078,8 +1078,8 @@ const bukharaSchedules = [
     place: 'Bukhara Airport / Train Station → Old City',
     events: [
       { time: '10:00', name: 'Arrival at Bukhara Airport (BHK) or train station', type: 'flight' },
-      { time: '11:00', name: 'Transfer to hotel', price: '~$5–10', type: 'transport' },
-      { time: '12:00', name: 'Hotel check-in', type: 'hotel' },
+      { time: '11:00', name: 'Transfer to Bukhara Vavilon Plaza Hotel', price: '~$5–10', type: 'transport' },
+      { time: '12:00', name: 'Check-in at Bukhara Vavilon Plaza Hotel', address: 'Usto Sharif St 49, Bukhara 200100', type: 'hotel' },
       { time: '13:00', name: 'Lunch at El Classico Restaurant — affordable', address: 'Mukhammad Ikbal St, Bukhara 200100', price: '~$3–6', type: 'food' },
       { time: '15:00', name: 'First walk — Lyab-i Hauz square preview', type: 'leisure' },
       { time: '19:30', name: 'Welcome dinner — Bukhara-style plov', price: '~$8', type: 'food' },

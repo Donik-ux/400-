@@ -466,7 +466,7 @@ export default function TripPlan() {
             {plan?.hotel && (plan.hotel.name || plan.hotel.address) && (() => {
               const h = plan.hotel;
               const fullAddress = [h.name, h.address].filter(Boolean).join(', ');
-              const url = mapsUrlFromAddress(fullAddress || h.name);
+              const url = h.mapUrl || mapsUrlFromAddress(fullAddress || h.name);
               return (
                 <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 shadow-soft">
                   <div className="flex items-start gap-3">

@@ -416,6 +416,26 @@ export const generateItinerary = async ({
     };
   });
 
+  // Flights and hotel check-ins are never free — schedule templates often omit
+  // their prices, so fill realistic budget-derived figures (ranges for flights).
+  const flightPriceRange = budgetBreakdown.flight
+    ? `~$${Math.round(budgetBreakdown.flight * 0.8)}–$${Math.round(budgetBreakdown.flight * 1.2)}`
+    : '';
+  const nightlyRate = budgetBreakdown.accommodation && nights
+    ? `~$${Math.round(budgetBreakdown.accommodation / nights)}/night`
+    : '';
+  const perMeal = Math.max(2, Math.round((budgetBreakdown.food || 0) / numDays / 3));
+  for (const d of itineraryDays) {
+    for (const ev of d.events) {
+      if (ev.price) continue;
+      if (ev.type === 'flight' && flightPriceRange) ev.price = flightPriceRange;
+      else if (ev.type === 'hotel' && nightlyRate) ev.price = nightlyRate;
+      else if (ev.type === 'food') ev.price = `~$${perMeal}–${perMeal * 2}`;
+      else if (ev.type === 'transport') ev.price = '~$3–10';
+      else ev.price = 'Free';
+    }
+  }
+
   const transportSuggestion = cityData?.transport?.[style] ?? transportFallback[style];
 
   const travelTips = [
@@ -449,6 +469,7 @@ export const generateItinerary = async ({
       stars:   style === 'luxury' ? '5' : style === 'comfort' ? '4' : style === 'economy' ? '3' : '',
       image:   hotelPhotoFor(cityData, hotelLabel),
       recommended: Boolean(hotelPhotoFor(cityData, hotelLabel)),
+      mapUrl:  hotelPhotoFor(cityData, hotelLabel) ? cityData?.hotelMapUrl : undefined,
     },
     budgetBreakdown,
     transportSuggestion,

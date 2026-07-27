@@ -598,12 +598,14 @@ export const cityDatabase = {
       standard: 'Afrosiyob/Sharq train from Tashkent via Samarkand (~4–5 h total, ~$15–25) + local taxis (~$1–3).',
       economy:  'Domestic flight or overnight train from Tashkent (~$8–15) + shared taxis (~$0.50–1); Old City is fully walkable.',
     },
+    // Partner property — Vavilon Plaza is the default stay for every budget tier.
     hotels: {
-      luxury:   'Sahid Zarafshon Hotel (Old Town, near the Ark Fortress)',
+      luxury:   'Bukhara Vavilon Plaza Hotel (Usto Sharif St 49)',
       standard: 'Bukhara Vavilon Plaza Hotel (Usto Sharif St 49)',
-      economy:  'Sasha & Son Hotel (16th-century merchant house near Lyab-i Hauz)',
+      economy:  'Bukhara Vavilon Plaza Hotel (Usto Sharif St 49)',
     },
     hotelAddress: 'Usto Sharif St 49, Bukhara 200100, Uzbekistan',
+    hotelMapUrl: 'https://maps.app.goo.gl/t33GmhKwbK8LxSt48',
     // Real, verified places the AI planner must feature (not just fall back to
     // when offline) — see aiPlannerService.js's mustIncludeBlock.
     mustInclude: [

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout          from './components/Layout';
+import IntroSplash     from './components/IntroSplash';
 import DisclaimerModal from './components/DisclaimerModal';
 import { ProtectedRoute, AdminRoute, GuestRoute } from './components/ProtectedRoute';
 import Home            from './pages/Home';
@@ -30,6 +31,7 @@ import NotFound       from './pages/NotFound';
 function App() {
   return (
     <Router>
+      <IntroSplash />
       <DisclaimerModal />
       <Layout>
         <Routes>

@@ -103,6 +103,9 @@ export default {
         noneFound: 'No language found',
         countBadge: 'languages · AI-powered',
       },
+      intro: {
+        skip: 'Skip',
+      },
     },
   },
   uz: {
@@ -203,6 +206,9 @@ export default {
         searchPlaceholder: 'Tilni qidirish…',
         noneFound: 'Til topilmadi',
         countBadge: 'til · AI asosida',
+      },
+      intro: {
+        skip: 'Oʻtkazib yuborish',
       },
     },
   },

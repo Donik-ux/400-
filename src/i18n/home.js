@@ -15,6 +15,15 @@ export default {
         titleTail: 'planned by MAFTRAVEL AI.',
         subtitle: 'Compare flights and tours, or let our AI build your itinerary — from Dubai to Antarctica in two clicks.',
       },
+      radar: {
+        eyebrow: 'Trip radar',
+        heading: 'Where to go in {month}',
+        subtitle: 'Season-smart picks for this month — tuned by your wishlist.',
+        reasonPeak: 'Peak season',
+        reasonShoulder: 'Good season',
+        reasonWishlist: 'Your wishlist',
+        cta: 'AI plan',
+      },
       wish: {
         eyebrow: 'Just describe the trip — AI fills the search for you',
         tryLabel: 'Try:',
@@ -218,6 +227,15 @@ export default {
         titleHighlight: 'sayohatingiz',
         titleTail: 'MAFTRAVEL sun’iy intellekti bilan rejalashtiriladi.',
         subtitle: 'Aviachiptalar va turlarni solishtiring yoki marshrutingizni sun’iy intellektimizga tuzdiring — Dubaydan Antarktidagacha ikki bosishda.',
+      },
+      radar: {
+        eyebrow: 'Sayohat radari',
+        heading: '{month} oyida qayerga borgan ma’qul',
+        subtitle: 'Shu oyga mavsumga mos tanlovlar — istaklar ro‘yxatingizga moslanadi.',
+        reasonPeak: 'Mavsum avjida',
+        reasonShoulder: 'Yaxshi mavsum',
+        reasonWishlist: 'Istaklaringizdan',
+        cta: 'AI reja',
       },
       wish: {
         eyebrow: 'Sayohatni oddiy so‘zlar bilan yozing — AI qidiruvni o‘zi to‘ldiradi',

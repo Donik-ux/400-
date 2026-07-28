@@ -7,6 +7,7 @@ import {
   TrendingUp, Heart, Mountain, Waves, Building2, Compass, Clock, Wand2, Wallet,
   ChevronRight, Award, ThumbsUp, Check, Mail, FileText, Download,
   FileCheck, ShieldCheck, Wifi, Car, Navigation, Loader2, LayoutGrid, X, Snowflake,
+  Radar, Sun,
 } from 'lucide-react';
 import useAdminStore from '../store/useAdminStore';
 import { useTranslation } from '../store/useLangStore';
@@ -55,6 +56,28 @@ const TRENDING = [
   { city: 'Singapore', country: 'Singapore',   from: 610, img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=900&q=80' },
 ];
 
+/* Best travel months per showcase city (0 = Jan). peak = high season,
+   ok = pleasant shoulder season. Stable travel knowledge, not live data —
+   powers the Trip Radar strip without any network or AI-quota cost. */
+const SEASON = {
+  Bukhara:     { peak: [3, 4, 8, 9],       ok: [2, 5, 10] },
+  Dubai:       { peak: [10, 11, 0, 1, 2],  ok: [3, 9] },
+  'New York':  { peak: [4, 5, 8, 9],       ok: [3, 6, 7, 10] },
+  'Los Angeles': { peak: [4, 5, 6, 7, 8],  ok: [3, 9, 10] },
+  'Las Vegas': { peak: [2, 3, 4, 9, 10],   ok: [1, 11] },
+  Bali:        { peak: [4, 5, 6, 7, 8],    ok: [3, 9] },
+  Istanbul:    { peak: [3, 4, 5, 8, 9],    ok: [6, 7, 10] },
+  Tokyo:       { peak: [2, 3, 9, 10],      ok: [4, 8, 11] },
+  Maldives:    { peak: [11, 0, 1, 2, 3],   ok: [10, 4] },
+  Paris:       { peak: [4, 5, 8, 9],       ok: [3, 6, 7] },
+  Bangkok:     { peak: [10, 11, 0, 1],     ok: [2, 9] },
+  Barcelona:   { peak: [4, 5, 8, 9],       ok: [3, 6, 7] },
+  Antarctica:  { peak: [10, 11, 0, 1, 2],  ok: [] },
+  Rome:        { peak: [3, 4, 5, 8, 9],    ok: [6, 7, 10] },
+  London:      { peak: [4, 5, 6, 7, 8],    ok: [3, 9] },
+  Singapore:   { peak: [1, 2, 3],          ok: [4, 5, 6, 10, 11] },
+};
+
 const THEMES = [
   { id: 'beach',    labelKey: 'themes.beach',     icon: Waves,    img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80' },
   { id: 'city',     labelKey: 'themes.city',      icon: Building2,img: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=700&q=80' },
@@ -70,7 +93,7 @@ const fill = (str, vars = {}) =>
 
 const Home = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   useSEO({
     title: t('homePage.seo.title'),
     description: t('homePage.seo.description'),
@@ -81,6 +104,60 @@ const Home = () => {
   const packages = useAdminStore(s => s.packages);
   const toggleWishlist = useWishlistStore(s => s.toggleWishlist);
   const isInWishlist   = useWishlistStore(s => s.isInWishlist);
+  const wishItems      = useWishlistStore(s => s.items);
+
+  /* ── Trip Radar: season-smart picks for the current month, boosted by the
+     visitor's wishlist. Pure lookup — instant, offline, no AI quota. ── */
+  const monthIdx = new Date().getMonth();
+  // Russian needs the prepositional case after "в" ("в июле"), which no Intl
+  // format produces — hand table for ru, Intl nominative for everything else.
+  const RU_MONTHS_PREP = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
+  const monthName = useMemo(() => {
+    if ((lang || '').startsWith('ru')) return RU_MONTHS_PREP[monthIdx];
+    try {
+      return new Date().toLocaleDateString(lang || 'en', { month: 'long' });
+    } catch {
+      return new Date().toLocaleDateString('en', { month: 'long' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- RU_MONTHS_PREP is a constant table
+  }, [lang, monthIdx]);
+  const radarPicks = useMemo(() => {
+    const hay = wishItems
+      .map(i => `${i.data?.destination || ''} ${i.data?.name || ''} ${i.data?.city || ''}`.toLowerCase())
+      .join(' | ');
+    return TRENDING
+      .map(d => {
+        const s = SEASON[d.city] || { peak: [], ok: [] };
+        const wl = hay.includes(d.city.toLowerCase());
+        const peak = s.peak.includes(monthIdx);
+        const score = (wl ? 3 : 0) + (peak ? 2 : s.ok.includes(monthIdx) ? 1 : 0);
+        return { ...d, score, wl, peak };
+      })
+      .filter(d => d.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4);
+  }, [wishItems, monthIdx]);
+
+  // One tap on a radar card → the full AI trip-plan page with sane defaults,
+  // same contract as the AI-tab direct mode (state + query for refresh/share).
+  const openRadarPlan = (city) => {
+    if (city === 'Antarctica') { navigate('/antarctica'); return; }
+    const d = 7, balance = 2000, from = (aiFrom || '').trim() || 'Dubai';
+    const item = {
+      id: `radar-${Date.now()}`,
+      name: `${d}${t('homePage.itemNameDayTripTo')}${city}`,
+      destination: city,
+      duration: d,
+      price: balance,
+      category: 'standard',
+      image: heroFor(city),
+      description: `${t('homePage.itemDescA')}${d}${t('homePage.itemDescPlanFor')}${city}${t('homePage.itemDescOnBudget')}$${balance}${t('homePage.itemDescBudgetSuffix')}`,
+    };
+    const qs = new URLSearchParams({ to: city, days: String(d), balance: String(balance), from });
+    navigate(`/trip-plan?${qs.toString()}`, {
+      state: { item, type: 'package', fromCity: from, startDate: '', returnDate: '', purpose: t('homePage.tripPurpose') },
+    });
+  };
 
   // Featured deals, with Bukhara (pkg9) and Las Vegas (pkg8) lifted to right
   // after the headline Antarctica deal — they seed late in the list and would
@@ -777,6 +854,60 @@ const Home = () => {
           <button onClick={() => navigate('/hot-tours')} className="text-[14px] font-black text-[#0172cb]">{t('homePage.hotTours.viewAllDeals')}</button>
         </div>
       </section>
+
+      {/* ─── TRIP RADAR — season-smart picks for this month ──────── */}
+      {radarPicks.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 md:px-8 py-8">
+          <div className="flex items-end justify-between mb-5">
+            <div>
+              <div className="eyebrow-lux mb-1">
+                <Radar className="w-3.5 h-3.5" /> {t('homePage.radar.eyebrow')}
+              </div>
+              <h2 className="h-editorial text-engraved text-[26px] md:text-[36px] text-[#252a31]">
+                {(() => { const s = fill(t('homePage.radar.heading'), { month: monthName }); return s.charAt(0).toUpperCase() + s.slice(1); })()}
+              </h2>
+              <p className="text-[14px] text-[#4a5867] font-medium mt-1">{t('homePage.radar.subtitle')}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {radarPicks.map((d, i) => (
+              <motion.button
+                key={d.city}
+                type="button"
+                onClick={() => openRadarPlan(d.city)}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
+                className="group card-sheen relative h-64 rounded-2xl overflow-hidden shadow-soft text-left lift">
+                <div className="absolute inset-0">
+                  <SmartImage src={d.img} alt={d.city} wrapperClassName="w-full h-full" className="group-hover:scale-110 transition-transform duration-[600ms]" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5 pointer-events-none" />
+                <span className={`absolute top-3 left-3 inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float ${
+                  d.wl ? 'bg-[#e2437b] text-white' : d.peak ? 'bg-[#00a58e] text-white' : 'bg-white/95 text-[#252a31]'
+                }`}>
+                  {d.wl ? <Heart className="w-3 h-3 fill-current" /> : <Sun className="w-3 h-3" />}
+                  {d.wl ? t('homePage.radar.reasonWishlist') : d.peak ? t('homePage.radar.reasonPeak') : t('homePage.radar.reasonShoulder')}
+                </span>
+                <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+                  <div className="text-[18px] font-black leading-tight">{d.city}</div>
+                  <div className="text-[11.5px] text-white/75 font-semibold mb-2.5">{d.country}</div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] inline-flex items-center gap-1 bg-white/95 text-[#252a31] font-black px-2 py-1 rounded-md shadow-float">
+                      <Plane className="w-3 h-3" /> {t('homePage.common.from')} <Price amount={d.from} />
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11.5px] font-black text-[#61d1bf] group-hover:translate-x-0.5 transition-transform">
+                      <Sparkles className="w-3.5 h-3.5" /> {t('homePage.radar.cta')} <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ─── ANTARCTICA SPOTLIGHT — the rarest journey, one tap away ── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-8 reveal">

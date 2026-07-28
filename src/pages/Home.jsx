@@ -32,6 +32,8 @@ import GlobePoints from '../components/fx/GlobePoints';
 import GoldDust from '../components/fx/GoldDust';
 import Tilt3D from '../components/fx/Tilt3D';
 import { detectCurrentLocation } from '../services/geolocation';
+import { parseTripQuery } from '../services/travelServicesService';
+import { isGrokAvailable } from '../services/grokClient';
 
 /* ── Static showcases ─────────────────────────────────────────────── */
 const TRENDING = [
@@ -112,6 +114,11 @@ const Home = () => {
   const [aiStart,   setAiStart]   = useState('');
   const [aiReturn,  setAiReturn]  = useState('');
   const [locatingFrom, setLocatingFrom] = useState(false);
+  // hero natural-language wish → fills the AI-tab fields (never deep-links,
+  // so a misparse is visible and editable before the user searches)
+  const [heroWish, setHeroWish]               = useState('');
+  const [heroWishLoading, setHeroWishLoading] = useState(false);
+  const searchCardRef = useRef(null);
 
   const [reviews, setReviews] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(true);
@@ -135,6 +142,35 @@ const Home = () => {
       toast.info(e?.code === 'GEO_DENIED' ? t('tripRec.denied') : t('tripRec.failed'));
     } finally {
       setLocatingFrom(false);
+    }
+  };
+
+  // Parse the free-text wish and fill the AI-tab fields with what the model
+  // is confident about. Direct setters (not the sync callbacks) so we don't
+  // fight stale closures; clearing aiReturn lets it recompute from start+days.
+  const handleHeroWish = async () => {
+    const q = heroWish.trim();
+    if (!q || heroWishLoading) return;
+    setHeroWishLoading(true);
+    try {
+      const parsed = await parseTripQuery(q);
+      if (!parsed.destination && !parsed.days && !parsed.budget && !parsed.startDate) {
+        toast.info(t('plannerPage.magic.nothingTitle'), t('plannerPage.magic.nothingBody'));
+        return;
+      }
+      setTab('ai');
+      if (parsed.destination) setAiDest(parsed.destination);
+      if (parsed.budget)      setAiBalance(Math.min(50000, Math.max(100, Math.round(parsed.budget))));
+      if (parsed.days)        setAiDays(Math.min(21, Math.max(1, Math.round(parsed.days))));
+      if (parsed.startDate)   { setAiStart(parsed.startDate); setAiReturn(''); }
+      if (parsed.budgetStyle === 'luxury' && !parsed.destination) setAiVibe('luxury');
+      setHeroWish('');
+      toast.success(t('plannerPage.magic.filledTitle'), t('plannerPage.magic.filledBody'));
+      setTimeout(() => searchCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
+    } catch {
+      toast.error(t('plannerPage.magic.failTitle'), t('plannerPage.magic.failBody'));
+    } finally {
+      setHeroWishLoading(false);
     }
   };
 
@@ -277,11 +313,47 @@ const Home = () => {
             <p className="text-[15px] md:text-[19px] text-white/75 font-medium max-w-xl mb-8 leading-relaxed">
               {t('homePage.hero.subtitle')}
             </p>
+
+            {/* Natural-language trip wish — AI fills the search card below */}
+            {isGrokAvailable() && (
+              <div className="max-w-2xl">
+                <p className="flex items-center gap-1.5 text-[10.5px] font-black uppercase tracking-[0.16em] text-white/45 mb-2">
+                  <Wand2 className="w-3.5 h-3.5 text-[#61d1bf]" /> {t('homePage.wish.eyebrow')}
+                </p>
+                <div className="flex gap-2 p-1.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm focus-within:border-white/45 focus-within:bg-white/[0.14] transition">
+                  <input
+                    value={heroWish}
+                    onChange={(e) => setHeroWish(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleHeroWish(); }}
+                    placeholder={t('plannerPage.magic.placeholder')}
+                    disabled={heroWishLoading}
+                    className="flex-1 min-w-0 bg-transparent px-3 py-2.5 text-[14px] font-semibold text-white placeholder:text-white/40 outline-none disabled:opacity-50"
+                  />
+                  <button type="button" onClick={handleHeroWish} disabled={heroWishLoading || !heroWish.trim()}
+                    className="btn-gold px-4 sm:px-5 py-2.5 rounded-xl text-[13px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shrink-0">
+                    {heroWishLoading
+                      ? <Loader2 className="w-4 h-4 animate-spin" />
+                      : <Sparkles className="w-4 h-4" />}
+                    <span className="hidden sm:inline">{heroWishLoading ? t('plannerPage.magic.working') : t('plannerPage.magic.button')}</span>
+                  </button>
+                </div>
+                <div className="flex items-center flex-wrap gap-1.5 mt-2.5">
+                  <span className="text-[10.5px] font-black uppercase tracking-widest text-white/35">{t('homePage.wish.tryLabel')}</span>
+                  {['ex1', 'ex2', 'ex3', 'ex4'].map((k) => (
+                    <button key={k} type="button" onClick={() => setHeroWish(t(`homePage.wish.${k}`))}
+                      className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/10 text-white/75 border border-white/15 hover:bg-white/20 hover:text-white transition active:scale-95">
+                      {t(`homePage.wish.${k}`)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         </div>
 
         {/* Floating Search Card */}
         <motion.div
+          ref={searchCardRef}
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.12, ease: 'easeOut' }}
@@ -513,7 +585,7 @@ const Home = () => {
               {tab !== 'flights' && (
                 <div className="flex items-center flex-wrap gap-1.5 pt-3 px-1">
                   <span className="text-[11px] font-black uppercase tracking-widest text-[#697d95]">{t('homePage.search.popular')}</span>
-                  {['Dubai', 'Bukhara', 'New York', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Paris', 'Antarctica'].map(c => {
+                  {['Bukhara', 'Dubai', 'New York', 'Bali', 'Istanbul', 'Maldives', 'Tokyo', 'Paris', 'Antarctica'].map(c => {
                     const currentValue = tab === 'ai' ? aiDest : dest;
                     const active = String(currentValue || '').toLowerCase() === c.toLowerCase();
                     return (

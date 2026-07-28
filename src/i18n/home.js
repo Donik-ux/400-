@@ -15,6 +15,14 @@ export default {
         titleTail: 'planned by MAFTRAVEL AI.',
         subtitle: 'Compare flights and tours, or let our AI build your itinerary — from Dubai to Antarctica in two clicks.',
       },
+      wish: {
+        eyebrow: 'Just describe the trip — AI fills the search for you',
+        tryLabel: 'Try:',
+        ex1: 'Bukhara for 5 days in May, $900',
+        ex2: 'Dubai for a week for $2500 in June',
+        ex3: 'Maldives in September, 10 days, luxury',
+        ex4: 'Weekend in Istanbul under $800',
+      },
       tabs: {
         tours: 'Tours',
         flights: 'Flights',
@@ -210,6 +218,14 @@ export default {
         titleHighlight: 'sayohatingiz',
         titleTail: 'MAFTRAVEL sun’iy intellekti bilan rejalashtiriladi.',
         subtitle: 'Aviachiptalar va turlarni solishtiring yoki marshrutingizni sun’iy intellektimizga tuzdiring — Dubaydan Antarktidagacha ikki bosishda.',
+      },
+      wish: {
+        eyebrow: 'Sayohatni oddiy so‘zlar bilan yozing — AI qidiruvni o‘zi to‘ldiradi',
+        tryLabel: 'Sinab ko‘ring:',
+        ex1: 'May oyida 5 kunga Buxoro, $900',
+        ex2: 'Iyunda bir haftaga Dubay, $2500',
+        ex3: 'Sentyabrda Maldiv, 10 kun, hashamatli',
+        ex4: 'Istanbulga dam olish kunlari, $800 gacha',
       },
       tabs: {
         tours: 'Turlar',

@@ -190,7 +190,7 @@ export default {
       },
       magic: {
         title: 'Or just describe your trip',
-        placeholder: 'e.g. "Dubai for a week in June, around $2500"…',
+        placeholder: 'e.g. "Bukhara for 5 days in May, around $900"…',
         button: 'Fill the form',
         working: 'Reading…',
         filledTitle: 'Form filled',
@@ -428,7 +428,7 @@ export default {
       },
       magic: {
         title: 'Yoki sayohatingizni soʻzlab bering',
-        placeholder: 'masalan: "Iyunda bir haftaga Dubay, taxminan $2500"…',
+        placeholder: 'masalan: "May oyida 5 kunga Buxoro, taxminan $900"…',
         button: 'Formani toʻldirish',
         working: 'Oʻqilmoqda…',
         filledTitle: 'Forma toʻldirildi',

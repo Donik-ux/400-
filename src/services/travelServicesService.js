@@ -90,6 +90,75 @@ Use realistic market prices.`;
   return run(prompt, opts);
 }
 
+/* ── Country brief — "Know before you go" + halal scorecard ─────────── */
+/**
+ * One cached strict-JSON call per destination+lang: practical essentials
+ * (plugs, SIM, money, tipping, tap water, dress code), a halal scorecard
+ * (food availability, mosques, airport prayer room, Ramadan note), a
+ * conservative visa hint and an honest safety note. Cached in localStorage
+ * for 7 days so revisits cost zero AI quota.
+ */
+export async function countryBrief({ destination, lang = 'en' }, opts) {
+  const cacheKey = `maf_brief_v1_${destination}_${lang}`;
+  try {
+    const hit = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if (hit && Array.isArray(hit.essentials) && hit.essentials.length && Date.now() - (hit.at || 0) < 7 * 86400_000) {
+      return hit;
+    }
+  } catch { /* corrupt cache — regenerate */ }
+
+  const prompt = `Build a practical pre-departure brief for a halal-conscious tourist visiting "${destination}".
+Respond ONLY with strict JSON, all text written in ${langName(lang)}, shape:
+{
+  "essentials": [
+    { "key": "plug",  "value": "e.g. Type C/F · 220V", "note": "one short practical tip" },
+    { "key": "sim",   "value": "best local SIM/eSIM option", "note": "rough price + where to buy" },
+    { "key": "money", "value": "currency name + code", "note": "cash vs card reality, where to exchange" },
+    { "key": "tip",   "value": "tipping norm, e.g. 5-10%", "note": "one short tip" },
+    { "key": "water", "value": "tap water: safe / boil / bottled", "note": "one short tip" },
+    { "key": "dress", "value": "dress code reality", "note": "what to respect at religious sites" }
+  ],
+  "halal": {
+    "foodScore": 1-5,
+    "foodNote": "one honest sentence on how easy halal food is to find",
+    "mosques": "one sentence on mosques / where travelers can pray",
+    "airportPrayerRoom": true | false | null,
+    "ramadanNote": "one short sentence on what changes during Ramadan there, or null"
+  },
+  "visaHint": "one CONSERVATIVE general sentence about tourist entry, or null if unsure",
+  "safetyNote": "one honest sentence on safety for tourists"
+}
+All 6 essentials required, keys exactly as shown. Use real, current facts; be conservative where rules vary by nationality.`;
+
+  const parsed = await run(prompt, opts);
+  const KEYS = ['plug', 'sim', 'money', 'tip', 'water', 'dress'];
+  const essentials = (Array.isArray(parsed?.essentials) ? parsed.essentials : [])
+    .filter((e) => e && KEYS.includes(e.key) && typeof e.value === 'string' && e.value.trim())
+    .map((e) => ({ key: e.key, value: e.value, note: typeof e.note === 'string' ? e.note : '' }));
+  if (essentials.length < 4) {
+    const e = new Error('AI_BAD_SHAPE');
+    e.code = 'AI_BAD_SHAPE';
+    throw e;
+  }
+  const h = parsed?.halal || {};
+  const score = Number(h.foodScore);
+  const out = {
+    at: Date.now(),
+    essentials,
+    halal: {
+      foodScore: Number.isFinite(score) ? Math.max(1, Math.min(5, Math.round(score))) : null,
+      foodNote:  typeof h.foodNote === 'string' ? h.foodNote : '',
+      mosques:   typeof h.mosques  === 'string' ? h.mosques  : '',
+      airportPrayerRoom: typeof h.airportPrayerRoom === 'boolean' ? h.airportPrayerRoom : null,
+      ramadanNote: typeof h.ramadanNote === 'string' && h.ramadanNote !== 'null' ? h.ramadanNote : '',
+    },
+    visaHint:   typeof parsed?.visaHint   === 'string' && parsed.visaHint   !== 'null' ? parsed.visaHint   : '',
+    safetyNote: typeof parsed?.safetyNote === 'string' && parsed.safetyNote !== 'null' ? parsed.safetyNote : '',
+  };
+  try { localStorage.setItem(cacheKey, JSON.stringify(out)); } catch { /* quota full — fine */ }
+  return out;
+}
+
 /* ── Natural-language trip parser ("Дубай на неделю за $2500 в июне") ── */
 /**
  * Turns a free-text trip wish in ANY language into planner form fields.

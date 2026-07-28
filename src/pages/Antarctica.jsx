@@ -25,6 +25,58 @@ const ROUTE_IMGS = [
   'https://images.unsplash.com/photo-1551986782-d0169b3f8fa7?auto=format&fit=crop&w=900&q=80',
 ];
 
+/* ── Polar Atlas palette — this page runs colder than the rest of the site:
+   deep glacial navy surfaces + a single ice-blue accent. Teal appears only on
+   system CTAs (btn-gold), so the cold layer keeps one voice. ── */
+const POLAR_HERO = {
+  background: [
+    'radial-gradient(54% 62% at 84% 6%, rgba(96,177,208,0.26) 0%, transparent 70%)',
+    'radial-gradient(44% 54% at 6% 92%, rgba(23,80,106,0.55) 0%, transparent 72%)',
+    'radial-gradient(36% 42% at 40% 30%, rgba(159,214,232,0.10) 0%, transparent 65%)',
+    'linear-gradient(168deg, #04101f 0%, #0a2033 42%, #0f3348 74%, #175069 108%)',
+  ].join(', '),
+};
+const POLAR_PANEL = {
+  background: 'linear-gradient(150deg, #0a1c2c 0%, #071320 55%, #0e2c40 100%)',
+};
+const ICE_TEXT = {
+  backgroundImage: 'linear-gradient(135deg, #eaf8fd 0%, #9fd6e8 48%, #5fa9c6 100%)',
+  WebkitBackgroundClip: 'text',
+  backgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  color: 'transparent',
+};
+
+/* Cold section eyebrow — replaces the site-wide teal eyebrow-lux inside the
+   glacial layer so this page keeps a single ice accent. */
+function Eyebrow({ icon: Icon, children, light = false }) {
+  return (
+    <div className={`flex items-center gap-2 text-[10.5px] font-black uppercase tracking-[0.24em] mb-2 ${light ? 'text-[#9fd6e8]' : 'text-[#1f6d94]'}`}>
+      <Icon className="w-3.5 h-3.5" /> <span>{children}</span>
+      <span className={`h-px w-12 ${light ? 'bg-gradient-to-r from-[#9fd6e8]/60 to-transparent' : 'bg-gradient-to-r from-[#1f6d94]/50 to-transparent'}`} />
+    </div>
+  );
+}
+
+/* Jagged iceberg silhouette that cuts the dark hero into the light page —
+   two layers for depth (a faint back ridge behind the page-colored front). */
+function IceHorizon() {
+  return (
+    <div className="relative w-full pointer-events-none" aria-hidden="true">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none" className="block w-full h-[56px] md:h-[92px]">
+        <path
+          d="M0,100 L0,70 L90,46 L190,62 L300,34 L420,56 L540,26 L660,50 L780,20 L900,48 L1020,32 L1150,54 L1270,38 L1360,56 L1440,44 L1440,100 Z"
+          fill="rgba(200,230,242,0.10)"
+        />
+        <path
+          d="M0,100 L0,80 L110,58 L220,72 L340,46 L470,66 L590,38 L710,60 L830,32 L950,58 L1070,44 L1190,64 L1310,50 L1440,66 L1440,100 Z"
+          fill="#f5f7f9"
+        />
+      </svg>
+    </div>
+  );
+}
+
 /* Base fare per person by expedition length; the departure-date factor is
    applied on top (last-minute flights cost more, mid-window sailings less). */
 const BASE_BY_DAYS = { 8: 8990, 9: 9490, 10: 9990 };
@@ -217,70 +269,80 @@ export default function Antarctica() {
   return (
     <div className="min-h-screen bg-[#f5f7f9] -mt-[64px]">
 
-      {/* ─── HERO — the ice at night ─────────────────────────────── */}
-      <section className="relative aurora-bg text-white overflow-hidden pt-[120px] pb-20 md:pb-28">
-        <div className="absolute inset-0 pointer-events-none opacity-[0.28] mix-blend-soft-light"
-             style={{ backgroundImage: `url(${HERO_IMG})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'saturate(0.9)' }} />
+      {/* ─── HERO — the glacial front ────────────────────────────── */}
+      <section className="relative text-white overflow-hidden pt-[128px]" style={POLAR_HERO}>
+        {/* Cold-graded photo wash under the gradient light */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.32]"
+          style={{
+            backgroundImage: `url(${HERO_IMG})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center 30%',
+            filter: 'saturate(0.55) brightness(0.95)',
+          }}
+        />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(4,16,31,0.62) 0%, rgba(4,16,31,0.10) 42%, rgba(4,16,31,0.55) 100%)' }} />
         <div className="film-grain" />
-        <div className="absolute inset-0 sheen-top pointer-events-none" />
-        <GoldDust className="absolute inset-0" density={0.8} />
-        <div className="absolute -left-32 top-10 w-96 h-96 rounded-full bg-[#7cc4d9]/25 blur-3xl pointer-events-none animate-float" />
-        <div className="absolute -right-24 -bottom-10 w-80 h-80 rounded-full bg-[#00a58e]/12 blur-3xl pointer-events-none" />
+        <GoldDust className="absolute inset-0" density={0.55} />
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0.35, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="max-w-3xl">
-            <div className="badge-editorial px-4 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.16em] mb-5">
-              <Snowflake className="w-3.5 h-3.5 text-[#7cc4d9]" /> {t('antarctica.hero.badge')}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] backdrop-blur px-4 py-1.5 text-[10.5px] font-black uppercase tracking-[0.22em] text-[#bfe3f0] mb-7">
+              <Snowflake className="w-3.5 h-3.5" /> {t('antarctica.hero.badge')}
             </div>
-            <h1 className="font-display text-[clamp(40px,6.6vw,80px)] font-semibold tracking-[-0.045em] leading-[0.95] mb-5 text-balance break-words [text-shadow:0_2px_30px_rgba(0,0,0,0.35)]">
-              {t('antarctica.hero.titleLead')} <span className="italic font-medium text-gradient-gold gold-animate">{t('antarctica.hero.titleHighlight')}</span> —<br className="hidden md:block" /> {t('antarctica.hero.titleTail')}
+            <h1 className="font-display text-[clamp(42px,7.4vw,96px)] font-semibold tracking-[-0.045em] leading-[0.94] text-balance break-words mb-6 [text-shadow:0_2px_44px_rgba(0,10,26,0.45)]">
+              {t('antarctica.hero.titleLead')}{' '}
+              <span className="italic font-medium" style={ICE_TEXT}>{t('antarctica.hero.titleHighlight')}</span> —
+              <br className="hidden md:block" />{' '}
+              {t('antarctica.hero.titleTail')}
             </h1>
-            <p className="text-[15px] md:text-[18px] text-white/80 font-medium max-w-xl mb-8 leading-relaxed">
+            <p className="text-[15px] md:text-[18px] text-[#cfe3ee]/85 font-medium max-w-xl mb-9 leading-relaxed">
               {t('antarctica.hero.subtitle')}
             </p>
             <div className="flex flex-wrap gap-3">
-              <button onClick={scrollToBuilder} className="btn-gold px-7 py-3.5 rounded-xl text-[#252a31] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
+              <button onClick={scrollToBuilder} className="btn-gold px-7 py-3.5 rounded-xl font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
                 <Sparkles className="w-4 h-4" /> {t('antarctica.hero.ctaPlan')}
               </button>
             </div>
           </motion.div>
-        </div>
-      </section>
 
-      {/* ─── STATS BAND ──────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 -mt-10 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {stats.map((s, i) => (
-            <motion.div key={i}
-              initial={{ opacity: 0.3, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.06 }}
-              className="relative overflow-hidden bg-gradient-to-br from-[#20262e] to-[#12161a] rounded-2xl shadow-lift p-4 md:p-5 text-center lift">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#7cc4d9]/70 to-transparent" />
-              <div className="relative w-10 h-10 mx-auto rounded-xl bg-[#7cc4d9]/12 text-[#7cc4d9] flex items-center justify-center mb-2 ring-1 ring-[#7cc4d9]/25">
-                <s.icon className="w-5 h-5" />
+          {/* Field-report stat row — hairline editorial, no card chrome */}
+          <motion.div
+            initial={{ opacity: 0.35, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
+            className="mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 border-t border-white/15 pt-7 md:pt-9">
+            {stats.map((s, i) => (
+              <div key={i} className="md:border-l md:border-white/10 md:first:border-l-0 md:pl-6 md:first:pl-0">
+                <div className="font-display text-[26px] md:text-[34px] font-semibold leading-none whitespace-nowrap" style={ICE_TEXT}>{s.value}</div>
+                <div className="text-[11px] md:text-[12px] font-bold text-white/50 mt-2 leading-snug max-w-[190px]">{s.label}</div>
               </div>
-              <div className="relative font-display text-[22px] md:text-[26px] font-semibold text-gradient-gold leading-none">{s.value}</div>
-              <div className="relative text-[11px] md:text-[12px] font-bold text-white/50 mt-1.5">{s.label}</div>
-            </motion.div>
-          ))}
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Ice horizon — the hero calves into the light page */}
+        <div className="relative mt-12 md:mt-16">
+          <IceHorizon />
         </div>
       </section>
 
-      {/* ─── EXPEDITION BUILDER ──────────────────────────────────── */}
-      <section id="expedition-builder" className="max-w-7xl mx-auto px-4 md:px-8 pt-12 scroll-mt-24 reveal">
+      {/* ─── EXPEDITION BUILDER — the chart room ─────────────────── */}
+      <section id="expedition-builder" className="max-w-7xl mx-auto px-4 md:px-8 pt-6 md:pt-10 scroll-mt-24 reveal">
         <div className="relative overflow-hidden bg-white rounded-2xl border border-[#dfe7ec] shadow-float">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#7cc4d9] via-[#00a58e] to-[#7cc4d9]" />
-          <div className="p-5 md:p-8">
-            <div className="eyebrow-lux mb-2">
-              <Compass className="w-3.5 h-3.5" /> {t('antarctica.builder.eyebrow')}
-            </div>
-            <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#252a31] tracking-tight">{t('antarctica.builder.heading')}</h2>
-            <p className="text-[14px] text-[#4a5867] font-medium max-w-2xl mt-2 mb-6">{t('antarctica.builder.sub')}</p>
+          {/* Dark chart-room header band */}
+          <div className="relative px-5 md:px-8 py-6 md:py-7 text-white" style={POLAR_PANEL}>
+            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#9fd6e8]/50 to-transparent" />
+            <Eyebrow icon={Compass} light>{t('antarctica.builder.eyebrow')}</Eyebrow>
+            <h2 className="font-display text-2xl md:text-[32px] font-semibold tracking-tight">{t('antarctica.builder.heading')}</h2>
+            <p className="text-[13.5px] text-white/65 font-medium max-w-2xl mt-2">{t('antarctica.builder.sub')}</p>
+          </div>
 
+          <div className="p-5 md:p-8">
             {/* From / return cities */}
             <div className="grid md:grid-cols-2 gap-3 mb-5">
               <CityAutocomplete
@@ -346,7 +408,7 @@ export default function Antarctica() {
                         : 'border-[#dfe7ec] bg-white hover:border-[#0172cb]/50'
                     }`}>
                     {i === bestValueIdx ? (
-                      <span className="absolute -top-2 left-2 bg-[#7cc4d9] text-[#20262e] text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft flex items-center gap-0.5">
+                      <span className="absolute -top-2 left-2 bg-[#9fd6e8] text-[#0a1c2c] text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-soft flex items-center gap-0.5">
                         <Wand2 className="w-2.5 h-2.5" /> {t('antarctica.builder.bestValue')}
                       </span>
                     ) : i === cheapestIdx && (
@@ -393,31 +455,31 @@ export default function Antarctica() {
               return (
                 <button type="button"
                   onClick={() => setPickedIdx(null)}
-                  className="mt-3 w-full flex items-center gap-2.5 rounded-xl border border-[#7cc4d9]/50 bg-[#f0f9fb] px-3.5 py-2.5 text-left hover:bg-[#e3f3f7] transition">
-                  <Wand2 className="w-4 h-4 text-[#0172cb] shrink-0" />
-                  <span className="text-[12px] font-bold text-[#00435c] leading-snug">{msg}</span>
+                  className="mt-3 w-full flex items-center gap-2.5 rounded-xl border border-[#9fd6e8]/60 bg-[#eef7fb] px-3.5 py-2.5 text-left hover:bg-[#e2f1f8] transition">
+                  <Wand2 className="w-4 h-4 text-[#1f6d94] shrink-0" />
+                  <span className="text-[12px] font-bold text-[#0b3a52] leading-snug">{msg}</span>
                 </button>
               );
             })()}
 
             {Boolean(cleanCity(fromCity)) && aiFareNote?.advice && (
-              <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#e6f6f3] border border-[#61d1bf]/60 px-3.5 py-2.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#007f6d] shrink-0 mt-0.5" />
-                <span className="text-[11.5px] font-semibold text-[#00584c] leading-snug">{aiFareNote.advice}</span>
+              <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#eaf5f9] border border-[#bfdeeb] px-3.5 py-2.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#1f6d94] shrink-0 mt-0.5" />
+                <span className="text-[11.5px] font-semibold text-[#0b3a52] leading-snug">{aiFareNote.advice}</span>
               </div>
             )}
 
-            {/* Summary + CTA */}
-            <div className="mt-5 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#20262e] to-[#12161a] text-white p-5 md:p-6 shadow-float">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#7cc4d9]/70 to-transparent" />
+            {/* Summary + CTA — the manifest */}
+            <div className="mt-5 relative overflow-hidden rounded-2xl text-white p-5 md:p-6 shadow-float" style={POLAR_PANEL}>
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#9fd6e8]/60 to-transparent" />
               <div className="relative flex flex-col md:flex-row md:items-center gap-5 justify-between">
                 <div className="min-w-0">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-[#7cc4d9] mb-1.5">{t('antarctica.builder.summaryLabel')}</div>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-[#9fd6e8] mb-1.5">{t('antarctica.builder.summaryLabel')}</div>
                   <div className="flex items-center gap-2 text-[15px] md:text-[17px] font-black flex-wrap">
                     <span className={fromClean ? '' : 'text-white/40'}>{fromClean || t('antarctica.builder.yourCity')}</span>
-                    <ArrowRight className="w-4 h-4 text-[#00a58e] shrink-0" />
-                    <span className="text-gradient-gold">Antarctica</span>
-                    <ArrowRight className="w-4 h-4 text-[#00a58e] shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#9fd6e8] shrink-0" />
+                    <span style={ICE_TEXT}>Antarctica</span>
+                    <ArrowRight className="w-4 h-4 text-[#9fd6e8] shrink-0" />
                     <span className={backClean ? '' : 'text-white/40'}>{backClean || t('antarctica.builder.yourCity')}</span>
                   </div>
                   <div className="text-[12px] font-bold text-white/60 mt-1.5">
@@ -427,11 +489,11 @@ export default function Antarctica() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 shrink-0">
                   <div className="text-left sm:text-right">
                     <div className="text-[10px] font-black uppercase tracking-widest text-white/50">{t('antarctica.builder.totalLabel')}</div>
-                    <div className="font-display text-[30px] font-semibold text-gradient-gold leading-tight whitespace-nowrap">{fmtCompact(total)}</div>
+                    <div className="font-display text-[30px] font-semibold leading-tight whitespace-nowrap" style={ICE_TEXT}>{fmtCompact(total)}</div>
                     <div className="text-[10.5px] font-bold text-white/50 max-w-[220px]">{t('antarctica.builder.perPerson')}</div>
                   </div>
                   <div className="flex flex-col items-stretch gap-1.5">
-                    <button onClick={() => buildPlan()} className="btn-gold px-6 py-3.5 rounded-xl text-[#252a31] font-black text-[14px] flex items-center justify-center gap-2 active:scale-95 transition">
+                    <button onClick={() => buildPlan()} className="btn-gold px-6 py-3.5 rounded-xl font-black text-[14px] flex items-center justify-center gap-2 active:scale-95 transition">
                       <Sparkles className="w-4 h-4" /> {t('antarctica.builder.cta')}
                     </button>
                     <span className="text-[10.5px] font-bold text-white/50 text-center">{t('antarctica.builder.ctaHint')}</span>
@@ -443,40 +505,40 @@ export default function Antarctica() {
         </div>
       </section>
 
-      {/* ─── ROUTES / EXPEDITIONS ────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 py-12 reveal">
-        <div className="eyebrow-lux mb-2">
-          <Compass className="w-3.5 h-3.5" /> {t('antarctica.routes.eyebrow')}
-        </div>
-        <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#252a31] tracking-tight">{t('antarctica.routes.heading')}</h2>
-        <p className="text-[14px] text-[#4a5867] font-medium max-w-2xl mt-2 mb-7">{t('antarctica.routes.sub')}</p>
+      {/* ─── ROUTES — three passages to the ice ──────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16 reveal">
+        <Eyebrow icon={Compass}>{t('antarctica.routes.eyebrow')}</Eyebrow>
+        <h2 className="font-display text-engraved text-[26px] md:text-[38px] font-bold text-[#252a31] tracking-tight">{t('antarctica.routes.heading')}</h2>
+        <p className="text-[14px] text-[#4a5867] font-medium max-w-2xl mt-2 mb-8">{t('antarctica.routes.sub')}</p>
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="space-y-4 md:space-y-5">
           {routes.map((r, i) => (
             <motion.div key={i}
-              initial={{ opacity: 0.3, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.06 }}
-              className={`group lift card-sheen bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] flex flex-col ${i === 2 ? 'edge-gilded' : 'shadow-soft'}`}>
-              <div className="relative h-44 overflow-hidden bg-[#2a3540]">
+              initial={{ opacity: 0.35, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.35, delay: i * 0.05 }}
+              className="group lift bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] shadow-soft md:flex">
+              <div className="relative h-52 md:h-auto md:w-[42%] shrink-0 overflow-hidden bg-[#2a3540]">
                 <img src={r.img} alt={r.title} loading="lazy" onError={handleImgError}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
-                <span className="absolute top-2.5 left-2.5 bg-[#00a58e] text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-float">{r.tag}</span>
-                <div className="absolute bottom-2.5 left-3 flex items-center gap-1.5 text-white">
-                  <r.icon className="w-4 h-4 text-[#61d1bf]" />
-                  <span className="text-[15px] font-black [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">{r.title}</span>
-                </div>
+                  className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#04101f]/55 via-transparent to-transparent pointer-events-none" />
+                <span className="absolute top-3 left-3 bg-[#0a1c2c]/85 backdrop-blur text-[#9fd6e8] text-[10px] font-black uppercase tracking-[0.14em] px-2.5 py-1 rounded-md border border-[#9fd6e8]/25">{r.tag}</span>
               </div>
-              <div className="p-4 flex flex-col flex-1">
-                <p className="text-[13px] text-[#4a5867] font-medium leading-relaxed flex-1">{r.desc}</p>
-                <div className="flex items-end justify-between border-t border-[#e8edf1] pt-3 mt-4">
+              <div className="flex-1 p-5 md:p-8 flex flex-col">
+                <div className="flex items-center gap-3 mb-2.5">
+                  <span className="w-9 h-9 rounded-xl bg-[#eaf5f9] text-[#1f6d94] flex items-center justify-center shrink-0">
+                    <r.icon className="w-[18px] h-[18px]" />
+                  </span>
+                  <h3 className="font-display text-[19px] md:text-[24px] font-bold text-[#252a31] tracking-tight">{r.title}</h3>
+                </div>
+                <p className="text-[13.5px] text-[#4a5867] font-medium leading-relaxed flex-1 max-w-2xl">{r.desc}</p>
+                <div className="flex flex-wrap items-end justify-between gap-3 border-t border-[#e8edf1] pt-4 mt-5">
                   <div>
-                    <div className="text-[10px] text-[#697d95] font-bold uppercase">{r.days} {t('antarctica.routes.daysLabel')} · {t('antarctica.routes.fromLabel')}</div>
-                    <div className="text-[20px] font-black text-[#252a31] whitespace-nowrap">{fmtCompact(r.price)}</div>
+                    <div className="text-[10px] text-[#697d95] font-bold uppercase tracking-wider">{r.days} {t('antarctica.routes.daysLabel')} · {t('antarctica.routes.fromLabel')}</div>
+                    <div className="font-display text-[24px] md:text-[26px] font-bold text-[#252a31] whitespace-nowrap leading-tight">{fmtCompact(r.price)}</div>
                   </div>
                   <button onClick={() => buildPlan({ days: r.days, price: r.price })}
-                    className="text-[12px] font-black text-white bg-[#0172cb] hover:bg-[#015aa3] px-3 py-2 rounded-xl transition shadow-soft flex items-center gap-1 active:scale-95">
-                    {t('antarctica.hero.ctaPlan').split(' ')[0]} <ArrowRight className="w-3 h-3" />
+                    className="text-[12.5px] font-black text-white bg-[#0172cb] hover:bg-[#015aa3] px-4 py-2.5 rounded-xl transition shadow-soft flex items-center gap-1.5 active:scale-95">
+                    {t('antarctica.hero.ctaPlan').split(' ')[0]} <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
@@ -485,22 +547,20 @@ export default function Antarctica() {
         </div>
       </section>
 
-      {/* ─── SEASON ──────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 py-6 reveal">
-        <div className="relative overflow-hidden bg-gradient-to-br from-[#20262e] to-[#12161a] rounded-2xl p-7 md:p-10 text-white shadow-float">
-          <div className="pattern-lux" />
-          <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#7cc4d9]/20 blur-3xl pointer-events-none" />
+      {/* ─── SEASON — the ice calendar ───────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 pb-4 reveal">
+        <div className="relative overflow-hidden rounded-2xl p-7 md:p-12 text-white shadow-float" style={POLAR_HERO}>
+          <div className="film-grain" />
+          <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-[#9fd6e8]/15 blur-3xl pointer-events-none" />
           <div className="relative">
-            <div className="eyebrow-lux eyebrow-lux--light mb-2">
-              <Calendar className="w-3.5 h-3.5" /> {t('antarctica.season.eyebrow')}
-            </div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-6">{t('antarctica.season.heading')}</h2>
-            <div className="grid md:grid-cols-3 gap-4">
+            <Eyebrow icon={Calendar} light>{t('antarctica.season.eyebrow')}</Eyebrow>
+            <h2 className="font-display text-[26px] md:text-[36px] font-semibold tracking-tight mb-8 md:mb-10 text-balance">{t('antarctica.season.heading')}</h2>
+            <div className="grid md:grid-cols-3 gap-7 md:gap-10">
               {seasons.map((s, i) => (
-                <div key={i} className="bg-white/[0.07] backdrop-blur rounded-2xl p-5 border border-white/10 hover:border-[#7cc4d9]/40 transition">
-                  <s.icon className="w-5 h-5 text-[#7cc4d9] mb-3" />
-                  <div className="text-[15px] font-black mb-1">{s.label}</div>
-                  <p className="text-[13px] text-white/70 font-medium leading-relaxed">{s.desc}</p>
+                <div key={i} className="border-t border-white/20 pt-5">
+                  <s.icon className="w-5 h-5 text-[#9fd6e8] mb-3" />
+                  <div className="font-display text-[19px] md:text-[22px] font-semibold mb-1.5">{s.label}</div>
+                  <p className="text-[13px] text-white/65 font-medium leading-relaxed">{s.desc}</p>
                 </div>
               ))}
             </div>
@@ -508,42 +568,40 @@ export default function Antarctica() {
         </div>
       </section>
 
-      {/* ─── WHAT'S INCLUDED ─────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 py-12 reveal">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
+      {/* ─── WHAT'S INCLUDED — the manifest, honestly ────────────── */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16 reveal">
+        <div className="grid lg:grid-cols-2 gap-10 items-start">
           <div>
-            <div className="eyebrow-lux mb-2">
-              <Check className="w-3.5 h-3.5" /> {t('antarctica.included.eyebrow')}
-            </div>
-            <h2 className="font-display text-engraved text-2xl md:text-[34px] font-bold text-[#252a31] tracking-tight mb-2">{t('antarctica.included.heading')}</h2>
+            <Eyebrow icon={Check}>{t('antarctica.included.eyebrow')}</Eyebrow>
+            <h2 className="font-display text-engraved text-[26px] md:text-[38px] font-bold text-[#252a31] tracking-tight mb-2">{t('antarctica.included.heading')}</h2>
             <p className="text-[14px] text-[#4a5867] font-medium mb-6 max-w-xl">{t('antarctica.included.sub')}</p>
-            <div className="grid sm:grid-cols-2 gap-2.5">
+            <div>
               {included.map((line, i) => (
-                <div key={i} className="flex items-start gap-2.5 bg-white border border-[#dfe7ec] rounded-xl px-3.5 py-3 shadow-soft">
-                  <span className="mt-0.5 w-5 h-5 rounded-md bg-[#e9f3ea] text-[#2e7d4f] flex items-center justify-center shrink-0">
-                    <Check className="w-3 h-3" strokeWidth={3} />
+                <div key={i} className="flex items-start gap-3.5 py-3.5 border-b border-[#e3eaef] last:border-b-0">
+                  <span className="mt-0.5 w-6 h-6 rounded-lg bg-[#0a1c2c] text-[#9fd6e8] flex items-center justify-center shrink-0">
+                    <Check className="w-3.5 h-3.5" strokeWidth={3} />
                   </span>
-                  <span className="text-[12.5px] font-bold text-[#252a31] leading-snug">{line}</span>
+                  <span className="text-[13.5px] font-bold text-[#252a31] leading-snug">{line}</span>
                 </div>
               ))}
             </div>
           </div>
-          <div className="space-y-3">
-            <div className="note-warn rounded-2xl p-6 shadow-soft">
-              <div className="flex items-start gap-3">
-                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#00a58e] to-[#008f77] text-[#252a31] flex items-center justify-center shrink-0">
+          <div className="space-y-3 lg:pt-16">
+            <div className="rounded-2xl bg-[#eaf5f9] border border-[#cfe4ee] p-6 shadow-soft">
+              <div className="flex items-start gap-3.5">
+                <div className="w-11 h-11 rounded-xl text-[#9fd6e8] flex items-center justify-center shrink-0" style={POLAR_PANEL}>
                   <Lightbulb className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-[15px] font-black text-warn mb-1.5">{t('antarctica.included.tipTitle')}</p>
-                  <p className="text-[13px] text-[#8a5c17]/90 font-medium leading-relaxed">{t('antarctica.included.tipBody')}</p>
+                  <p className="text-[15px] font-black text-[#0b3a52] mb-1.5">{t('antarctica.included.tipTitle')}</p>
+                  <p className="text-[13px] text-[#2b5a73] font-medium leading-relaxed">{t('antarctica.included.tipBody')}</p>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               {[stats[2], stats[3]].map((s, i) => (
                 <div key={i} className="bg-white border border-[#dfe7ec] rounded-2xl px-4 py-3.5 shadow-soft flex items-start gap-3">
-                  <span className="mt-0.5 w-9 h-9 rounded-xl bg-[#e8f4fd] text-[#0172cb] flex items-center justify-center shrink-0">
+                  <span className="mt-0.5 w-9 h-9 rounded-xl bg-[#eaf5f9] text-[#1f6d94] flex items-center justify-center shrink-0">
                     <s.icon className="w-4 h-4" />
                   </span>
                   <span className="min-w-0">
@@ -557,16 +615,20 @@ export default function Antarctica() {
         </div>
       </section>
 
-      {/* ─── FINAL CTA ───────────────────────────────────────────── */}
+      {/* ─── FINAL CTA — back to the ice ─────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 pb-14 reveal">
-        <div className="panel-inlay relative overflow-hidden aurora-bg rounded-2xl p-8 md:p-12 text-white shadow-float text-center">
+        <div className="relative overflow-hidden rounded-2xl p-8 md:p-14 text-white shadow-float text-center" style={POLAR_HERO}>
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.22]"
+            style={{ backgroundImage: `url(${HERO_IMG})`, backgroundSize: 'cover', backgroundPosition: 'center 60%', filter: 'saturate(0.5)' }}
+          />
           <div className="film-grain" />
           <div className="relative max-w-2xl mx-auto">
-            <Snowflake className="w-8 h-8 text-[#7cc4d9] mx-auto mb-4 animate-float" />
-            <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-[-0.02em] mb-3 text-balance">{t('antarctica.cta.heading')}</h2>
-            <p className="text-[14px] md:text-[15px] text-white/80 font-medium mb-7 leading-relaxed">{t('antarctica.cta.body')}</p>
+            <Snowflake className="w-8 h-8 text-[#9fd6e8] mx-auto mb-5 animate-float" />
+            <h2 className="font-display text-[30px] md:text-[44px] font-semibold tracking-[-0.025em] leading-[1.05] mb-4 text-balance">{t('antarctica.cta.heading')}</h2>
+            <p className="text-[14px] md:text-[15px] text-[#cfe3ee]/85 font-medium mb-8 leading-relaxed">{t('antarctica.cta.body')}</p>
             <div className="flex flex-wrap justify-center gap-3">
-              <button onClick={() => buildPlan()} className="btn-gold px-7 py-3.5 rounded-xl text-[#252a31] font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
+              <button onClick={() => buildPlan()} className="btn-gold px-7 py-3.5 rounded-xl font-black text-[14px] flex items-center gap-2 active:scale-95 transition">
                 <Sparkles className="w-4 h-4" /> {t('antarctica.cta.btnPlan')}
               </button>
             </div>

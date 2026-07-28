@@ -6,11 +6,13 @@ import {
   Activity, ShoppingBag, Wallet, Printer, Share2, Save, Download, Clock, Heart,
   Check, Map as MapIcon, AlertCircle, Star, Lightbulb, Phone, ShieldAlert, RefreshCcw,
   Navigation, ExternalLink, ArrowRight, UserPlus, X, Landmark, PartyPopper,
+  Compass, Plug, Smartphone, HandCoins, Droplets, Shirt, Moon,
 } from 'lucide-react';
 import { mapsUrlFor, mapsUrlFromAddress, dayMapsUrl } from '../utils/mapsUrl';
 import useAuthStore from '../store/useAuthStore';
 import useAdminStore from '../store/useAdminStore';
 import { generateAiItinerary, isAiAvailable, fetchCityInfo, fetchTripWeather, refinePlan } from '../services/aiPlannerService';
+import { countryBrief } from '../services/travelServicesService';
 import { generateItinerary } from '../services/plannerService';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
@@ -104,6 +106,7 @@ export default function TripPlan() {
   const [refineText, setRefineText] = useState('');
   const [refining,   setRefining]   = useState(false);
   const [prevPlan,   setPrevPlan]   = useState(null);
+  const [brief,      setBrief]      = useState(null);
   const [guestBannerDismissed, setGuestBannerDismissed] = useState(false);
   // Not signed in at all, or only ever used "continue as guest" — either way
   // this plan lives in localStorage only and won't survive a cache clear.
@@ -142,6 +145,19 @@ export default function TripPlan() {
     runGenerate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
+
+  /* ── Pre-departure country brief — one cached AI call per destination+lang ── */
+  const briefDest = itemWithHero?.destination || itemWithHero?.name || '';
+  useEffect(() => {
+    if (!briefDest || !plan || !isAiAvailable()) return undefined;
+    let cancelled = false;
+    setBrief(null);
+    countryBrief({ destination: briefDest, lang })
+      .then((b) => { if (!cancelled) setBrief(b); })
+      .catch(() => { /* card simply doesn't render */ });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on destination+lang; plan only gates the first fetch
+  }, [briefDest, lang, !!plan]);
 
   const handleRefine = async () => {
     const instruction = refineText.trim();
@@ -769,6 +785,89 @@ export default function TripPlan() {
                 );
               })()}
             </div>
+
+            {/* ── Know before you go — AI country brief + halal scorecard ── */}
+            {brief && (() => {
+              const ICONS = { plug: Plug, sim: Smartphone, money: Wallet, tip: HandCoins, water: Droplets, dress: Shirt };
+              return (
+                <div className="bg-white border border-[#dfe7ec] rounded-2xl shadow-soft overflow-hidden">
+                  <div className="bg-[#252a31] px-5 py-4 flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-[#61d1bf] shrink-0">
+                      <Compass className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-[16px] font-black text-white leading-tight">
+                        {fill(t('tripPlan.brief.title'), { destination: item.destination || item.name })}
+                      </h3>
+                      <p className="text-[10px] text-white/50 font-black uppercase tracking-widest">{t('tripPlan.brief.sub')}</p>
+                    </div>
+                    <Sparkles className="w-4 h-4 text-[#61d1bf]/70 ml-auto shrink-0" />
+                  </div>
+
+                  <div className="p-5">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                      {brief.essentials.map((e) => {
+                        const Icon = ICONS[e.key] || Compass;
+                        return (
+                          <div key={e.key} className="flex items-start gap-3 p-3 rounded-xl bg-[#eef2f5] border border-[#e8edf1]">
+                            <div className="w-9 h-9 rounded-lg bg-white border border-[#dfe7ec] flex items-center justify-center text-[#0172cb] shrink-0">
+                              <Icon className="w-[18px] h-[18px]" />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="text-[10px] font-black text-[#697d95] uppercase tracking-wider">{t(`tripPlan.brief.k.${e.key}`)}</div>
+                              <div className="text-[13px] font-black text-[#252a31] leading-snug">{e.value}</div>
+                              {e.note && <div className="text-[11.5px] text-[#4a5867] font-semibold leading-snug mt-0.5">{e.note}</div>}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {(brief.halal.foodScore || brief.halal.foodNote || brief.halal.mosques) && (
+                      <div className="mt-3 rounded-xl bg-[#e6f6f3] border border-[#bfe8df] p-4">
+                        <div className="flex items-center gap-2 flex-wrap mb-2">
+                          <span className="text-[11px] font-black uppercase tracking-widest text-[#007f6d]">🥩 {t('tripPlan.brief.halalTitle')}</span>
+                          {brief.halal.foodScore && (
+                            <span className="flex items-center gap-1 ml-auto" title={`${brief.halal.foodScore}/5`}>
+                              {[1, 2, 3, 4, 5].map((i) => (
+                                <span key={i} className={`w-2 h-2 rounded-full ${i <= brief.halal.foodScore ? 'bg-[#00a58e]' : 'bg-[#bfe8df]'}`} />
+                              ))}
+                              <span className="text-[11px] font-black text-[#007f6d] ml-1">{brief.halal.foodScore}/5</span>
+                            </span>
+                          )}
+                        </div>
+                        {brief.halal.foodNote && <p className="text-[12.5px] text-[#00584c] font-semibold leading-snug">{brief.halal.foodNote}</p>}
+                        {brief.halal.mosques && <p className="text-[12.5px] text-[#00584c] font-medium leading-snug mt-1">🕌 {brief.halal.mosques}</p>}
+                        <div className="flex flex-wrap gap-2 mt-2.5">
+                          {brief.halal.airportPrayerRoom != null && (
+                            <span className="text-[10.5px] font-black px-2 py-1 rounded-md bg-white/70 text-[#00584c]">
+                              ✈️ {brief.halal.airportPrayerRoom ? t('tripPlan.brief.prayerRoomYes') : t('tripPlan.brief.prayerRoomNo')}
+                            </span>
+                          )}
+                          {brief.halal.ramadanNote && (
+                            <span className="text-[10.5px] font-bold px-2 py-1 rounded-md bg-white/70 text-[#00584c] flex items-center gap-1">
+                              <Moon className="w-3 h-3" /> {brief.halal.ramadanNote}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {(brief.visaHint || brief.safetyNote) && (
+                      <div className="mt-3 space-y-1.5">
+                        {brief.visaHint && (
+                          <p className="text-[12px] text-[#4a5867] font-semibold leading-snug">🛂 {brief.visaHint}</p>
+                        )}
+                        {brief.safetyNote && (
+                          <p className="text-[12px] text-[#4a5867] font-semibold leading-snug">🛡 {brief.safetyNote}</p>
+                        )}
+                        <p className="text-[10.5px] text-[#8fa1b3] font-semibold">{t('tripPlan.brief.disclaimer')}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* ── Emergency contacts (per country) ── */}
             {plan?.emergency && (

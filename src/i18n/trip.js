@@ -62,6 +62,23 @@ export default {
         failTitle: 'Could not apply the change',
         failBody: 'The AI could not rework the plan — please try rephrasing.',
       },
+      // Pre-departure country brief
+      brief: {
+        title: '{destination}: know before you go',
+        sub: 'Practical essentials · AI-checked',
+        k: {
+          plug:  'Power & plugs',
+          sim:   'SIM / internet',
+          money: 'Money',
+          tip:   'Tipping',
+          water: 'Tap water',
+          dress: 'Dress code',
+        },
+        halalTitle: 'Halal travel',
+        prayerRoomYes: 'Airport prayer room',
+        prayerRoomNo: 'No prayer room at airport',
+        disclaimer: 'AI-generated guidance — always confirm visa and entry rules with the official embassy before traveling.',
+      },
       // Budget
       whereMoneyGoes: 'Where your {total} goes',
       stat: {
@@ -266,6 +283,23 @@ export default {
         successBody: 'O‘zgarishingiz rejaga qo‘llandi.',
         failTitle: 'O‘zgarish qo‘llanmadi',
         failBody: 'AI rejani qayta ishlay olmadi — boshqacha yozib ko‘ring.',
+      },
+      // Pre-departure country brief
+      brief: {
+        title: '{destination}: uchishdan oldin bilib qo‘ying',
+        sub: 'Amaliy maslahatlar · AI tekshirgan',
+        k: {
+          plug:  'Rozetka va tok',
+          sim:   'SIM / internet',
+          money: 'Pul',
+          tip:   'Choychaqa',
+          water: 'Jo‘mrak suvi',
+          dress: 'Kiyinish tartibi',
+        },
+        halalTitle: 'Halol sayohat',
+        prayerRoomYes: 'Aeroportda namozxona bor',
+        prayerRoomNo: 'Aeroportda namozxona yo‘q',
+        disclaimer: 'AI tavsiyasi — sayohatdan oldin viza va kirish qoidalarini rasmiy elchixonada tasdiqlang.',
       },
       // Budget
       whereMoneyGoes: '{total} qayerga sarflanadi',

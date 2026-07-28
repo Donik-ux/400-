@@ -174,7 +174,7 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
                   onClick={() => applyTier(tier)}
                   className={`flex flex-col items-center gap-1 px-2 py-3 rounded-xl border text-center transition-premium ${
                     active
-                      ? 'bg-[#252a31] border-[#252a31] text-white shadow-float -translate-y-0.5'
+                      ? 'bg-[#252a31] border-[#252a31] text-white shadow-float'
                       : 'bg-white border-[#dfe7ec] text-[#4a5867] hover:border-[#0172cb] hover:text-[#252a31] hover:-translate-y-0.5 hover:shadow-soft'
                   }`}
                 >

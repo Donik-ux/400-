@@ -245,6 +245,13 @@ const HotTours = () => {
               <p className="text-[15px] md:text-[17px] text-white/85 font-medium max-w-xl">
                 {t('hotTours.hero.sub')}
               </p>
+              <div className="flex flex-wrap gap-2 mt-5">
+                {[t('hotTours.hero.chipFree'), t('hotTours.hero.chipPlans'), t('hotTours.hero.chipPdf')].map((chip) => (
+                  <span key={chip} className="px-3 py-1.5 rounded-full bg-white/[0.08] border border-white/15 text-white/80 text-[12px] font-bold">
+                    ✓ {chip}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div className="frame-lux lg:col-span-6 rounded-2xl">
@@ -423,7 +430,7 @@ const HotTours = () => {
                   transition={{ duration: 0.3, delay: i * 0.07, ease: [0.4, 0, 0.2, 1] }}
                   className="group lift card-sheen bg-white border border-[#dfe7ec] rounded-2xl overflow-hidden shadow-soft flex flex-col"
                 >
-                  <div className="relative h-44 overflow-hidden">
+                  <div className="relative h-44 overflow-hidden bg-[#2a3540]">
                     <img src={p.image} alt={`${p.destination}, ${p.country}`} loading="lazy" onError={handleImgError}
                       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

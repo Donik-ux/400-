@@ -11,6 +11,9 @@ export default {
         title1: 'Tell us your balance',
         title2: 'AI does the rest.',
         sub: 'Type in what you can spend and choose 3, 5 or 10 days — we build 4 free trip plans with all the places to visit, no payment, ever.',
+        chipFree: '100% free',
+        chipPlans: '4 plans per search',
+        chipPdf: 'Day-by-day PDF',
       },
       form: {
         buildTitle: 'Build my plan · 100% free',
@@ -193,6 +196,9 @@ export default {
         title1: 'Byudjetingizni ayting',
         title2: 'Qolganini AI bajaradi.',
         sub: 'Sarflashingiz mumkin bo‘lgan summani kiriting va 3, 5 yoki 10 kunni tanlang — biz barcha ko‘riladigan joylar bilan 4 ta bepul sayohat rejasini tuzamiz, hech qachon to‘lov yo‘q.',
+        chipFree: '100% bepul',
+        chipPlans: 'Har qidiruvda 4 reja',
+        chipPdf: 'Kunma-kun PDF',
       },
       form: {
         buildTitle: 'Rejamni tuzish · 100% bepul',

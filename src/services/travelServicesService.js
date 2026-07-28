@@ -90,6 +90,44 @@ Use realistic market prices.`;
   return run(prompt, opts);
 }
 
+/* ── Natural-language trip parser ("Дубай на неделю за $2500 в июне") ── */
+/**
+ * Turns a free-text trip wish in ANY language into planner form fields.
+ * Returns only fields the model is confident about; everything else null.
+ */
+export async function parseTripQuery(query, opts) {
+  const text = String(query || '').trim().slice(0, 300);
+  if (!text) {
+    const e = new Error('EMPTY_QUERY');
+    e.code = 'EMPTY_QUERY';
+    throw e;
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  const prompt = `A traveler typed this trip wish (any language): "${text}"
+Today is ${today}. Extract planner fields. Respond ONLY with strict JSON:
+{
+  "destination": "city name in English (e.g. Dubai), or null if none mentioned",
+  "days": number or null,
+  "budget": number (total trip budget in USD) or null,
+  "startDate": "YYYY-MM-DD or null — resolve phrases like 'in June' to the 1st of that month AFTER today",
+  "budgetStyle": "luxury" | "comfort" | "standard" | "economy" | "budget" | null
+}
+Use null for anything not clearly stated — never invent a destination.`;
+  const parsed = await run(prompt, opts);
+  const days = Number(parsed?.days);
+  const budget = Number(parsed?.budget);
+  return {
+    destination: typeof parsed?.destination === 'string' && parsed.destination.trim() && parsed.destination !== 'null'
+      ? parsed.destination.trim() : null,
+    days:   Number.isFinite(days)   && days   >= 1 && days   <= 21     ? Math.round(days)   : null,
+    budget: Number.isFinite(budget) && budget >= 50 && budget <= 500000 ? Math.round(budget) : null,
+    startDate: typeof parsed?.startDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(parsed.startDate)
+      ? parsed.startDate : null,
+    budgetStyle: ['luxury', 'comfort', 'standard', 'economy', 'budget'].includes(parsed?.budgetStyle)
+      ? parsed.budgetStyle : null,
+  };
+}
+
 /* ── Fare Advice grounded in live offers ────────────────────────────── */
 // 30-min per-route cache — repeat clicks cost zero AI quota (same pattern as
 // the flight-price cache in flightService.js).

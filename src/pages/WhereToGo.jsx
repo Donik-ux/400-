@@ -137,7 +137,8 @@ export default function WhereToGo() {
   }, [budget, days, region, vibe]);
 
   const affordable    = results.filter(r => r.fits);
-  const nearMiss      = results.filter(r => !r.fits).slice(0, 6);
+  // 4, not 6 — a clean full row in the 4-col grid instead of a dangling pair.
+  const nearMiss      = results.filter(r => !r.fits).slice(0, 4);
   const filtersActive = region || vibe;
 
   return (
@@ -234,8 +235,8 @@ export default function WhereToGo() {
           </div>
         </div>
 
-        <div className="flex items-baseline gap-2 mb-5">
-          <h2 className="text-[18px] font-black text-[#252a31]">
+        <div className="flex items-baseline gap-2 mb-5 flex-wrap">
+          <h2 className="text-[22px] md:text-[26px] font-black text-[#252a31] tracking-tight">
             {affordable.length > 0
               ? `${affordable.length} ${affordable.length === 1 ? t('whereToGo.results.headingOne') : t('whereToGo.results.headingMany')}`
               : t('whereToGo.results.headingNone')}
@@ -264,7 +265,7 @@ export default function WhereToGo() {
         {/* Near misses */}
         {nearMiss.length > 0 && (
           <>
-            <h2 className="text-[18px] font-black text-[#252a31] mt-10 mb-1">{t('whereToGo.results.nearMissTitle')}</h2>
+            <h2 className="text-[22px] md:text-[26px] font-black text-[#252a31] tracking-tight mt-10 mb-1">{t('whereToGo.results.nearMissTitle')}</h2>
             <p className="text-[13px] text-[#697d95] mb-5">{t('whereToGo.results.nearMissSub')}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {nearMiss.map((dest, i) => (

@@ -566,8 +566,10 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
 
 /* ── Scroll-driven section entrance — progressive enhancement: browsers
    without animation-timeline (or with reduced motion) render fully visible ── */
+/* Start at 0.3, not 0 — content below the fold stays readable in prints,
+   prerenders and full-page captures while still getting the entrance. */
 @keyframes revealUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0.3; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @supports (animation-timeline: view()) {

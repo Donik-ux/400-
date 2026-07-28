@@ -143,9 +143,7 @@ function CurrencyConverter() {
         </label>
       </div>
 
-      <div className="mt-4 bg-gradient-to-br from-[#252a31] to-[#0172cb] rounded-2xl p-5 text-white shadow-float relative overflow-hidden">
-        <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 85% 20%, #009882 0%, transparent 45%)' }} />
+      <div className="mt-4 bg-[#252a31] rounded-2xl p-5 text-white shadow-soft relative overflow-hidden">
         <div className="relative">
           <p className="text-[11px] font-bold uppercase tracking-widest text-white/60">{amount || 0} {from} =</p>
           <p className="text-[32px] font-black leading-tight">{fmtMoney(result)} <span className="text-[16px] text-white/70">{to}</span></p>

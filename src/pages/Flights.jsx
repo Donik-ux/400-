@@ -23,6 +23,7 @@ import { pickBestValueIndex } from '../utils/dateFareCalendar';
 import { wmoInfo } from '../utils/wmoWeatherCodes';
 import { explainFares } from '../services/travelServicesService';
 import { isGrokAvailable } from '../services/grokClient';
+import SmartImage from '../components/SmartImage';
 
 const REAL_FARE_SOURCES = ['kiwi', 'travelpayouts', 'duffel', 'amadeus'];
 
@@ -46,9 +47,9 @@ const POPULAR_ROUTES = [
   { from: 'Abu Dhabi (AUH)', to: 'Seychelles (SEZ)',  city: 'Seychelles', country: 'Seychelles',  from$: 520 },
   { from: 'Istanbul (IST)',  to: 'Mauritius (MRU)',   city: 'Mauritius',  country: 'Mauritius',   from$: 560 },
   { from: 'Dubai (DXB)',     to: 'Phuket (HKT)',      city: 'Phuket',     country: 'Thailand',    from$: 390 },
-  { from: 'Doha (DOH)',      to: 'Bali (DPS)',        city: 'Bali',       country: 'Indonesia',   from$: 500 },
+  { from: 'Doha (DOH)',      to: 'Singapore (SIN)',   city: 'Singapore',  country: 'Singapore',   from$: 460 },
   { from: 'Dubai (DXB)',     to: 'Bangkok (BKK)',     city: 'Bangkok',    country: 'Thailand',    from$: 280 },
-  { from: 'Abu Dhabi (AUH)', to: 'Maldives (MLE)',    city: 'Maldives',   country: 'Maldives',    from$: 430 },
+  { from: 'Istanbul (IST)',  to: 'Santorini (JTR)',   city: 'Santorini',  country: 'Greece',      from$: 340 },
   { from: 'Dubai (DXB)',     to: 'New York (JFK)',    city: 'New York',   country: 'USA',         from$: 640 },
   { from: 'Istanbul (IST)',  to: 'Los Angeles (LAX)', city: 'Los Angeles', country: 'USA',        from$: 720 },
 ];
@@ -539,7 +540,7 @@ export default function Flights() {
               {/* Kiwi-style mosaic: varied-width photo tiles, name + route over the image */}
               <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4">
                 {POPULAR_ROUTES.map((r, i) => {
-                  const SPANS = ['md:col-span-3', 'md:col-span-5', 'md:col-span-4', 'md:col-span-4', 'md:col-span-3', 'md:col-span-5', 'md:col-span-5', 'md:col-span-4', 'md:col-span-3', 'md:col-span-12 lg:col-span-3'];
+                  const SPANS = ['md:col-span-3', 'md:col-span-5', 'md:col-span-4', 'md:col-span-4', 'md:col-span-3', 'md:col-span-5', 'md:col-span-5', 'md:col-span-4', 'md:col-span-3', 'md:col-span-6', 'md:col-span-6'];
                   return (
                     <button key={i}
                       onClick={() => {
@@ -547,9 +548,10 @@ export default function Flights() {
                         handleSearch({ formData: { from: r.from, to: r.to, date: '' } });
                         window.scrollTo({ top: 80, behavior: 'smooth' });
                       }}
-                      className={`group relative h-40 md:h-52 overflow-hidden rounded-xl bg-[#dfe7ec] bg-cover bg-center shadow-soft hover:shadow-float hover:-translate-y-1 transition-all duration-300 active:scale-[0.98] text-left ${SPANS[i] || 'md:col-span-3'}`}
-                      style={{ backgroundImage: `url(${heroFor(r.city)})` }}>
-                      <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${heroFor(r.city)})` }} />
+                      className={`group relative h-40 md:h-52 overflow-hidden rounded-2xl bg-[#2a3540] shadow-soft hover:shadow-float hover:-translate-y-1 transition-all duration-300 active:scale-[0.98] text-left ${SPANS[i] || 'md:col-span-3'}`}>
+                      <SmartImage src={heroFor(r.city)} alt={r.city}
+                        wrapperClassName="absolute inset-0"
+                        className="transition-transform duration-700 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
                       <div className="absolute inset-x-0 bottom-0 p-3.5 flex items-end justify-between gap-2 text-white">
                         <div className="min-w-0">

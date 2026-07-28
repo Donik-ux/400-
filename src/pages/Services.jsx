@@ -53,7 +53,7 @@ const Select = ({ label, value, onChange, options }) => (
 
 const RunButton = ({ onClick, loading, disabled, label, loadingLabel }) => (
   <button onClick={onClick} disabled={loading || disabled}
-    className="w-full flex items-center justify-center gap-2 bg-gradient-to-b from-[#0172cb] to-[#015aa3] hover:from-[#0079d0] hover:to-[#0172cb] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-[14px] rounded-xl py-2.5 px-5 shadow-soft hover:shadow-lift transition active:scale-95">
+    className="w-full flex items-center justify-center gap-2 bg-[#00a58e] hover:bg-[#008f77] disabled:bg-[#cfdbe4] disabled:text-[#8fa4b5] disabled:cursor-not-allowed text-white font-black text-[14px] rounded-xl py-2.5 px-5 shadow-soft hover:shadow-lift transition active:scale-95">
     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
     {loading ? loadingLabel : label}
   </button>
@@ -371,8 +371,7 @@ function BookableCard({ icon: Icon, title, desc, accent, message }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className="group bg-white border border-[#dfe7ec] rounded-2xl shadow-soft p-5 lift flex flex-col">
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${accent}`}>

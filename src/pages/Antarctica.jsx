@@ -256,7 +256,7 @@ export default function Antarctica() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {stats.map((s, i) => (
             <motion.div key={i}
-              initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              initial={{ opacity: 0.3, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.06 }}
               className="relative overflow-hidden bg-gradient-to-br from-[#20262e] to-[#12161a] rounded-2xl shadow-lift p-4 md:p-5 text-center lift">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#7cc4d9]/70 to-transparent" />
@@ -403,7 +403,7 @@ export default function Antarctica() {
             {Boolean(cleanCity(fromCity)) && aiFareNote?.advice && (
               <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#e6f6f3] border border-[#61d1bf]/60 px-3.5 py-2.5">
                 <Sparkles className="w-3.5 h-3.5 text-[#007f6d] shrink-0 mt-0.5" />
-                <span className="text-[11.5px] font-semibold text-[#7c4a00] leading-snug">{aiFareNote.advice}</span>
+                <span className="text-[11.5px] font-semibold text-[#00584c] leading-snug">{aiFareNote.advice}</span>
               </div>
             )}
 
@@ -454,10 +454,10 @@ export default function Antarctica() {
         <div className="grid md:grid-cols-3 gap-4">
           {routes.map((r, i) => (
             <motion.div key={i}
-              initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              initial={{ opacity: 0.3, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.06 }}
               className={`group lift card-sheen bg-white rounded-2xl overflow-hidden border border-[#dfe7ec] flex flex-col ${i === 2 ? 'edge-gilded' : 'shadow-soft'}`}>
-              <div className="relative h-44 overflow-hidden">
+              <div className="relative h-44 overflow-hidden bg-[#2a3540]">
                 <img src={r.img} alt={r.title} loading="lazy" onError={handleImgError}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
@@ -475,7 +475,7 @@ export default function Antarctica() {
                     <div className="text-[20px] font-black text-[#252a31] whitespace-nowrap">{fmtCompact(r.price)}</div>
                   </div>
                   <button onClick={() => buildPlan({ days: r.days, price: r.price })}
-                    className="text-[12px] font-black text-white bg-[#0172cb] hover:bg-[#015aa3] px-3 py-2 rounded-lg transition shadow-soft flex items-center gap-1 active:scale-95">
+                    className="text-[12px] font-black text-white bg-[#0172cb] hover:bg-[#015aa3] px-3 py-2 rounded-xl transition shadow-soft flex items-center gap-1 active:scale-95">
                     {t('antarctica.hero.ctaPlan').split(' ')[0]} <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>
@@ -528,15 +528,30 @@ export default function Antarctica() {
               ))}
             </div>
           </div>
-          <div className="note-warn rounded-2xl p-6 shadow-soft">
-            <div className="flex items-start gap-3">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#00a58e] to-[#008f77] text-[#252a31] flex items-center justify-center shrink-0">
-                <Lightbulb className="w-5 h-5" />
+          <div className="space-y-3">
+            <div className="note-warn rounded-2xl p-6 shadow-soft">
+              <div className="flex items-start gap-3">
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#00a58e] to-[#008f77] text-[#252a31] flex items-center justify-center shrink-0">
+                  <Lightbulb className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-[15px] font-black text-warn mb-1.5">{t('antarctica.included.tipTitle')}</p>
+                  <p className="text-[13px] text-[#8a5c17]/90 font-medium leading-relaxed">{t('antarctica.included.tipBody')}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-[15px] font-black text-warn mb-1.5">{t('antarctica.included.tipTitle')}</p>
-                <p className="text-[13px] text-[#8a5c17]/90 font-medium leading-relaxed">{t('antarctica.included.tipBody')}</p>
-              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {[stats[2], stats[3]].map((s, i) => (
+                <div key={i} className="bg-white border border-[#dfe7ec] rounded-2xl px-4 py-3.5 shadow-soft flex items-start gap-3">
+                  <span className="mt-0.5 w-9 h-9 rounded-xl bg-[#e8f4fd] text-[#0172cb] flex items-center justify-center shrink-0">
+                    <s.icon className="w-4 h-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[15px] font-black text-[#252a31] leading-tight">{s.value}</span>
+                    <span className="block text-[11px] font-bold text-[#697d95] mt-0.5 leading-snug">{s.label}</span>
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

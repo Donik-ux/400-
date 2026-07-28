@@ -35,7 +35,7 @@ const TourCard = ({ tour, budget, anchor = false }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20, transition: { duration: 0.15 } }}
       transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
-      className={`group lift bg-white rounded-xl border overflow-hidden shadow-soft flex flex-col ${anchor ? 'md:col-span-2' : ''} ${
+      className={`group lift bg-white rounded-2xl border overflow-hidden shadow-soft flex flex-col ${anchor ? 'md:col-span-2' : ''} ${
         hasBudget && !fits
           ? 'border-[#dfe7ec] opacity-65 hover:opacity-100'
           : fits ? 'border-[#cfe3d2]' : 'border-[#dfe7ec]'
@@ -296,13 +296,14 @@ const ExoticTours = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <AnimatePresence>
             {visible.map((tour, i) => (
-              <TourCard key={tour.id} tour={tour} budget={budget} anchor={i === 0} />
+              <TourCard key={tour.id} tour={tour} budget={budget}
+                anchor={i === 0 || (i === visible.length - 1 && (visible.length + 1) % 3 === 2)} />
             ))}
           </AnimatePresence>
         </div>
 
         {/* Bottom CTA */}
-        <div className="relative mt-20 bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#252a31] rounded-[32px] p-10 md:p-16 text-center overflow-hidden shadow-lift">
+        <div className="relative mt-12 bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#252a31] rounded-3xl p-10 md:p-12 text-center overflow-hidden shadow-lift">
           <div className="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none animate-float" />
           <div className="relative">
             <h2 className="text-[36px] font-black text-white mb-4">

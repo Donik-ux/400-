@@ -159,6 +159,55 @@ All 6 essentials required, keys exactly as shown. Use real, current facts; be co
   return out;
 }
 
+/* ── "Is this tour right for me?" — TourDetail fit advisor ──────────── */
+/**
+ * Honest fit verdict for a packaged tour given who is travelling and their
+ * preferred pace. Click-driven in the UI (never auto-fires), cached 7 days
+ * per tour+profile+reader so repeat questions cost zero AI quota.
+ */
+export async function tourFitAdvisor({ tour, who, pace, profileKey, lang = 'en' }, opts) {
+  const cacheKey = `maf_tourfit_v1_${tour.id}_${profileKey}_${lang}`;
+  try {
+    const hit = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if (hit && typeof hit.headline === 'string' && Date.now() - (hit.at || 0) < 7 * 86400_000) {
+      return hit;
+    }
+  } catch { /* corrupt cache — regenerate */ }
+
+  const prompt = `A traveler is deciding whether a packaged tour fits them. Answer honestly — do NOT oversell; a mediocre fit must get a mediocre score.
+Tour: "${tour.title}" — ${tour.desc}
+Route: ${tour.fromCity} (${tour.fromTemp}) → ${tour.toCity} (${tour.toTemp}), ${tour.days} days, group up to ${tour.groupSize}, about $${tour.price} per person.
+Highlights: ${(tour.highlights || []).join('; ')}.
+Traveler: going as ${who}, prefers a ${pace} pace.
+Respond ONLY with strict JSON, written in ${langName(lang)}, shape:
+{
+  "score": 1-5,
+  "headline": "one honest sentence answering whether this tour is right for THIS traveler",
+  "pros": ["2-3 short reasons it fits them"],
+  "cons": ["1-3 honest watch-outs for this exact profile"],
+  "tip": "one practical way to make the trip fit them better, or null"
+}`;
+
+  const parsed = await run(prompt, opts);
+  const score = Number(parsed?.score);
+  if (!Number.isFinite(score) || typeof parsed?.headline !== 'string' || !parsed.headline.trim()) {
+    const e = new Error('AI_BAD_SHAPE');
+    e.code = 'AI_BAD_SHAPE';
+    throw e;
+  }
+  const clean = (arr) => (Array.isArray(arr) ? arr : []).filter((s) => typeof s === 'string' && s.trim()).slice(0, 3);
+  const out = {
+    at: Date.now(),
+    score: Math.max(1, Math.min(5, Math.round(score))),
+    headline: parsed.headline,
+    pros: clean(parsed.pros),
+    cons: clean(parsed.cons),
+    tip: typeof parsed?.tip === 'string' && parsed.tip !== 'null' ? parsed.tip : '',
+  };
+  try { localStorage.setItem(cacheKey, JSON.stringify(out)); } catch { /* quota full — fine */ }
+  return out;
+}
+
 /* ── AI phrasebook — any language, written for the reader ───────────── */
 export const PHRASE_KEYS = [
   'hello', 'thanks', 'please', 'yes', 'no', 'sorry',

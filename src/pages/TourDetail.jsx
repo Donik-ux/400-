@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 import {
   ArrowLeft, ArrowRight, Plane, Clock, Star, Users, Wallet, Calendar,
   Minus, Plus, Sparkles, CheckCircle2, AlertTriangle, Lightbulb, Check,
-  MapPin, Quote, Compass,
+  MapPin, Quote, Compass, Loader2,
 } from 'lucide-react';
 import { getTourById } from '../data/exoticTours';
 import useSEO from '../hooks/useSEO';
+import { tourFitAdvisor } from '../services/travelServicesService';
+import { isGrokAvailable } from '../services/grokClient';
 import { useTranslation } from '../store/useLangStore';
 import Price, { usePriceFormatter } from '../components/Price';
 import { handleImgError } from '../utils/imageFallback';
@@ -30,6 +32,152 @@ const COST_SPLIT = [
   { labelKey: 'costFood',       emoji: '🍽️', pct: 0.10 },
   { labelKey: 'costTransfers',  emoji: '🚐', pct: 0.05 },
 ];
+
+/* ── "Is this tour right for me?" — click-driven AI advisor ── */
+const FIT_WHO = [
+  { key: 'solo',    en: 'a solo traveler' },
+  { key: 'couple',  en: 'a couple' },
+  { key: 'family',  en: 'a family with children' },
+  { key: 'friends', en: 'a group of friends' },
+];
+const FIT_PACE = [
+  { key: 'relaxed',  en: 'relaxed' },
+  { key: 'balanced', en: 'balanced' },
+  { key: 'active',   en: 'active' },
+];
+
+function FitAdvisor({ tour, pricePer }) {
+  const { t, lang } = useTranslation();
+  const [who, setWho]   = useState('couple');
+  const [pace, setPace] = useState('balanced');
+  const [busy, setBusy] = useState(false);
+  const [res, setRes]   = useState(null); // { id, data } | { id, error } — stamped so a stale verdict hides on profile change
+
+  const profileKey = `${who}_${pace}`;
+  const reqId = `${profileKey}_${lang}`;
+  const verdict = res?.id === reqId && res.data ? res.data : null;
+  const failed  = res?.id === reqId && Boolean(res.error);
+
+  const ask = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const data = await tourFitAdvisor({
+        tour: {
+          id: tour.id, title: tour.title, desc: tour.desc,
+          fromCity: tour.from.city, fromTemp: tour.from.temp,
+          toCity: tour.to.city, toTemp: tour.to.temp,
+          days: tour.days, groupSize: tour.groupSize, price: pricePer,
+          highlights: tour.highlights,
+        },
+        who:  FIT_WHO.find(w => w.key === who)?.en,
+        pace: FIT_PACE.find(p => p.key === pace)?.en,
+        profileKey,
+        lang,
+      });
+      setRes({ id: reqId, data });
+    } catch {
+      setRes({ id: reqId, error: true });
+    }
+    setBusy(false);
+  };
+
+  const chip = (active) => `px-3.5 py-1.5 rounded-lg text-[12px] font-bold border transition ${
+    active ? 'bg-[#252a31] text-white border-[#252a31] shadow-soft' : 'bg-white text-[#4a5867] border-[#dfe7ec] hover:border-[#0172cb] hover:text-[#252a31]'
+  }`;
+  const scoreTone = verdict
+    ? verdict.score >= 4 ? 'text-[#2e7d4f]' : verdict.score === 3 ? 'text-[#b07d1d]' : 'text-[#b3402a]'
+    : '';
+
+  return (
+    <section className="bg-white border border-[#dfe7ec] rounded-2xl p-6 shadow-soft">
+      <div className="flex items-center gap-2.5 mb-1">
+        <div className="w-9 h-9 rounded-xl bg-[#e6f6f3] flex items-center justify-center shrink-0">
+          <Sparkles className="w-5 h-5 text-[#007f6d]" />
+        </div>
+        <h2 className="text-[15px] font-black text-[#252a31]">{t('tourDetail.fit.title')}</h2>
+      </div>
+      <p className="text-[12px] text-[#697d95] mb-4">{t('tourDetail.fit.sub')}</p>
+
+      <p className="text-[10.5px] font-black uppercase tracking-widest text-[#697d95] mb-1.5">{t('tourDetail.fit.whoLabel')}</p>
+      <div className="flex flex-wrap gap-1.5 mb-3">
+        {FIT_WHO.map(w => (
+          <button key={w.key} onClick={() => setWho(w.key)} className={chip(who === w.key)}>
+            {t(`tourDetail.fit.who.${w.key}`)}
+          </button>
+        ))}
+      </div>
+      <p className="text-[10.5px] font-black uppercase tracking-widest text-[#697d95] mb-1.5">{t('tourDetail.fit.paceLabel')}</p>
+      <div className="flex flex-wrap gap-1.5 mb-4">
+        {FIT_PACE.map(p => (
+          <button key={p.key} onClick={() => setPace(p.key)} className={chip(pace === p.key)}>
+            {t(`tourDetail.fit.pace.${p.key}`)}
+          </button>
+        ))}
+      </div>
+
+      {!verdict && (
+        <button onClick={ask} disabled={busy}
+          className="px-5 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] disabled:opacity-60 text-white text-[12.5px] font-black flex items-center gap-2 transition active:scale-95">
+          {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+          {busy ? t('tourDetail.fit.loading') : t('tourDetail.fit.ask')}
+        </button>
+      )}
+      {failed && !busy && (
+        <p className="mt-3 text-[12px] font-bold text-[#b3402a]">{t('tourDetail.fit.fail')}</p>
+      )}
+
+      {verdict && (
+        <div className="mt-1 border-t border-[#e8edf1] pt-4">
+          <div className="flex items-center gap-2 flex-wrap mb-2">
+            <span className="text-[11px] font-black uppercase tracking-widest text-[#697d95]">{t('tourDetail.fit.scoreLabel')}</span>
+            <span className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map(i => (
+                <span key={i} className={`w-2.5 h-2.5 rounded-full ${i <= verdict.score ? (verdict.score >= 4 ? 'bg-[#2e7d4f]' : verdict.score === 3 ? 'bg-[#d9a439]' : 'bg-[#c4573f]') : 'bg-[#e3eaef]'}`} />
+              ))}
+            </span>
+            <span className={`text-[13px] font-black ${scoreTone}`}>{verdict.score}/5</span>
+          </div>
+          <p className="text-[14px] font-black text-[#252a31] leading-snug mb-3">{verdict.headline}</p>
+
+          <div className="grid sm:grid-cols-2 gap-3">
+            {verdict.pros.length > 0 && (
+              <div className="rounded-xl bg-[#e9f3ea] border border-[#cfe3d2] p-3.5">
+                <p className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-[#24513a] mb-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> {t('tourDetail.fit.prosTitle')}
+                </p>
+                <ul className="space-y-1">
+                  {verdict.pros.map((p, i) => (
+                    <li key={i} className="text-[12px] text-[#2e5b40] font-semibold leading-snug flex gap-1.5"><span>•</span>{p}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {verdict.cons.length > 0 && (
+              <div className="rounded-xl bg-[#fdf3dc] border border-[#f0dfb4] p-3.5">
+                <p className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-[#8a5c17] mb-1.5">
+                  <AlertTriangle className="w-3.5 h-3.5" /> {t('tourDetail.fit.consTitle')}
+                </p>
+                <ul className="space-y-1">
+                  {verdict.cons.map((c, i) => (
+                    <li key={i} className="text-[12px] text-[#7c5a1c] font-semibold leading-snug flex gap-1.5"><span>•</span>{c}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          {verdict.tip && (
+            <p className="mt-3 flex items-start gap-2 text-[12px] text-[#00584c] font-semibold bg-[#e6f6f3] border border-[#bfe8df] rounded-xl px-3.5 py-2.5">
+              <Lightbulb className="w-4 h-4 shrink-0 mt-0.5 text-[#007f6d]" /> {verdict.tip}
+            </p>
+          )}
+          <p className="mt-2.5 text-[10.5px] text-[#8fa1b3] font-semibold">{t('tourDetail.fit.disclaimer')}</p>
+        </div>
+      )}
+    </section>
+  );
+}
 
 const REVIEWS = [
   { name: 'Aizada K.',   initials: 'AK', rating: 5, whenKey: 'reviewWhen1', textKey: 'reviewText1' },
@@ -234,6 +382,9 @@ export default function TourDetail() {
               ))}
             </div>
           </section>
+
+          {/* "Is this tour right for me?" — click-driven, so it never spends AI quota unasked */}
+          {isGrokAvailable() && <FitAdvisor tour={tour} pricePer={pricePer} />}
 
           {/* Real hotel prices (Amadeus) — only shown for cities we can map to a code */}
           {cityCode && (

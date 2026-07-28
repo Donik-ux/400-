@@ -25,15 +25,15 @@ export default function DisclaimerModal() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full my-8 max-h-[calc(100vh-4rem)] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[340px] sm:max-w-lg max-h-[80vh] sm:max-h-[calc(100vh-4rem)] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="bg-[#252a31] px-7 py-5 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Shield className="w-6 h-6 text-[#61d1bf] shrink-0" />
+        <div className="bg-[#252a31] px-4 py-3.5 sm:px-7 sm:py-5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-[#61d1bf] shrink-0" />
             <div>
-              <h2 className="text-white font-black text-[17px] leading-tight">MAFTRAVEL</h2>
-              <p className="text-white/60 text-[11px] uppercase tracking-widest font-bold">{t('ui.disclaimer.eyebrow')}</p>
+              <h2 className="text-white font-black text-[15px] sm:text-[17px] leading-tight">MAFTRAVEL</h2>
+              <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-widest font-bold">{t('ui.disclaimer.eyebrow')}</p>
             </div>
           </div>
           <LanguageSwitcher align="right" />
@@ -42,15 +42,15 @@ export default function DisclaimerModal() {
         <div className="h-[2px] bg-gradient-to-r from-transparent via-[#009882]/70 to-transparent" aria-hidden="true" />
 
         {/* Body */}
-        <div className="px-7 py-6 flex-1 min-h-0 overflow-y-auto">
-          <div className="flex items-start gap-3 mb-5 p-4 note-warn rounded-2xl">
-            <AlertTriangle className="w-5 h-5 text-[#009882] shrink-0 mt-0.5" />
-            <p className="text-[13px] font-bold text-warn">
+        <div className="px-4 py-4 sm:px-7 sm:py-6 flex-1 min-h-0 overflow-y-auto">
+          <div className="flex items-start gap-2.5 sm:gap-3 mb-4 sm:mb-5 p-3 sm:p-4 note-warn rounded-2xl">
+            <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-[#009882] shrink-0 mt-0.5" />
+            <p className="text-[12px] sm:text-[13px] font-bold text-warn">
               {t('ui.disclaimer.warning')}
             </p>
           </div>
 
-          <div className="space-y-4 text-[13px] text-[#4a5867] leading-relaxed">
+          <div className="space-y-3 sm:space-y-4 text-[12px] sm:text-[13px] text-[#4a5867] leading-relaxed">
             <p>
               <strong className="text-[#252a31]">{t('ui.disclaimer.s1Title')}</strong>{' '}
               {t('ui.disclaimer.s1Body')}
@@ -79,8 +79,8 @@ export default function DisclaimerModal() {
         </div>
 
         {/* Footer */}
-        <div className="px-7 py-5 border-t border-[#e8edf1] bg-[#eef2f5]">
-          <label onClick={() => setRead(v => !v)} className="flex items-start gap-3 cursor-pointer mb-5 select-none">
+        <div className="px-4 py-3.5 sm:px-7 sm:py-5 border-t border-[#e8edf1] bg-[#eef2f5]">
+          <label onClick={() => setRead(v => !v)} className="flex items-start gap-2.5 sm:gap-3 cursor-pointer mb-3.5 sm:mb-5 select-none">
             <div
               className={`w-5 h-5 rounded shrink-0 mt-0.5 border-2 flex items-center justify-center transition-all ${
                 read ? 'bg-[#252a31] border-[#252a31]' : 'border-[#bac7d1] bg-white'
@@ -88,7 +88,7 @@ export default function DisclaimerModal() {
             >
               {read && <CheckCircle className="w-3.5 h-3.5 text-white" />}
             </div>
-            <span className="text-[13px] text-[#4a5867] leading-snug">
+            <span className="text-[12px] sm:text-[13px] text-[#4a5867] leading-snug">
               {t('ui.disclaimer.checkbox')}
             </span>
           </label>
@@ -96,7 +96,7 @@ export default function DisclaimerModal() {
           <button
             onClick={handleAccept}
             disabled={!read}
-            className={`w-full py-3.5 rounded-2xl font-black text-[14px] uppercase tracking-wider transition-all ${
+            className={`w-full py-3 sm:py-3.5 rounded-2xl font-black text-[13px] sm:text-[14px] uppercase tracking-wider transition-all ${
               read
                 ? 'bg-[#252a31] text-white hover:bg-[#313b46] active:scale-95'
                 : 'bg-[#dfe7ec] text-[#697d95] cursor-not-allowed'
@@ -105,7 +105,7 @@ export default function DisclaimerModal() {
             {t('ui.disclaimer.accept')}
           </button>
 
-          <p className="text-center text-[11px] text-[#697d95] mt-3">
+          <p className="text-center text-[10px] sm:text-[11px] text-[#697d95] mt-2.5 sm:mt-3">
             {t('ui.disclaimer.footnote')}
           </p>
         </div>

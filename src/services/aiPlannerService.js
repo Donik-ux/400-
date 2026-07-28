@@ -1,6 +1,7 @@
 import { askGrok, isGrokAvailable, extractJson as extractJsonFromText } from './grokClient';
 import { findCity, hotelPhotoFor } from './cityDatabase';
 import { getEmergencyContacts } from './emergencyContacts';
+import { getWeatherForDates } from './weatherForecast';
 import { LANG_MAP } from '../i18n/languages';
 
 /* ── Budget distribution ── */
@@ -82,8 +83,48 @@ const MONTH_LONG   = ['January','February','March','April','May','June','July','
 
 const formatDateLong  = (d) => `${WEEKDAY_LONG[d.getDay()]}, ${MONTH_LONG[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 
+// Local-timezone ISO date (toISOString would shift the day near midnight).
+const toIsoDate = (d) => {
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+};
+
+/**
+ * Real Open-Meteo weather for each trip day, keyed by ISO date. Near dates use
+ * the live 16-day forecast; farther dates a 3-year climate normal — never an
+ * invented number. Returns null when coords are unknown or everything failed.
+ */
+export const fetchTripWeather = async (destination, startDate, numDays) => {
+  if (!startDate) return null;
+  const start = new Date(startDate);
+  if (isNaN(start)) return null;
+  const isoDates = Array.from({ length: Math.min(numDays, 21) }, (_, i) => {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    return toIsoDate(d);
+  });
+  try {
+    const byDate = await getWeatherForDates(destination, isoDates);
+    return Object.values(byDate || {}).some(Boolean) ? byDate : null;
+  } catch {
+    return null;
+  }
+};
+
+// Compact real-forecast block for the plan prompt, e.g.
+// "2026-08-02: max 24°C, min 15°C, rain 6mm".
+const weatherPromptBlock = (weatherByDate) => {
+  if (!weatherByDate) return '';
+  const lines = Object.entries(weatherByDate)
+    .filter(([, w]) => w)
+    .map(([date, w]) =>
+      `${date}: max ${Math.round(w.tempMax)}°C, min ${Math.round(w.tempMin ?? w.tempMax)}°C, rain ${Math.round(w.precipitation ?? 0)}mm`);
+  if (!lines.length) return '';
+  return `\nREAL WEATHER FOR THE TRIP DATES (Open-Meteo forecast/climate data — do not contradict it):\n${lines.join('\n')}\nSchedule OUTDOOR sightseeing (parks, viewpoints, walking tours) on the driest and mildest days, and INDOOR activities (museums, galleries, food halls, bazaars under cover) on rainy or extreme-heat (35°C+) days. Mention the adjustment in the day title or transportNote only when it matters.\n`;
+};
+
 /* ── Validate & patch AI response so the UI never breaks ── */
-const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose }) => {
+const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose, weatherByDate }) => {
   const rawDays = Array.isArray(parsed?.days) ? parsed.days : [];
 
   const days = [];
@@ -97,6 +138,7 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
     let weekday = null;
     let dateLong = null;
     let dateShort = null;
+    let weather = null;
     if (startD) {
       const d = new Date(startD);
       d.setDate(d.getDate() + i);
@@ -104,6 +146,8 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
         weekday   = WEEKDAY_LONG[d.getDay()];
         dateLong  = formatDateLong(d);
         dateShort = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        // Real Open-Meteo values only — the model never invents these.
+        weather   = weatherByDate?.[toIsoDate(d)] || null;
       }
     }
 
@@ -161,6 +205,7 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
       place:      src.place || destination,
       cost:       Number(src.cost) || dailyBudget,
       transportNote: src.transportNote || '',
+      weather,
       events,
       halalRestaurant: halal,
       hotel,
@@ -281,6 +326,11 @@ Write ALL human-readable text VALUES in ${langName}: every "title", "label", "tr
 
   const startStr = startDate ? new Date(startDate).toDateString() : 'as soon as practical';
 
+  // Real forecast/climate data for the trip dates — rides inside the one plan
+  // call (zero extra AI quota) and is re-attached per day after normalization.
+  const weatherByDate = await fetchTripWeather(destination, startDate, numDays);
+  const weatherBlock = weatherPromptBlock(weatherByDate);
+
   // Real, verified local spots (see cityDatabase.js `mustInclude`) that the
   // AI must feature rather than inventing its own — e.g. a specific
   // traveller-vetted restaurant we want every itinerary to surface.
@@ -314,7 +364,7 @@ Start date: ${startStr}
 ${routeNote}
 ${transportNote}
 Interests: ${interests.join(', ') || 'sightseeing, culture, food, history'}
-${mustIncludeBlock}${hotelOverrideBlock}
+${mustIncludeBlock}${hotelOverrideBlock}${weatherBlock}
 CRITICAL RULES — FOLLOW EXACTLY:
 1. Every place name MUST be a REAL, named attraction, museum, neighbourhood, market, park, landmark, viewpoint or street in ${destination}. NEVER use placeholders like "City Center" or "Local Restaurant".
 2. EVERY event MUST include a real STREET ADDRESS with postal code AND district. Example formats:
@@ -413,7 +463,7 @@ Every event MUST have "address" (real street+postal) and "transportToNext" (exce
   try {
     const rawText = await askGrok(prompt, { apiKey, model, temperature: 0.7, json: true, maxTokens });
     const parsed = extractJson(rawText);
-    const normalized = normalizeAiPlan(parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose });
+    const normalized = normalizeAiPlan(parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose, weatherByDate });
 
     const finalHotel = normalized.hotel || { name: hotelLabel, address: '', area: destination };
     const hotelImage = hotelPhotoFor(cityData, finalHotel.name);
@@ -461,4 +511,114 @@ Every event MUST have "address" (real street+postal) and "transportToNext" (exce
 
   console.error('Grok Planner failed:', parseErr);
   throw new Error('AI_FAILED');
+};
+
+/**
+ * Conversational plan refinement: apply one natural-language instruction
+ * ("make day 3 cheaper", "swap the museum for a park") to an existing plan.
+ * The model returns the full edited plan, which is re-hardened through
+ * normalizeAiPlan; curated data (city info, emergency contacts, budget tiles,
+ * per-day dates/weather, hotel photo) is re-attached from the original so a
+ * refinement can never regress it.
+ */
+export const refinePlan = async (currentPlan, instruction, { destination = '', lang = 'en' } = {}) => {
+  if (!isGrokAvailable()) throw new Error('NO_API_KEY');
+  const text = String(instruction || '').trim();
+  if (!currentPlan || !Array.isArray(currentPlan.days) || !currentPlan.days.length || !text) {
+    throw new Error('BAD_INPUT');
+  }
+
+  const langName = LANG_MAP[lang]?.target || LANG_MAP[lang]?.name || 'English';
+
+  // Compact copy — strip images/derived data so the prompt stays under the
+  // 16,000-char /api/ai-ask cap even for long trips.
+  const compact = {
+    header: currentPlan.header || null,
+    hotel: currentPlan.hotel ? {
+      name:          currentPlan.hotel.name,
+      address:       currentPlan.hotel.address,
+      area:          currentPlan.hotel.area,
+      pricePerNight: currentPlan.hotel.pricePerNight || currentPlan.hotel.price || '',
+      stars:         currentPlan.hotel.stars || '',
+    } : null,
+    days: currentPlan.days.map((d) => ({
+      day: d.day, title: d.title, label: d.label || '', place: d.place, cost: d.cost,
+      transportNote: d.transportNote || '',
+      halalRestaurant: d.halalRestaurant || null,
+      events: (d.events || []).map((ev) => ({
+        time: ev.time, duration: ev.duration, name: ev.name, address: ev.address,
+        district: ev.district || '', price: ev.price, type: ev.type,
+        transportToNext: ev.transportToNext || '',
+      })),
+    })),
+  };
+  let planJson = JSON.stringify(compact);
+  if (planJson.length > 13000) {
+    compact.days.forEach((d) => d.events.forEach((ev) => { delete ev.transportToNext; delete ev.district; }));
+    planJson = JSON.stringify(compact);
+  }
+
+  const prompt = `You are editing a traveler's EXISTING trip plan. Current plan JSON:
+${planJson}
+
+Apply ONLY this change requested by the traveler, keeping everything else as close to the original as possible:
+"${text}"
+
+Return the FULL updated plan as a single valid JSON object with EXACTLY the same structure and keys ("header", "hotel", "days" — same day and event fields). Every event keeps time (HH:MM), duration, name (real place), address (real street address), price (never empty — realistic local price, range, or "Free" only for genuinely free places) and type. Keep the same number of days.${lang !== 'en' ? ` Write ALL human-readable text values in ${langName}; keep JSON keys and "type" values in English; keep real place names/addresses in their official local form.` : ''} No markdown, no commentary.`;
+
+  const raw = await askGrok(prompt, { json: true, temperature: 0.4, maxTokens: 6000, timeoutMs: 45000 });
+  const parsed = extractJson(raw);
+  // normalizeAiPlan fabricates placeholder days for any input, so validate the
+  // model actually returned an itinerary BEFORE normalizing — otherwise a
+  // malformed response would silently wipe the user's plan.
+  if (!Array.isArray(parsed?.days) || !parsed.days.length) throw new Error('AI_FAILED');
+
+  const numDays     = currentPlan.days.length;
+  const dailyBudget = Math.round((currentPlan.budgetBreakdown?.total || 0) / numDays)
+    || Math.round(currentPlan.days.reduce((s, d) => s + (Number(d.cost) || 0), 0) / numDays)
+    || 100;
+  const normalized = normalizeAiPlan(parsed, {
+    numDays, dailyBudget, destination,
+    purpose: currentPlan.header?.purpose || 'Tourism and cultural exploration',
+  });
+
+  // Re-attach per-day dates and real weather from the original by index —
+  // the model must never touch these.
+  normalized.days.forEach((d, i) => {
+    const orig = currentPlan.days[i];
+    if (!orig) return;
+    d.weekday  = orig.weekday;
+    d.dateLong = orig.dateLong;
+    d.date     = orig.date;
+    d.weather  = orig.weather ?? null;
+  });
+
+  // Hotel: keep curated photo/map/nightly rate whenever the partner hotel is
+  // still the stay (or the model dropped fields).
+  const cityData = findCity(destination);
+  let hotel = normalized.hotel || currentPlan.hotel || null;
+  if (hotel) {
+    hotel = { ...hotel };
+    const img = hotelPhotoFor(cityData, hotel.name);
+    if (img) {
+      hotel.image = img;
+      hotel.recommended = true;
+      if (cityData?.hotelMapUrl) hotel.mapUrl = cityData.hotelMapUrl;
+    } else if (currentPlan.hotel && hotel.name === currentPlan.hotel.name) {
+      hotel = { ...currentPlan.hotel, ...hotel };
+    }
+    if (!hotel.pricePerNight) {
+      hotel.pricePerNight = hotel.price || currentPlan.hotel?.pricePerNight || '';
+    }
+  }
+
+  return {
+    ...currentPlan,               // cityInfo, emergency, budgetBreakdown, source, navApps…
+    header: normalized.header || currentPlan.header,
+    days:   normalized.days,
+    hotel,
+    transportSuggestion: normalized.transportSuggestion || currentPlan.transportSuggestion,
+    travelTips: normalized.travelTips.length ? normalized.travelTips : currentPlan.travelTips,
+    halalFoodGuide: normalized.halalFoodGuide || currentPlan.halalFoodGuide,
+  };
 };

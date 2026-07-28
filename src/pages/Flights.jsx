@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -21,6 +21,10 @@ import { usePriceFormatter } from '../components/Price';
 import { getWeatherForDates } from '../services/weatherForecast';
 import { pickBestValueIndex } from '../utils/dateFareCalendar';
 import { wmoInfo } from '../utils/wmoWeatherCodes';
+import { explainFares } from '../services/travelServicesService';
+import { isGrokAvailable } from '../services/grokClient';
+
+const REAL_FARE_SOURCES = ['kiwi', 'travelpayouts', 'duffel', 'amadeus'];
 
 /* ── External Booking Sites ── */
 const getBookingSites = (t) => [
@@ -64,6 +68,9 @@ export default function Flights() {
   const [filter,   setFilter]   = useState('all');                         // all | nonstop | business
   const [airlineFilter, setAirlineFilter] = useState(null);                // null = all
   const [maxPrice,   setMaxPrice]         = useState(null);                // null = no cap
+  const [advice,        setAdvice]        = useState(null);                // AI fare verdict
+  const [adviceLoading, setAdviceLoading] = useState(false);
+  const adviceReqRef = useRef(0);                                          // bumped per search to drop stale advice
 
   const { flights }                   = useStore();
   const { getFlights, loading, error, aiRefining, aiSource, source } = useFlights();
@@ -82,6 +89,8 @@ export default function Flights() {
   const handleSearch = async (eOrPayload) => {
     if (eOrPayload?.preventDefault) eOrPayload.preventDefault();
     const payload = eOrPayload?.formData || formData;
+    adviceReqRef.current += 1;
+    setAdvice(null);
     try {
       await getFlights(payload);
       setAirlineFilter(null);
@@ -120,6 +129,34 @@ export default function Flights() {
 
   const clearFilters = () => { setFilter('all'); setAirlineFilter(null); setMaxPrice(null); };
   const hasFilters = filter !== 'all' || airlineFilter || maxPrice != null;
+
+  /* ── AI fare verdict — grounded in the real offers on screen ── */
+  const handleExplainFares = async () => {
+    if (adviceLoading || !filtered.length) return;
+    setAdviceLoading(true);
+    // A new search invalidates this request — a late response for the old
+    // route must be dropped, not displayed under the new results.
+    const reqId = adviceReqRef.current;
+    try {
+      const offers = filtered.slice(0, 6);
+      const res = await explainFares({
+        from: formData.from,
+        to:   formData.to,
+        date: formData.date,
+        offers: offers.map((f, i) => ({ i, price: f.price, airline: f.airline, stops: f.stops, duration: f.duration })),
+        lang,
+      });
+      if (adviceReqRef.current === reqId) {
+        setAdvice({ ...res, best: offers[res.bestOfferIndex] || null });
+      }
+    } catch {
+      if (adviceReqRef.current === reqId) {
+        toast.error(t('flightsPage.advice.failTitle'), t('flightsPage.advice.failBody'));
+      }
+    } finally {
+      setAdviceLoading(false);
+    }
+  };
 
   /* ── Smarter dates: real weather + the fare actually found, for a few days
      around the searched date. There's no live per-day fare feed, so nearby
@@ -345,10 +382,10 @@ export default function Flights() {
               </div>
 
               {/* Source banner — real-price provider */}
-              {(source === 'kiwi' || source === 'travelpayouts' || source === 'duffel' || source === 'amadeus') && (
-                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#e9f3ea] to-white border border-[#cfe3d2] shadow-soft flex items-center gap-2.5">
+              {REAL_FARE_SOURCES.includes(source) && (
+                <div className="mb-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#e9f3ea] to-white border border-[#cfe3d2] shadow-soft flex items-center gap-2.5 flex-wrap">
                   <span className="text-[18px]">📡</span>
-                  <div className="text-[12px] font-bold text-[#24513a] leading-snug">
+                  <div className="text-[12px] font-bold text-[#24513a] leading-snug flex-1 min-w-[200px]">
                     <strong>{t('flightsPage.banners.realtimeTitle')}</strong>{' '}
                     {source === 'kiwi'
                       ? t('flightsPage.banners.kiwiBody')
@@ -358,6 +395,36 @@ export default function Flights() {
                           ? t('flightsPage.banners.duffelBody')
                           : t('flightsPage.banners.amadeusBody')}
                   </div>
+                  {isGrokAvailable() && !advice && (
+                    <button onClick={handleExplainFares} disabled={adviceLoading || !filtered.length}
+                      className="px-3 py-1.5 rounded-lg border-2 border-[#24513a]/30 text-[#24513a] hover:bg-[#dcefe0] text-[11px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shrink-0">
+                      <Sparkles className={`w-3 h-3 ${adviceLoading ? 'animate-pulse' : ''}`} />
+                      {adviceLoading ? t('flightsPage.advice.loading') : t('flightsPage.advice.button')}
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* AI fare verdict — grounded in the real offers above */}
+              {advice && (
+                <div className="mb-3 px-4 py-3 rounded-2xl bg-white border border-[#dfe7ec] shadow-soft">
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <span className={`text-[11px] font-black px-2.5 py-1 rounded-md ${
+                      advice.verdict === 'book' ? 'bg-[#e8f5e9] text-[#008009]'
+                        : advice.verdict === 'wait' ? 'bg-[#fdf3d7] text-[#8a6d1a]'
+                        : 'bg-[#eef2f5] text-[#4a5867]'
+                    }`}>
+                      {advice.verdict === 'book' ? `✅ ${t('flightsPage.advice.verdictBook')}`
+                        : advice.verdict === 'wait' ? `⏳ ${t('flightsPage.advice.verdictWait')}`
+                        : `⚖️ ${t('flightsPage.advice.verdictNeutral')}`}
+                    </span>
+                    {advice.typicalPrice && (
+                      <span className="text-[11px] font-bold text-[#697d95]">
+                        {t('flightsPage.advice.typical')} ~{fmt(advice.typicalPrice)}
+                      </span>
+                    )}
+                  </div>
+                  {advice.reason && <p className="text-[12px] text-[#252a31] font-semibold leading-snug">{advice.reason}</p>}
                 </div>
               )}
               {aiRefining && source !== 'amadeus' && (
@@ -430,7 +497,13 @@ export default function Flights() {
               <div className="space-y-3">
                 {filtered.length > 0 ? (
                   filtered.map((flight, idx) => (
-                    <motion.div key={flight.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: idx * 0.04 }}>
+                    <motion.div key={flight.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: idx * 0.04 }}
+                      className={advice?.best === flight ? 'relative rounded-2xl ring-2 ring-[#008009] ring-offset-2 ring-offset-[#f5f7f9]' : undefined}>
+                      {advice?.best === flight && (
+                        <span className="absolute -top-2.5 left-4 z-10 text-[10px] font-black text-white bg-[#008009] px-2 py-0.5 rounded-md flex items-center gap-1 shadow-soft">
+                          <Sparkles className="w-2.5 h-2.5" /> {t('flightsPage.advice.aiPick')}
+                        </span>
+                      )}
                       <FlightCard flight={flight} index={idx} aiPriced={!!aiSource} />
                     </motion.div>
                   ))

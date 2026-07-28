@@ -44,6 +44,24 @@ export default {
       yourStay: 'Your stay',
       recommendedBadge: 'Recommended',
       navigate: 'Navigate',
+      // Per-day weather chip
+      weather: {
+        rainLikely: 'rain likely',
+        forecast: 'Real weather forecast (Open-Meteo)',
+        climate: '3-year climate average for these dates',
+      },
+      // AI plan refinement
+      refine: {
+        title: 'Refine with AI',
+        placeholder: 'e.g. make day 3 cheaper, add a bazaar visit…',
+        button: 'Refine',
+        working: 'Refining…',
+        undo: 'Undo last change',
+        successTitle: 'Plan updated',
+        successBody: 'Your change has been applied to the plan.',
+        failTitle: 'Could not apply the change',
+        failBody: 'The AI could not rework the plan — please try rephrasing.',
+      },
       // Budget
       whereMoneyGoes: 'Where your {total} goes',
       stat: {
@@ -231,6 +249,24 @@ export default {
       yourStay: 'Yashash joyingiz',
       recommendedBadge: 'Tavsiya etamiz',
       navigate: 'Yo‘nalish',
+      // Per-day weather chip
+      weather: {
+        rainLikely: 'yomg‘ir kutilmoqda',
+        forecast: 'Haqiqiy ob-havo prognozi (Open-Meteo)',
+        climate: 'Ushbu sanalar uchun 3 yillik iqlim o‘rtachasi',
+      },
+      // AI plan refinement
+      refine: {
+        title: 'AI bilan o‘zgartirish',
+        placeholder: 'masalan: 3-kunni arzonroq qiling, bozorga tashrif qo‘shing…',
+        button: 'O‘zgartirish',
+        working: 'O‘zgartirilmoqda…',
+        undo: 'Oxirgi o‘zgarishni bekor qilish',
+        successTitle: 'Reja yangilandi',
+        successBody: 'O‘zgarishingiz rejaga qo‘llandi.',
+        failTitle: 'O‘zgarish qo‘llanmadi',
+        failBody: 'AI rejani qayta ishlay olmadi — boshqacha yozib ko‘ring.',
+      },
       // Budget
       whereMoneyGoes: '{total} qayerga sarflanadi',
       stat: {

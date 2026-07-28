@@ -17,6 +17,8 @@ import { findCity } from '../services/cityDatabase';
 import { NAV_APPS } from '../services/aiPlannerService';
 import { getDestinationHero, getVisaInfo } from '../services/destinationLookup';
 import { generatePackingList } from '../services/packingList';
+import { aiPackingBrief } from '../services/travelServicesService';
+import { isGrokAvailable } from '../services/grokClient';
 import { getEmergencyContacts } from '../services/emergencyContacts';
 import { getLocalApps } from '../services/localApps';
 import { getCurrencyInfo, formatLocal } from '../services/currencyByCountry';
@@ -242,7 +244,7 @@ const BudgetBar = ({ label, amount, total, color, icon: Icon }) => {
 
 /* ─── Main Planner ─── */
 export default function Planner() {
-  const { t }      = useTranslation();
+  const { t, lang } = useTranslation();
   const navigate   = useNavigate();
   const fmt        = usePriceFormatter();
   const resultsRef = useRef(null);
@@ -302,7 +304,26 @@ export default function Planner() {
   const meta       = itineraryMeta;
   const hasResults = itineraries.length > 0 && !!meta && !!formData.destination?.trim();
 
-  const packing    = useMemo(() => hasResults ? generatePackingList(formData) : null, [hasResults, formData]);
+  // Instant rule-based list first; upgraded in place by the weather-grounded
+  // AI brief when it lands (same categories shape, so checklist + PDF are
+  // untouched). Falls back silently to the rule list on any AI failure.
+  const rulePacking = useMemo(() => hasResults ? generatePackingList(formData) : null, [hasResults, formData]);
+  const [aiPacking, setAiPacking] = useState(null);
+  useEffect(() => {
+    setAiPacking(null);
+    if (!hasResults || !isGrokAvailable()) return undefined;
+    let cancelled = false;
+    aiPackingBrief({
+      destination: formData.destination,
+      startDate:   formData.startDate,
+      days:        formData.days,
+      lang,
+    }).then((brief) => { if (!cancelled) setAiPacking(brief); })
+      .catch(() => { /* rule list stays */ });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasResults, meta, lang]);
+  const packing = aiPacking || rulePacking;
   const emergency  = useMemo(() => hasResults ? getEmergencyContacts(formData.destination) : null, [hasResults, formData.destination]);
   const localApps  = useMemo(() => hasResults ? getLocalApps(formData.destination) : null, [hasResults, formData.destination]);
   const currency   = useMemo(() => hasResults ? getCurrencyInfo(formData.destination) : null, [hasResults, formData.destination]);
@@ -628,8 +649,18 @@ export default function Planner() {
                 <Briefcase className="w-5 h-5 text-[#0172cb]" />
                 <h3 className="text-[16px] font-black text-[#252a31]">{t('plannerPage.packing.title')}</h3>
                 <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#e8f4fd] text-[#0172cb]">{packing.seasonLabel}</span>
+                {packing.ai && (
+                  <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-[#e6f6f3] text-[#007f6d] flex items-center gap-1">
+                    <Sparkles className="w-2.5 h-2.5" /> {t('plannerPage.packing.aiBadge')}
+                  </span>
+                )}
               </div>
               <p className="text-[12px] text-[#697d95] mb-4">{t('plannerPage.packing.sub')}</p>
+              {packing.narrative && (
+                <p className="text-[13px] text-[#252a31] font-semibold leading-relaxed bg-[#e6f6f3] border border-[#bfe8df] rounded-xl px-4 py-3 mb-4">
+                  {packing.narrative}
+                </p>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {packing.categories.map(cat => (
                   <div key={cat.title} className="bg-[#eef2f5] border border-[#dfe7ec] rounded-xl p-4">

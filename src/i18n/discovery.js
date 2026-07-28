@@ -176,6 +176,7 @@ export default {
       packing: {
         title: 'Packing checklist',
         sub: 'Tick items off as you pack — the list is matched to the season and trip length.',
+        aiBadge: 'AI · real forecast',
       },
       emergency: {
         title: 'Emergency contacts',
@@ -382,6 +383,7 @@ export default {
       packing: {
         title: "Yuk yig'ish ro'yxati",
         sub: "Yig'ar ekansiz belgilab boring — ro'yxat fasl va sayohat muddatiga moslangan.",
+        aiBadge: 'AI · haqiqiy prognoz',
       },
       emergency: {
         title: 'Favqulodda aloqalar',

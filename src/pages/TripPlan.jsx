@@ -10,7 +10,7 @@ import {
 import { mapsUrlFor, mapsUrlFromAddress, dayMapsUrl } from '../utils/mapsUrl';
 import useAuthStore from '../store/useAuthStore';
 import useAdminStore from '../store/useAdminStore';
-import { generateAiItinerary, isAiAvailable, fetchCityInfo } from '../services/aiPlannerService';
+import { generateAiItinerary, isAiAvailable, fetchCityInfo, fetchTripWeather, refinePlan } from '../services/aiPlannerService';
 import { generateItinerary } from '../services/plannerService';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
@@ -101,6 +101,9 @@ export default function TripPlan() {
   const [plan,       setPlan]       = useState(savedPlanState || null);
   const [error,      setError]      = useState(null);
   const [saved,      setSaved]      = useState(Boolean(savedPlanState));
+  const [refineText, setRefineText] = useState('');
+  const [refining,   setRefining]   = useState(false);
+  const [prevPlan,   setPrevPlan]   = useState(null);
   const [guestBannerDismissed, setGuestBannerDismissed] = useState(false);
   // Not signed in at all, or only ever used "continue as guest" — either way
   // this plan lives in localStorage only and won't survive a cache clear.
@@ -133,17 +136,45 @@ export default function TripPlan() {
   useEffect(() => {
     if (prevLang.current === lang) return;       // ignore the initial render
     prevLang.current = lang;
-    if (!plan || loading || !itemWithHero || !type) return;
+    if (!plan || loading || refining || !itemWithHero || !type) return;
     if (!isAiAvailable()) return;                // no AI → keep current plan
     toast.info(t('tripPlan.translatingTitle'), t('tripPlan.translatingBody'));
     runGenerate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
+  const handleRefine = async () => {
+    const instruction = refineText.trim();
+    if (!instruction || refining || loading || !plan) return;
+    setRefining(true);
+    try {
+      const next = await refinePlan(plan, instruction, {
+        destination: itemWithHero?.destination || itemWithHero?.name || '',
+        lang,
+      });
+      setPrevPlan(plan);
+      setPlan(next);
+      setRefineText('');
+      setSaved(false);
+      toast.success(t('tripPlan.refine.successTitle'), t('tripPlan.refine.successBody'));
+    } catch {
+      toast.error(t('tripPlan.refine.failTitle'), t('tripPlan.refine.failBody'));
+    } finally {
+      setRefining(false);
+    }
+  };
+
+  const handleUndoRefine = () => {
+    if (!prevPlan) return;
+    setPlan(prevPlan);
+    setPrevPlan(null);
+  };
+
   const runGenerate = async () => {
-    if (!itemWithHero || loading) return;       // guard: no item OR already generating
+    if (!itemWithHero || loading || refining) return;  // guard: no item OR already generating/refining
     setLoading(true);
     setError(null);
+    setPrevPlan(null);
     try {
       const params = {
         destination: itemWithHero.destination || itemWithHero.name,
@@ -171,6 +202,20 @@ export default function TripPlan() {
       // Google proxy. AI (grok) plans are already generated in-language.
       if (result && result.source !== 'grok' && lang && lang !== 'en') {
         result = await localizePlan(result, lang);
+      }
+      // Template-fallback plans have no per-day weather — attach the same real
+      // Open-Meteo data the AI path uses so the day chips render either way.
+      if (travelDate && Array.isArray(result?.days) && !result.days.some((d) => d.weather)) {
+        const wx = await fetchTripWeather(params.destination, travelDate, result.days.length);
+        if (wx) {
+          const start = new Date(travelDate);
+          const pad = (n) => String(n).padStart(2, '0');
+          result.days.forEach((d, i) => {
+            const dd = new Date(start);
+            dd.setDate(dd.getDate() + i);
+            d.weather = wx[`${dd.getFullYear()}-${pad(dd.getMonth() + 1)}-${pad(dd.getDate())}`] || null;
+          });
+        }
       }
       // Ensure header & emergency are always populated, even if a stale path skipped them.
       if (!result.emergency)  result.emergency = getEmergencyContacts(itemWithHero.destination || itemWithHero.name);
@@ -600,6 +645,14 @@ export default function TripPlan() {
                             <span className="text-[10px] font-black uppercase tracking-widest text-[#0172cb]">{fill(t('tripPlan.dayLabel'), { day: d.day })}</span>
                             {d.weekday && <span className="text-[10px] font-bold text-[#697d95]">· {d.weekday}{d.date ? `, ${d.date.split(',').slice(-1)[0].trim()}` : ''}</span>}
                             {d.label && <span className="text-[10px] font-black text-[#007f6d] bg-[#e6f6f3] px-2 py-0.5 rounded-md">{d.label}</span>}
+                            {d.weather && (
+                              <span className={`text-[10px] font-black px-2 py-0.5 rounded-md ${
+                                d.weather.precipitation > 2 ? 'text-[#0172cb] bg-[#e8f4fd]' : 'text-[#8a6d1a] bg-[#fdf3d7]'
+                              }`} title={d.weather.source === 'forecast' ? t('tripPlan.weather.forecast') : t('tripPlan.weather.climate')}>
+                                {d.weather.precipitation > 2 ? '🌧' : '☀️'} {Math.round(d.weather.tempMax)}°/{Math.round(d.weather.tempMin ?? d.weather.tempMax)}°
+                                {d.weather.precipitation > 2 ? ` · ${t('tripPlan.weather.rainLikely')}` : ''}
+                              </span>
+                            )}
                           </div>
                           <div className="text-[14px] font-black text-[#252a31] mt-0.5">{d.title || `${t('tripPlan.day')} ${d.day}`}</div>
                           <div className="text-[12px] text-[#4a5867] font-semibold">
@@ -869,7 +922,36 @@ export default function TripPlan() {
                   </button>
                 </div>
 
-                <button onClick={runGenerate} disabled={loading}
+                {isAiAvailable() && plan && (
+                  <div className="pt-1">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-1.5 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-[#0172cb]" /> {t('tripPlan.refine.title')}
+                    </p>
+                    <div className="flex gap-1.5">
+                      <input
+                        value={refineText}
+                        onChange={(e) => setRefineText(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleRefine(); }}
+                        placeholder={t('tripPlan.refine.placeholder')}
+                        disabled={refining || loading}
+                        className="flex-1 min-w-0 px-3 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] outline-none text-[12px] font-semibold text-[#252a31] placeholder:text-[#8fa1b3] disabled:opacity-50 bg-white"
+                      />
+                      <button onClick={handleRefine} disabled={refining || loading || !refineText.trim()}
+                        className="px-3.5 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015fa8] text-white text-[12px] font-black transition active:scale-95 disabled:opacity-50 shrink-0 flex items-center gap-1.5">
+                        {refining ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+                        {refining ? t('tripPlan.refine.working') : t('tripPlan.refine.button')}
+                      </button>
+                    </div>
+                    {prevPlan && !refining && (
+                      <button onClick={handleUndoRefine}
+                        className="mt-1.5 text-[11px] font-bold text-[#697d95] hover:text-[#0172cb] underline underline-offset-2 transition">
+                        ↩ {t('tripPlan.refine.undo')}
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                <button onClick={runGenerate} disabled={loading || refining}
                   className="w-full py-2.5 rounded-xl bg-[#e8f4fd] hover:bg-[#d6ebfb] text-[#0172cb] text-[12px] font-black transition active:scale-95 flex items-center justify-center gap-1.5 disabled:opacity-50">
                   <Sparkles className="w-3.5 h-3.5" /> {loading ? t('tripPlan.regenerating') : t('tripPlan.regenerate')}
                 </button>
@@ -934,7 +1016,7 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
     runningPdfTotal += Number(d.cost) || 0;
     return `
     <div class="day">
-      <h3>📅 Day ${d.day} – ${escapeHtml(d.weekday || '')}${d.date ? `, ${escapeHtml(d.date)}` : ''}${d.label ? ` <span class="label">${escapeHtml(d.label)}</span>` : ''}</h3>
+      <h3>📅 Day ${d.day} – ${escapeHtml(d.weekday || '')}${d.date ? `, ${escapeHtml(d.date)}` : ''}${d.weather ? ` · ${Math.round(d.weather.tempMax)}°/${Math.round(d.weather.tempMin ?? d.weather.tempMax)}°C` : ''}${d.label ? ` <span class="label">${escapeHtml(d.label)}</span>` : ''}</h3>
       <p class="muted">${escapeHtml(d.title || '')}${d.place ? ` · ${escapeHtml(d.place)}` : ''}</p>
       ${d.transportNote ? `<p class="transport">🚌 ${escapeHtml(d.transportNote)}</p>` : ''}
       ${Array.isArray(d.events) ? `<ul>${d.events.map((ev, i, arr) =>

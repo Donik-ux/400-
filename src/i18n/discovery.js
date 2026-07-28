@@ -119,6 +119,16 @@ export default {
         subWithSpeak: 'Key phrases in the local language — with pronunciation. Tap 🔊 to hear it.',
         subNoSpeak: 'Key phrases in the local language — with pronunciation.',
         listen: 'Listen',
+        p: {
+          hello: 'Hello', thanks: 'Thank you', please: 'Please', yes: 'Yes', no: 'No',
+          sorry: 'Sorry', howMuch: 'How much is it?', where: 'Where is…?', help: 'Help!',
+          noUnderstand: "I don't understand", bill: 'The bill, please', bye: 'Goodbye',
+        },
+        anyLangPlaceholder: 'Any language — Italian, Greek, Swahili…',
+        aiBuild: 'Build',
+        aiLoading: 'AI is writing your phrasebook…',
+        aiFail: 'Could not build that phrasebook — check the language name and try again.',
+        aiTag: 'AI · in your language',
       },
     },
 
@@ -347,6 +357,16 @@ export default {
         subWithSpeak: "Mamlakat tilidagi asosiy iboralar — talaffuzi bilan. Eshitish uchun 🔊 ni bosing.",
         subNoSpeak: "Mamlakat tilidagi asosiy iboralar — talaffuzi bilan.",
         listen: 'Eshitish',
+        p: {
+          hello: 'Salom', thanks: 'Rahmat', please: 'Iltimos', yes: 'Ha', no: "Yo'q",
+          sorry: 'Kechirasiz', howMuch: 'Bu qancha turadi?', where: '…qayerda?', help: 'Yordam bering!',
+          noUnderstand: 'Men tushunmayapman', bill: 'Hisob, iltimos', bye: 'Xayr',
+        },
+        anyLangPlaceholder: 'Istalgan til — italyan, yunon, suahili…',
+        aiBuild: 'Tuzish',
+        aiLoading: "AI so'zlashgichingizni yozmoqda…",
+        aiFail: "So'zlashgich tuzilmadi — til nomini tekshirib, qayta urinib ko'ring.",
+        aiTag: 'AI · sizning tilingizda',
       },
     },
 

@@ -159,6 +159,83 @@ All 6 essentials required, keys exactly as shown. Use real, current facts; be co
   return out;
 }
 
+/* ── AI phrasebook — any language, written for the reader ───────────── */
+export const PHRASE_KEYS = [
+  'hello', 'thanks', 'please', 'yes', 'no', 'sorry',
+  'howMuch', 'where', 'help', 'noUnderstand', 'bill', 'bye',
+];
+
+/**
+ * Builds the 12-phrase pocket phrasebook for ANY human language, with both
+ * the meaning label and the pronunciation guide written in the reader's own
+ * language — this is what the static Cyrillic-only data in data/phrasebook.js
+ * can't do. Cached in localStorage for 30 days per language+reader pair.
+ */
+export async function aiPhrasebook({ language, lang = 'en' }, opts) {
+  const norm = String(language || '').trim();
+  if (!norm) {
+    const e = new Error('EMPTY_QUERY');
+    e.code = 'EMPTY_QUERY';
+    throw e;
+  }
+  const cacheKey = `maf_phrases_v1_${norm.toLowerCase()}_${lang}`;
+  try {
+    const hit = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if (hit && Array.isArray(hit.phrases) && hit.phrases.length >= 8 && Date.now() - (hit.at || 0) < 30 * 86400_000) {
+      return hit;
+    }
+  } catch { /* corrupt cache — regenerate */ }
+
+  const reader = langName(lang);
+  const prompt = `You are writing a pocket phrasebook of the "${norm}" language for a tourist who reads ${reader}.
+Respond ONLY with strict JSON, shape:
+{
+  "langLabel": "name of the ${norm} language, written in ${reader}",
+  "flag": "single flag emoji most associated with this language",
+  "bcp47": "BCP-47 speech-synthesis code, e.g. it-IT",
+  "phrases": [
+    { "key": "hello", "label": "the meaning, written in ${reader}", "local": "the phrase written natively in ${norm}", "pron": "pronunciation spelled with ${reader} letters" }
+  ]
+}
+Provide ALL 12 phrases, keys exactly in this order and meaning:
+hello=Hello · thanks=Thank you · please=Please · yes=Yes · no=No · sorry=Sorry · howMuch=How much does it cost? · where=Where is…? · help=Help! · noUnderstand=I don't understand · bill=The bill, please · bye=Goodbye.
+"local" must use the language's real native script. "pron" must be readable aloud by someone who only reads ${reader}.
+If "${norm}" is not a real human language, respond exactly {"error":"unknown_language"}.`;
+
+  const parsed = await run(prompt, opts);
+  if (parsed?.error) {
+    const e = new Error('UNKNOWN_LANGUAGE');
+    e.code = 'UNKNOWN_LANGUAGE';
+    throw e;
+  }
+  const byKey = new Map(
+    (Array.isArray(parsed?.phrases) ? parsed.phrases : [])
+      .filter((p) => p && PHRASE_KEYS.includes(p.key) && typeof p.local === 'string' && p.local.trim())
+      .map((p) => [p.key, {
+        key: p.key,
+        label: typeof p.label === 'string' ? p.label : '',
+        local: p.local,
+        pron: typeof p.pron === 'string' ? p.pron : '',
+      }]),
+  );
+  const phrases = PHRASE_KEYS.map((k) => byKey.get(k)).filter(Boolean);
+  if (phrases.length < 8) {
+    const e = new Error('AI_BAD_SHAPE');
+    e.code = 'AI_BAD_SHAPE';
+    throw e;
+  }
+  const bcpRaw = typeof parsed?.bcp47 === 'string' ? parsed.bcp47.trim() : '';
+  const out = {
+    at: Date.now(),
+    langLabel: typeof parsed?.langLabel === 'string' && parsed.langLabel.trim() ? parsed.langLabel : norm,
+    flag: typeof parsed?.flag === 'string' && parsed.flag.trim() ? parsed.flag.trim().slice(0, 8) : '🌍',
+    bcp47: /^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/i.test(bcpRaw) ? bcpRaw : null,
+    phrases,
+  };
+  try { localStorage.setItem(cacheKey, JSON.stringify(out)); } catch { /* quota full — fine */ }
+  return out;
+}
+
 /* ── Natural-language trip parser ("Дубай на неделю за $2500 в июне") ── */
 /**
  * Turns a free-text trip wish in ANY language into planner form fields.

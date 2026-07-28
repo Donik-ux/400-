@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
   Wrench, RefreshCw, ArrowLeftRight, Receipt, Clock, Users, Minus, Plus,
-  Ruler, Languages, Volume2,
+  Ruler, Languages, Volume2, Sparkles, Loader2, Search,
 } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
 import { LANGUAGES, PHRASE_LABELS } from '../data/phrasebook';
+import { aiPhrasebook } from '../services/travelServicesService';
+import { isGrokAvailable } from '../services/grokClient';
 import { useTranslation } from '../store/useLangStore';
 import { currencyFlag, currencyNamer } from '../utils/currencyMeta';
 
@@ -344,23 +346,79 @@ function UnitConverter() {
 
 /* ─────────── Phrasebook ─────────── */
 const BCP = { en: 'en-US', tr: 'tr-TR', ar: 'ar-SA', th: 'th-TH', zh: 'zh-CN', ja: 'ja-JP', ko: 'ko-KR', es: 'es-ES' };
+/* Endonyms — chip labels read correctly whatever UI language the visitor uses */
+const NATIVE_NAME = { en: 'English', tr: 'Türkçe', ar: 'العربية', th: 'ไทย', zh: '中文', ja: '日本語', ko: '한국어', es: 'Español' };
+/* Unambiguous English names fed to the AI prompt for the preset chips */
+const PROMPT_NAME = { en: 'English', tr: 'Turkish', ar: 'Arabic', th: 'Thai', zh: 'Chinese (Mandarin)', ja: 'Japanese', ko: 'Korean', es: 'Spanish' };
 
 function Phrasebook() {
-  const { t } = useTranslation();
-  const [code, setCode] = useState('tr');
-  const lang = LANGUAGES.find(l => l.code === code) || LANGUAGES[0];
+  const { t, lang } = useTranslation();
+  const [target, setTarget] = useState({ type: 'preset', code: 'tr' });
+  const [query, setQuery] = useState('');
+  const [aiRes, setAiRes] = useState(null); // { id, data } | { id, error } — written only from async callbacks
   const canSpeak = typeof window !== 'undefined' && 'speechSynthesis' in window;
+  const aiOn = isGrokAvailable();
+
+  const preset = target.type === 'preset' ? (LANGUAGES.find(l => l.code === target.code) || LANGUAGES[0]) : null;
+  /* Results are stamped with the request they answer, so loading/error/stale
+     are all derived — no state resets needed inside the effect. */
+  const reqId = `${target.type}:${target.type === 'custom' ? target.name : target.code}:${lang}`;
+  /* Russian readers already have the hand-written Cyrillic book for the preset
+     languages; every other reader gets labels + pronunciation rewritten by AI
+     in their own language (cached 30 days). Typed-in languages are always AI. */
+  const aiLangName = target.type === 'custom'
+    ? target.name
+    : (lang === 'ru' ? null : PROMPT_NAME[target.code]);
+  const wantAi = Boolean(aiLangName) && aiOn;
 
   useEffect(() => () => { if (canSpeak) window.speechSynthesis.cancel(); }, [canSpeak]);
+
+  useEffect(() => {
+    if (!wantAi) return undefined;
+    let cancelled = false;
+    aiPhrasebook({ language: aiLangName, lang })
+      .then((r) => { if (!cancelled) setAiRes({ id: reqId, data: r }); })
+      .catch(() => { if (!cancelled) setAiRes({ id: reqId, error: true }); });
+    return () => { cancelled = true; };
+  }, [wantAi, aiLangName, lang, reqId]);
+
+  const aiData = aiRes?.id === reqId ? aiRes.data : null;
+  const aiError = aiRes?.id === reqId && Boolean(aiRes.error);
+  const aiLoading = wantAi && (!aiRes || aiRes.id !== reqId);
 
   const speak = (text) => {
     if (!canSpeak) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = BCP[code] || 'en-US';
+    const bcp = aiData?.bcp47 || (preset ? BCP[preset.code] : null) || 'en-US';
+    u.lang = bcp;
+    const base = bcp.split('-')[0].toLowerCase();
+    const voice = window.speechSynthesis.getVoices().find(v => v.lang?.toLowerCase().startsWith(base));
+    if (voice) u.voice = voice;
     u.rate = 0.85;
     window.speechSynthesis.speak(u);
   };
+
+  /* AI result when ready; the static book renders instantly for presets and
+     stays up if the AI call fails, so the widget never goes blank. */
+  const rows = aiData
+    ? aiData.phrases
+    : preset
+      ? PHRASE_LABELS.map((p) => {
+          const entry = preset.phrases[p.key];
+          if (!entry) return null;
+          // ru keeps its authored labels; other languages resolve through i18n
+          return { key: p.key, label: lang === 'ru' ? p.ru : t(`toolsPage.phrasebook.p.${p.key}`), local: entry[0], pron: entry[1] };
+        }).filter(Boolean)
+      : [];
+
+  const submitCustom = (e) => {
+    e.preventDefault();
+    const name = query.trim();
+    if (name && !(target.type === 'custom' && target.name === name)) setTarget({ type: 'custom', name });
+  };
+
+  const customActive = target.type === 'custom';
 
   return (
     <div className="bg-white border border-[#dfe7ec] rounded-2xl p-6 shadow-soft">
@@ -369,6 +427,11 @@ function Phrasebook() {
           <Languages className="w-5 h-5 text-[#0172cb]" />
         </div>
         <h2 className="text-[16px] font-black text-[#252a31]">{t('toolsPage.phrasebook.title')}</h2>
+        {aiData && (
+          <span className="ml-auto flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-[#007f6d] bg-[#e6f6f3] border border-[#bfe8df] px-2 py-1 rounded-md">
+            <Sparkles className="w-3 h-3" /> {t('toolsPage.phrasebook.aiTag')}
+          </span>
+        )}
       </div>
       <p className="text-[12px] text-[#697d95] mb-4">
         {canSpeak ? t('toolsPage.phrasebook.subWithSpeak') : t('toolsPage.phrasebook.subNoSpeak')}
@@ -376,33 +439,65 @@ function Phrasebook() {
 
       <div className="flex flex-wrap gap-1.5 mb-4">
         {LANGUAGES.map(l => (
-          <button key={l.code} onClick={() => setCode(l.code)}
+          <button key={l.code} onClick={() => setTarget({ type: 'preset', code: l.code })}
             className={`px-3.5 py-1.5 rounded-lg text-[12px] font-bold border transition-premium ${
-              code === l.code ? 'bg-[#252a31] text-white border-[#252a31] shadow-float' : 'bg-white text-[#4a5867] border-[#dfe7ec] hover:border-[#0172cb] hover:text-[#252a31]'
-            }`}>{l.flag} {l.name}</button>
+              !customActive && preset?.code === l.code ? 'bg-[#252a31] text-white border-[#252a31] shadow-float' : 'bg-white text-[#4a5867] border-[#dfe7ec] hover:border-[#0172cb] hover:text-[#252a31]'
+            }`}>{l.flag} {NATIVE_NAME[l.code] || l.name}</button>
         ))}
+        {customActive && (
+          <span className="px-3.5 py-1.5 rounded-lg text-[12px] font-bold border bg-[#252a31] text-white border-[#252a31] shadow-float flex items-center gap-1.5">
+            {aiData?.flag || '🌍'} {aiData?.langLabel || target.name}
+          </span>
+        )}
       </div>
 
+      {/* Any-language AI search — the 8 chips are just shortcuts */}
+      {aiOn && (
+        <form onSubmit={submitCustom} className="flex gap-2 mb-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8fa1b3] pointer-events-none" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t('toolsPage.phrasebook.anyLangPlaceholder')}
+              className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#dfe7ec] bg-[#f5f7f9] text-[13px] font-bold text-[#252a31] placeholder:text-[#8fa1b3] placeholder:font-medium focus:outline-none focus:border-[#0172cb] focus:bg-white transition"
+            />
+          </div>
+          <button type="submit" disabled={!query.trim() || aiLoading}
+            className="px-4 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] disabled:opacity-40 text-white text-[12.5px] font-black flex items-center gap-1.5 transition active:scale-95 shrink-0">
+            <Sparkles className="w-4 h-4" /> {t('toolsPage.phrasebook.aiBuild')}
+          </button>
+        </form>
+      )}
+
+      {aiLoading && !rows.length && (
+        <div className="flex items-center gap-2.5 rounded-xl bg-[#eef2f5] border border-[#dfe7ec] px-4 py-3.5 mb-2.5">
+          <Loader2 className="w-4 h-4 text-[#0172cb] animate-spin shrink-0" />
+          <span className="text-[12.5px] font-bold text-[#4a5867]">{t('toolsPage.phrasebook.aiLoading')}</span>
+        </div>
+      )}
+      {aiError && customActive && (
+        <div className="rounded-xl bg-[#fdf0ee] border border-[#f3c9c2] px-4 py-3.5 mb-2.5 text-[12.5px] font-bold text-[#a03e2d]">
+          {t('toolsPage.phrasebook.aiFail')}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-        {PHRASE_LABELS.map(p => {
-          const entry = lang.phrases[p.key];
-          if (!entry) return null;
-          return (
-            <div key={p.key} className="bg-[#eef2f5] border border-[#dfe7ec] rounded-xl p-3.5 flex items-start gap-2 hover:border-[#0172cb]/40 hover:bg-white hover:shadow-soft transition-premium">
-              <div className="flex-1 min-w-0">
-                <p className="text-[11px] text-[#697d95] font-medium mb-0.5">{p.ru}</p>
-                <p className="text-[15px] font-black text-[#252a31] leading-tight">{entry[0]}</p>
-                <p className="text-[12px] text-[#0172cb] font-semibold italic">[{entry[1]}]</p>
-              </div>
-              {canSpeak && (
-                <button onClick={() => speak(entry[0])} title={t('toolsPage.phrasebook.listen')}
-                  className="w-8 h-8 rounded-lg bg-white border border-[#dfe7ec] flex items-center justify-center text-[#0172cb] hover:bg-[#252a31] hover:text-white hover:border-[#252a31] transition-premium shrink-0 active:scale-90">
-                  <Volume2 className="w-4 h-4" />
-                </button>
-              )}
+        {rows.map((p) => (
+          <div key={p.key} className="bg-[#eef2f5] border border-[#dfe7ec] rounded-xl p-3.5 flex items-start gap-2 hover:border-[#0172cb]/40 hover:bg-white hover:shadow-soft transition-premium">
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] text-[#697d95] font-medium mb-0.5">{p.label}</p>
+              <p className="text-[15px] font-black text-[#252a31] leading-tight">{p.local}</p>
+              {p.pron && <p className="text-[12px] text-[#0172cb] font-semibold italic">[{p.pron}]</p>}
             </div>
-          );
-        })}
+            {canSpeak && (
+              <button onClick={() => speak(p.local)} title={t('toolsPage.phrasebook.listen')}
+                className="w-8 h-8 rounded-lg bg-white border border-[#dfe7ec] flex items-center justify-center text-[#0172cb] hover:bg-[#252a31] hover:text-white hover:border-[#252a31] transition-premium shrink-0 active:scale-90">
+                <Volume2 className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

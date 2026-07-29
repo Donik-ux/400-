@@ -200,7 +200,7 @@ export default function Checkout() {
     setBooking(b);
     setLoading(false);
     setStep(3);
-    toast.success('Booking confirmed', `Confirmation code: ${b.confirmCode || b.id}`);
+    toast.success(t('checkout.confirmed'), `${t('checkout.confirmNumber')}: ${b.confirmCode || b.id}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

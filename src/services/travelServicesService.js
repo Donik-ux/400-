@@ -102,7 +102,10 @@ export async function countryBrief({ destination, lang = 'en' }, opts) {
   const cacheKey = `maf_brief_v1_${destination}_${lang}`;
   try {
     const hit = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    if (hit && Array.isArray(hit.essentials) && hit.essentials.length && Date.now() - (hit.at || 0) < 7 * 86400_000) {
+    if (hit && Array.isArray(hit.essentials) && hit.essentials.length &&
+        hit.essentials.every((e) => e && typeof e.value === 'string') &&
+        hit.halal && typeof hit.halal === 'object' &&
+        Date.now() - (hit.at || 0) < 7 * 86400_000) {
       return hit;
     }
   } catch { /* corrupt cache — regenerate */ }
@@ -169,7 +172,9 @@ export async function tourFitAdvisor({ tour, who, pace, profileKey, lang = 'en' 
   const cacheKey = `maf_tourfit_v1_${tour.id}_${profileKey}_${lang}`;
   try {
     const hit = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    if (hit && typeof hit.headline === 'string' && Date.now() - (hit.at || 0) < 7 * 86400_000) {
+    if (hit && typeof hit.headline === 'string' &&
+        Array.isArray(hit.pros) && Array.isArray(hit.cons) &&
+        Date.now() - (hit.at || 0) < 7 * 86400_000) {
       return hit;
     }
   } catch { /* corrupt cache — regenerate */ }
@@ -230,7 +235,9 @@ export async function aiPhrasebook({ language, lang = 'en' }, opts) {
   const cacheKey = `maf_phrases_v1_${norm.toLowerCase()}_${lang}`;
   try {
     const hit = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    if (hit && Array.isArray(hit.phrases) && hit.phrases.length >= 8 && Date.now() - (hit.at || 0) < 30 * 86400_000) {
+    if (hit && Array.isArray(hit.phrases) && hit.phrases.length >= 8 &&
+        hit.phrases.every((p) => p && typeof p.key === 'string' && typeof p.local === 'string') &&
+        Date.now() - (hit.at || 0) < 30 * 86400_000) {
       return hit;
     }
   } catch { /* corrupt cache — regenerate */ }

@@ -362,7 +362,7 @@ function Phrasebook() {
   const preset = target.type === 'preset' ? (LANGUAGES.find(l => l.code === target.code) || LANGUAGES[0]) : null;
   /* Results are stamped with the request they answer, so loading/error/stale
      are all derived — no state resets needed inside the effect. */
-  const reqId = `${target.type}:${target.type === 'custom' ? target.name : target.code}:${lang}`;
+  const reqId = `${target.type}:${target.type === 'custom' ? target.name : target.code}:${target.n || 0}:${lang}`;
   /* Russian readers already have the hand-written Cyrillic book for the preset
      languages; every other reader gets labels + pronunciation rewritten by AI
      in their own language (cached 30 days). Typed-in languages are always AI. */
@@ -415,7 +415,10 @@ function Phrasebook() {
   const submitCustom = (e) => {
     e.preventDefault();
     const name = query.trim();
-    if (name && !(target.type === 'custom' && target.name === name)) setTarget({ type: 'custom', name });
+    if (!name) return;
+    // Bump the nonce even for the same name so "try again" after a transient
+    // failure actually refires the request (the 30-day cache makes repeats free).
+    setTarget({ type: 'custom', name, n: (target.n || 0) + 1 });
   };
 
   const customActive = target.type === 'custom';
@@ -463,7 +466,7 @@ function Phrasebook() {
               className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#dfe7ec] bg-[#f5f7f9] text-[13px] font-bold text-[#252a31] placeholder:text-[#8fa1b3] placeholder:font-medium focus:outline-none focus:border-[#0172cb] focus:bg-white transition"
             />
           </div>
-          <button type="submit" disabled={!query.trim() || aiLoading}
+          <button type="submit" disabled={!query.trim() || (aiLoading && customActive)}
             className="px-4 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] disabled:opacity-40 text-white text-[12.5px] font-black flex items-center gap-1.5 transition active:scale-95 shrink-0">
             <Sparkles className="w-4 h-4" /> {t('toolsPage.phrasebook.aiBuild')}
           </button>

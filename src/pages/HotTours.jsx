@@ -54,6 +54,17 @@ const STYLE_BADGE = {
 };
 
 /* ── Page ─────────────────────────────────────────────────────────── */
+/* Template packages arrive with fixed English marketing strings — map the
+   known ones through i18n; AI-built packages already come in the user's
+   language, so unknown strings pass through untouched. */
+const TAGLINE_KEY = { 'Best value': 'bestValue', 'Crowd favorite': 'crowd', 'Most experiences': 'most', 'Top-tier choice': 'top' };
+const INC_KEY = {
+  'Return flights': 'rf', 'Return flights from Bishkek': 'rfB', '3★ hotel stay': 'h3', '4★ hotel stay': 'h4',
+  '4★ resort with pool': 'resort', 'Guided city tours': 'cityTours', 'Daily breakfast': 'brk',
+  'Halal restaurant guide': 'halal', 'Half-board meals': 'half', 'Local SIM card': 'sim',
+  'Group day-trips': 'dayTrips', 'Airport transfers': 'transfer', 'Spa voucher': 'spa', 'Curated experiences': 'exp',
+};
+
 const HotTours = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -121,7 +132,7 @@ const HotTours = () => {
       const dClamp  = Math.max(1, Math.min(21, Math.round(Number(days) || 5)));
       const bClamp  = Math.max(100, Math.min(50000, Number(balance) || 1500));
       savePrefs({ balance: bClamp, days: dClamp, vibe: sanitizeVibe(vibe), destination: dest, fromCity: fromTr });
-      toast.ai('Building your detailed plan', `${dClamp} days in ${dest.split(',')[0]} on $${bClamp}`);
+      toast.ai(t('hotTours.toasts.building'), `${dClamp}d · ${dest.split(',')[0]} · $${bClamp}`);
       const item = {
         id: `direct-${Date.now()}`,
         name: `${dClamp}-day trip to ${dest}`,
@@ -166,12 +177,12 @@ const HotTours = () => {
       setResult(r);
       savePrefs({ balance: Number(b), days: Number(d), vibe: sanitizeVibe(v) });
       toast.ai(
-        r.source === 'grok' ? 'AI built 4 tours for your balance' : 'Smart Match found 4 tours for your balance',
-        `${d} day${Number(d) === 1 ? '' : 's'} · all under $${b}`
+        r.source === 'grok' ? t('hotTours.toasts.aiBuilt') : t('hotTours.toasts.smartMatch'),
+        t('hotTours.toasts.underBody').replace('{days}', String(d)).replace('{balance}', String(b))
       );
     } catch {
-      setError('Could not generate packages right now. Try again in a moment.');
-      toast.error('Generation failed', 'Please try again in a moment.');
+      setError(t('hotTours.toasts.errorBanner'));
+      toast.error(t('hotTours.toasts.genFailTitle'), t('hotTours.toasts.genFailBody'));
     } finally {
       setLoading(false);
     }
@@ -449,8 +460,8 @@ const HotTours = () => {
                         e.stopPropagation();
                         const wasIn = isInWishlist(fakeId, 'package');
                         toggleWishlist('package', { id: fakeId, name: `${p.destination} · ${p.tier}`, image: p.image, price: p.price });
-                        if (wasIn) toast.info('Removed from wishlist', p.destination);
-                        else       toast.success('Saved to wishlist', `${p.destination} · ${fmt(p.price)}`);
+                        if (wasIn) toast.info(t('hotTours.toasts.wishRemoved'), p.destination);
+                        else       toast.success(t('hotTours.toasts.wishAdded'), `${p.destination} · ${fmt(p.price)}`);
                       }}
                       className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition"
                       aria-label={isInWishlist(fakeId, 'package') ? 'Remove from wishlist' : 'Save to wishlist'}
@@ -458,7 +469,7 @@ const HotTours = () => {
                       <Heart className={`w-4 h-4 ${isInWishlist(fakeId, 'package') ? 'fill-red-500 text-red-500' : 'text-[#4a5867]'}`} />
                     </button>
                     <div className="absolute bottom-2 right-2 glass-dark text-white text-[10px] font-black px-2 py-1 rounded-md shadow-sm">
-                      {p.tagline}
+                      {TAGLINE_KEY[p.tagline] ? t(`hotTours.tagline.${TAGLINE_KEY[p.tagline]}`) : p.tagline}
                     </div>
                   </div>
 
@@ -479,7 +490,7 @@ const HotTours = () => {
                     <ul className="space-y-1 mb-3">
                       {(p.includes || []).slice(0, 3).map((inc, k) => (
                         <li key={k} className="flex items-start gap-1.5 text-[11.5px] text-[#252a31] font-semibold">
-                          <Check className="w-3 h-3 text-[#2e7d4f] mt-0.5 shrink-0" strokeWidth={3} /> {inc}
+                          <Check className="w-3 h-3 text-[#2e7d4f] mt-0.5 shrink-0" strokeWidth={3} /> {INC_KEY[inc] ? t(`hotTours.inc.${INC_KEY[inc]}`) : inc}
                         </li>
                       ))}
                     </ul>
@@ -644,8 +655,8 @@ const HotDealCard = ({ p, i, total, t, navigate, setLightbox, isInWishlist, togg
         e.stopPropagation();
         const wasIn = isInWishlist(p.id, 'package');
         toggleWishlist('package', p);
-        if (wasIn) toast.info('Removed from wishlist', p.name);
-        else       toast.success('Saved to wishlist', p.name);
+        if (wasIn) toast.info(t('hotTours.toasts.wishRemoved'), p.name);
+        else       toast.success(t('hotTours.toasts.wishAdded'), p.name);
       }}
       className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition z-10"
       aria-label={isInWishlist(p.id, 'package') ? 'Remove from wishlist' : 'Save to wishlist'}

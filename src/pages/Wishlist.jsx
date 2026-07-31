@@ -37,7 +37,11 @@ export default function Wishlist() {
         price: d.price,
         image: heroFor(toCity || fromCity),
         meta: d.departure ? `Departs ${d.departure}` : null,
-        cta: () => navigate('/flights'),
+        // Re-run the saved route instead of dumping the traveller on an empty
+        // flight search — the card already knows where they wanted to go.
+        cta: () => navigate('/flights', {
+          state: { formData: { from: d.from || '', to: d.to || '', date: d.departure || '', returnDate: '' } },
+        }),
         rawId: entry.id, rawType: entry.type,
       };
     }
@@ -51,7 +55,22 @@ export default function Wishlist() {
       image: d.image || heroFor(dest),
       meta: d.duration ? `${d.duration} days` : null,
       rating: d.rating,
-      cta: () => navigate('/hot-tours'),
+      // Open the plan for THIS saved package rather than the generic tours
+      // list — otherwise the card's own details are thrown away on click.
+      cta: () => navigate('/trip-plan', {
+        state: {
+          item: {
+            id: entry.id,
+            name: d.name || dest,
+            destination: d.destination || dest,
+            duration: Number(d.duration) || 7,
+            price: Number(d.price) || 1500,
+            image: d.image || heroFor(dest),
+            category: d.category || 'standard',
+          },
+          type: 'package',
+        },
+      }),
       rawId: entry.id, rawType: entry.type,
     };
   }), [items, navigate]);

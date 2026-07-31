@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { TrendingUp, DollarSign, BarChart3, Calendar, Download } from 'lucide-react';
+import { TrendingUp, DollarSign, BarChart3, Calendar, Download, Percent } from 'lucide-react';
 import useAdminStore from '../../store/useAdminStore';
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -32,6 +32,8 @@ export default function AnalyticsTab() {
   const bookings     = useAdminStore(s => s.bookings);
   const adminFlights = useAdminStore(s => s.adminFlights);
   const packages     = useAdminStore(s => s.packages);
+  // Commission % is set in the Settings tab — this is where it pays off.
+  const commissionPct = Number(useAdminStore(s => s.settings?.commission)) || 0;
 
   const monthly    = useMemo(() => buildMonthlyRevenue(bookings), [bookings]);
   const maxRevenue = Math.max(...monthly.map(m => m.total), 1);
@@ -39,6 +41,7 @@ export default function AnalyticsTab() {
   const byType     = useMemo(() => buildByType(bookings), [bookings]);
   const totalItems = byType.reduce((s, t) => s + t.value, 0) || 1;
 
+  const commissionRev = Math.round(totalRev * (commissionPct / 100));
   const avgBooking = bookings.length ? Math.round(totalRev / bookings.length) : 0;
   const convRate   = bookings.length
     ? Math.round((bookings.filter(b=>b.status==='confirmed').length / bookings.length)*100)
@@ -60,9 +63,10 @@ export default function AnalyticsTab() {
   return (
     <div className="flex flex-col gap-6">
       {/* KPI row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {[
           { icon: DollarSign,  label: 'Total Revenue',    value: `$${totalRev.toLocaleString()}`, color: 'text-ok-n' },
+          { icon: Percent,     label: `Commission (${commissionPct}%)`, value: `$${commissionRev.toLocaleString()}`, color: 'text-[#61d1bf]' },
           { icon: TrendingUp,  label: 'Avg Booking Value', value: `$${avgBooking.toLocaleString()}`, color: 'text-[#7fb2e5]' },
           { icon: BarChart3,   label: 'Conversion Rate',  value: `${convRate}%`,                  color: 'text-[#c8b48a]' },
           { icon: Calendar,    label: 'Total Bookings',   value: bookings.length,                color: 'text-[#7cc4d9]' },

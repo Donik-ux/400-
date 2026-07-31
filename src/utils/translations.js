@@ -212,6 +212,7 @@ export const translations = {
       newsletter: 'Stay Updated',
       newsletterSub: 'Subscribe to receive the best travel deals and AI travel tips.',
       emailPlaceholder: 'Your email...',
+      emailInvalid: 'Enter a valid email address.',
       join: 'Join',
       newsletterSuccess: '✓ Successfully Subscribed!',
       supportLinks: {
@@ -233,6 +234,9 @@ export const translations = {
       packages: 'Packages',
       bookings: 'Bookings',
       users: 'Users',
+      analytics: 'Analytics',
+      notifications: 'Notifications',
+      settings: 'Settings',
       signOut: 'Sign Out',
       stats: {
         total: 'Total Bookings',
@@ -455,6 +459,7 @@ export const translations = {
       ctaTitle: "Can't find your contrast?",
       ctaSub: 'Our travel experts can design a custom hot-to-cold or cultural contrast journey for you — any two destinations on Earth.',
       ctaBtn: 'Request Custom Tour',
+      ctaMessage: 'Hello MAFTRAVEL! I would like a custom contrast tour. Could you help me design one?',
     },
 
     profile: {
@@ -889,6 +894,7 @@ export const translations = {
       newsletter: 'Yangiliklardan xabardor bo\'ling',
       newsletterSub: "Eng yaxshi takliflar va AI sayohat maslahatlarini olish uchun obuna bo'ling.",
       emailPlaceholder: 'Elektron pochtangiz...',
+      emailInvalid: 'To‘g‘ri elektron pochta manzilini kiriting.',
       join: "Qo'shilish",
       newsletterSuccess: '✓ Muvaffaqiyatli obuna bo\'ldingiz!',
       supportLinks: {
@@ -910,6 +916,9 @@ export const translations = {
       packages: 'Paketlar',
       bookings: 'Buyurtmalar',
       users: 'Foydalanuvchilar',
+      analytics: 'Tahlil',
+      notifications: 'Bildirishnomalar',
+      settings: 'Sozlamalar',
       signOut: 'Chiqish',
       stats: {
         total: 'Jami buyurtmalar',
@@ -1132,6 +1141,7 @@ export const translations = {
       ctaTitle: 'Kontrastingizni topa olmadingizmi?',
       ctaSub: 'Mutaxassislarimiz siz uchun maxsus issiqdan-sovuqqa yoki madaniy kontrast sayohati tashkil qila oladi — Yer yuzidagi istalgan ikki joy.',
       ctaBtn: 'Maxsus tur buyurtma qilish',
+      ctaMessage: 'Salom MAFTRAVEL! Menga maxsus kontrast tur kerak. Tuzishga yordam bera olasizmi?',
     },
 
     profile: {

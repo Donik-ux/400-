@@ -16,7 +16,12 @@ import { SUPPORT_EMAIL } from '../config/contact';
 export default function useSEO({ title, description, image, url, type = 'website', keywords = [] }) {
   const keywordsKey = keywords.join(', ');
   useEffect(() => {
-    const siteTitle = 'MAFTRAVEL';
+    // Site name is editable from the admin Settings tab; read it straight from
+    // storage so this hook stays free of store subscriptions.
+    let adminName = '';
+    try { adminName = String(JSON.parse(localStorage.getItem('maf_settings') || 'null')?.siteName || '').trim(); }
+    catch { /* corrupted settings — use the built-in name */ }
+    const siteTitle = adminName || 'MAFTRAVEL';
     const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
     const canonical = url || window.location.href;
     const ogImage   = image || 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80';
@@ -26,7 +31,7 @@ export default function useSEO({ title, description, image, url, type = 'website
     setMeta('description',               description);
     setMeta('keywords',                  keywordsKey);
     setMeta('robots',                    'index, follow');
-    setMeta('author',                    'MAFTRAVEL');
+    setMeta('author',                    siteTitle);
 
     // ── Canonical ──────────────────────────────
     setLink('canonical', canonical);

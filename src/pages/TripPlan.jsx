@@ -92,7 +92,11 @@ export default function TripPlan() {
   // Optional different arrival city for the way back (e.g. Dubai → Antarctica → Tashkent)
   const returnToState  = location.state?.returnCity || searchParams.get('returnTo') || '';
 
-  const [travelers,  setTravelers]  = useState(2);
+  // Party size can arrive from the Home tours search (`pax`), via router state
+  // or the URL, so a shared/refreshed link keeps the same headcount.
+  const [travelers,  setTravelers]  = useState(
+    Math.max(1, Math.min(9, Number(location.state?.travelers) || Number(searchParams.get('pax')) || 2)),
+  );
   const [travelDate, setTravelDate] = useState(startDateState || '');
   const [returnDate, setReturnDate] = useState(location.state?.returnDate || searchParams.get('return') || '');
   const [fromCity,   setFromCity]   = useState(fromCityState || 'Bishkek');
@@ -129,6 +133,7 @@ export default function TripPlan() {
       if (startDateState) next.set('start', startDateState);
       if (purposeState)   next.set('purpose', purposeState);
       if (returnToState)  next.set('returnTo', returnToState);
+      if (travelers !== 2) next.set('pax', String(travelers));
       setSearchParams(next, { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

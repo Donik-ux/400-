@@ -9,15 +9,25 @@ import {
   getProgress,
 } from '../i18n/autoTranslate';
 
+// Default language configured in the admin Settings tab — only consulted when
+// the visitor has not picked one themselves.
+const readAdminDefaultLang = () => {
+  try {
+    const code = JSON.parse(localStorage.getItem('maf_settings') || 'null')?.language;
+    return LANG_CODES.includes(code) ? code : null;
+  } catch { return null; }
+};
+
 const readLang = () => {
   const saved = localStorage.getItem('lang');
   if (LANG_CODES.includes(saved)) return saved;
-  // Fall back to the browser language if we support it, else English.
+  // Fall back to the browser language if we support it, else the admin default,
+  // else English.
   const nav = (navigator?.language || '').toLowerCase();
   const match = LANG_CODES.find(
     (c) => c.toLowerCase() === nav || nav.startsWith(c.toLowerCase().split('-')[0]),
   );
-  return match || 'en';
+  return match || readAdminDefaultLang() || 'en';
 };
 
 const applyDir = (lang) => {

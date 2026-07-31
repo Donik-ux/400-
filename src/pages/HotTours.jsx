@@ -93,6 +93,9 @@ const HotTours = () => {
   const initialDest    = searchParams.get('to') || saved.destination || '';
   const initialFrom    = searchParams.get('from') || saved.fromCity || 'Bishkek';
   const initialStart   = searchParams.get('start') || '';
+  // Party size comes in from the Home tours search; HotTours has no pax UI of
+  // its own, it just carries the number through to the trip plan.
+  const pax = Math.max(1, Math.min(9, Number(searchParams.get('pax')) || 0)) || null;
 
   // ── AI Studio state ──
   const [balance, setBalance] = useState(initialBalance);
@@ -149,8 +152,9 @@ const HotTours = () => {
         balance: String(bClamp),
         from:    fromTr,
         ...(startDate ? { start: startDate } : {}),
+        ...(pax ? { pax: String(pax) } : {}),
       });
-      navigate(`/trip-plan?${qs.toString()}`, { state: { item, type: 'package', fromCity: fromTr, startDate, purpose: 'Tourism and cultural exploration' } });
+      navigate(`/trip-plan?${qs.toString()}`, { state: { item, type: 'package', fromCity: fromTr, startDate, travelers: pax || undefined, purpose: 'Tourism and cultural exploration' } });
       return;
     }
     runStudio();
@@ -229,7 +233,7 @@ const HotTours = () => {
       description: `AI-curated ${pkg.days}-day ${pkg.style} tour to ${pkg.destination}.`,
     };
     toast.success('Opening your full trip plan', `${pkg.destination} · ${fmt(pkg.price)}`);
-    navigate('/trip-plan', { state: { item: itemForCheckout, type: 'package' } });
+    navigate('/trip-plan', { state: { item: itemForCheckout, type: 'package', travelers: pax || undefined } });
   };
 
   const aiAvailable = isAiAvailable();

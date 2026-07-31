@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { BellRing, BellOff, X, Gift, Plane, Package, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../../store/useLangStore';
 
+// Each deal carries the route it advertises — the toast body says "Book now →",
+// so the card has to actually go somewhere when tapped.
 const DEALS = [
-  { id: 1, icon: '✈️', title: 'Flash Sale: Dubai Flights', body: 'From $199! Only 48 hours left. Book now →', tag: 'flight' },
-  { id: 2, icon: '🏖️', title: 'New Package: Maldives', body: 'Overwater villa from $3,299/person. Limited spots!', tag: 'package' },
-  { id: 3, icon: '🏨', title: 'Hotel Deal: Burj Al Arab', body: '20% off when you book 30 days in advance.', tag: 'hotel' },
-  { id: 4, icon: '🌍', title: 'Weekend Getaway to Istanbul', body: '4 days from $849 all-inclusive. Ends Sunday!', tag: 'package' },
-  { id: 5, icon: '💥', title: 'Cyber Monday Travel Deals', body: 'Up to 40% off select packages. Use code CYBER40', tag: 'promo' },
+  { id: 1, icon: '✈️', title: 'Flash Sale: Dubai Flights', body: 'From $199! Only 48 hours left. Book now →', tag: 'flight',
+    to: '/flights', state: { formData: { from: '', to: 'Dubai', date: '', returnDate: '' } } },
+  { id: 2, icon: '🏖️', title: 'New Package: Maldives', body: 'Overwater villa from $3,299/person. Limited spots!', tag: 'package',
+    to: '/hot-tours?to=Maldives&days=7&balance=3299' },
+  { id: 3, icon: '🏨', title: 'Hotel Deal: Burj Al Arab', body: '20% off when you book 30 days in advance.', tag: 'hotel',
+    to: '/hot-tours?to=Dubai&days=5&balance=2500' },
+  { id: 4, icon: '🌍', title: 'Weekend Getaway to Istanbul', body: '4 days from $849 all-inclusive. Ends Sunday!', tag: 'package',
+    to: '/hot-tours?to=Istanbul&days=4&balance=849' },
+  { id: 5, icon: '💥', title: 'Cyber Monday Travel Deals', body: 'Up to 40% off select packages. Use code CYBER40', tag: 'promo',
+    to: '/hot-tours' },
 ];
 
 const PERM_KEY = 'maf_notif_permission';
@@ -28,6 +36,7 @@ function markShown(id) {
 
 export default function NotificationWidget() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [permission, setPermission] = useState(localStorage.getItem(PERM_KEY) || 'default');
   const [toast, setToast] = useState(null);
   const [showBanner, setShowBanner] = useState(false);
@@ -123,15 +132,19 @@ export default function NotificationWidget() {
       {toast && (
         <div className="fixed top-6 right-4 left-4 sm:left-auto z-[200] w-auto sm:w-80 animate-slide-in-right">
           <div className="bg-white border border-[#dfe7ec] rounded-2xl p-4 shadow-2xl flex items-start gap-3">
-            <div className="text-2xl shrink-0">{toast.icon}</div>
-            <div className="flex-1">
-              <p className="text-sm font-black text-[#252a31] mb-0.5">{toast.title}</p>
-              <p className="text-xs text-[#4a5867]">{toast.body}</p>
-              <span className="inline-block mt-2 text-[9px] font-black px-2 py-0.5 rounded-full bg-[#0172cb]/10 text-[#0172cb] uppercase tracking-widest">
-                {toast.tag}
-              </span>
-            </div>
-            <button onClick={() => setToast(null)} className="text-[#bac7d1] hover:text-[#4a5867] mt-0.5">
+            <button
+              onClick={() => { navigate(toast.to, toast.state ? { state: toast.state } : undefined); setToast(null); }}
+              className="flex items-start gap-3 flex-1 text-left group">
+              <div className="text-2xl shrink-0">{toast.icon}</div>
+              <div className="flex-1">
+                <p className="text-sm font-black text-[#252a31] mb-0.5 group-hover:text-[#0172cb] transition-colors">{toast.title}</p>
+                <p className="text-xs text-[#4a5867]">{toast.body}</p>
+                <span className="inline-block mt-2 text-[9px] font-black px-2 py-0.5 rounded-full bg-[#0172cb]/10 text-[#0172cb] uppercase tracking-widest">
+                  {toast.tag}
+                </span>
+              </div>
+            </button>
+            <button onClick={() => setToast(null)} className="text-[#bac7d1] hover:text-[#4a5867] mt-0.5 shrink-0" aria-label="Close">
               <X className="w-4 h-4" />
             </button>
           </div>

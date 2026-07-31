@@ -7,6 +7,9 @@ import WhatsAppButton from './WhatsAppButton';
 import ToastContainer from './Toast';
 import TranslationProgress from './TranslationProgress';
 import ScrollProgress from './fx/ScrollProgress';
+import MaintenanceScreen from './MaintenanceScreen';
+import useAdminStore from '../store/useAdminStore';
+import useAuthStore from '../store/useAuthStore';
 
 const ADMIN_PATHS = ['/admin'];
 const AUTH_PATHS  = ['/login', '/register'];
@@ -21,6 +24,13 @@ export default function Layout({ children }) {
   const location = useLocation();
   const isAdmin  = ADMIN_PATHS.some(p => location.pathname.startsWith(p));
   const isAuth   = AUTH_PATHS.includes(location.pathname);
+
+  // Maintenance Mode (admin Settings tab) closes the public site. The admin
+  // panel and the auth routes stay reachable, and signed-in admins keep full
+  // access — otherwise the switch could never be turned back off.
+  const maintenance = useAdminStore(s => s.settings?.maintenanceMode);
+  const user = useAuthStore(s => s.user);
+  const locked = Boolean(maintenance) && !isAdmin && !isAuth && user?.role !== 'admin';
 
   // Jump to the top of the page on every route change — SPA navigation keeps the
   // previous scroll position by default, which reads as broken. Setting scrollTop
@@ -38,6 +48,15 @@ export default function Layout({ children }) {
     });
     return () => cancelAnimationFrame(raf);
   }, [location.pathname]);
+
+  if (locked) {
+    return (
+      <div className="min-h-screen bg-[#f5f7f9] text-[#252a31]">
+        <MaintenanceScreen />
+        <ToastContainer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#f5f7f9] text-[#252a31] selection:bg-[#0172cb] selection:text-white">

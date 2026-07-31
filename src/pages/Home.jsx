@@ -287,6 +287,7 @@ const Home = () => {
         ...(dest.trim() ? { to: dest.trim() } : {}),
         days: String(Math.max(1, Math.min(21, Number(toursDays) || 7))),
         ...(checkin ? { start: checkin } : {}),
+        pax: String(Math.max(1, Math.min(9, Number(travelers) || 2))),
       });
       navigate(`/hot-tours?${qs.toString()}`);
     }

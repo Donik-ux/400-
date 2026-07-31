@@ -16,9 +16,9 @@ import SettingsTab     from './SettingsTab';
 const getTabs = (t, unreadCount) => [
   { id: 'dashboard',     label: t('admin.dashboard'), icon: LayoutDashboard },
   { id: 'packages',      label: t('admin.packages'),  icon: Package },
-  { id: 'analytics',    label: 'Analytics',          icon: BarChart3 },
-  { id: 'notifications', label: 'Notifications',      icon: Bell, badge: unreadCount },
-  { id: 'settings',      label: 'Settings',           icon: Settings },
+  { id: 'analytics',     label: t('admin.analytics'), icon: BarChart3 },
+  { id: 'notifications', label: t('admin.notifications'), icon: Bell, badge: unreadCount },
+  { id: 'settings',      label: t('admin.settings'),  icon: Settings },
 ];
 
 const STATUS_STYLES = {
@@ -345,12 +345,18 @@ function PackagesTab() {
   const [editing,  setEditing]  = useState(null);
   const [form,     setForm]     = useState(EMPTY_PKG);
   const [confirm,  setConfirm]  = useState(null);
+  const [formError, setFormError] = useState('');
 
-  const startAdd  = () => { setForm(EMPTY_PKG); setEditing(null); setShowForm(true); };
-  const startEdit = (p) => { setForm({ ...p, includes: (p.includes || []).join('\n'), highlights: (p.highlights || []).join('\n') }); setEditing(p.id); setShowForm(true); };
+  const startAdd  = () => { setForm(EMPTY_PKG); setEditing(null); setFormError(''); setShowForm(true); };
+  const startEdit = (p) => { setForm({ ...p, includes: (p.includes || []).join('\n'), highlights: (p.highlights || []).join('\n') }); setEditing(p.id); setFormError(''); setShowForm(true); };
 
   const handleSave = () => {
-    if (!form.name || !form.destination || !form.price) return;
+    // Bailing out silently made Save look like a dead button — say what's missing.
+    if (!form.name || !form.destination || !form.price) {
+      setFormError('Package name, destination and price are required.');
+      return;
+    }
+    setFormError('');
     const pkg = {
       ...form,
       duration: Number(form.duration),
@@ -415,11 +421,16 @@ function PackagesTab() {
               />
             </div>
           </div>
+          {formError && (
+            <p className="mt-4 flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-danger-n">
+              <CircleAlert className="w-4 h-4" /> {formError}
+            </p>
+          )}
           <div className="flex items-center gap-3 mt-5">
             <button onClick={handleSave} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#61d1bf] to-[#009882] text-[#14181d] text-[11px] font-black uppercase tracking-widest transition-premium hover:brightness-110 shadow-soft">
               <Save className="w-4 h-4" /> Save
             </button>
-            <button onClick={() => setShowForm(false)} className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/[0.08] text-white/60 text-[11px] font-black uppercase tracking-widest hover:bg-white/[0.04] transition-premium">
+            <button onClick={() => { setShowForm(false); setFormError(''); }} className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/[0.08] text-white/60 text-[11px] font-black uppercase tracking-widest hover:bg-white/[0.04] transition-premium">
               <X className="w-4 h-4" /> Cancel
             </button>
           </div>

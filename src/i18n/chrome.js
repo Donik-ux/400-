@@ -85,6 +85,10 @@ export default {
         allow:  'Allow',
         notNow: 'Not now',
       },
+      maintenance: {
+        title: 'We’ll be right back',
+        body:  'The site is briefly down for scheduled maintenance. Your saved plans and bookings are safe — please check back shortly.',
+      },
       toast: {
         dismiss: 'Dismiss',
       },
@@ -185,6 +189,10 @@ export default {
         body:   'Tezkor savdolar va maxsus takliflar haqida birinchi boʻlib biling.',
         allow:  'Ruxsat berish',
         notNow: 'Hozir emas',
+      },
+      maintenance: {
+        title: 'Tez orada qaytamiz',
+        body:  'Sayt rejali texnik ishlar sababli qisqa vaqtga oʻchirilgan. Saqlangan rejalar va buyurtmalaringiz joyida — biroz vaqtdan soʻng qayta kiring.',
       },
       toast: {
         dismiss: 'Yopish',

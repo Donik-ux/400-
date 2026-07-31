@@ -44,6 +44,7 @@ export default {
         title: 'Highlights',
         cheapest: 'Cheapest',
         fastest: 'Fastest',
+        nonstop: 'Non-stop',
       },
       smartDates: {
         title: 'Smarter dates nearby',
@@ -189,6 +190,7 @@ export default {
         title: 'Asosiy ko‘rsatkichlar',
         cheapest: 'Eng arzon',
         fastest: 'Eng tez',
+        nonstop: 'To‘g‘ridan-to‘g‘ri',
       },
       smartDates: {
         title: 'Yaqin sanalar bo‘yicha aqlliroq tanlov',

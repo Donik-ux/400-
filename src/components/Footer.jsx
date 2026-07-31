@@ -1,13 +1,31 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Mail, Youtube } from 'lucide-react';
+import { Mail, Phone, Youtube } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
+import useAdminStore from '../store/useAdminStore';
 import { SUPPORT_EMAIL } from '../config/contact';
 
 export default function Footer() {
   const { t } = useTranslation();
+  // Contact details are editable from the admin Settings tab; the hard-coded
+  // support address stays as the fallback when the field is blank.
+  const settings = useAdminStore(s => s.settings);
+  const contactEmail = (settings?.contactEmail || '').trim() || SUPPORT_EMAIL;
+  const contactPhone = (settings?.contactPhone || '').trim();
   const [email, setEmail] = useState('');
   const [joined, setJoined] = useState(false);
+  const [mailError, setMailError] = useState('');
+
+  // Clicking Join with an empty/malformed address used to do nothing at all,
+  // which reads as a broken button — say why instead.
+  const handleJoin = () => {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setMailError(t('footer.emailInvalid'));
+      return;
+    }
+    setMailError('');
+    setJoined(true);
+  };
 
   const nav = [
     { label: t('nav.home'),         to: '/'            },
@@ -18,8 +36,8 @@ export default function Footer() {
   ];
 
   const support = [
-    { label: t('footer.supportLinks.support'), href: `mailto:${SUPPORT_EMAIL}` },
-    { label: t('footer.supportLinks.contact'), href: `mailto:${SUPPORT_EMAIL}` },
+    { label: t('footer.supportLinks.support'), href: `mailto:${contactEmail}` },
+    { label: t('footer.supportLinks.contact'), href: `mailto:${contactEmail}` },
     { label: t('nav2.termsOfUse'),             to: '/terms'   },
     { label: t('nav2.privacyPolicy'),          to: '/privacy' },
     { label: t('nav2.cookiePolicy'),           to: '/cookies' },
@@ -90,15 +108,20 @@ export default function Footer() {
                 <p className="text-white text-[12px] font-bold text-center">{t('footer.newsletterSuccess')}</p>
               </div>
             ) : (
-              <div className="flex gap-2 p-1.5 bg-white/[0.08] border border-white/[0.15] rounded-xl focus-within:border-white/30 transition-all">
-                <input type="email" placeholder={t('footer.emailPlaceholder')} value={email} onChange={e => setEmail(e.target.value)}
-                  className="flex-1 min-w-0 bg-transparent px-2 text-[13px] text-white placeholder:text-white/30 focus:outline-none"
-                />
-                <button onClick={() => email && setJoined(true)}
-                  className="btn-gold shrink-0 max-w-[55%] px-3 py-2 text-[11px] uppercase tracking-tighter truncate">
-                  {t('footer.join')}
-                </button>
-              </div>
+              <>
+                <div className="flex gap-2 p-1.5 bg-white/[0.08] border border-white/[0.15] rounded-xl focus-within:border-white/30 transition-all">
+                  <input type="email" placeholder={t('footer.emailPlaceholder')} value={email}
+                    onChange={e => { setEmail(e.target.value); if (mailError) setMailError(''); }}
+                    onKeyDown={e => e.key === 'Enter' && handleJoin()}
+                    className="flex-1 min-w-0 bg-transparent px-2 text-[13px] text-white placeholder:text-white/30 focus:outline-none"
+                  />
+                  <button onClick={handleJoin}
+                    className="btn-gold shrink-0 max-w-[55%] px-3 py-2 text-[11px] uppercase tracking-tighter truncate">
+                    {t('footer.join')}
+                  </button>
+                </div>
+                {mailError && <p className="mt-2 text-[11px] font-bold text-[#ff9c8a]">{mailError}</p>}
+              </>
             )}
           </div>
         </div>
@@ -109,11 +132,20 @@ export default function Footer() {
 
         <div className="pt-8 pb-2 flex flex-col items-center gap-2 text-center">
           <p className="text-[13px] text-white/60 font-medium">{t('footer.questions')}</p>
-          <a href={`mailto:${SUPPORT_EMAIL}`}
-            className="inline-flex items-center gap-2 text-[14px] font-bold text-[#009882] hover:text-[#61d1bf] transition-colors">
-            <Mail className="w-4 h-4" />
-            {SUPPORT_EMAIL}
-          </a>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-5">
+            <a href={`mailto:${contactEmail}`}
+              className="inline-flex items-center gap-2 text-[14px] font-bold text-[#009882] hover:text-[#61d1bf] transition-colors">
+              <Mail className="w-4 h-4" />
+              {contactEmail}
+            </a>
+            {contactPhone && (
+              <a href={`tel:${contactPhone.replace(/[^\d+]/g, '')}`}
+                className="inline-flex items-center gap-2 text-[14px] font-bold text-[#009882] hover:text-[#61d1bf] transition-colors">
+                <Phone className="w-4 h-4" />
+                {contactPhone}
+              </a>
+            )}
+          </div>
         </div>
 
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-6">

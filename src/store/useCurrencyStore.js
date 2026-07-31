@@ -33,7 +33,17 @@ const readCachedRates = () => {
   return null;
 };
 
-const readCurrency = () => localStorage.getItem('currency') || 'USD';
+// A visitor's own pick always wins. Only when they've never touched the picker
+// do we fall back to the default currency set in the admin Settings tab.
+const readAdminDefaultCurrency = () => {
+  try {
+    const s = JSON.parse(localStorage.getItem('maf_settings') || 'null');
+    const code = String(s?.currency || '').trim().toUpperCase();
+    return /^[A-Z]{3}$/.test(code) ? code : null;
+  } catch { return null; }
+};
+
+const readCurrency = () => localStorage.getItem('currency') || readAdminDefaultCurrency() || 'USD';
 
 const cached = readCachedRates();
 

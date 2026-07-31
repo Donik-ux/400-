@@ -214,9 +214,12 @@ const useAdminStore = create((set, get) => ({
     save(S_SETTINGS, next);
     set({ settings: next });
   },
+  // Returns the defaults so callers holding a local form copy can re-seed it
+  // without reading a `settings` value that is still stale in their closure.
   resetSettings: () => {
     save(S_SETTINGS, SEED_SETTINGS);
     set({ settings: SEED_SETTINGS });
+    return SEED_SETTINGS;
   },
 
   /* ── Stats ── */

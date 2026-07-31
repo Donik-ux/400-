@@ -22,8 +22,11 @@ export default function SettingsTab() {
   };
 
   const handleReset = () => {
-    resetSettings();
-    setForm({ ...settings });
+    // resetSettings() hands back the defaults — `settings` from this render is
+    // still the pre-reset value, so re-seeding from it would leave the form
+    // showing the old values and silently re-save them on the next Save.
+    const defaults = resetSettings();
+    setForm({ ...defaults });
   };
 
   return (
@@ -85,6 +88,7 @@ export default function SettingsTab() {
             <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">Commission Rate (%)</label>
             <input type="number" min="0" max="100" value={form.commission} onChange={e => f('commission', Number(e.target.value))}
               className="w-full inp-night rounded-xl px-3 py-2.5 text-sm transition-all" />
+            <p className="text-[10px] text-white/30 mt-1.5">Drives the Commission KPI on the Analytics tab.</p>
           </div>
           <div>
             <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">Primary Color</label>
@@ -94,6 +98,9 @@ export default function SettingsTab() {
               <input value={form.primaryColor} onChange={e => f('primaryColor', e.target.value)}
                 className="flex-1 inp-night rounded-xl px-3 py-2.5 text-sm transition-all" />
             </div>
+            <p className="text-[10px] text-warn-n/70 mt-1.5">
+              Stored only — the site palette is still hard-coded, so this does not repaint the theme yet.
+            </p>
           </div>
         </div>
 

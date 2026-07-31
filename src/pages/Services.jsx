@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import {
   Sparkles, FileCheck, Wallet, CalendarRange, Plane, Hotel, ShieldCheck,
   Wifi, Car, Armchair, Loader2, AlertCircle, ArrowRight, TrendingUp,
-  TrendingDown, Minus, Check, MessageCircle,
+  TrendingDown, Minus, Check, Mail,
 } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
 import { useTranslation } from '../store/useLangStore';
-import { whatsappLink, WHATSAPP_CONFIGURED, SUPPORT_EMAIL } from '../config/contact';
+import { SUPPORT_EMAIL, supportMailto } from '../config/contact';
 import {
   checkVisa, optimizeBudget, cheapestMonth, predictFlightPrice, predictHotelPrice,
 } from '../services/travelServicesService';
@@ -364,7 +364,7 @@ function HotelPredict() {
   );
 }
 
-/* ── Bookable service card (WhatsApp lead-gen) ─────────────────────── */
+/* ── Bookable service card (support-email lead-gen) ───────────────── */
  
 function BookableCard({ icon: Icon, title, desc, accent, message }) {
   const { t } = useTranslation();
@@ -379,17 +379,10 @@ function BookableCard({ icon: Icon, title, desc, accent, message }) {
       </div>
       <h3 className="text-[16px] font-black text-[#252a31] leading-tight mb-1">{title}</h3>
       <p className="text-[13px] text-[#4a5867] font-medium leading-snug mb-4 flex-1">{desc}</p>
-      {WHATSAPP_CONFIGURED ? (
-        <a href={whatsappLink(message)} target="_blank" rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5b] text-white font-black text-[13px] rounded-xl py-2.5 px-4 shadow-soft transition active:scale-95">
-          <MessageCircle className="w-4 h-4" /> {t('servicesPage.common.requestOnWhatsApp')}
-        </a>
-      ) : (
-        <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(message)}`}
-          className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5b] text-white font-black text-[13px] rounded-xl py-2.5 px-4 shadow-soft transition active:scale-95">
-          <MessageCircle className="w-4 h-4" /> {t('servicesPage.common.requestOnWhatsApp')}
-        </a>
-      )}
+      <a href={supportMailto(message)} title={SUPPORT_EMAIL}
+        className="inline-flex items-center justify-center gap-2 bg-[#009882] hover:bg-[#007f6d] text-white font-black text-[13px] rounded-xl py-2.5 px-4 shadow-soft transition active:scale-95">
+        <Mail className="w-4 h-4" /> {t('servicesPage.common.requestByEmail')}
+      </a>
     </motion.div>
   );
 }

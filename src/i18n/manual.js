@@ -201,11 +201,12 @@ export default {
     },
     /* Services hub — the page's static uz dict had gaps and RU relied on the
        rate-limited AI translator; a full hand dictionary keeps it always translated. */
-    whatsapp: {
-      aria: 'Написать нам в WhatsApp',
+    support: {
+      aria: 'Написать в поддержку',
+      subject: 'MAFTRAVEL — вопрос о поездке',
       prefill: 'Здравствуйте, MAFTRAVEL! У меня вопрос о поездке.',
       bubbleTitle: 'Нужна помощь с планированием?',
-      bubbleBody: 'Напишите эксперту по путешествиям в WhatsApp — отвечаем быстро.',
+      bubbleBody: 'Напишите нашим экспертам по путешествиям — отвечаем быстро.',
     },
     tripRec: {
       eyebrow: 'Рекомендуется для вас',
@@ -247,10 +248,10 @@ export default {
         optimize: 'Оптимизировать',
         loading: 'Запрашиваем ИИ…',
         error: 'Не удалось связаться с ИИ. Попробуйте ещё раз.',
-        unavailable: 'ИИ не настроен. Напишите нам в WhatsApp — поможем.',
+        unavailable: 'ИИ не настроен. Напишите нам на почту — поможем.',
         poweredByAI: 'Оценка ИИ',
         disclaimer: 'Оценки ИИ — только ориентир, сверяйтесь с официальными источниками.',
-        requestOnWhatsApp: 'Запросить в WhatsApp',
+        requestByEmail: 'Запросить по почте',
         learnMore: 'Подробнее',
         from: 'От',
       },
@@ -346,7 +347,7 @@ export default {
       },
       cta: {
         btnPlan: 'Собрать бесплатный AI-план',
-        btnWhatsApp: 'Спросить эксперта в WhatsApp',
+        btnSupport: 'Спросить эксперта по почте',
       },
     },
   },

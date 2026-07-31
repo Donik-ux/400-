@@ -6,7 +6,7 @@ import { useTranslation } from '../store/useLangStore';
 import { TOURS } from '../data/exoticTours';
 import Price, { usePriceFormatter } from '../components/Price';
 import { handleImgError } from '../utils/imageFallback';
-import { whatsappLink, WHATSAPP_CONFIGURED, SUPPORT_EMAIL } from '../config/contact';
+import { supportMailto } from '../config/contact';
 
 // Tour data is authored in EUR ('€8,500' etc.) but <Price>/usePriceFormatter
 // render the parsed number as a USD base amount — convert once here so
@@ -175,20 +175,6 @@ const ExoticTours = () => {
     ? visible.filter(x => budget >= parsePrice(x.price)).length
     : 0;
 
-  /* Bottom CTA — hand the traveller to a human. WhatsApp when the number is
-     configured, otherwise a pre-filled mail to support so the button always
-     leads somewhere instead of being decorative. */
-  const requestCustomTour = () => {
-    const msg = t('exotic.ctaMessage');
-    const wa = whatsappLink(msg);
-    if (WHATSAPP_CONFIGURED && wa) {
-      window.open(wa, '_blank', 'noopener,noreferrer');
-      return;
-    }
-    window.location.href =
-      `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(t('exotic.ctaBtn'))}&body=${encodeURIComponent(msg)}`;
-  };
-
   return (
     <div className="min-h-screen bg-[#eef2f5]">
 
@@ -327,9 +313,10 @@ const ExoticTours = () => {
             <p className="text-[16px] text-white/70 mb-8 max-w-lg mx-auto">
               {t('exotic.ctaSub')}
             </p>
-            <button onClick={requestCustomTour} className="btn-gold px-10 py-4 rounded-2xl text-[15px] active:scale-95 transition">
+            <a href={supportMailto(t('exotic.ctaBtn'), t('exotic.ctaMessage'))}
+              className="btn-gold inline-block px-10 py-4 rounded-2xl text-[15px] active:scale-95 transition">
               {t('exotic.ctaBtn')}
-            </button>
+            </a>
           </div>
         </div>
       </div>

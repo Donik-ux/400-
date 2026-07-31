@@ -1,13 +1,14 @@
-/* i18n module — Travel Services hub + WhatsApp + home stats.
- * Namespaces: servicesPage, whatsapp, homeStats. en = English, uz = Uzbek.
+/* i18n module — Travel Services hub + support contact + home stats.
+ * Namespaces: servicesPage, support, homeStats. en = English, uz = Uzbek.
  */
 export default {
   en: {
-    whatsapp: {
-      aria: 'Chat with us on WhatsApp',
+    support: {
+      aria: 'Email our support team',
+      subject: 'MAFTRAVEL — question about my trip',
       prefill: 'Hi MAFTRAVEL! I have a question about my trip.',
       bubbleTitle: 'Need help planning?',
-      bubbleBody: 'Chat with a travel expert on WhatsApp — we reply fast.',
+      bubbleBody: 'Write to our travel experts — we reply fast.',
     },
     homeStats: {
       travelers: 'Happy Travelers',
@@ -57,10 +58,10 @@ export default {
         optimize: 'Optimize',
         loading: 'Asking AI…',
         error: "Couldn't reach the AI service. Please try again.",
-        unavailable: 'AI service is not configured. Contact us on WhatsApp and we will help.',
+        unavailable: 'AI service is not configured. Email us and we will help.',
         poweredByAI: 'AI estimate',
         disclaimer: 'AI estimates are guidance only — always confirm with official sources.',
-        requestOnWhatsApp: 'Request on WhatsApp',
+        requestByEmail: 'Request by email',
         learnMore: 'Learn more',
         from: 'From',
       },
@@ -144,11 +145,12 @@ export default {
   },
 
   uz: {
-    whatsapp: {
-      aria: 'WhatsApp orqali yozing',
+    support: {
+      aria: 'Qo‘llab-quvvatlash xizmatiga yozing',
+      subject: 'MAFTRAVEL — sayohat bo‘yicha savol',
       prefill: 'Salom MAFTRAVEL! Sayohatim bo‘yicha savolim bor.',
       bubbleTitle: 'Yordam kerakmi?',
-      bubbleBody: 'WhatsApp orqali sayohat mutaxassisi bilan yozishing — tez javob beramiz.',
+      bubbleBody: 'Sayohat mutaxassislarimizga yozing — tez javob beramiz.',
     },
     homeStats: {
       travelers: 'Mamnun sayohatchilar',
@@ -198,10 +200,10 @@ export default {
         optimize: 'Optimallashtirish',
         loading: 'AI so‘ralmoqda…',
         error: 'AI xizmatiga ulanib bo‘lmadi. Qayta urinib ko‘ring.',
-        unavailable: 'AI sozlanmagan. WhatsApp orqali yozing, yordam beramiz.',
+        unavailable: 'AI sozlanmagan. Pochta orqali yozing, yordam beramiz.',
         poweredByAI: 'AI bahosi',
         disclaimer: 'AI baholari faqat yo‘riqnoma — rasmiy manbalardan tasdiqlang.',
-        requestOnWhatsApp: 'WhatsApp orqali so‘rash',
+        requestByEmail: 'Email orqali so‘rash',
         learnMore: 'Batafsil',
         from: 'dan',
       },

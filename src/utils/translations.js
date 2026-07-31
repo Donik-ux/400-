@@ -71,7 +71,7 @@ export const translations = {
         title: 'Get in touch with our team',
         sub: 'Have questions about our platform or need custom travel assistance? We\'re here to help you 24/7.',
         live: 'Live Support',
-        liveSub: 'Available via Chat & WhatsApp',
+        liveSub: 'Available by email',
         email: 'Email Support',
         formTitle: 'Send us a message',
         placeholders: {
@@ -753,7 +753,7 @@ export const translations = {
         title: "Jamoamiz bilan bog'laning",
         sub: "Platformamiz haqida savollaringiz bormi yoki yordam kerakmi? Biz 24/7 yordam berishga tayyormiz.",
         live: "Jonli yordam",
-        liveSub: "Chat va WhatsApp orqali mavjud",
+        liveSub: 'Email orqali mavjud',
         email: "Email yordami",
         formTitle: "Bizga xabar yo'llang",
         placeholders: {

@@ -96,7 +96,7 @@ const fareFor = (days, factor) => Math.round((BASE_BY_DAYS[days] || BASE_BY_DAYS
 
 /* Dedicated landing for travelers dreaming of the White Continent.
    CTAs reuse the existing flows: the AI planner deep-link (same shape the
-   Home AI tab builds) and the WhatsApp expert channel. */
+   Home AI tab builds) and the support-email expert channel. */
 export default function Antarctica() {
   const navigate = useNavigate();
   const { t, lang } = useTranslation();

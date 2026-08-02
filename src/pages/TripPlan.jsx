@@ -614,12 +614,6 @@ export default function TripPlan() {
                     </span>
                   </div>
 
-                  {f.range && (
-                    <p className="mt-1 text-[11px] text-[#697d95] font-semibold">
-                      {fill(t('tripPlan.flights.range'), { low: fmt(f.range.low), high: fmt(f.range.high) })}
-                    </p>
-                  )}
-
                   {/* The budget split assumed a cheaper ticket than the route
                       actually costs — say so instead of letting the tiles imply
                       the trip still fits. */}

@@ -87,7 +87,7 @@ const cheapestLiveOffer = async ({ from, to, date, adults, signal }) => {
  *   source: string, isLive: boolean,
  *   outbound: object, inbound: object|null,
  *   perPerson: number, total: number, travelers: number,
- *   range?: { low: number, high: number }, note?: string,
+ *   note?: string,
  * }>}
  */
 export const fetchTripFlights = async ({
@@ -142,7 +142,6 @@ export const fetchTripFlights = async ({
       perPerson,
       total: perPerson * pax,
       travelers: pax,
-      range: { low: Math.round(ai.low * 1.8), high: Math.round(ai.high * 1.8) },
       note: ai.note || '',
     };
   }

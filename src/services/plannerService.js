@@ -3,6 +3,7 @@ import { getSchedulesForCity, genericSchedules } from './citySchedules';
 import { getEmergencyContacts } from './emergencyContacts';
 import { findCityAttractions, buildArrivalEvents, buildDepartureEvents, buildMiddleDayEvents } from './cityAttractions';
 import { computeHotelProximity } from './hotelProximity';
+import { exactPrice } from '../utils/priceText';
 
 const WEEKDAY_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTH_LONG   = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -419,24 +420,26 @@ export const generateItinerary = async ({
 
   // Flights and hotel check-ins are never free — schedule templates often omit
   // their prices, so fill realistic budget-derived figures (ranges for flights).
-  const flightPriceRange = budgetBreakdown.flight
-    ? `~$${Math.round(budgetBreakdown.flight * 0.8)}–$${Math.round(budgetBreakdown.flight * 1.2)}`
-    : '';
+  // Single figures throughout — a traveler sums these into a daily total, and
+  // a range cannot be summed (see utils/priceText.js).
+  const flightPrice = budgetBreakdown.flight ? `$${Math.round(budgetBreakdown.flight)}` : '';
   const nightlyRate = budgetBreakdown.accommodation && nights
-    ? `~$${Math.round(budgetBreakdown.accommodation / nights)}/night`
+    ? `$${Math.round(budgetBreakdown.accommodation / nights)}/night`
     : '';
   const perMeal = Math.max(2, Math.round((budgetBreakdown.food || 0) / numDays / 3));
   for (const d of itineraryDays) {
     for (const ev of d.events) {
-      if (ev.price) continue;
-      if (ev.type === 'flight' && flightPriceRange) ev.price = flightPriceRange;
+      // The curated attraction data carries real prices, but some of them are
+      // written as ranges — collapse those too.
+      if (ev.price) { ev.price = exactPrice(ev.price); continue; }
+      if (ev.type === 'flight' && flightPrice) ev.price = flightPrice;
       else if (ev.type === 'hotel' && nightlyRate) ev.price = nightlyRate;
-      else if (ev.type === 'food') ev.price = `~$${perMeal}–${perMeal * 2}`;
-      else if (ev.type === 'transport') ev.price = '~$3–10';
-      // Anything else is left blank on purpose — the curated attraction data
-      // carries real prices, and an entry we have no price for is not proof
-      // that it's free. The UI renders a "check on site" label instead.
+      else if (ev.type === 'food') ev.price = `$${Math.round(perMeal * 1.5)}`;
+      else if (ev.type === 'transport') ev.price = '$6';
+      // Anything else is left blank on purpose — an entry we have no price for
+      // is not proof that it's free. The UI renders a "check on site" label.
     }
+    if (d.halalRestaurant?.avgPrice) d.halalRestaurant.avgPrice = exactPrice(d.halalRestaurant.avgPrice);
   }
 
   const transportSuggestion = cityData?.transport?.[style] ?? transportFallback[style];
@@ -470,7 +473,7 @@ export const generateItinerary = async ({
     name:    hotelLabel,
     address: cityData?.hotelAddress || `${destination} city centre — confirmed at booking`,
     area:    labelArea || cityData?.area || destination,
-    pricePerNight: budgetBreakdown.accommodation && nights ? `~$${Math.round(budgetBreakdown.accommodation / nights)}/night` : '',
+    pricePerNight: nightlyRate,
     stars:   style === 'luxury' ? '5' : style === 'comfort' ? '4' : style === 'economy' ? '3' : '',
     image:   hotelPhotoFor(cityData, hotelLabel),
     recommended: Boolean(hotelPhotoFor(cityData, hotelLabel)),

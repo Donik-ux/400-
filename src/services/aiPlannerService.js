@@ -3,6 +3,7 @@ import { findCity, hotelPhotoFor } from './cityDatabase';
 import { getEmergencyContacts } from './emergencyContacts';
 import { getWeatherForDates } from './weatherForecast';
 import { computeHotelProximity, reuseCoordsFrom } from './hotelProximity';
+import { exactPrice, exactPricesInPlan } from '../utils/priceText';
 import { LANG_MAP } from '../i18n/languages';
 
 /* ── Budget distribution ── */
@@ -191,14 +192,14 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
       ? {
           name:     src.halalRestaurant.name     || 'Local Halal Restaurant 🥩',
           address:  src.halalRestaurant.address  || 'Ask hotel reception for the nearest halal spot',
-          avgPrice: src.halalRestaurant.avgPrice || '~$10–20',
+          avgPrice: src.halalRestaurant.avgPrice || '$15',
           cuisine:  src.halalRestaurant.cuisine  || 'Local halal',
           note:     src.halalRestaurant.note     || '100% halal, no pork, no alcohol',
         }
       : {
           name:     'Local Halal Restaurant 🥩',
           address:  'Ask hotel reception for the nearest halal spot',
-          avgPrice: '~$10–20',
+          avgPrice: '$15',
         };
 
     days.push({
@@ -387,13 +388,14 @@ CRITICAL RULES — FOLLOW EXACTLY:
    - "🚕 Taxi ~12 min, ~€15"
    The LAST event of each day can leave it empty (end of day).
 4. ALL food recommendations must be 100% HALAL CERTIFIED real restaurants in ${destination}. Add "🥩 Halal" in the name. Halal restaurant entries also need full address.
-5. Include a top-level "hotel" object with: name (real hotel), address (full street + postal), area (district), pricePerNight (local currency — NEVER empty, give a realistic nightly rate or range like "$40–60/night"), stars. The traveler must know exactly where they sleep.
+5. Include a top-level "hotel" object with: name (real hotel), address (full street + postal), area (district), pricePerNight (local currency — NEVER empty, ONE exact nightly rate like "$55/night", not a range), stars. The traveler must know exactly where they sleep.
 5a. HOTEL LOCATION IS A PROXIMITY DECISION — plan the days FIRST, then pick the hotel LAST. Look at where the attractions you scheduled actually are, find the district that holds the most of them, and choose a REAL, bookable ${style}-tier hotel INSIDE that district — as close to those attractions as possible, so the traveler walks to most of their stops instead of paying for taxis. Do NOT default to "near the airport", a business district, or a generic city-centre chain if the sightseeing is concentrated elsewhere. Also add to the "hotel" object:
    - "lat" and "lng": the hotel's OWN real decimal coordinates (numbers, 4+ decimals) — the coordinates of its street address. NEVER copy the coordinates of a nearby landmark: a hotel and the mosque across the square are not at the same point, and these numbers are used to compute the walking times shown to the traveler.
    - "whyHere": ONE sentence NAMING the 2–3 planned attractions it sits closest to and the district it shares with them (e.g. "In Sultanahmet, on the same square as the Blue Mosque and a short walk from Hagia Sophia and Topkapi Palace"). Do NOT state distances, walking minutes or "X of Y stops" counts — the app computes those from your coordinates, and an invented number would contradict them.
 5b. EVERY event MUST also carry "lat" and "lng" — the real decimal coordinates of that exact place (numbers, not strings, 4+ decimals). These are used to compute real walking distances from the hotel, so they must match the address you gave. Airport/flight events use the airport's coordinates.
-6. EVERY single event MUST include its own price — never omit it. Fields per event: time (HH:MM 24-hour), duration ("1.5 hours"), price in LOCAL currency ("€15", "₺200", "AED 50", "Free"), and type (one of: flight, transport, hotel, attraction, museum, food, nature, shopping, leisure, rest). When the exact price varies, give a realistic range ("$300–500" for flights, "€10–15" for a meal). Only genuinely free things (parks, walks, viewpoints) may say "Free" — flights, hotels, taxis and meals are NEVER "Free".
-7. Day 1 = arrival flight from ${fromCity || 'home city'} with a realistic round-trip ticket price range (e.g. "$300–500"), airport transfer to hotel (with real airport name + hotel name + transport cost), hotel check-in (price = the nightly rate), light dinner. Day ${numDays} = packing + transfer to airport + departure flight to ${returnCity || fromCity || 'home city'}.
+6. EVERY single event MUST include its own price — never omit it. Fields per event: time (HH:MM 24-hour), duration ("1.5 hours"), price in LOCAL currency ("€15", "₺200", "AED 50", "Free"), and type (one of: flight, transport, hotel, attraction, museum, food, nature, shopping, leisure, rest). Only genuinely free things (parks, walks, viewpoints) may say "Free" — flights, hotels, taxis and meals are NEVER "Free".
+6a. PRICES MUST BE ONE EXACT FIGURE — never a range, never a "~" or "approx". Write "€15", NOT "€10–20"; "$420", NOT "$300–500"; "₺250", NOT "₺200-300". A traveler adds these up into a daily total, and a range cannot be added up. Where the real price genuinely varies (a taxi, a meal), give the single most likely amount a visitor pays on an ordinary day, not the cheapest and not the most expensive.
+7. Day 1 = arrival flight from ${fromCity || 'home city'} with one realistic round-trip ticket price (e.g. "$420" — a single figure, not a range), airport transfer to hotel (with real airport name + hotel name + transport cost), hotel check-in (price = the nightly rate), light dinner. Day ${numDays} = packing + transfer to airport + departure flight to ${returnCity || fromCity || 'home city'}.
 8. Middle days = 6–8 events each (more places to visit). If special day, add label like "(Shopping Day)", "(Day Trip to X)", "(Free Day)".
 9. Respect budget: daily ~$${dailyBudget}, food ~$${mealBudget}/day. Choose ${style}-tier experiences. Every individual event price MUST fit the tier above. Sum of all event prices for a day SHOULD NOT exceed daily budget.
 10. Return ONLY a single valid JSON object — no markdown, no code fences, no commentary.
@@ -424,7 +426,7 @@ Return EXACTLY this JSON shape:
     "name":          "Real hotel name in ${destination}",
     "address":       "Full street with postal code",
     "area":          "District / neighbourhood — the one holding most of the planned attractions",
-    "pricePerNight": "Local-currency amount, e.g. €120",
+    "pricePerNight": "ONE exact local-currency amount, e.g. €120 — never a range",
     "stars":         "3 / 4 / 5",
     "lat":           41.0054,
     "lng":           28.9768,
@@ -447,7 +449,7 @@ Return EXACTLY this JSON shape:
           "district": "Neighbourhood name",
           "lat": 41.0086,
           "lng": 28.9802,
-          "price": "Local-currency amount or range ('€15', '$300–500'); 'Free' ONLY for genuinely free places",
+          "price": "ONE exact local-currency amount ('€15', '₺250'); never a range; 'Free' ONLY for genuinely free places",
           "type": "attraction",
           "transportToNext": "🚶 6 min walk via Unter den Linden",
           "halalNote": ""
@@ -457,7 +459,7 @@ Return EXACTLY this JSON shape:
         "name": "Real Halal Restaurant 🥩",
         "address": "Street name + number, postal code City",
         "cuisine": "Turkish / Arab / local halal",
-        "avgPrice": "~$8–15 per person",
+        "avgPrice": "$12 per person (one exact figure, not a range)",
         "note": "100% halal, no pork, no alcohol"
       }
     }
@@ -502,9 +504,9 @@ Every event MUST have "address" (real street+postal), "lat"/"lng" (real numeric 
     }
     // Flights and hotel check-ins are never free — when the model left them
     // priceless (normalize defaults to "Free"), fill a realistic budget-derived figure.
-    const flightRange = bd.flight
-      ? `~$${Math.round(bd.flight * 0.8)}–$${Math.round(bd.flight * 1.2)}`
-      : '';
+    // One figure, not a spread — see utils/priceText.js. This is only a
+    // stand-in until tripFlightPricing resolves the route's real fare.
+    const flightRange = bd.flight ? `$${Math.round(bd.flight)}` : '';
     for (const d of normalized.days) {
       for (const ev of d.events || []) {
         if (ev.price && !/^\s*free\s*$/i.test(ev.price)) continue;
@@ -512,6 +514,12 @@ Every event MUST have "address" (real street+postal), "lat"/"lng" (real numeric 
         else if (ev.type === 'hotel' && finalHotel.pricePerNight) ev.price = finalHotel.pricePerNight;
       }
     }
+
+    // Models hand back "$300–500" however firmly rule 6a forbids it — collapse
+    // any range that slipped through into the single figure the traveler can
+    // actually add to a daily total.
+    exactPricesInPlan(normalized);
+    finalHotel.pricePerNight = exactPrice(finalHotel.pricePerNight);
 
     // How close the stay actually is to the sights the plan schedules —
     // measured here from the itinerary's own coordinates, not taken on the
@@ -591,7 +599,7 @@ ${planJson}
 Apply ONLY this change requested by the traveler, keeping everything else as close to the original as possible:
 "${text}"
 
-Return the FULL updated plan as a single valid JSON object with EXACTLY the same structure and keys ("header", "hotel", "days" — same day and event fields). Every event keeps time (HH:MM), duration, name (real place), address (real street address), price (never empty — realistic local price, range, or "Free" only for genuinely free places) and type. Keep the same number of days.${lang !== 'en' ? ` Write ALL human-readable text values in ${langName}; keep JSON keys and "type" values in English; keep real place names/addresses in their official local form.` : ''} No markdown, no commentary.`;
+Return the FULL updated plan as a single valid JSON object with EXACTLY the same structure and keys ("header", "hotel", "days" — same day and event fields). Every event keeps time (HH:MM), duration, name (real place), address (real street address), price (never empty — ONE exact local-currency figure like "€15" or "₺250", never a range and never "~", or "Free" only for genuinely free places) and type. Keep the same number of days.${lang !== 'en' ? ` Write ALL human-readable text values in ${langName}; keep JSON keys and "type" values in English; keep real place names/addresses in their official local form.` : ''} No markdown, no commentary.`;
 
   const raw = await askGrok(prompt, { json: true, temperature: 0.4, maxTokens: 6000, timeoutMs: 45000 });
   const parsed = extractJson(raw);
@@ -644,7 +652,11 @@ Return the FULL updated plan as a single valid JSON object with EXACTLY the same
   // carry the original plan's coordinates over by place name before measuring
   // the (possibly changed) hotel against the (possibly changed) stops.
   reuseCoordsFrom(currentPlan, { hotel, days: normalized.days });
-  if (hotel) hotel.proximity = computeHotelProximity(hotel, normalized.days, { city: destination });
+  exactPricesInPlan(normalized);
+  if (hotel) {
+    hotel.pricePerNight = exactPrice(hotel.pricePerNight);
+    hotel.proximity = computeHotelProximity(hotel, normalized.days, { city: destination });
+  }
 
   return {
     ...currentPlan,               // cityInfo, emergency, budgetBreakdown, source, navApps…

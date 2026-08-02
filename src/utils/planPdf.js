@@ -9,6 +9,8 @@
  *   meta:{budgetBreakdown:{accommodation,food,activities,transport,total},travelTips,source} }
  */
 
+import { exactPrice } from './priceText';
+
 const esc = (s) =>
   String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -29,10 +31,10 @@ export function downloadPlanPdf(plan) {
         <tr>
           <td class="t">${esc(ev.time || '')}</td>
           <td><strong>${esc(ev.name || '')}</strong>${ev.address ? `<div class="desc">${esc(ev.address)}</div>` : ''}</td>
-          <td class="c">${ev.price ? esc(ev.price) : ''}</td>
+          <td class="c">${ev.price ? esc(exactPrice(ev.price)) : ''}</td>
         </tr>`).join('');
     const meals = d.halalRestaurant
-      ? `<div class="meals">🍽 <b>${esc(d.halalRestaurant.name)}</b>${d.halalRestaurant.address ? ` · ${esc(d.halalRestaurant.address)}` : ''}${d.halalRestaurant.avgPrice ? ` · ${esc(d.halalRestaurant.avgPrice)}` : ''}</div>`
+      ? `<div class="meals">🍽 <b>${esc(d.halalRestaurant.name)}</b>${d.halalRestaurant.address ? ` · ${esc(d.halalRestaurant.address)}` : ''}${d.halalRestaurant.avgPrice ? ` · ${esc(exactPrice(d.halalRestaurant.avgPrice))}` : ''}</div>`
       : '';
     return `
       <section class="day">

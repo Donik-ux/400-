@@ -16,6 +16,7 @@ import { countryBrief } from '../services/travelServicesService';
 import { generateItinerary } from '../services/plannerService';
 import { fetchTripFlights, applyFlightPricing } from '../services/tripFlightPricing';
 import { SAME_BLOCK_KM } from '../services/hotelProximity';
+import { exactPrice } from '../utils/priceText';
 import { findHotelNearAttractions, applyHotelChoice } from '../services/hotelSearch';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
@@ -727,7 +728,7 @@ export default function TripPlan() {
                             {h.stars}★
                           </span>
                         )}
-                        {h.pricePerNight && <span className="text-[10px] font-black text-[#252a31] bg-[#e8f4fd] px-2 py-0.5 rounded-md">{h.pricePerNight}</span>}
+                        {h.pricePerNight && <span className="text-[10px] font-black text-[#252a31] bg-[#e8f4fd] px-2 py-0.5 rounded-md">{exactPrice(h.pricePerNight)}</span>}
                         {h.rating > 0 && (
                           <span className="text-[10px] font-black text-[#252a31] bg-[#fdf3e0] px-2 py-0.5 rounded-md flex items-center gap-0.5">
                             <Star className="w-2.5 h-2.5 fill-[#e8a33d] text-[#e8a33d]" /> {h.rating}
@@ -994,7 +995,7 @@ export default function TripPlan() {
                                         : /free/i.test(ev.price) ? 'text-[#008009] font-black'
                                         : 'text-[#252a31] font-black'
                                       }>
-                                        {Number.isFinite(ev.priceUsd) ? fmt(ev.priceUsd) : (ev.price || t('tripPlan.priceOnSite'))}
+                                        {Number.isFinite(ev.priceUsd) ? fmt(ev.priceUsd) : (exactPrice(ev.price) || t('tripPlan.priceOnSite'))}
                                       </span>
                                       {ev.airline && <span className="text-[#4a5867] font-bold ml-2">· {ev.airline}</span>}
                                       {ev.duration && <span className="text-[#697d95] font-bold ml-2">· {ev.duration}</span>}
@@ -1025,7 +1026,7 @@ export default function TripPlan() {
                             <div className="min-w-0 flex-1">
                               <div className="text-[12px] font-black text-[#155724]">🥩 {d.halalRestaurant.name}</div>
                               <div className="text-[11px] text-[#155724]/85 font-semibold flex items-start gap-1">
-                                <MapPin className="w-2.5 h-2.5 mt-0.5 shrink-0" /> {d.halalRestaurant.address} · {d.halalRestaurant.avgPrice}
+                                <MapPin className="w-2.5 h-2.5 mt-0.5 shrink-0" /> {d.halalRestaurant.address} · {exactPrice(d.halalRestaurant.avgPrice)}
                               </div>
                             </div>
                             <ExternalLink className="w-3.5 h-3.5 text-[#008009] mt-1 shrink-0" />
@@ -1390,11 +1391,11 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
       ${Array.isArray(d.events) ? `<ul>${d.events.map((ev, i, arr) =>
         `<li><strong>${escapeHtml(ev.time || '')}</strong> — ${escapeHtml(ev.name || '')}${
           ev.address ? `<br><span class="addr"><strong>📍 Location:</strong> ${escapeHtml(ev.address)}${ev.district ? ` · ${escapeHtml(ev.district)}` : ''}</span>` : ''
-        }<br><span class="cost"><strong>💰 Cost:</strong> ${escapeHtml(ev.price || 'check price on site')}${ev.airline ? ` · ${escapeHtml(ev.airline)}` : ''}${ev.duration ? ` · ${escapeHtml(ev.duration)}` : ''}</span>${
+        }<br><span class="cost"><strong>💰 Cost:</strong> ${escapeHtml(exactPrice(ev.price) || 'check price on site')}${ev.airline ? ` · ${escapeHtml(ev.airline)}` : ''}${ev.duration ? ` · ${escapeHtml(ev.duration)}` : ''}</span>${
           i < arr.length - 1 && ev.transportToNext ? `<br><span class="next">→ ${escapeHtml(ev.transportToNext)}</span>` : ''
         }</li>`
       ).join('')}</ul>` : ''}
-      ${d.halalRestaurant ? `<div class="halal">🥩 ${escapeHtml(d.halalRestaurant.name)}<br>📍 ${escapeHtml(d.halalRestaurant.address || '')} · 💰 ${escapeHtml(d.halalRestaurant.avgPrice || '')}</div>` : ''}
+      ${d.halalRestaurant ? `<div class="halal">🥩 ${escapeHtml(d.halalRestaurant.name)}<br>📍 ${escapeHtml(d.halalRestaurant.address || '')} · 💰 ${escapeHtml(exactPrice(d.halalRestaurant.avgPrice))}</div>` : ''}
       <div class="day-total">💰 Spent today: <strong>$${(Number(d.cost) || 0).toLocaleString()}</strong> · Running: $${runningPdfTotal.toLocaleString()} / $${Number(item.price).toLocaleString()}</div>
     </div>
   `;}).join('');
@@ -1428,7 +1429,7 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
   const hotelBlock = plan?.hotel && (plan.hotel.name || plan.hotel.address)
     ? `<h2>🏨 Your stay</h2>
        <div class="hotel">
-         <strong>${escapeHtml(plan.hotel.name)}</strong>${plan.hotel.stars ? ` · ${escapeHtml(plan.hotel.stars)}★` : ''}${plan.hotel.pricePerNight ? ` · ${escapeHtml(plan.hotel.pricePerNight)}` : ''}<br>
+         <strong>${escapeHtml(plan.hotel.name)}</strong>${plan.hotel.stars ? ` · ${escapeHtml(plan.hotel.stars)}★` : ''}${plan.hotel.pricePerNight ? ` · ${escapeHtml(exactPrice(plan.hotel.pricePerNight))}` : ''}<br>
          ${plan.hotel.address ? `📍 ${escapeHtml(plan.hotel.address)}` : ''}${plan.hotel.area ? ` · ${escapeHtml(plan.hotel.area)}` : ''}${proximityLine}
        </div>`
     : '';

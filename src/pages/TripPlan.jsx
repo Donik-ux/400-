@@ -703,7 +703,10 @@ export default function TripPlan() {
             {plan?.hotel && (plan.hotel.name || plan.hotel.address) && (() => {
               const h = plan.hotel;
               const fullAddress = [h.name, h.address].filter(Boolean).join(', ');
-              const url = h.mapUrl || mapsUrlFromAddress(fullAddress || h.name);
+              // mapsUrlFor prefers the hotel's real coordinates over a text
+              // search, so the pin lands on the building rather than on
+              // whatever Google guesses from the street name.
+              const url = h.mapUrl || mapsUrlFor(h) || mapsUrlFromAddress(fullAddress || h.name);
               const prox = h.proximity;
               return (
                 <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 shadow-soft">
@@ -745,9 +748,23 @@ export default function TripPlan() {
                       {h.address && (
                         <a href={url || '#'} target="_blank" rel="noreferrer noopener"
                           className="mt-1 inline-flex items-start gap-1 text-[12px] text-[#0172cb] hover:underline font-semibold">
-                          <MapPin className="w-3 h-3 mt-0.5 text-[#00a58e]" /> {h.address}{h.area ? ` · ${h.area}` : ''}
+                          <MapPin className="w-3 h-3 mt-0.5 text-[#00a58e]" /> {h.address}{h.area && !h.address.includes(h.area) ? ` · ${h.area}` : ''}
                           <ExternalLink className="w-2.5 h-2.5 mt-0.5" />
                         </a>
+                      )}
+                      {(h.phone || h.checkInTime) && (
+                        <div className="mt-1 flex items-center gap-3 flex-wrap text-[11px] text-[#4a5867] font-semibold">
+                          {h.phone && (
+                            <a href={`tel:${h.phone.replace(/[^\d+]/g, '')}`} className="hover:text-[#0172cb] flex items-center gap-1">
+                              <Phone className="w-3 h-3 text-[#00a58e]" /> {h.phone}
+                            </a>
+                          )}
+                          {h.checkInTime && (
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3 text-[#00a58e]" /> {fill(t('tripPlan.checkInFrom'), { time: h.checkInTime })}
+                            </span>
+                          )}
+                        </div>
                       )}
                     </div>
                     {url && (
@@ -799,6 +816,29 @@ export default function TripPlan() {
                       <p className="mt-2 text-[10px] text-[#8a99ab] font-semibold">
                         {prox.basis === 'coords' ? t('tripPlan.walkNote') : t('tripPlan.districtNote')}
                       </p>
+
+                      {/* Google's own landmark list for this address — covers
+                          well-known places the itinerary didn't happen to
+                          schedule (metro stops, the airport, big sights). */}
+                      {h.nearbyPlaces?.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-[#eef2f5]">
+                          <div className="text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-1.5">
+                            {t('tripPlan.googleNearby')}
+                          </div>
+                          <ul className="space-y-1">
+                            {h.nearbyPlaces.map((n, i) => (
+                              <li key={i} className="flex items-baseline gap-2 text-[12px]">
+                                <span className="font-bold text-[#252a31] truncate">{n.name}</span>
+                                {n.transportations?.length > 0 && (
+                                  <span className="shrink-0 text-[#697d95] font-semibold whitespace-nowrap">
+                                    {n.transportations.map((tr) => `${tr.type} ${tr.duration}`.trim()).join(' · ')}
+                                  </span>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
                       {/* Runners-up from the same ranking — so "closest" is a
                           choice the traveler can see, not a black box. */}

@@ -120,6 +120,80 @@ export async function searchGoogleHotels({
   return { status: 200, body: { hotels, source: 'serpapi' } };
 }
 
+/**
+ * Details for one property, keyed by the `property_token` from a search.
+ *
+ * This is the only place Google Hotels exposes a STREET address — the search
+ * response carries coordinates but no address at all, which left the trip
+ * planner printing "Sultanahmet, Istanbul" where a traveler needs a door
+ * number. It also returns Google's own nearby-landmark list with travel
+ * times, which reads naturally next to the distances we compute ourselves.
+ *
+ * Billed as its own search, so it is only ever called for the ONE hotel the
+ * planner actually picked, and cached for a day (an address does not move).
+ */
+export async function getHotelDetails({
+  propertyToken, checkInDate, checkOutDate, adults = 2, currency = 'USD', gl = 'us', hl = 'en',
+} = {}) {
+  const key = getApiKey();
+  if (!key) return { status: 501, body: { error: 'SerpApi not configured' } };
+
+  const token = String(propertyToken || '').trim();
+  if (!token || !ISO_DATE.test(String(checkInDate)) || !ISO_DATE.test(String(checkOutDate))) {
+    return { status: 400, body: { error: 'propertyToken, checkInDate and checkOutDate are required' } };
+  }
+
+  const cacheKey = `detail|${token}|${checkInDate}|${checkOutDate}|${currency}`;
+  const hit = cache.get(cacheKey);
+  if (hit && hit.expiresAt > Date.now()) return { status: 200, body: { ...hit.body, cached: true } };
+
+  const qs = new URLSearchParams({
+    engine: 'google_hotels',
+    property_token: token,
+    check_in_date: checkInDate,
+    check_out_date: checkOutDate,
+    adults: String(Math.max(1, Math.min(12, Number(adults) || 2))),
+    currency, gl, hl,
+    api_key: key,
+  });
+
+  let data;
+  try {
+    const res = await fetch(`${SERP_URL}?${qs}`);
+    data = await res.json().catch(() => null);
+    if (!res.ok) {
+      const msg = data?.error || res.statusText;
+      return { status: res.status === 429 ? 429 : 502, body: { error: `SerpApi ${res.status}: ${String(msg).slice(0, 200)}` } };
+    }
+  } catch (err) {
+    return { status: 502, body: { error: String(err?.message || err) } };
+  }
+  if (data?.error) return { status: 200, body: { note: String(data.error).slice(0, 200) } };
+
+  const body = {
+    address: data.address || '',
+    phone: data.phone || '',
+    lat: Number(data.gps_coordinates?.latitude) || null,
+    lng: Number(data.gps_coordinates?.longitude) || null,
+    checkInTime: data.check_in_time || '',
+    checkOutTime: data.check_out_time || '',
+    locationRating: Number(data.location_rating) || null,
+    // Google's "what's around here" — landmark plus how long it takes to reach.
+    nearbyPlaces: Array.isArray(data.nearby_places)
+      ? data.nearby_places.slice(0, 6).map((n) => ({
+          name: n?.name || '',
+          transportations: Array.isArray(n?.transportations)
+            ? n.transportations.slice(0, 2).map((tr) => ({ type: tr?.type || '', duration: tr?.duration || '' }))
+            : [],
+        })).filter((n) => n.name)
+      : [],
+    source: 'serpapi',
+  };
+
+  cache.set(cacheKey, { body, expiresAt: Date.now() + 24 * 60 * 60_000 });
+  return { status: 200, body };
+}
+
 export default async function handler(req, res) {
   const send = (status, obj) => {
     res.statusCode = status;
@@ -134,6 +208,22 @@ export default async function handler(req, res) {
 
   res.setHeader?.('Cache-Control', 'public, s-maxage=21600, stale-while-revalidate=86400');
   const p = Object.fromEntries(new URL(req.url, 'http://internal').searchParams);
+
+  // `propertyToken` switches this endpoint into details mode — the only way to
+  // get a street address out of Google Hotels.
+  if (p.propertyToken) {
+    const detail = await getHotelDetails({
+      propertyToken: p.propertyToken,
+      checkInDate: p.checkInDate,
+      checkOutDate: p.checkOutDate,
+      adults: p.adults,
+      currency: p.currency,
+      gl: p.gl,
+      hl: p.hl,
+    });
+    return send(detail.status, detail.body);
+  }
+
   const { status, body } = await searchGoogleHotels({
     q: p.q,
     checkInDate: p.checkInDate,

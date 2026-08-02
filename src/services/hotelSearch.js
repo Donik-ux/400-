@@ -68,6 +68,27 @@ export const rankByProximity = (hotels, stops) => {
 };
 
 /**
+ * Street address for the chosen property. The Google Hotels search response
+ * carries coordinates but no address at all, so without this the card shows a
+ * district where a traveler needs a door number. Billed as its own search, so
+ * it runs once, only for the hotel actually picked.
+ */
+const fetchExactAddress = async ({ propertyToken, checkInDate, checkOutDate, adults, signal }) => {
+  if (!propertyToken) return null;
+  const qs = new URLSearchParams({
+    propertyToken, checkInDate, checkOutDate, adults: String(adults), currency: 'USD',
+  });
+  try {
+    const res = await fetch(`/api/hotelsSerp?${qs}`, { signal });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json?.address ? json : null;
+  } catch {
+    return null;
+  }
+};
+
+/**
  * @returns {Promise<null | object>} the best-placed real hotel, carrying the
  *          fields the hotel card renders plus `proximity`.
  */
@@ -130,9 +151,20 @@ export const findHotelNearAttractions = async ({
     ? nearestStop.district
     : destination;
 
+  const pax = Math.max(1, Number(travelers) || 2);
+  const detail = await fetchExactAddress({
+    propertyToken: best.token, checkInDate, checkOutDate, adults: pax, signal,
+  });
+
   const hotel = {
     name:          best.name,
-    address:       area !== destination ? `${area}, ${destination}` : destination,
+    // A real street address when Google will give one; the district only as a
+    // last resort, and never dressed up as something more precise.
+    address:       detail?.address || (area !== destination ? `${area}, ${destination}` : destination),
+    hasExactAddress: Boolean(detail?.address),
+    phone:         detail?.phone || '',
+    checkInTime:   detail?.checkInTime || '',
+    checkOutTime:  detail?.checkOutTime || '',
     area,
     lat:           best.lat,
     lng:           best.lng,
@@ -143,7 +175,9 @@ export const findHotelNearAttractions = async ({
     reviews:       best.reviews,
     image:         best.image || undefined,
     bookLink:      best.link || '',
-    nearbyPlaces:  best.nearbyPlaces,
+    // Google's own landmark list with travel times — richer on the details
+    // response than in the search result.
+    nearbyPlaces:  detail?.nearbyPlaces?.length ? detail.nearbyPlaces : best.nearbyPlaces,
     source:        'serpapi',
     // Recomputed against the full itinerary so the card's badge and the
     // ranking cannot disagree.

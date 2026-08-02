@@ -571,11 +571,29 @@ export const DESTINATION_MAP = [
 /**
  * Find destination entry by any keyword match
  */
+const isWordChar = (ch) => Boolean(ch) && /[\p{L}\p{N}]/u.test(ch);
+
+/**
+ * Whole-word containment. A plain `includes` matched the key "uk" inside
+ * "b-uk-hara", which labelled Bukhara as the United Kingdom and warned the
+ * traveler about a British visa — short keys make substring matching actively
+ * dangerous here, since the result drives a visa requirement.
+ */
+const containsToken = (haystack, needle) => {
+  if (!needle) return false;
+  for (let from = 0; ; from += 1) {
+    const i = haystack.indexOf(needle, from);
+    if (i === -1) return false;
+    if (!isWordChar(haystack[i - 1]) && !isWordChar(haystack[i + needle.length])) return true;
+    from = i;
+  }
+};
+
 export function lookupDestination(input = '') {
   if (!input || input.trim().length < 2) return null;
   const q = input.toLowerCase().trim();
   for (const entry of DESTINATION_MAP) {
-    if (entry.keys.some(k => q.includes(k) || k.includes(q))) {
+    if (entry.keys.some(k => containsToken(q, k) || containsToken(k, q))) {
       return entry;
     }
   }
@@ -597,4 +615,23 @@ export function getVisaInfo(input = '') {
   const entry = lookupDestination(input);
   if (!entry || !entry.visa) return null;
   return { required: true, country: entry.country, text: entry.visaText };
+}
+
+/**
+ * Like getVisaInfo, but tells "no visa needed" apart from "we have no entry
+ * for this destination". getVisaInfo returns null for both, which is fine for
+ * a warning banner but not for a traveler asking "so do I need one or not?" —
+ * silence there reads as reassurance we have not earned.
+ *
+ * @returns {{ known: boolean, required: boolean, country: string, text: string }}
+ */
+export function getVisaStatus(input = '') {
+  const entry = lookupDestination(input);
+  if (!entry) return { known: false, required: false, country: '', text: '' };
+  return {
+    known: true,
+    required: Boolean(entry.visa),
+    country: entry.country,
+    text: entry.visaText || '',
+  };
 }

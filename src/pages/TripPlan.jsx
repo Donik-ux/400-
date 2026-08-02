@@ -18,6 +18,7 @@ import { fetchTripFlights, applyFlightPricing } from '../services/tripFlightPric
 import { SAME_BLOCK_KM } from '../services/hotelProximity';
 import { exactPrice } from '../utils/priceText';
 import { findHotelNearAttractions, applyHotelChoice } from '../services/hotelSearch';
+import VisaNotice from '../features/trip/VisaNotice';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
 import { heroFor } from '../utils/destinationImages';
@@ -52,6 +53,7 @@ export default function TripPlan() {
   const { t, lang } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const user = useAuthStore(s => s.user);
+  const getProfile = useAuthStore(s => s.getProfile);
   const addBooking = useAdminStore(s => s.addBooking);
   const fmt = usePriceFormatter();
 
@@ -119,6 +121,10 @@ export default function TripPlan() {
   // Not signed in at all, or only ever used "continue as guest" — either way
   // this plan lives in localStorage only and won't survive a cache clear.
   const isGuest = !user || user.role === 'guest';
+
+  // Nationality drives the AI visa check; without it the notice still shows the
+  // curated requirement, just not personalised.
+  const travelerNationality = getProfile()?.nationality || '';
 
   /* ── Auto-generate the full plan when the user lands here ──
      Skipped when a previously-saved plan was passed in (e.g. reopening a
@@ -583,6 +589,17 @@ export default function TripPlan() {
                 )}
               </div>
             )}
+
+            {/* ── Visa reminder ──
+                Placed above the flights and the itinerary on purpose: a plan
+                for a country the traveler cannot enter is worth nothing, so
+                the requirement has to be seen before the day-by-day. ── */}
+            <VisaNotice
+              destination={item.destination || item.name}
+              travelDate={travelDate}
+              nationality={travelerNationality}
+              lang={lang}
+            />
 
             {/* ── Flights card — the fare the plan is actually costed on ── */}
             {plan?.flights && (() => {

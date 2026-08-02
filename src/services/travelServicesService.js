@@ -28,7 +28,19 @@ const run = async (prompt, { signal } = {}) => {
 };
 
 /* ── 1. AI Visa Checker ─────────────────────────────────────────────── */
+/**
+ * Cached in localStorage for 30 days per nationality+destination+language.
+ * The trip plan shows this on every visit, and entry rules for a given
+ * passport move on a scale of months, not page loads — an uncached call here
+ * would burn the daily AI quota on an answer that never changed.
+ */
 export async function checkVisa({ nationality, destination, lang = 'en' }, opts) {
+  const cacheKey = `maf_visa_v1_${String(nationality).toLowerCase()}_${String(destination).toLowerCase()}_${lang}`;
+  try {
+    const hit = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if (hit && typeof hit.status === 'string' && Date.now() - (hit.at || 0) < 30 * 86400_000) return hit;
+  } catch { /* corrupt cache — regenerate */ }
+
   const prompt = `You are a visa requirements assistant. A traveler holding a passport from "${nationality}" wants to visit "${destination}" for tourism.
 Respond ONLY with strict JSON, written in ${langName(lang)}, with this exact shape:
 {
@@ -42,7 +54,12 @@ Respond ONLY with strict JSON, written in ${langName(lang)}, with this exact sha
   "disclaimer": "Always confirm with the official embassy before traveling."
 }
 Be accurate and conservative. If unsure, use "unknown".`;
-  return run(prompt, opts);
+  const out = await run(prompt, opts);
+  if (out && typeof out.status === 'string') {
+    out.at = Date.now();
+    try { localStorage.setItem(cacheKey, JSON.stringify(out)); } catch { /* quota full — fine */ }
+  }
+  return out;
 }
 
 /* ── 2. AI Budget Optimizer ─────────────────────────────────────────── */

@@ -40,6 +40,21 @@ export default {
       categoryStandard: 'standard',
       // Includes
       whatsCovered: "What's covered in your {total}",
+      // Visa reminder
+      visa: {
+        title: {
+          visa_required: '🛂 A visa is required for {country}',
+          e_visa: '🛂 {country} needs an e-visa before you fly',
+          visa_on_arrival: '🛂 {country}: visa on arrival',
+          visa_free: '✓ No visa needed for {country}',
+        },
+        applyBy: '⏳ Apply by {date} to have it in time for this trip.',
+        deadlinePassed: '⚠ The usual processing time no longer fits before your travel date — apply immediately or move the trip.',
+        documents: 'Documents to prepare',
+        addNationality: 'Add your nationality in your profile and we will check the rules for your passport specifically.',
+        fullCheck: 'Full visa check',
+        disclaimer: 'Rules change — always confirm with the official embassy or consulate before booking.',
+      },
       // Flights card
       flights: {
         title: 'Your flights',
@@ -300,6 +315,21 @@ export default {
       // Includes
       whatsCovered: '{total} ichida nimalar bor',
       // Hotel card
+      // Viza eslatmasi
+      visa: {
+        title: {
+          visa_required: '🛂 {country} uchun viza kerak',
+          e_visa: '🛂 {country}: uchishdan oldin e-viza rasmiylashtiring',
+          visa_on_arrival: '🛂 {country}: viza chegarada beriladi',
+          visa_free: '✓ {country} uchun viza kerak emas',
+        },
+        applyBy: '⏳ Sayohatga ulgurish uchun {date} gacha ariza topshiring.',
+        deadlinePassed: '⚠ Odatdagi rasmiylashtirish muddati sayohat sanangizga sig‘maydi — zudlik bilan ariza topshiring yoki sanani suring.',
+        documents: 'Tayyorlash kerak bo‘lgan hujjatlar',
+        addNationality: 'Profilingizda fuqaroligingizni ko‘rsating — qoidalarni aynan sizning pasportingiz uchun tekshiramiz.',
+        fullCheck: 'To‘liq viza tekshiruvi',
+        disclaimer: 'Qoidalar o‘zgaradi — bron qilishdan oldin elchixona yoki konsullikda tasdiqlang.',
+      },
       // Aviachiptalar kartasi
       flights: {
         title: 'Parvozlaringiz',

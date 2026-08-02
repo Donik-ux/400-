@@ -40,10 +40,36 @@ export default {
       categoryStandard: 'standard',
       // Includes
       whatsCovered: "What's covered in your {total}",
+      // Flights card
+      flights: {
+        title: 'Your flights',
+        liveBadge: 'Live fare · {source}',
+        estimateBadge: 'Estimate',
+        direct: 'Direct',
+        stops: '{count} stop(s)',
+        totalOne: 'Round trip, 1 traveller',
+        totalMany: 'Round trip, {count} travellers',
+        range: 'Typically {low}–{high} per person on this route.',
+        book: 'Book this fare',
+        compare: 'Compare flights',
+        includedInTicket: 'Included in ticket',
+        overBudget: 'Heads up: this route costs {actual} per person, but the budget only set aside {planned} for flights. The rest of the plan is costed on the smaller figure.',
+        liveNote: 'Live offer from our flight partner — the final price is confirmed at checkout.',
+        estimateNote: 'Route-aware estimate, not a live quote. Compare flights for the real fare.',
+      },
       // Hotel card
       yourStay: 'Your stay',
       recommendedBadge: 'Recommended',
       navigate: 'Navigate',
+      // Hotel ↔ attractions proximity
+      closestToSights: 'Closest to your sights',
+      walkableStops: '{count} of {total} stops within a 15-min walk',
+      sameDistrictStops: '{count} of {total} stops in this district',
+      walkMin: '{min} min walk',
+      awayKm: '{km} km away',
+      rightNextTo: 'right by the hotel',
+      walkNote: 'Walking times measured from the hotel to each planned stop.',
+      districtNote: 'Stops sharing the hotel’s district — the sightseeing cluster you stay inside.',
       // Per-day weather chip
       weather: {
         rainLikely: 'rain likely',
@@ -106,6 +132,7 @@ export default {
       location: 'Location:',
       cost: 'Cost:',
       free: 'Free',
+      priceOnSite: 'check price on site',
       spentToday: 'Spent today',
       runningTotal: 'Running total',
       // Emergency
@@ -263,9 +290,35 @@ export default {
       // Includes
       whatsCovered: '{total} ichida nimalar bor',
       // Hotel card
+      // Aviachiptalar kartasi
+      flights: {
+        title: 'Parvozlaringiz',
+        liveBadge: 'Jonli narx · {source}',
+        estimateBadge: 'Taxminiy',
+        direct: 'To‘g‘ridan-to‘g‘ri',
+        stops: '{count} ta to‘xtash',
+        totalOne: 'Borish-kelish, 1 yo‘lovchi',
+        totalMany: 'Borish-kelish, {count} yo‘lovchi',
+        range: 'Bu yo‘nalishda odatda har bir kishi uchun {low}–{high}.',
+        book: 'Chipta olish',
+        compare: 'Parvozlarni solishtirish',
+        includedInTicket: 'Chiptaga kiritilgan',
+        overBudget: 'Diqqat: bu yo‘nalish har bir kishi uchun {actual} turadi, byudjetda esa parvozga faqat {planned} ajratilgan. Rejaning qolgan qismi kichikroq raqam asosida hisoblangan.',
+        liveNote: 'Hamkorimizdan jonli taklif — yakuniy narx to‘lov paytida tasdiqlanadi.',
+        estimateNote: 'Yo‘nalishga qarab taxminiy narx, jonli taklif emas. Aniq narx uchun parvozlarni solishtiring.',
+      },
       yourStay: 'Yashash joyingiz',
       recommendedBadge: 'Tavsiya etamiz',
       navigate: 'Yo‘nalish',
+      // Mehmonxona ↔ diqqatga sazovor joylar yaqinligi
+      closestToSights: 'Diqqatga sazovor joylarga eng yaqin',
+      walkableStops: '{total} tadan {count} tasi 15 daqiqalik piyoda masofada',
+      sameDistrictStops: '{total} tadan {count} tasi shu tumanda',
+      walkMin: '{min} daqiqa piyoda',
+      awayKm: '{km} km uzoqlikda',
+      rightNextTo: 'mehmonxona yonginasida',
+      walkNote: 'Piyoda vaqt mehmonxonadan har bir rejadagi nuqtagacha hisoblangan.',
+      districtNote: 'Mehmonxona bilan bir tumandagi nuqtalar — siz yashaydigan sayohat markazi.',
       // Per-day weather chip
       weather: {
         rainLikely: 'yomg‘ir kutilmoqda',
@@ -328,6 +381,7 @@ export default {
       location: 'Manzil:',
       cost: 'Narxi:',
       free: 'Bepul',
+      priceOnSite: 'narxni joyida aniqlang',
       spentToday: 'Bugun sarflandi',
       runningTotal: 'Jami yig‘indi',
       // Emergency

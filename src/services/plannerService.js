@@ -2,6 +2,7 @@ import { findCity, hotelPhotoFor } from './cityDatabase';
 import { getSchedulesForCity, genericSchedules } from './citySchedules';
 import { getEmergencyContacts } from './emergencyContacts';
 import { findCityAttractions, buildArrivalEvents, buildDepartureEvents, buildMiddleDayEvents } from './cityAttractions';
+import { computeHotelProximity } from './hotelProximity';
 
 const WEEKDAY_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTH_LONG   = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -432,7 +433,9 @@ export const generateItinerary = async ({
       else if (ev.type === 'hotel' && nightlyRate) ev.price = nightlyRate;
       else if (ev.type === 'food') ev.price = `~$${perMeal}–${perMeal * 2}`;
       else if (ev.type === 'transport') ev.price = '~$3–10';
-      else ev.price = 'Free';
+      // Anything else is left blank on purpose — the curated attraction data
+      // carries real prices, and an entry we have no price for is not proof
+      // that it's free. The UI renders a "check on site" label instead.
     }
   }
 
@@ -458,19 +461,30 @@ export const generateItinerary = async ({
     purpose,
   };
 
+  // Curated hotel labels carry their neighbourhood in parentheses — e.g.
+  // "Witt Istanbul Suites (Cihangir, Beyoğlu)". That is a far more useful
+  // "area" than the city name, which tells the traveler nothing.
+  const labelArea = (hotelLabel.match(/\(([^)]+)\)\s*$/) || [])[1];
+
+  const hotel = {
+    name:    hotelLabel,
+    address: cityData?.hotelAddress || `${destination} city centre — confirmed at booking`,
+    area:    labelArea || cityData?.area || destination,
+    pricePerNight: budgetBreakdown.accommodation && nights ? `~$${Math.round(budgetBreakdown.accommodation / nights)}/night` : '',
+    stars:   style === 'luxury' ? '5' : style === 'comfort' ? '4' : style === 'economy' ? '3' : '',
+    image:   hotelPhotoFor(cityData, hotelLabel),
+    recommended: Boolean(hotelPhotoFor(cityData, hotelLabel)),
+    mapUrl:  hotelPhotoFor(cityData, hotelLabel) ? cityData?.hotelMapUrl : undefined,
+  };
+  // No coordinates on this path, so this resolves to the district match —
+  // which stops are in the same neighbourhood as the stay. Null when the
+  // curated schedule carries no district that lines up with it.
+  hotel.proximity = computeHotelProximity(hotel, itineraryDays, { city: destination });
+
   return {
     header,
     days: itineraryDays,
-    hotel: {
-      name:    hotelLabel,
-      address: cityData?.hotelAddress || `${destination} city centre — confirmed at booking`,
-      area:    cityData?.area || destination,
-      pricePerNight: budgetBreakdown.accommodation && nights ? `~$${Math.round(budgetBreakdown.accommodation / nights)}/night` : '',
-      stars:   style === 'luxury' ? '5' : style === 'comfort' ? '4' : style === 'economy' ? '3' : '',
-      image:   hotelPhotoFor(cityData, hotelLabel),
-      recommended: Boolean(hotelPhotoFor(cityData, hotelLabel)),
-      mapUrl:  hotelPhotoFor(cityData, hotelLabel) ? cityData?.hotelMapUrl : undefined,
-    },
+    hotel,
     budgetBreakdown,
     transportSuggestion,
     travelTips,

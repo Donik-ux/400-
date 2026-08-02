@@ -6,7 +6,7 @@ import {
   Activity, ShoppingBag, Wallet, Printer, Share2, Save, Download, Clock, Heart,
   Check, Map as MapIcon, AlertCircle, Star, Lightbulb, Phone, ShieldAlert, RefreshCcw,
   Navigation, ExternalLink, ArrowRight, UserPlus, X, Landmark, PartyPopper,
-  Compass, Plug, Smartphone, HandCoins, Droplets, Shirt, Moon,
+  Compass, Plug, Smartphone, HandCoins, Droplets, Shirt, Moon, Footprints,
 } from 'lucide-react';
 import { mapsUrlFor, mapsUrlFromAddress, dayMapsUrl } from '../utils/mapsUrl';
 import useAuthStore from '../store/useAuthStore';
@@ -14,6 +14,8 @@ import useAdminStore from '../store/useAdminStore';
 import { generateAiItinerary, isAiAvailable, fetchCityInfo, fetchTripWeather, refinePlan } from '../services/aiPlannerService';
 import { countryBrief } from '../services/travelServicesService';
 import { generateItinerary } from '../services/plannerService';
+import { fetchTripFlights, applyFlightPricing } from '../services/tripFlightPricing';
+import { SAME_BLOCK_KM } from '../services/hotelProximity';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
 import { heroFor } from '../utils/destinationImages';
@@ -169,10 +171,20 @@ export default function TripPlan() {
     if (!instruction || refining || loading || !plan) return;
     setRefining(true);
     try {
-      const next = await refinePlan(plan, instruction, {
+      let next = await refinePlan(plan, instruction, {
         destination: itemWithHero?.destination || itemWithHero?.name || '',
         lang,
       });
+      // A refine round-trips the itinerary through the model, which re-invents
+      // the flight-event prices. Stamp the resolved fare back on so an edit
+      // like "make day 3 cheaper" can't quietly replace a real quoted airfare
+      // with a guess.
+      if (plan.flights) {
+        next = applyFlightPricing(next, plan.flights, {
+          fmt,
+          includedLabel: t('tripPlan.flights.includedInTicket'),
+        });
+      }
       setPrevPlan(plan);
       setPlan(next);
       setRefineText('');
@@ -249,6 +261,26 @@ export default function TripPlan() {
         };
       }
       setPlan(result);
+
+      // Real airfare for the route, resolved after the plan renders so a slow
+      // or unconfigured flight API never delays the itinerary. Replaces the
+      // budget-derived guess (a flat % of the traveler's budget, identical for
+      // every route) with a live offer, or a route-aware AI estimate.
+      fetchTripFlights({
+        fromCity,
+        destination: params.destination,
+        returnCity:  returnToState,
+        startDate:   travelDate,
+        days:        params.days,
+        travelers,
+      }).then((flights) => {
+        if (!flights) return;
+        setPlan((p) => (p ? applyFlightPricing(p, flights, {
+          fmt,
+          includedLabel: t('tripPlan.flights.includedInTicket'),
+        }) : p));
+      }).catch((e) => console.warn('Trip flight pricing failed:', e.message));
+
       // Template fallback has no city info — try a much smaller standalone AI
       // call for it (often fits even when the full plan call was rate-limited).
       if (!result.cityInfo && isAiAvailable()) {
@@ -528,11 +560,118 @@ export default function TripPlan() {
               </div>
             )}
 
+            {/* ── Flights card — the fare the plan is actually costed on ── */}
+            {plan?.flights && (() => {
+              const f = plan.flights;
+              const legs = [f.outbound, f.inbound].filter(Boolean);
+              return (
+                <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 shadow-soft">
+                  <div className="flex items-center gap-2 flex-wrap mb-3">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#0172cb] flex items-center gap-1">
+                      <Plane className="w-3.5 h-3.5" /> {t('tripPlan.flights.title')}
+                    </span>
+                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-md ${
+                      f.isLive ? 'text-[#008009] bg-[#eafaea]' : 'text-[#697d95] bg-[#eef2f5]'
+                    }`}>
+                      {f.isLive
+                        ? fill(t('tripPlan.flights.liveBadge'), { source: f.source })
+                        : t('tripPlan.flights.estimateBadge')}
+                    </span>
+                  </div>
+
+                  <ul className="space-y-2">
+                    {legs.map((leg, i) => (
+                      <li key={i} className="flex items-center gap-3 flex-wrap">
+                        <span className="text-[13px] font-black text-[#252a31] tabular-nums whitespace-nowrap">
+                          {leg.from} → {leg.to}
+                        </span>
+                        {leg.date && <span className="text-[11px] text-[#697d95] font-bold">{fmtDate(leg.date)}</span>}
+                        {leg.airline && (
+                          <span className="text-[11px] text-[#4a5867] font-semibold">{leg.airlineLogo} {leg.airline}</span>
+                        )}
+                        {leg.duration && <span className="text-[11px] text-[#697d95] font-bold">{leg.duration}</span>}
+                        {Number.isFinite(leg.stops) && (
+                          <span className="text-[10px] font-black text-[#007f6d] bg-[#e6f6f3] px-1.5 py-0.5 rounded">
+                            {leg.stops === 0 ? t('tripPlan.flights.direct') : fill(t('tripPlan.flights.stops'), { count: leg.stops })}
+                          </span>
+                        )}
+                        <span className="ml-auto text-[13px] font-black text-[#252a31] whitespace-nowrap">{fmt(leg.price)}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-3 pt-3 border-t border-[#eef2f5] flex items-center justify-between flex-wrap gap-2">
+                    <span className="text-[11px] font-black uppercase tracking-widest text-[#697d95]">
+                      {fill(t(f.travelers === 1 ? 'tripPlan.flights.totalOne' : 'tripPlan.flights.totalMany'), { count: f.travelers })}
+                    </span>
+                    <span className="text-[15px] font-black text-[#252a31]">
+                      {/* Per-leg rows are per person — spell out the multiplication
+                          so the total doesn't look like it came from nowhere. */}
+                      {f.travelers > 1 && (
+                        <span className="text-[11px] text-[#697d95] font-bold mr-1.5">{fmt(f.perPerson)} × {f.travelers} =</span>
+                      )}
+                      {fmt(f.total)}
+                    </span>
+                  </div>
+
+                  {f.range && (
+                    <p className="mt-1 text-[11px] text-[#697d95] font-semibold">
+                      {fill(t('tripPlan.flights.range'), { low: fmt(f.range.low), high: fmt(f.range.high) })}
+                    </p>
+                  )}
+
+                  {/* The budget split assumed a cheaper ticket than the route
+                      actually costs — say so instead of letting the tiles imply
+                      the trip still fits. */}
+                  {plan.budgetBreakdown?.flightBudgeted > 0
+                    && f.perPerson > plan.budgetBreakdown.flightBudgeted * 1.25 && (
+                    <p className="mt-2 p-2 rounded-lg note-danger text-danger text-[11px] font-bold">
+                      {fill(t('tripPlan.flights.overBudget'), {
+                        actual: fmt(f.perPerson),
+                        planned: fmt(plan.budgetBreakdown.flightBudgeted),
+                      })}
+                    </p>
+                  )}
+
+                  <div className="mt-3 flex items-center gap-2 flex-wrap">
+                    {f.outbound?.buyLink && (
+                      <a href={f.outbound.buyLink} target="_blank" rel="noreferrer noopener"
+                        className="px-3 py-2 rounded-lg bg-[#00a58e] hover:bg-[#008f77] text-white text-[11px] font-black inline-flex items-center gap-1 active:scale-95 transition">
+                        {t('tripPlan.flights.book')} <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                    <button
+                      onClick={() => {
+                        const bare = (s) => String(s || '').replace(/\s*\([^)]*\)\s*/g, '').trim();
+                        navigate('/flights', {
+                          state: {
+                            formData: {
+                              from: `${bare(fromCity)} (${f.outbound?.from})`,
+                              to:   `${bare(item.destination || item.name)} (${f.outbound?.to})`,
+                              date: f.outbound?.date || '',
+                              returnDate: f.inbound?.date || '',
+                            },
+                          },
+                        });
+                      }}
+                      className="px-3 py-2 rounded-lg border border-[#dfe7ec] text-[#0172cb] text-[11px] font-black hover:bg-[#e8f4fd] active:scale-95 transition">
+                      {t('tripPlan.flights.compare')}
+                    </button>
+                  </div>
+
+                  <p className="mt-2 text-[10px] text-[#8a99ab] font-semibold">
+                    {f.isLive ? t('tripPlan.flights.liveNote') : t('tripPlan.flights.estimateNote')}
+                  </p>
+                </div>
+              );
+            })()}
+
             {/* ── Hotel card ── */}
             {plan?.hotel && (plan.hotel.name || plan.hotel.address) && (() => {
               const h = plan.hotel;
               const fullAddress = [h.name, h.address].filter(Boolean).join(', ');
               const url = h.mapUrl || mapsUrlFromAddress(fullAddress || h.name);
+              const prox = h.proximity;
               return (
                 <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 shadow-soft">
                   <div className="flex items-start gap-3">
@@ -574,6 +713,50 @@ export default function TripPlan() {
                       </a>
                     )}
                   </div>
+
+                  {/* ── Why this hotel: how close it sits to the planned sights ── */}
+                  {prox && (
+                    <div className="mt-4 pt-4 border-t border-[#eef2f5]">
+                      <div className="flex items-center gap-2 flex-wrap mb-2">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-[#697d95] flex items-center gap-1">
+                          <Footprints className="w-3.5 h-3.5 text-[#00a58e]" /> {t('tripPlan.closestToSights')}
+                        </span>
+                        <span className="text-[10px] font-black text-[#007f6d] bg-[#e6f6f3] px-2 py-0.5 rounded-md">
+                          {fill(
+                            prox.basis === 'coords' ? t('tripPlan.walkableStops') : t('tripPlan.sameDistrictStops'),
+                            { count: prox.walkableCount, total: prox.totalStops },
+                          )}
+                        </span>
+                      </div>
+
+                      {h.whyHere && (
+                        <p className="text-[12px] text-[#4a5867] font-semibold mb-2">{h.whyHere}</p>
+                      )}
+
+                      <ul className="space-y-1">
+                        {prox.nearest.map((s, i) => (
+                          <li key={i} className="flex items-baseline gap-2 text-[12px]">
+                            <span className="font-bold text-[#252a31] truncate">{s.name}</span>
+                            {Number.isFinite(s.walkMin) ? (
+                              <span className="shrink-0 font-black text-[#00a58e] whitespace-nowrap">
+                                {s.km <= SAME_BLOCK_KM
+                                  ? t('tripPlan.rightNextTo')
+                                  : s.walkMin <= 25
+                                    ? fill(t('tripPlan.walkMin'), { min: s.walkMin })
+                                    : fill(t('tripPlan.awayKm'), { km: s.km.toFixed(1) })}
+                              </span>
+                            ) : s.district ? (
+                              <span className="shrink-0 text-[#697d95] font-semibold whitespace-nowrap">{s.district}</span>
+                            ) : null}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <p className="mt-2 text-[10px] text-[#8a99ab] font-semibold">
+                        {prox.basis === 'coords' ? t('tripPlan.walkNote') : t('tripPlan.districtNote')}
+                      </p>
+                    </div>
+                  )}
                 </div>
               );
             })()}
@@ -730,9 +913,14 @@ export default function TripPlan() {
                                     <span className="text-[14px] leading-none mt-0.5">💰</span>
                                     <span>
                                       <span className="text-[#697d95] font-black uppercase tracking-wider text-[10px] mr-1">{t('tripPlan.cost')}</span>
-                                      <span className={ev.price && /free|0/i.test(ev.price) ? 'text-[#008009] font-black' : 'text-[#252a31] font-black'}>
-                                        {ev.price || t('tripPlan.free')}
+                                      <span className={
+                                        !ev.price ? 'text-[#697d95] font-bold italic'
+                                        : /free/i.test(ev.price) ? 'text-[#008009] font-black'
+                                        : 'text-[#252a31] font-black'
+                                      }>
+                                        {Number.isFinite(ev.priceUsd) ? fmt(ev.priceUsd) : (ev.price || t('tripPlan.priceOnSite'))}
                                       </span>
+                                      {ev.airline && <span className="text-[#4a5867] font-bold ml-2">· {ev.airline}</span>}
                                       {ev.duration && <span className="text-[#697d95] font-bold ml-2">· {ev.duration}</span>}
                                     </span>
                                   </div>
@@ -1126,7 +1314,7 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
       ${Array.isArray(d.events) ? `<ul>${d.events.map((ev, i, arr) =>
         `<li><strong>${escapeHtml(ev.time || '')}</strong> — ${escapeHtml(ev.name || '')}${
           ev.address ? `<br><span class="addr"><strong>📍 Location:</strong> ${escapeHtml(ev.address)}${ev.district ? ` · ${escapeHtml(ev.district)}` : ''}</span>` : ''
-        }<br><span class="cost"><strong>💰 Cost:</strong> ${escapeHtml(ev.price || 'Free')}${ev.duration ? ` · ${escapeHtml(ev.duration)}` : ''}</span>${
+        }<br><span class="cost"><strong>💰 Cost:</strong> ${escapeHtml(ev.price || 'check price on site')}${ev.airline ? ` · ${escapeHtml(ev.airline)}` : ''}${ev.duration ? ` · ${escapeHtml(ev.duration)}` : ''}</span>${
           i < arr.length - 1 && ev.transportToNext ? `<br><span class="next">→ ${escapeHtml(ev.transportToNext)}</span>` : ''
         }</li>`
       ).join('')}</ul>` : ''}
@@ -1135,11 +1323,37 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
     </div>
   `;}).join('');
 
+  const f = plan?.flights;
+  const flightsBlock = f
+    ? `<h2>✈️ Your flights — ${f.isLive ? `live fare (${escapeHtml(f.source)})` : 'estimate'}</h2>
+       <div class="hotel">
+         ${[f.outbound, f.inbound].filter(Boolean).map((leg) =>
+           `<strong>${escapeHtml(leg.from)} → ${escapeHtml(leg.to)}</strong>${leg.date ? ` · ${escapeHtml(leg.date)}` : ''}${
+             leg.airline ? ` · ${escapeHtml(leg.airline)}` : ''}${leg.duration ? ` · ${escapeHtml(leg.duration)}` : ''} — $${Number(leg.price).toLocaleString()}`
+         ).join('<br>')}
+         <br><strong>Round trip${f.travelers > 1 ? ` × ${f.travelers} travellers` : ''}: $${Number(f.total).toLocaleString()}</strong>
+       </div>`
+    : '';
+
+  const prox = plan?.hotel?.proximity;
+  const proximityLine = prox
+    ? `<br>🚶 ${prox.basis === 'coords'
+          ? `${prox.walkableCount} of ${prox.totalStops} stops within a 15-min walk`
+          : `${prox.walkableCount} of ${prox.totalStops} stops in this district`}${
+        prox.nearest.length
+          ? ` — ${prox.nearest.map(s => escapeHtml(
+              !Number.isFinite(s.walkMin) ? s.name
+                : s.km <= SAME_BLOCK_KM ? `${s.name} (right by the hotel)`
+                : `${s.name} (${s.walkMin} min)`,
+            )).join(', ')}`
+          : ''}`
+    : '';
+
   const hotelBlock = plan?.hotel && (plan.hotel.name || plan.hotel.address)
     ? `<h2>🏨 Your stay</h2>
        <div class="hotel">
          <strong>${escapeHtml(plan.hotel.name)}</strong>${plan.hotel.stars ? ` · ${escapeHtml(plan.hotel.stars)}★` : ''}${plan.hotel.pricePerNight ? ` · ${escapeHtml(plan.hotel.pricePerNight)}` : ''}<br>
-         ${plan.hotel.address ? `📍 ${escapeHtml(plan.hotel.address)}` : ''}${plan.hotel.area ? ` · ${escapeHtml(plan.hotel.area)}` : ''}
+         ${plan.hotel.address ? `📍 ${escapeHtml(plan.hotel.address)}` : ''}${plan.hotel.area ? ` · ${escapeHtml(plan.hotel.area)}` : ''}${proximityLine}
        </div>`
     : '';
 
@@ -1181,6 +1395,7 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
       <strong>Traveler:</strong> ${escapeHtml(name || 'Guest')} · ${travelers} pax · Total budget $${escapeHtml(String(item.price))}
     </div>
     ${item.includes?.length ? `<h2>What's included</h2><ul>${item.includes.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>` : ''}
+    ${flightsBlock}
     ${hotelBlock}
     <h2>Day-by-day plan</h2>
     ${dayBlocks || '<p class="muted">No detailed plan generated yet.</p>'}

@@ -2,6 +2,7 @@ import { askGrok, isGrokAvailable, extractJson as extractJsonFromText } from './
 import { findCity, hotelPhotoFor } from './cityDatabase';
 import { getEmergencyContacts } from './emergencyContacts';
 import { getWeatherForDates } from './weatherForecast';
+import { computeHotelProximity, reuseCoordsFrom } from './hotelProximity';
 import { LANG_MAP } from '../i18n/languages';
 
 /* ── Budget distribution ── */
@@ -162,7 +163,10 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
         name,
         address,
         district:  ev.district || '',
-        price:     ev.price    || 'Free',
+        // Deliberately NOT defaulted to "Free": a museum whose price the model
+        // forgot is not a free museum, and claiming so misleads the traveler.
+        // The UI shows a "check on site" label for an empty price instead.
+        price:     ev.price    || '',
         type:      ev.type     || 'attraction',
         halalNote: ev.halalNote || '',
         transportToNext: ev.transportToNext || ev.nextTransport || '',
@@ -178,6 +182,8 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
           address: src.hotel.address || '',
           area:    src.hotel.area    || '',
           price:   src.hotel.price   || src.hotel.pricePerNight || '',
+          lat:     Number(src.hotel.lat) || undefined,
+          lng:     Number(src.hotel.lng) || undefined,
         }
       : null;
 
@@ -220,6 +226,9 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
         area:    parsed.hotel.area    || '',
         price:   parsed.hotel.price   || parsed.hotel.pricePerNight || '',
         stars:   parsed.hotel.stars   || '',
+        lat:     Number(parsed.hotel.lat) || undefined,
+        lng:     Number(parsed.hotel.lng) || undefined,
+        whyHere: parsed.hotel.whyHere || '',
       }
     : days.find(d => d.hotel)?.hotel || null;
 
@@ -342,7 +351,7 @@ Write ALL human-readable text VALUES in ${langName}: every "title", "label", "tr
   // property (with its own real photo — see cityDatabase.js `hotelPhoto`)
   // instead of letting the model invent a plausible-but-different one.
   const hotelOverrideBlock = (cityData?.hotelPhoto && cityData.hotels?.[style])
-    ? `\nHOTEL OVERRIDE — the top-level "hotel" object MUST use exactly this real hotel (do not invent or substitute a different one): name "${cityData.hotels[style].replace(/\s*\([^)]*\)\s*$/, '')}", address "${cityData.hotelAddress || ''}".\n`
+    ? `\nHOTEL OVERRIDE — the top-level "hotel" object MUST use exactly this real hotel (do not invent or substitute a different one): name "${cityData.hotels[style].replace(/\s*\([^)]*\)\s*$/, '')}", address "${cityData.hotelAddress || ''}". Rule 5a still applies in reverse: since the hotel is fixed, build each day around it — start with the attractions nearest to it and keep the daily clusters as close to it as the city allows. Still return its real "lat"/"lng" and a "whyHere" naming the planned attractions closest to it.\n`
     : '';
 
   // Budget tier — drives how expensive entries you suggest
@@ -379,6 +388,10 @@ CRITICAL RULES — FOLLOW EXACTLY:
    The LAST event of each day can leave it empty (end of day).
 4. ALL food recommendations must be 100% HALAL CERTIFIED real restaurants in ${destination}. Add "🥩 Halal" in the name. Halal restaurant entries also need full address.
 5. Include a top-level "hotel" object with: name (real hotel), address (full street + postal), area (district), pricePerNight (local currency — NEVER empty, give a realistic nightly rate or range like "$40–60/night"), stars. The traveler must know exactly where they sleep.
+5a. HOTEL LOCATION IS A PROXIMITY DECISION — plan the days FIRST, then pick the hotel LAST. Look at where the attractions you scheduled actually are, find the district that holds the most of them, and choose a REAL, bookable ${style}-tier hotel INSIDE that district — as close to those attractions as possible, so the traveler walks to most of their stops instead of paying for taxis. Do NOT default to "near the airport", a business district, or a generic city-centre chain if the sightseeing is concentrated elsewhere. Also add to the "hotel" object:
+   - "lat" and "lng": the hotel's OWN real decimal coordinates (numbers, 4+ decimals) — the coordinates of its street address. NEVER copy the coordinates of a nearby landmark: a hotel and the mosque across the square are not at the same point, and these numbers are used to compute the walking times shown to the traveler.
+   - "whyHere": ONE sentence NAMING the 2–3 planned attractions it sits closest to and the district it shares with them (e.g. "In Sultanahmet, on the same square as the Blue Mosque and a short walk from Hagia Sophia and Topkapi Palace"). Do NOT state distances, walking minutes or "X of Y stops" counts — the app computes those from your coordinates, and an invented number would contradict them.
+5b. EVERY event MUST also carry "lat" and "lng" — the real decimal coordinates of that exact place (numbers, not strings, 4+ decimals). These are used to compute real walking distances from the hotel, so they must match the address you gave. Airport/flight events use the airport's coordinates.
 6. EVERY single event MUST include its own price — never omit it. Fields per event: time (HH:MM 24-hour), duration ("1.5 hours"), price in LOCAL currency ("€15", "₺200", "AED 50", "Free"), and type (one of: flight, transport, hotel, attraction, museum, food, nature, shopping, leisure, rest). When the exact price varies, give a realistic range ("$300–500" for flights, "€10–15" for a meal). Only genuinely free things (parks, walks, viewpoints) may say "Free" — flights, hotels, taxis and meals are NEVER "Free".
 7. Day 1 = arrival flight from ${fromCity || 'home city'} with a realistic round-trip ticket price range (e.g. "$300–500"), airport transfer to hotel (with real airport name + hotel name + transport cost), hotel check-in (price = the nightly rate), light dinner. Day ${numDays} = packing + transfer to airport + departure flight to ${returnCity || fromCity || 'home city'}.
 8. Middle days = 6–8 events each (more places to visit). If special day, add label like "(Shopping Day)", "(Day Trip to X)", "(Free Day)".
@@ -410,9 +423,12 @@ Return EXACTLY this JSON shape:
   "hotel": {
     "name":          "Real hotel name in ${destination}",
     "address":       "Full street with postal code",
-    "area":          "District / neighbourhood",
+    "area":          "District / neighbourhood — the one holding most of the planned attractions",
     "pricePerNight": "Local-currency amount, e.g. €120",
-    "stars":         "3 / 4 / 5"
+    "stars":         "3 / 4 / 5",
+    "lat":           41.0054,
+    "lng":           28.9768,
+    "whyHere":       "One sentence: which planned attractions it is closest to and why that saves travel time"
   },
   "days": [
     {
@@ -429,6 +445,8 @@ Return EXACTLY this JSON shape:
           "name": "Real specific place name",
           "address": "Street name + number, postal code City",
           "district": "Neighbourhood name",
+          "lat": 41.0086,
+          "lng": 28.9802,
           "price": "Local-currency amount or range ('€15', '$300–500'); 'Free' ONLY for genuinely free places",
           "type": "attraction",
           "transportToNext": "🚶 6 min walk via Unter den Linden",
@@ -452,12 +470,16 @@ Return EXACTLY this JSON shape:
 }
 
 Return EXACTLY ${numDays} day objects in "days". Each "events" array should have 5–7 items for middle days, 3–4 for arrival/departure days.
-Every event MUST have "address" (real street+postal) and "transportToNext" (except the last event of a day).`;
+Every event MUST have "address" (real street+postal), "lat"/"lng" (real numeric coordinates) and "transportToNext" (except the last event of a day).`;
 
   // Size the completion budget to the trip length — a flat cap either
   // truncates long itineraries mid-JSON or reserves more of the shared
   // 12,000 tokens/minute pool than a short trip actually needs.
-  const maxTokens = Math.min(10000, 1200 + numDays * 800);
+  // The per-day figure covers the coordinates every event now carries. The
+  // 9,000 ceiling is not arbitrary: Groq's account limit is 12,000 tokens/min
+  // for prompt + max_tokens together, and this prompt runs ~2,600 tokens, so
+  // anything higher makes a long trip fail outright with a 413.
+  const maxTokens = Math.min(9000, 1200 + numDays * 900);
 
   let parseErr;
   try {
@@ -485,11 +507,16 @@ Every event MUST have "address" (real street+postal) and "transportToNext" (exce
       : '';
     for (const d of normalized.days) {
       for (const ev of d.events || []) {
-        if (ev.price && ev.price !== 'Free') continue;
+        if (ev.price && !/^\s*free\s*$/i.test(ev.price)) continue;
         if (ev.type === 'flight' && flightRange) ev.price = flightRange;
         else if (ev.type === 'hotel' && finalHotel.pricePerNight) ev.price = finalHotel.pricePerNight;
       }
     }
+
+    // How close the stay actually is to the sights the plan schedules —
+    // measured here from the itinerary's own coordinates, not taken on the
+    // model's word (see hotelProximity.js).
+    finalHotel.proximity = computeHotelProximity(finalHotel, normalized.days, { city: destination });
 
     return {
       header:              normalized.header,
@@ -610,7 +637,14 @@ Return the FULL updated plan as a single valid JSON object with EXACTLY the same
     if (!hotel.pricePerNight) {
       hotel.pricePerNight = hotel.price || currentPlan.hotel?.pricePerNight || '';
     }
+    if (!hotel.whyHere) hotel.whyHere = currentPlan.hotel?.whyHere || '';
   }
+
+  // The refine prompt strips lat/lng to stay under the prompt-size cap, so
+  // carry the original plan's coordinates over by place name before measuring
+  // the (possibly changed) hotel against the (possibly changed) stops.
+  reuseCoordsFrom(currentPlan, { hotel, days: normalized.days });
+  if (hotel) hotel.proximity = computeHotelProximity(hotel, normalized.days, { city: destination });
 
   return {
     ...currentPlan,               // cityInfo, emergency, budgetBreakdown, source, navApps…

@@ -56,6 +56,32 @@ function hotelsDevApi() {
   };
 }
 
+// Dev-only middleware for `/api/flightsSerp` (SerpApi Google Flights — the
+// exact fare a traveler would see, with airline and real times).
+function flightsSerpDevApi() {
+  return {
+    name: 'flights-serp-dev-api',
+    configureServer(server) {
+      server.middlewares.use('/api/flightsSerp', async (req, res) => {
+        const send = (status, obj) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          const url = new URL(req.originalUrl || req.url, 'http://localhost');
+          const params = Object.fromEntries(url.searchParams);
+          const mod = await server.ssrLoadModule('/api/flightsSerp.js');
+          const { status, body } = await mod.searchGoogleFlights(params);
+          send(status, body);
+        } catch (err) {
+          send(500, { error: String(err?.message || err), flights: [] });
+        }
+      });
+    },
+  };
+}
+
 // Dev-only middleware for `/api/hotelsSerp` (SerpApi Google Hotels — real
 // hotels WITH coordinates, so the trip planner can rank them by walking
 // distance to the itinerary's attractions). Same pattern as hotelsDevApi.
@@ -248,6 +274,7 @@ export default defineConfig(({ mode }) => {
       amadeusDevApi(),
       hotelsDevApi(),
       hotelsSerpDevApi(),
+      flightsSerpDevApi(),
       translateDevApi(),
       aiAskDevApi(),
       photoDevApi(),

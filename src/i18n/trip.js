@@ -44,6 +44,11 @@ export default {
       flights: {
         title: 'Your flights',
         liveBadge: 'Live fare · {source}',
+        level: {
+          low: '✓ Cheaper than usual for this route right now.',
+          typical: 'About the usual price for this route.',
+          high: '⚠ Pricier than usual for this route — consider shifting your dates.',
+        },
         estimateBadge: 'Estimate',
         direct: 'Direct',
         stops: '{count} stop(s)',
@@ -297,6 +302,11 @@ export default {
       flights: {
         title: 'Parvozlaringiz',
         liveBadge: 'Jonli narx · {source}',
+        level: {
+          low: '✓ Ayni paytda bu yo‘nalish uchun odatdagidan arzon.',
+          typical: 'Bu yo‘nalish uchun odatdagi narx.',
+          high: '⚠ Bu yo‘nalish uchun odatdagidan qimmat — sanalarni o‘zgartirib ko‘ring.',
+        },
         estimateBadge: 'Taxminiy',
         direct: 'To‘g‘ridan-to‘g‘ri',
         stops: '{count} ta to‘xtash',

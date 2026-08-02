@@ -274,6 +274,7 @@ export default function TripPlan() {
         startDate:   travelDate,
         days:        params.days,
         travelers,
+        style:       params.style,
       }).then((flights) => {
         if (!flights) return;
         setPlan((p) => (p ? applyFlightPricing(p, flights, {
@@ -617,10 +618,25 @@ export default function TripPlan() {
                             {leg.stops === 0 ? t('tripPlan.flights.direct') : fill(t('tripPlan.flights.stops'), { count: leg.stops })}
                           </span>
                         )}
-                        <span className="ml-auto text-[13px] font-black text-[#252a31] whitespace-nowrap">{fmt(leg.price)}</span>
+                        {leg.departure && (
+                          <span className="text-[11px] text-[#697d95] font-bold tabular-nums">{leg.departure}{leg.arrival ? `–${leg.arrival}` : ''}</span>
+                        )}
+                        {/* A round-trip ticket has one price, shown once in the
+                            total row — a per-leg figure here would be invented. */}
+                        {Number.isFinite(leg.price) && (
+                          <span className="ml-auto text-[13px] font-black text-[#252a31] whitespace-nowrap">{fmt(leg.price)}</span>
+                        )}
                       </li>
                     ))}
                   </ul>
+
+                  {f.priceLevel && (
+                    <p className={`mt-2 text-[11px] font-bold ${
+                      f.priceLevel === 'low' ? 'text-[#008009]' : f.priceLevel === 'high' ? 'text-[#b3402e]' : 'text-[#697d95]'
+                    }`}>
+                      {t(`tripPlan.flights.level.${f.priceLevel}`)}
+                    </p>
+                  )}
 
                   <div className="mt-3 pt-3 border-t border-[#eef2f5] flex items-center justify-between flex-wrap gap-2">
                     <span className="text-[11px] font-black uppercase tracking-widest text-[#697d95]">
@@ -650,8 +666,8 @@ export default function TripPlan() {
                   )}
 
                   <div className="mt-3 flex items-center gap-2 flex-wrap">
-                    {f.outbound?.buyLink && (
-                      <a href={f.outbound.buyLink} target="_blank" rel="noreferrer noopener"
+                    {(f.bookLink || f.outbound?.buyLink) && (
+                      <a href={f.bookLink || f.outbound.buyLink} target="_blank" rel="noreferrer noopener"
                         className="px-3 py-2 rounded-lg bg-[#00a58e] hover:bg-[#008f77] text-white text-[11px] font-black inline-flex items-center gap-1 active:scale-95 transition">
                         {t('tripPlan.flights.book')} <ExternalLink className="w-3 h-3" />
                       </a>

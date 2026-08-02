@@ -27,3 +27,18 @@ export const leadTimeDays = (text) => {
 
 /** Default assumption when nothing usable came back, in days. */
 export const DEFAULT_VISA_LEAD_DAYS = 28;
+
+/**
+ * Localized country name + visa description for a lookup result, falling back
+ * to the Russian originals in destinationLookup when a slug has no entry in
+ * src/i18n/visa.js yet.
+ */
+export const localizeVisa = (t, info) => {
+  if (!info) return null;
+  const pick = (field, fallback) => {
+    if (!info.slug) return fallback;
+    const v = t(`visaInfo.${info.slug}.${field}`);
+    return (v && !String(v).startsWith('visaInfo.')) ? v : fallback;
+  };
+  return { ...info, country: pick('country', info.country), text: pick('text', info.text) };
+};

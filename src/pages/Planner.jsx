@@ -15,7 +15,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { destinations } from '../utils/destinationData';
 import { findCity } from '../services/cityDatabase';
 import { NAV_APPS } from '../services/aiPlannerService';
-import { getDestinationHero, getVisaInfo } from '../services/destinationLookup';
+import { getDestinationHero, getVisaStatus } from '../services/destinationLookup';
+import { localizeVisa } from '../utils/visaTiming';
 import { generatePackingList } from '../services/packingList';
 import { aiPackingBrief, parseTripQuery } from '../services/travelServicesService';
 import { isGrokAvailable } from '../services/grokClient';
@@ -531,7 +532,8 @@ export default function Planner() {
 
           {/* Visa warning in results */}
           {(() => {
-            const vi = getVisaInfo(formData.destination);
+            const raw = getVisaStatus(formData.destination);
+            const vi = raw.required ? localizeVisa(t, raw) : null;
             return vi ? (
               <div className="mb-5 flex items-start gap-3 p-4 note-warn rounded-2xl">
                 <AlertTriangle className="w-5 h-5 text-[#009882] shrink-0 mt-0.5" />

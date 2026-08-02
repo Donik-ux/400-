@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { MapPin, Calendar, Clock, DollarSign, Sparkles, AlertTriangle, Navigation, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from '../../store/useLangStore';
-import { getVisaInfo, lookupDestination } from '../../services/destinationLookup';
+import { getVisaStatus, lookupDestination } from '../../services/destinationLookup';
+import { localizeVisa } from '../../utils/visaTiming';
 import CityAutocomplete from '../flights/CityAutocomplete';
 import SmartImage from '../../components/SmartImage';
 
@@ -66,7 +67,8 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
   const { t } = useTranslation();
   const set = (key) => (e) => onChange({ ...formData, [key]: e.target.value });
 
-  const visaInfo  = useMemo(() => getVisaInfo(formData.destination), [formData.destination]);
+  const visaRaw   = useMemo(() => getVisaStatus(formData.destination), [formData.destination]);
+  const visaInfo  = visaRaw.required ? localizeVisa(t, visaRaw) : null;
   const activeTier = BUDGET_TIERS.find(tier => tier.id === formData.budgetStyle);
 
   const applyTier = (tier) => {

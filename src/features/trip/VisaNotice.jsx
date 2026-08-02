@@ -21,7 +21,7 @@ import { checkVisa } from '../../services/travelServicesService';
 import { isGrokAvailable } from '../../services/grokClient';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../store/useLangStore';
-import { leadTimeDays, DEFAULT_VISA_LEAD_DAYS } from '../../utils/visaTiming';
+import { leadTimeDays, DEFAULT_VISA_LEAD_DAYS, localizeVisa } from '../../utils/visaTiming';
 
 const fill = (str, vars = {}) => String(str).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 
@@ -72,7 +72,10 @@ export default function VisaNotice({ destination, travelDate, nationality, lang 
     }
   }
 
-  const country = base.country || destination;
+  const loc = localizeVisa(t, base);
+  const country = loc?.country || destination;
+  const curatedText = loc?.text || '';
+
   const fmtDate = (d) => d.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
 
   const shell = tone === 'danger'
@@ -92,8 +95,8 @@ export default function VisaNotice({ destination, travelDate, nationality, lang 
           {fill(t(`tripPlan.visa.title.${status}`), { country })}
         </p>
 
-        {(ai?.summary || base.text) && (
-          <p className="text-[12px] font-semibold leading-snug opacity-90">{ai?.summary || base.text}</p>
+        {(ai?.summary || curatedText) && (
+          <p className="text-[12px] font-semibold leading-snug opacity-90">{ai?.summary || curatedText}</p>
         )}
 
         {needsVisa && (

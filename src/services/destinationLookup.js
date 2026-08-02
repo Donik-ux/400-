@@ -625,12 +625,37 @@ export function getVisaInfo(input = '') {
  *
  * @returns {{ known: boolean, required: boolean, country: string, text: string }}
  */
+/**
+ * Stable i18n slug for an entry, derived from its first keyword: 'usa',
+ * 'south korea' → 'southkorea'. Derived rather than stored so the 61 entries
+ * below need no parallel field to drift out of sync — the trade is that
+ * reordering an entry's `keys` renames its translation key, hence the
+ * uniqueness assertion below.
+ *
+ * The translations live in src/i18n/visa.js under `visaInfo.<slug>`.
+ */
+export const visaSlug = (entry) => String(entry?.keys?.[0] || '').replace(/[^a-z0-9]/g, '');
+
+if (import.meta.env?.DEV) {
+  const seen = new Set();
+  for (const e of DESTINATION_MAP) {
+    const slug = visaSlug(e);
+    if (!slug || seen.has(slug)) {
+      console.warn(`destinationLookup: duplicate or empty visa slug "${slug}" (${e.country}) — its translation will collide.`);
+    }
+    seen.add(slug);
+  }
+}
+
 export function getVisaStatus(input = '') {
   const entry = lookupDestination(input);
-  if (!entry) return { known: false, required: false, country: '', text: '' };
+  if (!entry) return { known: false, required: false, slug: '', country: '', text: '' };
   return {
     known: true,
     required: Boolean(entry.visa),
+    slug: visaSlug(entry),
+    // Russian originals, kept as the fallback for when a translation key is
+    // missing — see src/i18n/visa.js for the localized copies.
     country: entry.country,
     text: entry.visaText || '',
   };

@@ -16,6 +16,7 @@ import { countryBrief } from '../services/travelServicesService';
 import { generateItinerary } from '../services/plannerService';
 import { fetchTripFlights, applyFlightPricing } from '../services/tripFlightPricing';
 import { SAME_BLOCK_KM } from '../services/hotelProximity';
+import { findHotelNearAttractions, applyHotelChoice } from '../services/hotelSearch';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
 import { heroFor } from '../utils/destinationImages';
@@ -280,6 +281,27 @@ export default function TripPlan() {
           includedLabel: t('tripPlan.flights.includedInTicket'),
         }) : p));
       }).catch((e) => console.warn('Trip flight pricing failed:', e.message));
+
+      // Swap the model's invented hotel for a real, priced one that actually
+      // sits closest to the attractions this plan schedules — ranked from the
+      // itinerary's own coordinates (see hotelSearch.js). A curated partner
+      // property stays put: it is there on purpose, not by accident.
+      if (!result.hotel?.recommended) {
+        findHotelNearAttractions({
+          destination: params.destination,
+          days:        result.days,
+          startDate:   travelDate,
+          nights:      Math.max(1, params.days - 1),
+          travelers,
+          style:       params.style,
+          maxNightly:  result.budgetBreakdown?.accommodation && params.days > 1
+            ? Math.round((result.budgetBreakdown.accommodation / (params.days - 1)) * 1.4)
+            : undefined,
+        }).then((hotel) => {
+          if (!hotel) return;
+          setPlan((p) => (p && !p.hotel?.recommended ? applyHotelChoice(p, hotel) : p));
+        }).catch((e) => console.warn('Hotel proximity search failed:', e.message));
+      }
 
       // Template fallback has no city info — try a much smaller standalone AI
       // call for it (often fits even when the full plan call was rate-limited).
@@ -690,6 +712,17 @@ export default function TripPlan() {
                           </span>
                         )}
                         {h.pricePerNight && <span className="text-[10px] font-black text-[#252a31] bg-[#e8f4fd] px-2 py-0.5 rounded-md">{h.pricePerNight}</span>}
+                        {h.rating > 0 && (
+                          <span className="text-[10px] font-black text-[#252a31] bg-[#fdf3e0] px-2 py-0.5 rounded-md flex items-center gap-0.5">
+                            <Star className="w-2.5 h-2.5 fill-[#e8a33d] text-[#e8a33d]" /> {h.rating}
+                            {h.reviews > 0 && <span className="text-[#697d95] font-bold">({h.reviews.toLocaleString()})</span>}
+                          </span>
+                        )}
+                        {h.source === 'serpapi' && (
+                          <span className="text-[10px] font-black text-[#008009] bg-[#eafaea] px-2 py-0.5 rounded-md">
+                            {t('tripPlan.realHotelBadge')}
+                          </span>
+                        )}
                       </div>
                       <div className="text-[16px] font-black text-[#252a31]">{h.name}</div>
                       {h.address && (
@@ -749,6 +782,39 @@ export default function TripPlan() {
                       <p className="mt-2 text-[10px] text-[#8a99ab] font-semibold">
                         {prox.basis === 'coords' ? t('tripPlan.walkNote') : t('tripPlan.districtNote')}
                       </p>
+
+                      {/* Runners-up from the same ranking — so "closest" is a
+                          choice the traveler can see, not a black box. */}
+                      {h.alternatives?.length > 0 && (
+                        <details className="mt-2">
+                          <summary className="text-[11px] font-black text-[#0172cb] cursor-pointer">
+                            {t('tripPlan.otherNearbyHotels')}
+                          </summary>
+                          <ul className="mt-1.5 space-y-1">
+                            {h.alternatives.map((alt, i) => (
+                              <li key={i} className="flex items-baseline gap-2 text-[11.5px]">
+                                {alt.link ? (
+                                  <a href={alt.link} target="_blank" rel="noreferrer noopener"
+                                    className="font-bold text-[#0172cb] hover:underline truncate">{alt.name}</a>
+                                ) : (
+                                  <span className="font-bold text-[#252a31] truncate">{alt.name}</span>
+                                )}
+                                {alt.nightly && <span className="shrink-0 text-[#252a31] font-black">{alt.nightly}</span>}
+                                <span className="shrink-0 text-[#697d95] font-semibold">
+                                  {fill(t('tripPlan.altWalkable'), { count: alt.walkableCount })}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </details>
+                      )}
+
+                      {h.bookLink && (
+                        <a href={h.bookLink} target="_blank" rel="noreferrer noopener"
+                          className="mt-3 inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-[#0172cb] hover:bg-[#015ba3] text-white text-[11px] font-black active:scale-95 transition">
+                          {t('tripPlan.bookHotel')} <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
                     </div>
                   )}
                 </div>

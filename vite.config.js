@@ -56,6 +56,33 @@ function hotelsDevApi() {
   };
 }
 
+// Dev-only middleware for `/api/hotelsSerp` (SerpApi Google Hotels — real
+// hotels WITH coordinates, so the trip planner can rank them by walking
+// distance to the itinerary's attractions). Same pattern as hotelsDevApi.
+function hotelsSerpDevApi() {
+  return {
+    name: 'hotels-serp-dev-api',
+    configureServer(server) {
+      server.middlewares.use('/api/hotelsSerp', async (req, res) => {
+        const send = (status, obj) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(obj));
+        };
+        try {
+          const url = new URL(req.originalUrl || req.url, 'http://localhost');
+          const params = Object.fromEntries(url.searchParams);
+          const mod = await server.ssrLoadModule('/api/hotelsSerp.js');
+          const { status, body } = await mod.searchGoogleHotels(params);
+          send(status, body);
+        } catch (err) {
+          send(500, { error: String(err?.message || err), hotels: [] });
+        }
+      });
+    },
+  };
+}
+
 // Dev-only middleware so `/api/translate` (a Vercel serverless function in prod)
 // also works under `npm run dev`. Proxies to free Google Translate server-side.
 function translateDevApi() {
@@ -205,6 +232,7 @@ export default defineConfig(({ mode }) => {
   process.env.AMADEUS_CLIENT_SECRET = env.AMADEUS_CLIENT_SECRET || process.env.AMADEUS_CLIENT_SECRET || '';
   process.env.AMADEUS_ENV           = env.AMADEUS_ENV           || process.env.AMADEUS_ENV           || '';
   process.env.GROQ_API_KEY          = env.GROQ_API_KEY          || process.env.GROQ_API_KEY          || '';
+  process.env.SERPAPI_KEY           = env.SERPAPI_KEY           || process.env.SERPAPI_KEY           || '';
   process.env.GROQ_MODEL            = env.GROQ_MODEL            || process.env.GROQ_MODEL            || '';
   process.env.ADMIN_PASSWORD        = env.ADMIN_PASSWORD        || process.env.ADMIN_PASSWORD        || '';
   process.env.ADMIN_TOKEN_SECRET    = env.ADMIN_TOKEN_SECRET    || process.env.ADMIN_TOKEN_SECRET    || '';
@@ -219,6 +247,7 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       amadeusDevApi(),
       hotelsDevApi(),
+      hotelsSerpDevApi(),
       translateDevApi(),
       aiAskDevApi(),
       photoDevApi(),

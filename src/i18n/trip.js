@@ -67,6 +67,10 @@ export default {
       walkMin: '{min} min walk',
       awayKm: '{km} km away',
       rightNextTo: 'right by the hotel',
+      realHotelBadge: 'Real hotel · Google',
+      otherNearbyHotels: 'Other hotels this close',
+      altWalkable: '{count} stops on foot',
+      bookHotel: 'See rooms & book',
       walkNote: 'Walking times measured from the hotel to each planned stop.',
       districtNote: 'Stops sharing the hotel’s district — the sightseeing cluster you stay inside.',
       // Per-day weather chip
@@ -315,6 +319,10 @@ export default {
       walkMin: '{min} daqiqa piyoda',
       awayKm: '{km} km uzoqlikda',
       rightNextTo: 'mehmonxona yonginasida',
+      realHotelBadge: 'Haqiqiy mehmonxona · Google',
+      otherNearbyHotels: 'Shunga yaqin boshqa mehmonxonalar',
+      altWalkable: '{count} ta nuqta piyoda',
+      bookHotel: 'Xonalarni ko‘rish va band qilish',
       walkNote: 'Piyoda vaqt mehmonxonadan har bir rejadagi nuqtagacha hisoblangan.',
       districtNote: 'Mehmonxona bilan bir tumandagi nuqtalar — siz yashaydigan sayohat markazi.',
       // Per-day weather chip

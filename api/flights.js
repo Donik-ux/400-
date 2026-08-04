@@ -8,7 +8,13 @@
 //   3. Duffel — needs DUFFEL_API_KEY (free self-serve signup, no partner
 //      approval needed for test-mode keys). See scrapers/duffelClient.js.
 //   4. Amadeus Self-Service — live GDS prices when configured (major routes).
-//   5. 501 → client falls back to its AI/template estimate.
+//   5. Google Flights via SerpApi — needs SERPAPI_KEY. The fare a traveler
+//      actually sees on Google, with the operating airline and layover count.
+//   6. 501 → client falls back to its AI/template estimate.
+//
+// All of the above are queried IN PARALLEL, not in order — see
+// searchFlightsApi. A source with no key returns 501 instantly and is skipped,
+// so an unconfigured platform costs nothing.
 //
 // Note on scope: Skyscanner, Kayak, Momondo, Google Flights, Booking.com
 // Flights and Expedia have NO public self-serve API for real-time fares —
@@ -24,6 +30,7 @@
 // is the new combined entry).
 import { searchKiwi } from './scrapers/kiwiClient.js';
 import { searchDuffel } from './scrapers/duffelClient.js';
+import { searchGoogleFlights } from './flightsSerp.js';
 import { checkRateLimit, sendRateLimited } from './_rateLimit.js';
 import { AMADEUS_HOSTS, getAmadeusToken } from './_amadeusAuth.js';
 // Carrier IATA → exact name used in services/airlineLinks.js so the airline
@@ -219,6 +226,56 @@ export async function searchAmadeus({ from, to, date, adults = 1, cabin = 'ECONO
 
 /* ────────────────────────── Combined entry ─────────────────────────────── */
 
+// Google Flights (via SerpApi) speaks its own shape — it was written for the
+// trip planner, which needs legs and layovers rather than the flat offer the
+// results list renders. Adapt it here instead of forking the module, so both
+// callers keep using one Google Flights client and one SerpApi cache.
+//
+// Google is billed per search (free tier: 100/month) and its own module caches
+// for 3h, so a repeated route costs nothing. Unconfigured → 501, which the
+// merge below skips like any other dark source.
+async function searchGoogleFlightsAdapted({ from, to, date, cabin = 'ECONOMY' } = {}) {
+  const departureId = codeOf(from);
+  const arrivalId = codeOf(to);
+  if (!departureId || !arrivalId || !date) return { status: 400, body: { flights: [] } };
+
+  const { status, body } = await searchGoogleFlights({
+    departureId, arrivalId, outboundDate: date,
+    travelClass: String(cabin).toLowerCase().includes('business') ? 'business' : 'economy',
+  });
+  if (status !== 200 || !Array.isArray(body?.flights)) return { status, body: { flights: [] } };
+
+  // Callers pass the API-side value ("ECONOMY", "PREMIUM_ECONOMY"); the card
+  // renders this verbatim, so lowercase before title-casing or it shouts.
+  const cabinLabel = String(cabin || 'Economy').toLowerCase().replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  const flights = body.flights.map((f, i) => ({
+    id: `gflights-${departureId}${arrivalId}-${date}-${i}`,
+    airline: f.airline || 'Airline',
+    airlineCode: f.flightNumber || '',
+    airlineLogo: f.airlineLogo || '✈️',
+    cabin: cabinLabel,
+    price: f.price,
+    pricePerPerson: f.price,
+    departure: f.departure || '',
+    arrival: f.arrival || '',
+    departMins: null,
+    arrNextDay: Boolean(f.overnight),
+    duration: f.duration || '—',
+    stops: Number(f.stops) || 0,
+    from: f.from || departureId,
+    to: f.to || arrivalId,
+    date,
+    seats: null,
+    eco: Number(f.stops) === 0,
+    // Google Flights has no per-offer buy URL — send the traveler to the same
+    // search on Google rather than to a link that would 404.
+    buyLink: `https://www.google.com/travel/flights?q=${encodeURIComponent(`Flights from ${departureId} to ${arrivalId} on ${date}`)}`,
+    source: 'google-flights',
+  }));
+
+  return { status: 200, body: { flights, source: 'google-flights' } };
+}
+
 // Query every configured source IN PARALLEL and merge their offers into one
 // price-sorted list, so the UI can show "Kiwi $450 / Duffel $470 / Amadeus
 // $460" side by side instead of only ever showing whichever source happened
@@ -231,6 +288,7 @@ export async function searchFlightsApi(params = {}) {
     searchTravelpayouts(params),
     searchDuffel(params),
     searchAmadeus(params),
+    searchGoogleFlightsAdapted(params),
   ]);
 
   const merged = [];

@@ -15,11 +15,21 @@ export default function FlightCard({ flight, index, aiPriced }) {
   // the button opens the real page for THIS flight; else the airline deep-link.
   const officialUrl = flight.buyLink || officialUrlFor(flight);
   const meta = airlineMetaOf(flight);
-  // Real quote (Kiwi/Travelpayouts/Duffel/Amadeus) vs in-app estimate → controls the "≈ approx" hint.
-  const isRealPrice = flight.source === 'kiwi' || flight.source === 'travelpayouts' || flight.source === 'duffel' || flight.source === 'amadeus';
+  // Which platform quoted this fare. Results are merged from every configured
+  // source, so the same route can show a Kiwi price next to a Google Flights
+  // one — the traveler needs to know which is which to judge the difference.
+  const SOURCE_LABELS = {
+    kiwi: 'Kiwi.com',
+    travelpayouts: 'Aviasales',
+    duffel: 'Duffel',
+    amadeus: 'Amadeus',
+    'google-flights': 'Google Flights',
+  };
+  const sourceLabel = SOURCE_LABELS[flight.source] || null;
+  // Real quote vs in-app estimate → controls the "≈ approx" hint.
+  const isRealPrice = Boolean(sourceLabel);
   const fromCity = (flight.from || '').split('(')[0].trim();
   const toCity   = (flight.to   || '').split('(')[0].trim();
-  const sourceLabel = flight.source === 'kiwi' ? 'Kiwi' : flight.source === 'travelpayouts' ? 'Aviasales' : flight.source === 'duffel' ? 'Duffel' : null;
   const bookLabel = meta?.domain ? meta.domain.split('.')[0] : (sourceLabel || flight.airline);
   const nonStop = flight.stops === 0;
 
@@ -111,6 +121,14 @@ export default function FlightCard({ flight, index, aiPriced }) {
                   ? (t('flights.results.perPerson') || 'per person')
                   : `${aiPriced ? '🤖 ' : ''}${t('flightsPage.card.approxPrice') || 'approx · per person'}`}
               </p>
+              {/* Name the platform that quoted it — with several sources merged
+                  into one list, an unlabelled price says nothing about where
+                  the traveler would actually be buying. */}
+              {sourceLabel && (
+                <p className="mt-1 inline-flex items-center gap-1 rounded-md bg-white border border-[#dfe7ec] px-1.5 py-0.5 text-[9.5px] font-black uppercase tracking-wide text-[#4a5867]">
+                  {sourceLabel}
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col items-stretch gap-2 w-full max-w-[180px]">

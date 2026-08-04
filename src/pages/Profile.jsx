@@ -75,10 +75,9 @@ export default function Profile() {
     <div className="bg-[#f5f7f9] min-h-screen -mt-[64px]">
 
       {/* ── Hero header ── */}
-      <section className="relative bg-gradient-to-br from-[#001026] via-[#1c2127] to-[#252a31] text-white overflow-hidden pt-[100px] pb-16">
+      <section className="relative bg-[#1c2127] text-white overflow-hidden pt-[100px] pb-16">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
              style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0172cb 0%, transparent 45%), radial-gradient(circle at 78% 65%, #009882 0%, transparent 38%)' }} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#009882]/15 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-4xl mx-auto px-4 md:px-8">
           <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-white/60 hover:text-white text-[13px] font-semibold mb-7 transition">
             <ArrowLeft className="w-4 h-4" /> {t('profilePage.back')}
@@ -145,7 +144,7 @@ export default function Profile() {
 
             {plans.length === 0 ? (
               <div className="text-center py-8 rounded-2xl border border-dashed border-[#e0e0e0] bg-[#fafafa]">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#009882] to-[#007f6d] flex items-center justify-center mx-auto mb-3 rotate-3 shadow-soft">
+                <div className="w-14 h-14 rounded-2xl bg-[#00a58e] flex items-center justify-center mx-auto mb-3 rotate-3 shadow-soft">
                   <Map className="w-7 h-7 text-white" />
                 </div>
                 <p className="text-[15px] font-black text-[#252a31] mb-1">{t('profilePage.noPlansTitle') || 'No saved plans yet'}</p>
@@ -193,7 +192,7 @@ export default function Profile() {
                           ) : <span className="text-[11px] text-[#697d95] font-bold">{t('lists.plans.openToView') || 'Open to view'}</span>}
                           <div className="flex items-center gap-1.5">
                             <button onClick={() => downloadPlanPdf(plan)}
-                              className="px-2.5 py-2 rounded-lg border-2 border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] text-[11px] font-black flex items-center gap-1 transition active:scale-95"
+                              className="px-2.5 py-2 rounded-lg border border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] text-[11px] font-black flex items-center gap-1 transition active:scale-95"
                               title={t('lists.plans.downloadPdf') || 'Download PDF'}>
                               <Download className="w-3.5 h-3.5" /> PDF
                             </button>
@@ -232,7 +231,7 @@ export default function Profile() {
                   {editing ? (
                     <input type={field.type} placeholder={field.ph} value={form[field.k]}
                       onChange={e => f(field.k, e.target.value)}
-                      className="w-full bg-[#eef2f5] border-2 border-[#dfe7ec] rounded-xl px-4 py-3 text-sm text-[#252a31] placeholder:text-[#94a3af] focus:outline-none focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/15 transition"
+                      className="w-full bg-[#eef2f5] border border-[#dfe7ec] rounded-xl px-4 py-3 text-sm text-[#252a31] placeholder:text-[#94a3af] focus:outline-none focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/15 transition"
                     />
                   ) : (
                     <p className="text-sm text-[#252a31] font-semibold py-3">{form[field.k] || <span className="text-[#c0c0c0] font-medium">{t('profilePage.notSet')}</span>}</p>
@@ -258,7 +257,7 @@ export default function Profile() {
                     <CreditCard className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#697d95]" />
                     <input type="text" placeholder={t('profilePage.passportNumberPlaceholder')} value={form.passportNumber}
                       onChange={e => f('passportNumber', e.target.value.toUpperCase())}
-                      className="w-full bg-[#eef2f5] border-2 border-[#dfe7ec] rounded-xl pl-10 pr-4 py-3 text-sm text-[#252a31] font-mono placeholder:text-[#94a3af] focus:outline-none focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/15 transition uppercase"
+                      className="w-full bg-[#eef2f5] border border-[#dfe7ec] rounded-xl pl-10 pr-4 py-3 text-sm text-[#252a31] font-mono placeholder:text-[#94a3af] focus:outline-none focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/15 transition uppercase"
                     />
                   </div>
                 ) : (
@@ -276,7 +275,7 @@ export default function Profile() {
                 {editing ? (
                   <input type="date" value={form.passportExpiry} onChange={e => f('passportExpiry', e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full bg-[#eef2f5] border-2 border-[#dfe7ec] rounded-xl px-4 py-3 text-sm text-[#252a31] focus:outline-none focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/15 transition"
+                    className="w-full bg-[#eef2f5] border border-[#dfe7ec] rounded-xl px-4 py-3 text-sm text-[#252a31] focus:outline-none focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/15 transition"
                   />
                 ) : (
                   <p className="text-sm text-[#252a31] font-semibold py-3">

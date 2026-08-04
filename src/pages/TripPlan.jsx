@@ -349,16 +349,15 @@ export default function TripPlan() {
     return (
       <div className="min-h-screen bg-[#f5f7f9] flex items-center justify-center p-6">
         <div className="bg-white rounded-2xl border border-[#dfe7ec] p-10 max-w-md w-full text-center shadow-float relative overflow-hidden">
-          <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-[#00a58e]/15 blur-3xl pointer-events-none animate-float" />
           <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00a58e] to-[#008f77] flex items-center justify-center mx-auto mb-4 rotate-3 shadow-lift">
+            <div className="w-16 h-16 rounded-2xl bg-[#00a58e] flex items-center justify-center mx-auto mb-4 rotate-3 shadow-lift">
               <AlertCircle className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-black text-[#252a31] mb-1.5">{t('tripPlan.noItemTitle')}</h2>
             <p className="text-[#4a5867] text-[14px] font-medium mb-6 leading-relaxed">
               {t('tripPlan.noItemSub')}
             </p>
-            <button onClick={() => navigate('/hot-tours')}
+            <button onClick={() => navigate('/planner')}
               className="btn-gold px-6 py-3.5 text-[13px] inline-flex items-center gap-2">
               <Sparkles className="w-4 h-4" /> {t('tripPlan.openStudio')}
             </button>
@@ -427,8 +426,7 @@ export default function TripPlan() {
     <div className="min-h-screen bg-[#f5f7f9]">
 
       {/* ── HEADER ────────────────────────────────────────────── */}
-      <section className="relative bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#0172cb] text-white overflow-hidden">
-        <div className="absolute -top-20 -right-12 w-64 h-64 rounded-full bg-[#00a58e]/15 blur-3xl pointer-events-none animate-float" />
+      <section className="relative bg-[#1c2127] text-white overflow-hidden">
         <div className="relative max-w-6xl mx-auto px-4 md:px-8 py-7">
           <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-white/70 hover:text-white text-[12px] font-bold mb-3 transition">
             <ArrowLeft className="w-4 h-4" /> {t('tripPlan.back')}
@@ -975,9 +973,9 @@ export default function TripPlan() {
                     return (
                     <motion.div key={d.day} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}
                       className="relative rounded-xl border border-[#dfe7ec] bg-[#eef2f5] overflow-hidden shadow-soft">
-                      <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#0172cb] to-[#252a31]" />
+                      <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#0172cb]" />
                       <div className="px-4 py-3 pl-5 bg-white border-b border-[#e8edf1] flex items-center gap-3 flex-wrap">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#252a31] to-[#0172cb] text-white text-[13px] font-black flex items-center justify-center shrink-0 shadow-soft">D{d.day}</div>
+                        <div className="w-10 h-10 rounded-xl bg-[#0172cb] text-white text-[13px] font-black flex items-center justify-center shrink-0 shadow-soft">D{d.day}</div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-[10px] font-black uppercase tracking-widest text-[#0172cb]">{fill(t('tripPlan.dayLabel'), { day: d.day })}</span>
@@ -1261,7 +1259,7 @@ export default function TripPlan() {
           <div className="lg:col-span-1">
             <div className="bg-white border border-[#dfe7ec] rounded-2xl overflow-hidden sticky top-[80px] shadow-float no-print">
 
-              <div className="relative bg-gradient-to-br from-[#1c2127] to-[#0172cb] text-white px-5 py-5 overflow-hidden">
+              <div className="relative bg-[#1c2127] text-white px-5 py-5 overflow-hidden">
                 <div className="absolute -top-12 -right-8 w-40 h-40 rounded-full bg-[#00a58e]/15 blur-2xl pointer-events-none" />
                 <div className="relative">
                   <div className="text-[10px] font-black uppercase tracking-widest text-white/70 mb-0.5">{t('tripPlan.totalTripCost')}</div>
@@ -1335,15 +1333,15 @@ export default function TripPlan() {
                     {saved ? (<><Check className="w-4 h-4" /> {t('tripPlan.saved')}</>) : (<><Save className="w-4 h-4" /> {t('tripPlan.savePlan')}</>)}
                   </button>
                   <button onClick={handleShare}
-                    className="px-3 py-3 rounded-xl border-2 border-[#0172cb] text-[#0172cb] text-[12px] font-black hover:bg-[#e8f4fd] transition active:scale-95 flex items-center justify-center gap-1.5">
+                    className="px-3 py-3 rounded-xl border border-[#0172cb] text-[#0172cb] text-[12px] font-black hover:bg-[#e8f4fd] transition active:scale-95 flex items-center justify-center gap-1.5">
                     <Share2 className="w-4 h-4" /> {t('tripPlan.share')}
                   </button>
                   <button onClick={handlePrint}
-                    className="px-3 py-3 rounded-xl border-2 border-[#dfe7ec] text-[#252a31] text-[12px] font-black hover:border-[#0172cb] hover:bg-[#e8f4fd] transition active:scale-95 flex items-center justify-center gap-1.5">
+                    className="px-3 py-3 rounded-xl border border-[#dfe7ec] text-[#252a31] text-[12px] font-black hover:border-[#0172cb] hover:bg-[#e8f4fd] transition active:scale-95 flex items-center justify-center gap-1.5">
                     <Printer className="w-4 h-4" /> {t('tripPlan.print')}
                   </button>
                   <button onClick={handleDownload}
-                    className="px-3 py-3 rounded-xl border-2 border-[#dfe7ec] text-[#252a31] text-[12px] font-black hover:border-[#0172cb] hover:bg-[#e8f4fd] transition active:scale-95 flex items-center justify-center gap-1.5">
+                    className="px-3 py-3 rounded-xl border border-[#dfe7ec] text-[#252a31] text-[12px] font-black hover:border-[#0172cb] hover:bg-[#e8f4fd] transition active:scale-95 flex items-center justify-center gap-1.5">
                     <Download className="w-4 h-4" /> {t('tripPlan.pdf')}
                   </button>
                 </div>
@@ -1360,7 +1358,7 @@ export default function TripPlan() {
                         onKeyDown={(e) => { if (e.key === 'Enter') handleRefine(); }}
                         placeholder={t('tripPlan.refine.placeholder')}
                         disabled={refining || loading}
-                        className="flex-1 min-w-0 px-3 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] outline-none text-[12px] font-semibold text-[#252a31] placeholder:text-[#8fa1b3] disabled:opacity-50 bg-white"
+                        className="flex-1 min-w-0 px-3 py-2.5 rounded-xl border border-[#dfe7ec] focus:border-[#0172cb] outline-none text-[12px] font-semibold text-[#252a31] placeholder:text-[#8fa1b3] disabled:opacity-50 bg-white"
                       />
                       <button onClick={handleRefine} disabled={refining || loading || !refineText.trim()}
                         className="px-3.5 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015fa8] text-white text-[12px] font-black transition active:scale-95 disabled:opacity-50 shrink-0 flex items-center gap-1.5">

@@ -31,7 +31,6 @@ export default function BudgetAdvisory({ balance, className = '' }) {
 
   return (
     <div className={`relative overflow-hidden rounded-2xl border shadow-soft ${isTiny ? 'border-[#eccfc7] bg-gradient-to-br from-[#faeae6] to-white' : 'border-[#ffe6a8] bg-gradient-to-br from-[#e6f6f3] to-white'} ${className}`}>
-      <div className={`absolute -right-12 -top-12 w-44 h-44 rounded-full blur-3xl pointer-events-none ${isTiny ? 'bg-[#d98a75]/40' : 'bg-[#00a58e]/30'}`} />
       <div className={`absolute left-0 top-0 bottom-0 w-1 ${isTiny ? 'bg-[#b3402e]' : 'bg-gradient-to-b from-[#00a58e] to-[#008f77]'}`} />
 
       <div className="relative p-4 md:p-5">

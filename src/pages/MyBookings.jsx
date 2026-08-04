@@ -81,10 +81,9 @@ export default function MyBookings() {
   return (
     <div className="bg-[#f5f7f9] min-h-screen -mt-[64px]">
       {/* ── Hero header ── */}
-      <section className="relative bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#0172cb] text-white overflow-hidden pt-[100px] pb-14">
+      <section className="relative bg-[#1c2127] text-white overflow-hidden pt-[100px] pb-14">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
              style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0172cb 0%, transparent 45%), radial-gradient(circle at 75% 70%, #00a58e 0%, transparent 35%)' }} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#00a58e]/15 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <BookOpen className="w-3.5 h-3.5" /> {t('bookings.badge') || 'Travel History'}
@@ -110,7 +109,7 @@ export default function MyBookings() {
                 placeholder={t('lists.bookings.searchPh')}
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full bg-white border-2 border-[#dfe7ec] focus:border-[#0172cb] rounded-xl pl-10 pr-4 py-2.5 text-[14px] font-semibold text-[#252a31] placeholder:text-[#94a3af] outline-none transition"
+                className="w-full bg-white border border-[#dfe7ec] focus:border-[#0172cb] rounded-xl pl-10 pr-4 py-2.5 text-[14px] font-semibold text-[#252a31] placeholder:text-[#94a3af] outline-none transition"
               />
             </div>
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
@@ -138,10 +137,8 @@ export default function MyBookings() {
         {/* ── Empty state ── */}
         {bookings.length === 0 && (
           <div className="bg-white border border-[#dfe7ec] rounded-2xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#0172cb]/15 blur-3xl pointer-events-none animate-float" />
-            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none" />
             <div className="relative">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#252a31] to-[#0172cb] flex items-center justify-center mx-auto mb-5 -rotate-3 shadow-lift">
+              <div className="w-20 h-20 rounded-2xl bg-[#0172cb] flex items-center justify-center mx-auto mb-5 -rotate-3 shadow-lift">
                 <BookOpen className="w-10 h-10 text-white" />
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-[#252a31] mb-2">{t('bookings.empty') || 'No plans saved yet'}</h2>
@@ -149,12 +146,12 @@ export default function MyBookings() {
                 {t('bookings.emptySub') || 'When you save a trip plan, it lands here so you can revisit, print, or share it anytime.'}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <button onClick={() => navigate('/hot-tours')}
+                <button onClick={() => navigate('/planner')}
                   className="btn-gold px-6 py-3.5 text-[13px] flex items-center justify-center gap-2">
                   <Sparkles className="w-4 h-4" /> {t('lists.bookings.startStudio')}
                 </button>
                 <button onClick={() => navigate('/flights')}
-                  className="px-6 py-3.5 rounded-xl border-2 border-[#dfe7ec] hover:border-[#0172cb] hover:bg-[#e8f4fd] text-[#252a31] text-[13px] font-black flex items-center justify-center gap-2 transition active:scale-95">
+                  className="px-6 py-3.5 rounded-xl border border-[#dfe7ec] hover:border-[#0172cb] hover:bg-[#e8f4fd] text-[#252a31] text-[13px] font-black flex items-center justify-center gap-2 transition active:scale-95">
                   <Plane className="w-4 h-4" /> {t('lists.bookings.searchFlights')}
                 </button>
               </div>

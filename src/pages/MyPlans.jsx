@@ -52,10 +52,9 @@ export default function MyPlans() {
   return (
     <div className="bg-[#f5f7f9] min-h-screen -mt-[64px]">
       {/* ── Hero header ── */}
-      <section className="relative bg-gradient-to-br from-[#1c2127] via-[#002a63] to-[#252a31] text-white overflow-hidden pt-[100px] pb-14">
+      <section className="relative bg-[#1c2127] text-white overflow-hidden pt-[100px] pb-14">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
              style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0172cb 0%, transparent 45%), radial-gradient(circle at 75% 70%, #009882 0%, transparent 35%)' }} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#009882]/15 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#009882] text-[#1c2127] text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <Sparkles className="w-3.5 h-3.5" /> {t('lists.plans.badge')}
@@ -81,10 +80,8 @@ export default function MyPlans() {
         {/* ── Empty state ── */}
         {plans.length === 0 && (
           <div className="bg-white border border-[#dfe7ec] rounded-2xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#009882]/20 blur-3xl pointer-events-none animate-float" />
-            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#0172cb]/10 blur-3xl pointer-events-none" />
             <div className="relative">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#009882] to-[#007f6d] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-lift">
+              <div className="w-20 h-20 rounded-2xl bg-[#00a58e] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-lift">
                 <Map className="w-10 h-10 text-white" />
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-[#252a31] mb-2">{t('lists.plans.emptyTitle')}</h2>
@@ -151,7 +148,7 @@ export default function MyPlans() {
                       </div>
                       <div className="flex items-center gap-2">
                         <button onClick={() => downloadPlanPdf(plan)}
-                          className="px-3 py-2.5 rounded-xl border-2 border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95"
+                          className="px-3 py-2.5 rounded-xl border border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95"
                           title={t('lists.plans.downloadPdf') || 'Download PDF'}>
                           <Download className="w-3.5 h-3.5" /> PDF
                         </button>

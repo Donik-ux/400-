@@ -44,11 +44,9 @@ export default function Login() {
     <div className="min-h-screen bg-[#f5f7f9] grid lg:grid-cols-2">
 
       {/* Brand panel */}
-      <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#252a31] via-[#00306f] to-[#1c2127] p-12 text-white">
+      <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-[#1c2127] p-12 text-white">
         {/* Floating accents */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="animate-float absolute -top-10 -right-10 w-72 h-72 rounded-full bg-[#0172cb]/30 blur-3xl" />
-          <div className="animate-float absolute bottom-0 -left-16 w-80 h-80 rounded-full bg-[#00a58e]/15 blur-3xl" style={{ animationDelay: '1.5s' }} />
           <Plane className="animate-float absolute top-24 right-24 w-10 h-10 text-white/15" style={{ animationDelay: '0.6s' }} />
           <Globe2 className="animate-float absolute bottom-28 left-24 w-12 h-12 text-white/10" style={{ animationDelay: '2.2s' }} />
         </div>
@@ -138,7 +136,7 @@ export default function Login() {
             <button type="submit" disabled={loading}
               className="w-full py-3 rounded-xl bg-[#0172cb] text-white text-[14px] font-bold hover:bg-[#015aa3] transition-premium disabled:opacity-50 disabled:cursor-not-allowed mt-1 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(1, 114, 203,0.3)]">
               {loading ? (
-                <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('auth.login.submitting')}</>
+                <><div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin" />{t('auth.login.submitting')}</>
               ) : (
                 <>{t('auth.login.submit')}</>
               )}

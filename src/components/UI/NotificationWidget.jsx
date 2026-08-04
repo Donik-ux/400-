@@ -9,13 +9,13 @@ const DEALS = [
   { id: 1, icon: '✈️', title: 'Flash Sale: Dubai Flights', body: 'From $199! Only 48 hours left. Book now →', tag: 'flight',
     to: '/flights', state: { formData: { from: '', to: 'Dubai', date: '', returnDate: '' } } },
   { id: 2, icon: '🏖️', title: 'New Package: Maldives', body: 'Overwater villa from $3,299/person. Limited spots!', tag: 'package',
-    to: '/hot-tours?to=Maldives&days=7&balance=3299' },
+    to: '/trip-plan?to=Maldives&days=7&balance=3299' },
   { id: 3, icon: '🏨', title: 'Hotel Deal: Burj Al Arab', body: '20% off when you book 30 days in advance.', tag: 'hotel',
-    to: '/hot-tours?to=Dubai&days=5&balance=2500' },
+    to: '/trip-plan?to=Dubai&days=5&balance=2500' },
   { id: 4, icon: '🌍', title: 'Weekend Getaway to Istanbul', body: '4 days from $849 all-inclusive. Ends Sunday!', tag: 'package',
-    to: '/hot-tours?to=Istanbul&days=4&balance=849' },
+    to: '/trip-plan?to=Istanbul&days=4&balance=849' },
   { id: 5, icon: '💥', title: 'Cyber Monday Travel Deals', body: 'Up to 40% off select packages. Use code CYBER40', tag: 'promo',
-    to: '/hot-tours' },
+    to: '/exotic-tours' },
 ];
 
 const PERM_KEY = 'maf_notif_permission';

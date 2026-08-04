@@ -82,7 +82,7 @@ export default function DisclaimerModal() {
         <div className="px-4 py-3.5 sm:px-7 sm:py-5 border-t border-[#e8edf1] bg-[#eef2f5]">
           <label onClick={() => setRead(v => !v)} className="flex items-start gap-2.5 sm:gap-3 cursor-pointer mb-3.5 sm:mb-5 select-none">
             <div
-              className={`w-5 h-5 rounded shrink-0 mt-0.5 border-2 flex items-center justify-center transition-all ${
+              className={`w-5 h-5 rounded shrink-0 mt-0.5 border flex items-center justify-center transition-all ${
                 read ? 'bg-[#252a31] border-[#252a31]' : 'border-[#bac7d1] bg-white'
               }`}
             >

@@ -33,10 +33,12 @@
   --color-night:   #14181d;
   --color-night-2: #1b2026;
 
-  /* Premium elevation scale — three-layer recipe (contact + direct + ambient) for physically-grounded depth */
-  --shadow-soft:  0 1px 1px rgba(16,24,40,0.03), 0 2px 5px rgba(16,24,40,0.05), 0 8px 20px -8px rgba(16,24,40,0.08);
-  --shadow-float: 0 2px 6px rgba(16,24,40,0.05), 0 10px 24px -8px rgba(16,24,40,0.14), 0 28px 52px -18px rgba(16,24,40,0.16);
-  --shadow-lift:  0 4px 10px rgba(37, 42, 49,0.10), 0 18px 38px -12px rgba(37, 42, 49,0.24), 0 34px 64px -22px rgba(16,24,40,0.18);
+  /* Flat elevation scale — booking-site depth: a hairline contact shadow and a
+     short ambient one. Deep multi-layer "vitrine" shadows read as ornamental
+     next to the flat card grids this UI is built from. */
+  --shadow-soft:  0 1px 2px rgba(16,24,40,0.04);
+  --shadow-float: 0 1px 2px rgba(16,24,40,0.05), 0 6px 16px -8px rgba(16,24,40,0.14);
+  --shadow-lift:  0 2px 4px rgba(16,24,40,0.06), 0 10px 24px -10px rgba(16,24,40,0.18);
 
   /* Motion */
   --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
@@ -152,8 +154,8 @@ button, a, input, select, textarea {
   transition: transform 0.32s var(--ease-premium), box-shadow 0.32s var(--ease-premium);
   will-change: transform;
 }
-.lift:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
-.lift:active { transform: translateY(-2px); }
+.lift:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+.lift:active { transform: translateY(0); }
 
 /* Primary CTA — flat kiwi-green button with white text and a simple hover
    darken (Kiwi/Orbit style: no metallic gradients, sheens or light sweeps) */
@@ -171,7 +173,8 @@ button, a, input, select, textarea {
 .btn-gold:hover  { background: #009882; box-shadow: 0 4px 12px rgba(0, 143, 119, 0.25); }
 .btn-gold:active { transform: scale(0.98); background: #008f77; }
 
-/* ── Luxury ornamental divider — used to break up long homepage sections with intent ── */
+/* ── Section divider — a plain hairline. Kept as a class so the pages that
+   already reach for it don't need touching. ── */
 .divider-lux {
   display: flex;
   align-items: center;
@@ -182,34 +185,16 @@ button, a, input, select, textarea {
 .divider-lux::after {
   content: '';
   height: 1px;
-  width: 72px;
-  background: linear-gradient(90deg, transparent, rgba(0, 152, 130,0.7));
+  flex: 1;
+  max-width: 72px;
+  background: #dfe7ec;
 }
-.divider-lux::after { background: linear-gradient(90deg, rgba(0, 152, 130,0.7), transparent); }
 
-/* ── Gold-veined glow frame — a slow-pulsing gold halo for the single most important
-   card on a page (the hero search card). Spend sparingly: one per page, not everywhere. ── */
+/* ── The one card a page is built around: a plain border and a short shadow,
+   not a glowing frame. ── */
 .frame-lux {
   position: relative;
-  box-shadow: 0 0 0 1px rgba(0, 152, 130,0.25), 0 24px 60px -18px rgba(0, 152, 130,0.45);
-}
-.frame-lux::before {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: inherit;
-  padding: 3px;
-  background: linear-gradient(120deg, #dff5f0, #00a58e 28%, #8a5c17 52%, #00a58e 76%, #dff5f0);
-  background-size: 220% 220%;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  filter: drop-shadow(0 0 10px rgba(0, 152, 130,0.35));
-}
-@keyframes frameGoldShift {
-  0%, 100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
+  box-shadow: 0 0 0 1px #dfe7ec, 0 10px 36px -12px rgba(16,24,40,0.22);
 }
 
 /* ── Mouse-parallax layer — reads --mx/--my (set by the hero's onMouseMove)
@@ -319,46 +304,20 @@ button, a, input, select, textarea {
 
 /* ── Atmosphere: living aurora mesh for navy hero surfaces — richer, more saturated,
    with a visible gold vein through the middle instead of a faint tint ── */
+/* Dark hero band — one solid brand navy, no animated mesh. Every hero on the
+   site is the same surface, so the search card on top of it always reads. */
 .aurora-bg {
-  background:
-    radial-gradient(46% 60% at 10% 15%, rgba(1, 114, 203,0.65) 0%, transparent 70%),
-    radial-gradient(42% 52% at 90% 20%, rgba(0, 152, 130,0.38) 0%, transparent 65%),
-    radial-gradient(60% 70% at 58% 100%, rgba(0,63,150,0.65) 0%, transparent 72%),
-    radial-gradient(46% 55% at 26% 85%, rgba(0,149,210,0.40) 0%, transparent 70%),
-    radial-gradient(30% 40% at 75% 70%, rgba(214,158,46,0.22) 0%, transparent 65%),
-    linear-gradient(160deg, #000e26 0%, #1b2026 42%, #00295c 68%, #003f96 100%);
-  background-size: 200% 200%;
-  animation: auroraShift 20s ease-in-out infinite;
-}
-@keyframes auroraShift {
-  0%, 100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
+  background: #1c2127;
 }
 
-/* Film-grain overlay — drop as an absolutely-positioned child inside a relative hero */
-.film-grain {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.16;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-}
-
-/* Fine top-light sheen for premium dark panels */
-.sheen-top {
-  background-image: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent 30%);
-}
-
-/* Subtle gold lattice — a whisper of pattern on dark hero surfaces, evokes brass
-   filigree without becoming a wallpaper. Drop as an absolutely-positioned child. */
+/* Grain, sheen and lattice overlays are no-ops now — the surfaces they dressed
+   are flat. Kept as classes so the heroes that mount them need no edits. */
+.film-grain,
 .pattern-lux {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cg fill='none' stroke='%23f5b942' stroke-width='1'%3E%3Cpath d='M42 0 L84 42 L42 84 L0 42 Z'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 84px 84px;
+  display: none;
+}
+.sheen-top {
+  background-image: none;
 }
 
 /* ── Cards ── */
@@ -395,37 +354,29 @@ button, a, input, select, textarea {
   background-clip: text;
 }
 
-/* ── Gold gradient text (premium accents) — antique-brass depth, not flat highlighter ── */
+/* ── Accent text — one solid teal, no gradient fill ── */
 .text-gradient-gold {
-  background: linear-gradient(135deg, #cdeee7 0%, #00a58e 32%, #007f6d 62%, #006a5b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #00a58e;
 }
 
-/* ── Editorial badge: dark glass + hairline gold border, for brand/category labels
-   (not deal callouts — those stay solid gold so they still read as "look here") ── */
+/* ── Category chip on a dark hero: flat translucent fill, hairline border ── */
 .badge-editorial {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, rgba(28, 33, 39,0.55), rgba(0,17,43,0.55));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 152, 130,0.45);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.20);
   color: #61d1bf;
-  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 8px 24px -8px rgba(0,0,0,0.35);
 }
 
-/* ── Scrollbar — a thread of gold along the page edge ── */
+/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 7px; }
 ::-webkit-scrollbar-track { background: #f5f7f9; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #61d1bf, #00a58e 50%, #007f6d);
+  background: #c3cfd8;
   border-radius: 10px;
-  border: 1px solid rgba(245, 247, 249, 0.6);
 }
-::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #7adcc9, #00b89c 50%, #008f77); }
+::-webkit-scrollbar-thumb:hover { background: #a9b8c4; }
 
 /* ── Date input ── */
 input[type='date']::-webkit-calendar-picker-indicator {
@@ -454,20 +405,20 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
 .inp::placeholder { color: #94a3af; }
 .inp.err     { border-color: #ef4444; }
 
-/* ── Primary button — subtle gradient + lift instead of a flat fill ── */
+/* ── Primary button — flat blue fill, hover darkens. Same shape language as
+   the search button on the home page. ── */
 .btn-primary {
-  background: linear-gradient(135deg, #0080da 0%, #0172cb 55%, #015aa3 100%);
+  background: #0172cb;
   color: white;
   border: none;
   border-radius: 12px;
   padding: 12px 24px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(1, 114, 203,0.25);
-  transition: all 0.2s var(--ease-premium);
+  transition: background-color 0.2s var(--ease-premium), transform 0.2s var(--ease-premium);
 }
-.btn-primary:hover  { background: linear-gradient(135deg, #0090ee 0%, #0080da 55%, #006bb3 100%); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(1, 114, 203,0.38); }
+.btn-primary:hover  { background: #015aa3; }
 .btn-primary:active { transform: scale(0.98); }
 
 /* ── White card ── */
@@ -585,145 +536,66 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
 /* Balanced multi-line headlines */
 .text-balance { text-wrap: balance; }
 
-/* ═══════════ OPULENCE PASS — gold tooling, engraved type, gilded air ═══════════ */
+/* ═══════════ SURFACE PASS — flat panels, plain labels, no ornament ═══════════
+   These classes used to carry the gold-tooled "luxe" treatment. The site now
+   follows a flat booking-site language, so they are reduced to the plainest
+   thing that still does their job — components keep using them unchanged. */
 
-/* ── Gold tooling — hairline keyline inset from the panel edge, like gold-tooled
-   leather on a presentation box. One flagship navy panel per page, never more. ── */
 .panel-inlay { position: relative; }
-.panel-inlay::after {
-  content: '';
-  position: absolute;
-  inset: 10px;
-  border-radius: 15px;
-  border: 1px solid rgba(0, 152, 130,0.26);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset;
-  pointer-events: none;
-}
 
-/* ── Passe-partout: gold fillet, 4px ivory mat, fainter second fillet —
-   the way a maison mounts a photograph. Framed 'artwork' surfaces only. ── */
 .edge-gilded {
-  box-shadow:
-    0 0 0 1px rgba(0, 127, 109,0.55),
-    0 0 0 5px #fdfaf1,
-    0 0 0 6px rgba(0, 127, 109,0.30),
-    0 2px 6px rgba(16,24,40,0.05),
-    0 28px 52px -18px rgba(16,24,40,0.16);
+  box-shadow: 0 0 0 1px #dfe7ec, 0 10px 24px -10px rgba(16,24,40,0.18);
 }
 
-/* ── Gilt certificate corners — TL + BR hairline brackets, marks 'the document' ── */
 .corner-gilt { position: relative; }
-.corner-gilt::before,
-.corner-gilt::after {
-  content: '';
-  position: absolute;
-  width: 26px;
-  height: 26px;
-  border: 1px solid rgba(0, 152, 130,0.60);
-  pointer-events: none;
-  z-index: 2;
-}
-.corner-gilt::before {
-  top: 10px; left: 10px;
-  border-right: none; border-bottom: none;
-  border-top-left-radius: 8px;
-}
-.corner-gilt::after {
-  bottom: 10px; right: 10px;
-  border-left: none; border-top: none;
-  border-bottom-right-radius: 8px;
-}
 
-/* ── Letterpress — headings on ivory read as pressed into the stock. Ivory only. ── */
-.text-engraved {
-  text-shadow: 0 1px 0 rgba(255,255,255,0.70), 0 2px 3px rgba(26,26,26,0.05);
-}
+.text-engraved { text-shadow: none; }
 
-/* ── Foil hallmark seal — minted gold medallion, inset shadows only. Footer colophon. ── */
+/* Footer colophon mark — a quiet teal disc instead of a minted medallion */
 .seal-gold {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.75em;
-  height: 2.75em;
+  width: 2.25em;
+  height: 2.25em;
   border-radius: 9999px;
-  color: #6e4b0e;
-  background: radial-gradient(circle at 32% 28%, #fff3cf 0%, #61d1bf 34%, #e8ab2d 64%, #007f6d 100%);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.65) inset,
-    0 -2px 6px rgba(122,84,16,0.40) inset,
-    0 0 0 1px rgba(0, 122, 104,0.50),
-    0 0 0 5px rgba(0, 152, 130,0.12),
-    0 6px 16px -4px rgba(0, 122, 104,0.45);
+  color: #008f77;
+  background: #e6f6f3;
 }
 
-/* ── Laid linen — whisper crosshatch turns the reviews band into paper stock ── */
 .paper-linen { position: relative; }
-.paper-linen::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    repeating-linear-gradient(0deg,  rgba(148,124,74,0.055) 0 1px, transparent 1px 3px),
-    repeating-linear-gradient(90deg, rgba(148,124,74,0.038) 0 1px, transparent 1px 3px);
-}
 
-/* ── Vitrine shadow — jewelry-under-glass: warm contact, navy mid, gold ambient.
-   Reserved for the #1 card per page. ── */
 .shadow-vitrine {
-  box-shadow:
-    0 1px 2px rgba(58,42,10,0.10),
-    0 10px 24px -8px rgba(28, 33, 39,0.22),
-    0 30px 70px -20px rgba(0, 122, 104,0.48);
+  box-shadow: 0 1px 2px rgba(16,24,40,0.05), 0 10px 36px -12px rgba(16,24,40,0.22);
 }
 
-/* ── Faceted gem for .divider-lux — a cut stone instead of a font glyph ── */
 .lux-gem {
   display: block;
-  width: 9px;
-  height: 9px;
-  transform: rotate(45deg);
-  background: linear-gradient(135deg, #cdeee7 0%, #00a58e 45%, #007f6d 100%);
-  box-shadow:
-    0 0 0 3px rgba(0, 152, 130,0.14),
-    0 1px 0 rgba(255,255,255,0.5) inset,
-    0 0 10px rgba(0, 152, 130,0.45);
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: #00a58e;
 }
 
-/* ── Eyebrow system — diamond + letter-spaced small caps + fading gold hairline ── */
+/* ── Eyebrow — a plain letter-spaced label above a section heading ── */
 .eyebrow-lux {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: #006a5b;
-}
-.eyebrow-lux::before {
-  content: '\25C6';
-  font-size: 7px;
-  color: #007f6d;
-  transform: translateY(-1px);
-}
-.eyebrow-lux::after {
-  content: '';
-  height: 1px;
-  width: 56px;
-  background: linear-gradient(90deg, rgba(0, 127, 109,0.6), transparent);
+  letter-spacing: 0.14em;
+  color: #697d95;
 }
 .eyebrow-lux--light { color: #61d1bf; }
-.eyebrow-lux--light::before { color: #00a58e; }
-.eyebrow-lux--light::after { background: linear-gradient(90deg, rgba(0, 152, 130,0.55), transparent); }
 
-/* ── Editorial section heading — Fraunces, tight leading, balanced wrap ── */
+/* ── Section heading — heavy sans, tight tracking, balanced wrap ── */
 .h-editorial {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: -0.025em;
-  line-height: 1.06;
+  line-height: 1.08;
   text-wrap: balance;
 }
 
@@ -769,17 +641,14 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   user-select: none;
 }
 
-/* ── Gold label — wide-tracked caps in antique-gold gradient (footer columns, kickers) ── */
+/* ── Column label — wide-tracked caps, one muted color (footer columns, kickers) ── */
 .label-gold {
   display: inline-block;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  background: linear-gradient(135deg, #cdeee7 0%, #009882 45%, #006a5b 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.14em;
+  color: #697d95;
 }
 
 /* ── Scroll-linked depth — glow blobs drift at counter speeds while their section

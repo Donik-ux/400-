@@ -31,7 +31,7 @@ export default function FlightCard({ flight, index, aiPriced }) {
         onClick={() => setOpen(true)}
       >
         {/* hover accent rail */}
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#0172cb] to-[#252a31] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#0172cb] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         <div className="flex flex-col lg:flex-row">
           {/* ── Left: airline + route ── */}
@@ -76,10 +76,10 @@ export default function FlightCard({ flight, index, aiPriced }) {
 
               <div className="flex-1 flex flex-col items-center gap-1.5 min-w-0 px-1">
                 <div className="w-full flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full border-2 border-[#0172cb] bg-white shrink-0" />
+                  <div className="w-2.5 h-2.5 rounded-full border border-[#0172cb] bg-white shrink-0" />
                   <div className={`flex-1 h-[2.5px] rounded-full relative ${nonStop ? 'bg-gradient-to-r from-[#008009] to-[#34d058]' : 'bg-gradient-to-r from-[#009882] to-[#61d1bf]'}`}>
                     {!nonStop && (
-                      <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#009882] border-2 border-white shadow-soft" />
+                      <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#009882] border border-white shadow-soft" />
                     )}
                     <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white border border-[#dfe7ec] shadow-soft flex items-center justify-center">
                       <Plane className="w-3 h-3 text-[#0172cb] fill-[#0172cb] -rotate-12" />

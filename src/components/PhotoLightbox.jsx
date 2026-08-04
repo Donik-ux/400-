@@ -74,7 +74,7 @@ export default function PhotoLightbox({ destination, mainImage, onClose }) {
       <div className="mt-4 flex gap-2 overflow-x-auto max-w-full px-2" onClick={(e) => e.stopPropagation()}>
         {photos.map((p, i) => (
           <button key={p} onClick={() => setIndex(i)}
-            className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition ${i === index ? 'border-[#00a58e]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+            className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border transition ${i === index ? 'border-[#00a58e]' : 'border-transparent opacity-60 hover:opacity-100'}`}>
             <img src={p} alt="" className="w-full h-full object-cover" />
           </button>
         ))}

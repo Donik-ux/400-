@@ -32,7 +32,7 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-[0_30px_80px_-24px_rgba(0,26,61,0.45)] ring-1 ring-white/60 border border-[#dfe7ec] overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-[0_30px_80px_-24px_rgba(0,26,61,0.45)] ring-1 ring-white/60 border border-[#dfe7ec] overflow-hidden">
       {/* ── Trip type / pax / cabin row ── */}
       <div className="bg-[#eef2f5] border-b border-[#dfe7ec] px-4 py-2.5 flex items-center justify-between flex-wrap gap-2">
         {/* Trip type tabs */}
@@ -68,10 +68,10 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
                 <span className="text-[13px] font-bold text-[#252a31]">{t('flightsPage.search.adults')}</span>
                 <div className="flex items-center gap-2">
                   <button type="button" onClick={() => setPax(p => Math.max(1, p - 1))}
-                    className="w-7 h-7 rounded-md border-2 border-[#0172cb] text-[#0172cb] font-black hover:bg-[#e8f4fd] active:scale-95 transition">−</button>
+                    className="w-7 h-7 rounded-md border border-[#0172cb] text-[#0172cb] font-black hover:bg-[#e8f4fd] active:scale-95 transition">−</button>
                   <span className="w-6 text-center font-black">{pax}</span>
                   <button type="button" onClick={() => setPax(p => Math.min(9, p + 1))}
-                    className="w-7 h-7 rounded-md border-2 border-[#0172cb] text-[#0172cb] font-black hover:bg-[#e8f4fd] active:scale-95 transition">+</button>
+                    className="w-7 h-7 rounded-md border border-[#0172cb] text-[#0172cb] font-black hover:bg-[#e8f4fd] active:scale-95 transition">+</button>
                 </div>
               </div>
               <p className="text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-2">{t('flightsPage.search.cabinClass')}</p>
@@ -105,7 +105,7 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
 
           {/* Swap button — sits between the two fields */}
           <button type="button" onClick={swap}
-            className="md:col-span-1 flex items-center justify-center self-center mx-auto md:mx-0 -my-1 md:my-0 w-9 h-9 rounded-full bg-white border-2 border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] hover:rotate-180 active:scale-95 transition-all duration-300 shadow-soft hover:shadow-float"
+            className="md:col-span-1 flex items-center justify-center self-center mx-auto md:mx-0 -my-1 md:my-0 w-9 h-9 rounded-full bg-white border border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] hover:rotate-180 active:scale-95 transition-all duration-300 shadow-soft hover:shadow-float"
             aria-label={t('flightsPage.search.swapAria')}
             title={t('flightsPage.search.swapTitle')}>
             <ArrowRightLeft className="w-4 h-4" />
@@ -192,7 +192,7 @@ export default function FlightSearch({ formData, onChange, onSubmit, loading }) 
 /* ── Light Booking-style input ── */
 function FieldInput({ icon, label, placeholder, type = 'text', value, onChange, className = '', listId, min, required }) {
   return (
-    <label className={`block bg-white border-2 border-[#dfe7ec] hover:border-[#0172cb] focus-within:border-[#0172cb] focus-within:ring-4 focus-within:ring-[#0172cb]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition ${className}`}>
+    <label className={`block bg-white border border-[#dfe7ec] hover:border-[#0172cb] focus-within:border-[#0172cb] focus-within:ring-4 focus-within:ring-[#0172cb]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition ${className}`}>
       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-0.5">
         <span className="text-[#0172cb]">{icon}</span>{label}
       </div>

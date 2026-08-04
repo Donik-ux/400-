@@ -99,10 +99,9 @@ export default function Wishlist() {
   return (
     <div className="bg-[#f5f7f9] min-h-screen -mt-[64px]">
       {/* ── Hero header ── */}
-      <section className="relative bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#0172cb] text-white overflow-hidden pt-[100px] pb-14">
+      <section className="relative bg-[#1c2127] text-white overflow-hidden pt-[100px] pb-14">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
              style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0172cb 0%, transparent 45%), radial-gradient(circle at 75% 70%, #00a58e 0%, transparent 35%)' }} />
-        <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#00a58e]/15 blur-3xl pointer-events-none animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <Heart className="w-3.5 h-3.5 fill-[#252a31]" /> {t('wishlist.badge') || 'Saved Items'}
@@ -148,8 +147,6 @@ export default function Wishlist() {
         {/* ── Empty state ── */}
         {cards.length === 0 && (
           <div className="bg-white border border-[#dfe7ec] rounded-2xl p-10 md:p-16 text-center shadow-float relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#00a58e]/20 blur-3xl pointer-events-none animate-float" />
-            <div className="absolute -bottom-24 -left-16 w-64 h-64 rounded-full bg-[#0172cb]/10 blur-3xl pointer-events-none" />
             <div className="relative">
               <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#00a58e] to-[#ff8a00] flex items-center justify-center mx-auto mb-5 rotate-3 shadow-lift">
                 <Heart className="w-10 h-10 text-white fill-white" />
@@ -159,12 +156,12 @@ export default function Wishlist() {
                 {t('wishlist.emptySub') || 'Save flights and tour packages by tapping the heart icon. They\'ll appear here so you can come back and book later.'}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <button onClick={() => navigate('/hot-tours')}
+                <button onClick={() => navigate('/planner')}
                   className="btn-gold px-6 py-3.5 text-[13px] flex items-center justify-center gap-2">
                   <Sparkles className="w-4 h-4" /> {t('lists.wishlist.openStudio')}
                 </button>
                 <button onClick={() => navigate('/flights')}
-                  className="px-6 py-3.5 rounded-xl border-2 border-[#dfe7ec] hover:border-[#0172cb] hover:bg-[#e8f4fd] text-[13px] font-black text-[#252a31] flex items-center justify-center gap-2 transition active:scale-95">
+                  className="px-6 py-3.5 rounded-xl border border-[#dfe7ec] hover:border-[#0172cb] hover:bg-[#e8f4fd] text-[13px] font-black text-[#252a31] flex items-center justify-center gap-2 transition active:scale-95">
                   <Plane className="w-4 h-4" /> {t('lists.wishlist.searchFlights')}
                 </button>
               </div>

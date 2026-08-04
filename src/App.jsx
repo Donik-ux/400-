@@ -5,15 +5,12 @@ import DisclaimerModal from './components/DisclaimerModal';
 import { ProtectedRoute, AdminRoute, GuestRoute } from './components/ProtectedRoute';
 import Home            from './pages/Home';
 import Planner         from './pages/Planner';
-import WhereToGo       from './pages/WhereToGo';
 import Tools           from './pages/Tools';
-import Services        from './pages/Services';
 import Flights         from './pages/Flights';
 import BerlinTrip      from './pages/BerlinTrip';
 import ExoticTours     from './pages/ExoticTours';
 import Antarctica      from './pages/Antarctica';
 import TourDetail      from './pages/TourDetail';
-import HotTours        from './pages/HotTours';
 import Wishlist        from './pages/Wishlist';
 import Login           from './pages/Login';
 import Register        from './pages/Register';
@@ -35,15 +32,12 @@ function App() {
         <Routes>
           <Route path="/"            element={<Home />} />
           <Route path="/planner"     element={<Planner />} />
-          <Route path="/where-to-go" element={<WhereToGo />} />
           <Route path="/tools"       element={<Tools />} />
-          <Route path="/services"    element={<Services />} />
           <Route path="/flights"     element={<Flights />} />
           <Route path="/berlin-trip" element={<BerlinTrip />} />
           <Route path="/exotic-tours" element={<ExoticTours />} />
           <Route path="/antarctica"  element={<Antarctica />} />
           <Route path="/exotic-tours/:id" element={<TourDetail />} />
-          <Route path="/hot-tours"   element={<HotTours />} />
           <Route path="/login"    element={<GuestRoute><Login /></GuestRoute>} />
           <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
           <Route path="/dashboard"   element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

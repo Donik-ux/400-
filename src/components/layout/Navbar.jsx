@@ -36,57 +36,37 @@ export default function Navbar() {
 
   const links = [
     { to: '/',             label: t('nav.home')            },
-    { to: '/where-to-go',  label: t('nav2.whereToGo')      },
     { to: '/flights',      label: t('nav.flights')         },
-    { to: '/hot-tours',    label: t('nav2.hotTours')       },
     { to: '/exotic-tours', label: t('nav.exotic')          },
-    { to: '/services',     label: t('servicesPage.navLabel') },
   ];
 
   const handleLogout = () => { logout(); navigate('/'); setUserOpen(false); };
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-premium ${
-        scrolled
-          ? 'shadow-[0_10px_40px_rgba(0,8,24,0.55)] border-b border-white/10'
-          : 'border-b border-white/[0.06]'
+      <nav className={`fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#e8edf1] transition-premium ${
+        scrolled ? 'shadow-[0_4px_16px_-6px_rgba(16,24,40,0.16)]' : ''
       }`}>
-        {/* Background lives on an absolute child, not the fixed nav itself —
-            iOS Safari whites out the page on pinch-zoom otherwise */}
-        <div aria-hidden="true" className={`absolute inset-0 -z-10 transition-premium ${scrolled ? 'nav-veil--scrolled' : 'nav-veil'}`} />
-        {/* ambient gold glow */}
-        <div className="pointer-events-none absolute -top-12 left-1/3 w-80 h-24 bg-[#009882]/10 blur-3xl rounded-full" />
-        {/* Gold hairline accent */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#009882]/55 to-transparent" />
-
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-[64px] flex items-center justify-between gap-2">
           {/* Logo */}
           <button onClick={() => navigate('/')} className="flex items-center gap-2.5 group shrink-0">
             <img src="/images/maf-logo.png" alt="MAF Travel"
-              className="w-11 h-11 rounded-xl object-cover ring-1 ring-white/20 group-hover:scale-105 transition-premium" />
+              className="w-10 h-10 rounded-lg object-cover group-hover:scale-105 transition-premium" />
             <div className="hidden sm:flex flex-col leading-none">
-              <span className="text-[19px] font-black tracking-tight bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">MAFTRAVEL</span>
-              <span className="text-[9px] font-bold text-[#009882] tracking-[0.22em] uppercase mt-1">{t('footer.brandSub')}</span>
+              <span className="text-[18px] font-black tracking-tight text-[#252a31]">MAFTRAVEL</span>
+              <span className="text-[9px] font-bold text-[#008f77] tracking-[0.22em] uppercase mt-1">{t('footer.brandSub')}</span>
             </div>
           </button>
 
           {/* Desktop links — tighter at lg so long-locale labels never push the
               auth buttons off-screen; full padding returns at xl */}
-          <div className="hidden xl:flex items-center gap-0 shrink-0">
+          <div className="hidden xl:flex items-center gap-1 shrink-0">
             {links.map(({ to, label }) => (
               <NavLink key={to} to={to}
                 className={({ isActive }) =>
-                  `px-2 2xl:px-3.5 py-2 rounded-lg text-[12.5px] 2xl:text-[13px] font-semibold whitespace-nowrap transition-premium ${isActive ? 'text-[#009882] bg-[#009882]/10' : 'text-white/65 hover:text-white hover:bg-white/[0.07]'}`
+                  `px-3.5 py-2 rounded-full text-[13px] font-bold whitespace-nowrap transition-premium ${isActive ? 'text-[#0172cb] bg-[#e8f4fd]' : 'text-[#4a5867] hover:text-[#252a31] hover:bg-[#eef2f5]'}`
                 }
-              >
-                {({ isActive }) => (
-                  <span className="relative">
-                    {label}
-                    <span className={`absolute -bottom-1.5 left-0 right-0 h-[2.5px] rounded-full bg-[#009882] transition-premium ${isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`} />
-                  </span>
-                )}
-              </NavLink>
+              >{label}</NavLink>
             ))}
           </div>
 
@@ -104,10 +84,10 @@ export default function Navbar() {
             {/* Wishlist (Desktop) */}
             {user && (
               <button onClick={() => navigate('/wishlist')}
-                className="relative p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-premium">
+                className="relative p-2 rounded-lg text-[#4a5867] hover:text-[#252a31] hover:bg-[#eef2f5] transition-premium">
                 <Heart className={`w-5 h-5 ${wishlistItems.length > 0 ? 'fill-red-500 text-red-500' : ''}`} />
                 {wishlistItems.length > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-[#1c2127]"></span>
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
                 )}
               </button>
             )}
@@ -126,15 +106,15 @@ export default function Navbar() {
             {user ? (
               <div className="relative hidden md:block" data-dropdown>
                 <button onClick={() => { setUserOpen(v => !v); }}
-                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-white/15 hover:border-[#009882]/50 hover:bg-white/10 transition-premium">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#009882] to-[#007f6d] flex items-center justify-center text-[11px] font-black text-[#1c2127] shadow-sm">
+                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-full border border-[#dfe7ec] hover:border-[#0172cb] hover:bg-[#eef2f5] transition-premium">
+                  <div className="w-7 h-7 rounded-full bg-[#00a58e] flex items-center justify-center text-[11px] font-black text-white">
                     {user.avatar}
                   </div>
-                  <span className="text-[13px] font-semibold text-white max-w-28 truncate">{user.name}</span>
-                  <ChevronDown className={`w-3 h-3 text-white/50 transition-transform ${userOpen ? 'rotate-180' : ''}`} />
+                  <span className="text-[13px] font-bold text-[#252a31] max-w-28 truncate">{user.name}</span>
+                  <ChevronDown className={`w-3 h-3 text-[#697d95] transition-transform ${userOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {userOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-56 bg-[#002a63] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 page-fade">
+                  <div className="absolute right-0 top-full mt-2 w-56 bg-[#1c2127] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 page-fade">
                     <div className="px-4 py-3 border-b border-white/10">
                       <p className="text-[13px] font-bold text-white">{user.name}</p>
                       <p className="text-[11px] text-white/45 truncate">{user.email}</p>
@@ -175,18 +155,18 @@ export default function Navbar() {
             ) : (
               <div className="hidden md:flex items-center gap-2 shrink-0">
                 <button onClick={() => navigate('/login')}
-                  className="px-3 xl:px-4 py-2 text-[13px] font-semibold whitespace-nowrap text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-premium">
+                  className="px-3 xl:px-4 py-2 text-[13px] font-bold whitespace-nowrap text-[#4a5867] hover:text-[#252a31] hover:bg-[#eef2f5] rounded-full transition-premium">
                   {t('nav.signIn')}
                 </button>
                 <button onClick={() => navigate('/register')}
-                  className="shrink-0 px-3 xl:px-4 py-2 text-[13px] font-black whitespace-nowrap text-[#1c2127] bg-gradient-to-br from-[#009882] to-[#008f77] hover:shadow-[0_6px_20px_rgba(0, 152, 130,0.45)] hover:-translate-y-px rounded-lg shadow-sm transition-premium">
+                  className="shrink-0 px-4 py-2 text-[13px] font-black whitespace-nowrap text-white bg-[#0172cb] hover:bg-[#015aa3] rounded-full transition-premium">
                   {t('nav.register')}
                 </button>
               </div>
             )}
 
             {/* Burger — also serves md–lg widths where long-locale link rows can't fit */}
-            <button className="xl:hidden p-2 rounded-lg border border-white/15 text-white hover:bg-white/10 transition-premium"
+            <button className="xl:hidden p-2 rounded-lg border border-[#dfe7ec] text-[#252a31] hover:bg-[#eef2f5] transition-premium"
               onClick={() => setMobileOpen(v => !v)}>
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -196,30 +176,30 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="fixed inset-0 top-[64px] z-40 bg-[#1c2127] flex flex-col px-4 pt-4 pb-8 gap-1 xl:hidden overflow-y-auto page-fade">
+        <div className="fixed inset-0 top-[64px] z-40 bg-white flex flex-col px-4 pt-4 pb-8 gap-1 xl:hidden overflow-y-auto page-fade">
           {links.map(({ to, label }) => (
             <NavLink key={to} to={to} onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
-                `py-3.5 px-4 rounded-lg text-[14px] font-semibold border-b border-white/10 transition-premium ${isActive ? 'text-[#009882] bg-white/[0.06]' : 'text-white'}`
+                `py-3.5 px-4 rounded-lg text-[14px] font-bold border-b border-[#e8edf1] transition-premium ${isActive ? 'text-[#0172cb] bg-[#e8f4fd]' : 'text-[#252a31]'}`
               }>{label}</NavLink>
           ))}
           {user && (
             <>
               <button onClick={() => { navigate('/profile'); setMobileOpen(false); }}
-                className="py-3.5 px-4 rounded-lg text-[14px] font-semibold text-white/75 border-b border-white/10 text-left flex items-center gap-2">
+                className="py-3.5 px-4 rounded-lg text-[14px] font-bold text-[#4a5867] border-b border-[#e8edf1] text-left flex items-center gap-2">
                 <User className="w-4 h-4" /> {t('nav.myProfile')}
               </button>
               <button onClick={() => { navigate('/my-plans'); setMobileOpen(false); }}
-                className="py-3.5 px-4 rounded-lg text-[14px] font-semibold text-white/75 border-b border-white/10 text-left flex items-center gap-2">
+                className="py-3.5 px-4 rounded-lg text-[14px] font-bold text-[#4a5867] border-b border-[#e8edf1] text-left flex items-center gap-2">
                 <Map className="w-4 h-4" /> {t('nav2.myTripPlans')}
               </button>
               <button onClick={() => { navigate('/my-bookings'); setMobileOpen(false); }}
-                className="py-3.5 px-4 rounded-lg text-[14px] font-semibold text-white/75 border-b border-white/10 text-left flex items-center gap-2">
+                className="py-3.5 px-4 rounded-lg text-[14px] font-bold text-[#4a5867] border-b border-[#e8edf1] text-left flex items-center gap-2">
                 <BookOpen className="w-4 h-4" /> {t('nav.myBookings')}
               </button>
               {user.role === 'admin' && (
                 <button onClick={() => { navigate('/admin'); setMobileOpen(false); }}
-                  className="py-3.5 px-4 rounded-lg text-[14px] font-semibold text-[#009882] border-b border-white/10 text-left flex items-center gap-2">
+                  className="py-3.5 px-4 rounded-lg text-[14px] font-bold text-[#0172cb] border-b border-[#e8edf1] text-left flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4" /> {t('nav.adminPanel')}
                 </button>
               )}
@@ -232,17 +212,17 @@ export default function Navbar() {
           <div className="mt-4 flex flex-col gap-2">
             {user ? (
               <button onClick={() => { handleLogout(); setMobileOpen(false); }}
-                className="w-full py-3 rounded-lg border border-[#ff9c8a]/30 text-[#ff9c8a] text-[13px] font-semibold flex items-center justify-center gap-2">
+                className="w-full py-3 rounded-lg border border-[#eccfc7] text-[#b3402e] text-[13px] font-bold flex items-center justify-center gap-2">
                 <LogOut className="w-4 h-4" /> {t('nav.signOut')}
               </button>
             ) : (
               <>
                 <button onClick={() => { navigate('/login'); setMobileOpen(false); }}
-                  className="w-full py-3 rounded-lg border border-[#009882]/50 text-[#009882] text-[13px] font-bold">
+                  className="w-full py-3 rounded-lg border border-[#dfe7ec] text-[#252a31] text-[13px] font-bold">
                   {t('nav.signIn')}
                 </button>
                 <button onClick={() => { navigate('/register'); setMobileOpen(false); }}
-                  className="w-full py-3 rounded-lg bg-gradient-to-br from-[#009882] to-[#008f77] text-[#1c2127] text-[13px] font-black">
+                  className="w-full py-3 rounded-lg bg-[#0172cb] text-white text-[13px] font-black">
                   {t('nav.registerFree')}
                 </button>
               </>

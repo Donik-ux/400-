@@ -26,7 +26,6 @@ import { getCurrencyInfo, formatLocal } from '../services/currencyByCountry';
 import { toast } from '../components/Toast';
 import useSEO from '../hooks/useSEO';
 import { usePriceFormatter } from '../components/Price';
-import GoldDust from '../components/fx/GoldDust';
 import SmartImage from '../components/SmartImage';
 
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80';
@@ -380,16 +379,15 @@ export default function Planner() {
 
       {/* ── Hero / Form Section ── */}
       <div className="relative aurora-bg text-white overflow-hidden">
-        <GoldDust className="absolute inset-0" density={0.55} />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-14">
           <div className="max-w-2xl mb-8 page-fade">
             <div className="badge-editorial inline-flex rounded-full px-3.5 py-1.5 mb-4">
               <Sparkles className="w-3.5 h-3.5 text-[#61d1bf]" />
               <span className="text-[11px] font-black uppercase tracking-widest">{t('planner.badge')}</span>
             </div>
-            <h1 className="font-display text-[36px] md:text-[52px] font-semibold tracking-[-0.03em] leading-tight mb-3 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
+            <h1 className="text-[36px] md:text-[52px] font-black tracking-[-0.03em] leading-tight mb-3 text-balance">
               {t('planner.title1')}<br />
-              <span className="italic font-medium text-gradient-gold gold-animate">{t('planner.title2')}</span>
+              <span className="text-[#61d1bf]">{t('planner.title2')}</span>
             </h1>
             <p className="text-white/55 text-[15px] leading-relaxed">{t('planner.sub')}</p>
           </div>
@@ -552,7 +550,7 @@ export default function Planner() {
 
           {/* Budget fit check */}
           {userBudget > 0 && (
-            <div className={`mb-5 flex items-start gap-3 p-4 rounded-2xl border-2 ${
+            <div className={`mb-5 flex items-start gap-3 p-4 rounded-2xl border ${
               budgetDiff >= 0 ? 'bg-[#e9f3ea] border-[#cfe3d2]' : 'bg-[#fdf3dc] border-[#f0dfb4]'
             }`}>
               {budgetDiff >= 0

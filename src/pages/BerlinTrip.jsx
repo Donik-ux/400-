@@ -491,7 +491,6 @@ const BerlinTrip = () => {
             {/* Budget + Tips */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
               <div className="lg:col-span-2 relative bg-gradient-to-br from-[#141414] to-[#0e0e0e] border border-white/[0.07] rounded-2xl p-8 overflow-hidden">
-                <div className="absolute -top-24 -right-20 w-64 h-64 rounded-full bg-[#00a58e]/[0.06] blur-3xl pointer-events-none" />
                 <div className="relative z-10">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7">
                     <div>

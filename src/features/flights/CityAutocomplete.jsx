@@ -63,7 +63,7 @@ export default function CityAutocomplete({
 
   return (
     <div ref={wrapRef} className={`relative ${className}`}>
-      <label className="block bg-white border-2 border-[#dfe7ec] hover:border-[#0172cb] focus-within:border-[#0172cb] focus-within:ring-4 focus-within:ring-[#0172cb]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition">
+      <label className="block bg-white border border-[#dfe7ec] hover:border-[#0172cb] focus-within:border-[#0172cb] focus-within:ring-4 focus-within:ring-[#0172cb]/15 focus-within:shadow-soft rounded-xl px-3 py-2.5 transition">
         <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-0.5">
           <span className="text-[#0172cb]">{icon}</span>{label}
         </div>

@@ -30,7 +30,7 @@ export default function Footer() {
   const nav = [
     { label: t('nav.home'),         to: '/'            },
     { label: t('nav.planner'),      to: '/planner'     },
-    { label: t('nav2.whereToGoFooter'), to: '/where-to-go' },
+    { label: t('nav.exotic'),       to: '/exotic-tours' },
     { label: t('nav.flights'),      to: '/flights'     },
     { label: t('nav2.tools'),       to: '/tools'       },
   ];
@@ -44,33 +44,26 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative w-full bg-gradient-to-b from-[#252a31] to-[#12161a] text-white mt-12 overflow-hidden">
-      {/* Gold hairline to echo the navbar accent */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#009882]/45 to-transparent" />
-      {/* Ambient depth — same atmospheric language as the hero sections, kept subtle */}
-      <div className="pattern-lux" />
-      <div className="absolute -left-24 top-0 w-96 h-96 rounded-full bg-[#0172cb]/15 blur-3xl pointer-events-none" />
-      <div className="absolute -right-24 bottom-0 w-96 h-96 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none" />
-      <div aria-hidden="true" className="masthead-ghost">MAFTRAVEL</div>
-      <div className="relative max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-14 pb-24 md:pb-28">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-white/[0.12]">
+    <footer className="relative w-full bg-[#f5f7f9] border-t border-[#dfe7ec] text-[#252a31] mt-12">
+      <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12 pb-20 md:pb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-[#dfe7ec]">
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5 mb-4 cursor-pointer group" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
               <img src="/images/maf-logo.png" alt="MAF Travel"
-                className="w-11 h-11 rounded-xl object-cover ring-1 ring-white/20 group-hover:scale-105 transition-premium" />
+                className="w-10 h-10 rounded-lg object-cover group-hover:scale-105 transition-premium" />
               <div className="flex flex-col">
                 <span className="text-[17px] font-black tracking-tight leading-none">MAFTRAVEL</span>
-                <span className="text-[7px] font-bold text-white/40 uppercase tracking-widest mt-0.5">{t('footer.brandSub')}</span>
+                <span className="text-[7px] font-bold text-[#697d95] uppercase tracking-widest mt-0.5">{t('footer.brandSub')}</span>
               </div>
             </div>
-            <p className="text-[13px] text-white/55 leading-relaxed mb-4 font-medium">
+            <p className="text-[13px] text-[#4a5867] leading-relaxed mb-4 font-medium">
               {t('footer.desc')}
             </p>
             <a href="https://youtube.com/@maftravel" target="_blank" rel="noopener noreferrer"
               aria-label="MAFTRAVEL on YouTube"
-              className="inline-flex items-center gap-2 text-[13px] font-bold text-white/65 hover:text-white transition-premium group">
-              <span className="w-8 h-8 rounded-lg bg-white/[0.08] border border-white/[0.15] flex items-center justify-center group-hover:bg-[#ff0000] group-hover:border-[#ff0000] transition-premium">
+              className="inline-flex items-center gap-2 text-[13px] font-bold text-[#4a5867] hover:text-[#252a31] transition-premium group">
+              <span className="w-8 h-8 rounded-lg bg-white border border-[#dfe7ec] flex items-center justify-center group-hover:bg-[#ff0000] group-hover:border-[#ff0000] transition-premium">
                 <Youtube className="w-4 h-4" />
               </span>
               YouTube
@@ -79,68 +72,64 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <p className="label-gold mb-4">{t('footer.platform')}</p>
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#697d95] mb-4">{t('footer.platform')}</p>
             <div className="flex flex-col gap-3">
               {nav.map(n => (
-                <NavLink key={n.to} to={n.to} className="text-[13px] text-white/65 hover:text-white transition-premium font-medium">{n.label}</NavLink>
+                <NavLink key={n.to} to={n.to} className="text-[13px] text-[#4a5867] hover:text-[#0172cb] transition-premium font-semibold">{n.label}</NavLink>
               ))}
             </div>
           </div>
 
           {/* Support */}
           <div>
-            <p className="label-gold mb-4">{t('footer.company')}</p>
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#697d95] mb-4">{t('footer.company')}</p>
             <div className="flex flex-col gap-3">
                 {support.map(s => s.href ? (
-                    <a key={s.label} href={s.href} className="text-[13px] text-white/65 hover:text-white transition-premium font-medium">{s.label}</a>
+                    <a key={s.label} href={s.href} className="text-[13px] text-[#4a5867] hover:text-[#0172cb] transition-premium font-semibold">{s.label}</a>
                 ) : (
-                    <NavLink key={s.label} to={s.to} className="text-[13px] text-white/65 hover:text-white transition-premium font-medium">{s.label}</NavLink>
+                    <NavLink key={s.label} to={s.to} className="text-[13px] text-[#4a5867] hover:text-[#0172cb] transition-premium font-semibold">{s.label}</NavLink>
                 ))}
             </div>
           </div>
 
           {/* Newsletter */}
           <div>
-            <p className="label-gold mb-2">{t('footer.newsletter')}</p>
-            <p className="text-[12px] text-white/50 mb-4 leading-relaxed">{t('footer.newsletterSub')}</p>
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#697d95] mb-2">{t('footer.newsletter')}</p>
+            <p className="text-[12px] text-[#697d95] mb-4 leading-relaxed">{t('footer.newsletterSub')}</p>
             {joined ? (
-              <div className="bg-white/10 rounded-lg p-3 border border-white/20 animate-pulse">
-                <p className="text-white text-[12px] font-bold text-center">{t('footer.newsletterSuccess')}</p>
+              <div className="bg-[#e9f3ea] rounded-lg p-3 border border-[#cfe3d2]">
+                <p className="text-[#2e7d4f] text-[12px] font-bold text-center">{t('footer.newsletterSuccess')}</p>
               </div>
             ) : (
               <>
-                <div className="flex gap-2 p-1.5 bg-white/[0.08] border border-white/[0.15] rounded-xl focus-within:border-white/30 transition-all">
+                <div className="flex gap-2 p-1.5 bg-white border border-[#dfe7ec] rounded-xl focus-within:border-[#0172cb] transition-all">
                   <input type="email" placeholder={t('footer.emailPlaceholder')} value={email}
                     onChange={e => { setEmail(e.target.value); if (mailError) setMailError(''); }}
                     onKeyDown={e => e.key === 'Enter' && handleJoin()}
-                    className="flex-1 min-w-0 bg-transparent px-2 text-[13px] text-white placeholder:text-white/30 focus:outline-none"
+                    className="flex-1 min-w-0 bg-transparent px-2 text-[13px] text-[#252a31] placeholder:text-[#94a3af] focus:outline-none"
                   />
                   <button onClick={handleJoin}
-                    className="btn-gold shrink-0 max-w-[55%] px-3 py-2 text-[11px] uppercase tracking-tighter truncate">
+                    className="shrink-0 max-w-[55%] px-3.5 py-2 rounded-lg bg-[#0172cb] hover:bg-[#015aa3] text-white text-[11px] font-black uppercase tracking-tighter truncate transition">
                     {t('footer.join')}
                   </button>
                 </div>
-                {mailError && <p className="mt-2 text-[11px] font-bold text-[#ff9c8a]">{mailError}</p>}
+                {mailError && <p className="mt-2 text-[11px] font-bold text-[#b3402e]">{mailError}</p>}
               </>
             )}
           </div>
         </div>
 
-        <div className="divider-lux pt-8" aria-hidden="true">
-          <span className="seal-gold text-[13px]">✦</span>
-        </div>
-
         <div className="pt-8 pb-2 flex flex-col items-center gap-2 text-center">
-          <p className="text-[13px] text-white/60 font-medium">{t('footer.questions')}</p>
+          <p className="text-[13px] text-[#4a5867] font-medium">{t('footer.questions')}</p>
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-5">
             <a href={`mailto:${contactEmail}`}
-              className="inline-flex items-center gap-2 text-[14px] font-bold text-[#009882] hover:text-[#61d1bf] transition-colors">
+              className="inline-flex items-center gap-2 text-[14px] font-bold text-[#0172cb] hover:text-[#015aa3] transition-colors">
               <Mail className="w-4 h-4" />
               {contactEmail}
             </a>
             {contactPhone && (
               <a href={`tel:${contactPhone.replace(/[^\d+]/g, '')}`}
-                className="inline-flex items-center gap-2 text-[14px] font-bold text-[#009882] hover:text-[#61d1bf] transition-colors">
+                className="inline-flex items-center gap-2 text-[14px] font-bold text-[#0172cb] hover:text-[#015aa3] transition-colors">
                 <Phone className="w-4 h-4" />
                 {contactPhone}
               </a>
@@ -150,18 +139,18 @@ export default function Footer() {
 
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-1">
-            <p className="font-display italic text-[12px] text-white/40">
+            <p className="text-[12px] text-[#697d95] font-medium">
               {t('footer.copy')}
             </p>
-            <p className="text-[10px] text-white/20 font-medium max-w-full break-words text-center md:text-left">
+            <p className="text-[10px] text-[#94a3af] font-medium max-w-full break-words text-center md:text-left">
               {t('footer.powered')}
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <div className="label-gold text-[9.5px] bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#009882]/20">
+            <div className="text-[9.5px] font-black uppercase tracking-[0.14em] text-[#008f77] bg-white px-3 py-1.5 rounded-full border border-[#dfe7ec]">
               <span>✈️ {t('footer.smartFlights')}</span>
             </div>
-            <div className="label-gold text-[9.5px] bg-white/[0.04] px-3 py-1.5 rounded-full border border-[#009882]/20">
+            <div className="text-[9.5px] font-black uppercase tracking-[0.14em] text-[#008f77] bg-white px-3 py-1.5 rounded-full border border-[#dfe7ec]">
               <span>🧠 {t('footer.aiPlanning')}</span>
             </div>
           </div>

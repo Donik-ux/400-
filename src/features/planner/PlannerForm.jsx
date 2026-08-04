@@ -216,7 +216,7 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
         >
           {loading ? (
             <>
-              <span className="w-4 h-4 border-2 border-[#252a31]/25 border-t-[#252a31] rounded-full animate-spin" />
+              <span className="w-4 h-4 border border-[#252a31]/25 border-t-[#252a31] rounded-full animate-spin" />
               {t('planner.form.generating')}
             </>
           ) : (

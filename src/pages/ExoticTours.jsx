@@ -36,14 +36,19 @@ const TourCard = ({ tour, budget, anchor = false }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20, transition: { duration: 0.15 } }}
       transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
-      className={`group lift bg-white rounded-2xl border overflow-hidden shadow-soft flex flex-col ${anchor ? 'md:col-span-2' : ''} ${
+      className={`group lift bg-white rounded-2xl border overflow-hidden shadow-soft flex ${
+        anchor ? 'md:col-span-2 flex-col md:flex-row' : 'flex-col'
+      } ${
         hasBudget && !fits
           ? 'border-[#dfe7ec] opacity-65 hover:opacity-100'
           : fits ? 'border-[#cfe3d2]' : 'border-[#dfe7ec]'
       }`}
     >
-      {/* Image */}
-      <div className="relative h-56 overflow-hidden cursor-pointer" onClick={openTour}>
+      {/* Image — the double-width card puts it alongside the copy instead of
+          stretching the same stacked layout across two columns. */}
+      <div className={`relative overflow-hidden cursor-pointer shrink-0 ${
+        anchor ? 'h-56 md:h-auto md:w-[44%]' : 'h-56'
+      }`} onClick={openTour}>
         <img
           src={tour.image}
           alt={tour.title}
@@ -60,7 +65,7 @@ const TourCard = ({ tour, budget, anchor = false }) => {
         {/* Budget-fit badge */}
         {hasBudget && (
           <div className={`absolute top-4 right-4 px-2.5 py-1 rounded-full text-[10px] font-black shadow-lg ${
-            fits ? 'bg-[#2e7d4f] text-white' : 'bg-gradient-to-r from-[#00a58e] to-[#009882] text-[#252a31]'
+            fits ? 'bg-[#2e7d4f] text-white' : 'bg-[#00a58e] text-white'
           }`}>
             {fits ? `✓ ${t('exoticTours.inBudget')}` : `+${fmt(over)}`}
           </div>
@@ -68,12 +73,12 @@ const TourCard = ({ tour, budget, anchor = false }) => {
 
         {/* Title over image */}
         <div className="absolute bottom-4 left-4 right-4 transition-transform duration-500 group-hover:-translate-y-0.5">
-          <h3 className="text-white text-[19px] font-black leading-tight drop-shadow-lg">{tour.title}</h3>
+          <h3 className={`text-white font-black leading-tight drop-shadow-lg ${anchor ? 'text-[22px] md:text-[26px]' : 'text-[19px]'}`}>{tour.title}</h3>
           <p className="text-white/80 text-[12px] font-medium">{tour.tagline}</p>
         </div>
       </div>
 
-      <div className="p-5 flex flex-col flex-1">
+      <div className="p-5 flex flex-col flex-1 min-w-0">
         {/* Temperature route */}
         <div className="flex items-center gap-2 mb-4 p-2.5 rounded-xl bg-gradient-to-r from-[#fdf1e8] via-white to-[#eaf3f4] border border-[#e8edf1]">
           <div className="text-center px-1 shrink-0">
@@ -179,34 +184,26 @@ const ExoticTours = () => {
     <div className="min-h-screen bg-[#eef2f5]">
 
       {/* Hero */}
-      <div className="relative bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#252a31] overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[200%] bg-white/10 blur-[120px] rounded-full" />
-          <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[200%] bg-[#0172cb]/30 blur-[100px] rounded-full" />
-        </div>
-        <div className="absolute top-10 right-[12%] w-64 h-64 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none animate-float" />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-28 pb-20">
+      <div className="relative bg-[#1c2127] overflow-hidden">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 pt-[120px] pb-14">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 mb-6">
-              <Globe className="w-4 h-4 text-white/80" />
-              <span className="text-[11px] font-black uppercase tracking-widest text-white/80">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 mb-5">
+              <Globe className="w-3.5 h-3.5 text-white/80" />
+              <span className="text-[10.5px] font-black uppercase tracking-[0.14em] text-white/80">
                 {t('exotic.badge')}
               </span>
             </div>
 
-            <h1 className="font-display text-[clamp(38px,10vw,72px)] font-semibold text-white leading-[0.95] tracking-[-0.03em] text-balance break-words mb-6">
+            <h1 className="text-[clamp(30px,5.2vw,52px)] font-black text-white leading-[1.06] tracking-[-0.035em] text-balance break-words mb-4">
               {t('exotic.title1')}<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#61d1bf] to-[#7fc4c9]">
-                {t('exotic.title2')}
-              </span>
+              <span className="text-[#61d1bf]">{t('exotic.title2')}</span>
             </h1>
 
-            <p className="text-[17px] text-white/70 max-w-xl leading-relaxed mb-10">
+            <p className="text-[15px] md:text-[17px] text-white/70 max-w-xl mb-8">
               {t('exotic.sub')}
             </p>
 
@@ -241,7 +238,7 @@ const ExoticTours = () => {
         {/* Budget finder */}
         <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 mb-6 flex flex-col md:flex-row md:items-center gap-4 shadow-soft">
           <div className="flex items-center gap-3 shrink-0">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0172cb] to-[#252a31] flex items-center justify-center shadow-sm">
+            <div className="w-11 h-11 rounded-xl bg-[#0172cb] flex items-center justify-center shadow-sm">
               <Wallet className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -249,7 +246,7 @@ const ExoticTours = () => {
               <p className="text-[12px] text-[#697d95]">{t('exoticTours.budgetFinderSub')}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus-within:border-[#0172cb] transition flex-1 md:max-w-[240px]">
+          <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-[#dfe7ec] focus-within:border-[#0172cb] transition flex-1 md:max-w-[240px]">
             <span className="text-[16px] font-black text-[#4a5867]">$</span>
             <input
               type="number" min="0" step="500" value={budget || ''}
@@ -293,19 +290,18 @@ const ExoticTours = () => {
           </span>
         </div>
 
-        {/* Tour grid — the first card anchors the layout by spanning 2 columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {/* Tour grid — every fifth card goes double-width, which tiles a 3-column
+            row exactly and keeps the page from reading as one long ladder. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6">
           <AnimatePresence>
             {visible.map((tour, i) => (
-              <TourCard key={tour.id} tour={tour} budget={budget}
-                anchor={i === 0 || (i === visible.length - 1 && (visible.length + 1) % 3 === 2)} />
+              <TourCard key={tour.id} tour={tour} budget={budget} anchor={i % 5 === 0} />
             ))}
           </AnimatePresence>
         </div>
 
         {/* Bottom CTA */}
-        <div className="relative mt-12 bg-gradient-to-br from-[#1c2127] via-[#252a31] to-[#252a31] rounded-3xl p-10 md:p-12 text-center overflow-hidden shadow-lift">
-          <div className="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none animate-float" />
+        <div className="relative mt-12 bg-[#1c2127] rounded-2xl p-10 md:p-12 text-center overflow-hidden shadow-lift">
           <div className="relative">
             <h2 className="text-[36px] font-black text-white mb-4">
               {t('exotic.ctaTitle')}

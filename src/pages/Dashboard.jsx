@@ -56,11 +56,7 @@ export default function Dashboard() {
   return (
     <div className="bg-[#eef2f5] min-h-screen">
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-[#252a31] via-[#00306f] to-[#1c2127] text-white overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="animate-float absolute -top-16 right-[8%] w-72 h-72 rounded-full bg-[#0172cb]/30 blur-3xl" />
-          <div className="animate-float absolute -bottom-24 left-[20%] w-80 h-80 rounded-full bg-[#00a58e]/10 blur-3xl" style={{ animationDelay: '1.5s' }} />
-        </div>
+      <div className="relative bg-[#1c2127] text-white overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-20">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
@@ -156,8 +152,7 @@ export default function Dashboard() {
             </div>
 
             {/* Travel Insight */}
-            <div className="bg-gradient-to-br from-[#252a31] via-[#00306f] to-[#1c2127] rounded-2xl p-8 text-white relative overflow-hidden group shadow-lift">
-              <div className="pointer-events-none absolute -top-10 right-10 w-56 h-56 rounded-full bg-[#00a58e]/15 blur-3xl animate-float" />
+            <div className="bg-[#1c2127] rounded-2xl p-8 text-white relative overflow-hidden group shadow-lift">
               <div className="relative z-10 max-w-sm">
                 <h3 className="text-2xl font-black leading-tight mb-4 tracking-tighter">
                   {t('dashboard.insightProTitle')}

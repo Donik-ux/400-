@@ -32,7 +32,7 @@ const Field = ({ label, icon: Icon, error, children, hint }) => (
 );
 
 const INPUT_CLS = (err) =>
-  `w-full bg-white border-2 rounded-xl px-4 py-3 text-[14px] font-semibold text-[#252a31] placeholder:text-[#94a3af] outline-none transition ${
+  `w-full bg-white border rounded-xl px-4 py-3 text-[14px] font-semibold text-[#252a31] placeholder:text-[#94a3af] outline-none transition ${
     err ? 'border-[#d98a75] focus:border-[#b3402e]' : 'border-[#dfe7ec] hover:border-[#cbd5e1] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10'
   }`;
 
@@ -381,11 +381,11 @@ export default function Checkout() {
                   </label>
                   <div className="flex items-center gap-3 bg-[#eef2f5] border border-[#dfe7ec] rounded-xl px-4 py-2.5 w-fit">
                     <button onClick={() => setPassengers(p => Math.max(1, p - 1))}
-                      className="w-9 h-9 rounded-lg bg-white border-2 border-[#0172cb] text-[#0172cb] text-lg font-black transition active:scale-95 hover:bg-[#e8f4fd] disabled:opacity-40"
+                      className="w-9 h-9 rounded-lg bg-white border border-[#0172cb] text-[#0172cb] text-lg font-black transition active:scale-95 hover:bg-[#e8f4fd] disabled:opacity-40"
                       disabled={passengers <= 1}>−</button>
                     <span className="text-[18px] font-black text-[#252a31] w-8 text-center">{passengers}</span>
                     <button onClick={() => setPassengers(p => Math.min(9, p + 1))}
-                      className="w-9 h-9 rounded-lg bg-white border-2 border-[#0172cb] text-[#0172cb] text-lg font-black transition active:scale-95 hover:bg-[#e8f4fd] disabled:opacity-40"
+                      className="w-9 h-9 rounded-lg bg-white border border-[#0172cb] text-[#0172cb] text-lg font-black transition active:scale-95 hover:bg-[#e8f4fd] disabled:opacity-40"
                       disabled={passengers >= 9}>+</button>
                     <span className="text-[#697d95] text-[12px] font-semibold ml-1">{t('checkout.maxPax') || 'Max 9'}</span>
                   </div>
@@ -596,7 +596,7 @@ function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
         <div className="bg-white border border-[#dfe7ec] rounded-2xl p-8 md:p-10 shadow-float text-center">
           <div className="relative mx-auto mb-5 w-20 h-20">
             <div className="absolute inset-0 rounded-full bg-[#008009]/10 animate-ping opacity-50" />
-            <div className="relative w-20 h-20 rounded-full bg-[#e8f5e9] border-2 border-[#008009]/30 flex items-center justify-center">
+            <div className="relative w-20 h-20 rounded-full bg-[#e8f5e9] border border-[#008009]/30 flex items-center justify-center">
               <CheckCircle className="w-10 h-10 text-[#008009]" />
             </div>
           </div>
@@ -631,7 +631,7 @@ function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
               {t('checkout.myBookings') || 'View my bookings'}
             </button>
             <button onClick={() => navigate('/')}
-              className="flex-1 py-3.5 rounded-xl border-2 border-[#dfe7ec] hover:border-[#0172cb] hover:bg-[#e8f4fd] text-[#252a31] text-[13px] font-black tracking-wide transition">
+              className="flex-1 py-3.5 rounded-xl border border-[#dfe7ec] hover:border-[#0172cb] hover:bg-[#e8f4fd] text-[#252a31] text-[13px] font-black tracking-wide transition">
               {t('checkout.home') || 'Back to homepage'}
             </button>
           </div>

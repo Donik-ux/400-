@@ -11,7 +11,6 @@ import useSEO from '../hooks/useSEO';
 import { handleImgError } from '../utils/imageFallback';
 import { useCompactPriceFormatter } from '../components/Price';
 import CityAutocomplete from '../features/flights/CityAutocomplete';
-import GoldDust from '../components/fx/GoldDust';
 import { getWeatherForDates } from '../services/weatherForecast';
 import { pickBestValueIndex } from '../utils/dateFareCalendar';
 import { wmoInfo } from '../utils/wmoWeatherCodes';
@@ -283,7 +282,6 @@ export default function Antarctica() {
         />
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(4,16,31,0.62) 0%, rgba(4,16,31,0.10) 42%, rgba(4,16,31,0.55) 100%)' }} />
         <div className="film-grain" />
-        <GoldDust className="absolute inset-0" density={0.55} />
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <motion.div
@@ -291,16 +289,16 @@ export default function Antarctica() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] backdrop-blur px-4 py-1.5 text-[10.5px] font-black uppercase tracking-[0.22em] text-[#bfe3f0] mb-7">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[10.5px] font-black uppercase tracking-[0.14em] text-[#bfe3f0] mb-5">
               <Snowflake className="w-3.5 h-3.5" /> {t('antarctica.hero.badge')}
             </div>
-            <h1 className="font-display text-[clamp(42px,7.4vw,96px)] font-semibold tracking-[-0.045em] leading-[0.94] text-balance break-words mb-6 [text-shadow:0_2px_44px_rgba(0,10,26,0.45)]">
+            <h1 className="text-[clamp(30px,5.2vw,52px)] font-black tracking-[-0.035em] leading-[1.06] text-balance break-words mb-4">
               {t('antarctica.hero.titleLead')}{' '}
-              <span className="italic font-medium" style={ICE_TEXT}>{t('antarctica.hero.titleHighlight')}</span> —
+              <span style={ICE_TEXT}>{t('antarctica.hero.titleHighlight')}</span> —
               <br className="hidden md:block" />{' '}
               {t('antarctica.hero.titleTail')}
             </h1>
-            <p className="text-[15px] md:text-[18px] text-[#cfe3ee]/85 font-medium max-w-xl mb-9 leading-relaxed">
+            <p className="text-[15px] md:text-[17px] text-[#cfe3ee]/80 font-medium max-w-xl mb-7">
               {t('antarctica.hero.subtitle')}
             </p>
             <div className="flex flex-wrap gap-3">
@@ -318,7 +316,7 @@ export default function Antarctica() {
             className="mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 border-t border-white/15 pt-7 md:pt-9">
             {stats.map((s, i) => (
               <div key={i} className="md:border-l md:border-white/10 md:first:border-l-0 md:pl-6 md:first:pl-0">
-                <div className="font-display text-[26px] md:text-[34px] font-semibold leading-none whitespace-nowrap" style={ICE_TEXT}>{s.value}</div>
+                <div className="text-[26px] md:text-[34px] font-semibold leading-none whitespace-nowrap" style={ICE_TEXT}>{s.value}</div>
                 <div className="text-[11px] md:text-[12px] font-bold text-white/50 mt-2 leading-snug max-w-[190px]">{s.label}</div>
               </div>
             ))}
@@ -368,13 +366,13 @@ export default function Antarctica() {
             <div className="grid grid-cols-3 gap-2 md:gap-3 mb-6">
               {DURATIONS.map((d) => (
                 <button key={d} type="button" onClick={() => setDays(d)}
-                  className={`rounded-xl border-2 px-3 py-3 text-left transition active:scale-[0.98] ${
+                  className={`rounded-xl border px-3 py-3 text-left transition active:scale-[0.98] ${
                     days === d
                       ? 'border-[#0172cb] bg-[#e8f4fd] ring-4 ring-[#0172cb]/10 shadow-soft'
                       : 'border-[#dfe7ec] bg-white hover:border-[#0172cb]/50'
                   }`}>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="font-display text-[26px] font-bold text-[#252a31] leading-none">{d}</span>
+                    <span className="text-[26px] font-bold text-[#252a31] leading-none">{d}</span>
                     <span className="text-[11px] font-black uppercase tracking-wider text-[#697d95]">{t('antarctica.builder.daysWord')}</span>
                   </div>
                   <div className="text-[11px] font-bold text-[#4a5867] mt-1 leading-snug">{t(`antarctica.builder.d${d}`)}</div>
@@ -402,7 +400,7 @@ export default function Antarctica() {
                 return (
                   <button key={o.iso} type="button"
                     onClick={() => setPickedIdx(i)}
-                    className={`relative shrink-0 snap-start w-[136px] rounded-xl border-2 px-3 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
+                    className={`relative shrink-0 snap-start w-[136px] rounded-xl border px-3 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
                       isSel
                         ? 'border-[#0172cb] bg-[#e8f4fd] ring-4 ring-[#0172cb]/10 shadow-soft'
                         : 'border-[#dfe7ec] bg-white hover:border-[#0172cb]/50'
@@ -489,7 +487,7 @@ export default function Antarctica() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 shrink-0">
                   <div className="text-left sm:text-right">
                     <div className="text-[10px] font-black uppercase tracking-widest text-white/50">{t('antarctica.builder.totalLabel')}</div>
-                    <div className="font-display text-[30px] font-semibold leading-tight whitespace-nowrap" style={ICE_TEXT}>{fmtCompact(total)}</div>
+                    <div className="text-[30px] font-semibold leading-tight whitespace-nowrap" style={ICE_TEXT}>{fmtCompact(total)}</div>
                     <div className="text-[10.5px] font-bold text-white/50 max-w-[220px]">{t('antarctica.builder.perPerson')}</div>
                   </div>
                   <div className="flex flex-col items-stretch gap-1.5">
@@ -528,13 +526,13 @@ export default function Antarctica() {
                   <span className="w-9 h-9 rounded-xl bg-[#eaf5f9] text-[#1f6d94] flex items-center justify-center shrink-0">
                     <r.icon className="w-[18px] h-[18px]" />
                   </span>
-                  <h3 className="font-display text-[19px] md:text-[24px] font-bold text-[#252a31] tracking-tight">{r.title}</h3>
+                  <h3 className="text-[19px] md:text-[24px] font-bold text-[#252a31] tracking-tight">{r.title}</h3>
                 </div>
                 <p className="text-[13.5px] text-[#4a5867] font-medium leading-relaxed flex-1 max-w-2xl">{r.desc}</p>
                 <div className="flex flex-wrap items-end justify-between gap-3 border-t border-[#e8edf1] pt-4 mt-5">
                   <div>
                     <div className="text-[10px] text-[#697d95] font-bold uppercase tracking-wider">{r.days} {t('antarctica.routes.daysLabel')} · {t('antarctica.routes.fromLabel')}</div>
-                    <div className="font-display text-[24px] md:text-[26px] font-bold text-[#252a31] whitespace-nowrap leading-tight">{fmtCompact(r.price)}</div>
+                    <div className="text-[24px] md:text-[26px] font-bold text-[#252a31] whitespace-nowrap leading-tight">{fmtCompact(r.price)}</div>
                   </div>
                   <button onClick={() => buildPlan({ days: r.days, price: r.price })}
                     className="text-[12.5px] font-black text-white bg-[#0172cb] hover:bg-[#015aa3] px-4 py-2.5 rounded-xl transition shadow-soft flex items-center gap-1.5 active:scale-95">
@@ -551,15 +549,14 @@ export default function Antarctica() {
       <section className="max-w-7xl mx-auto px-4 md:px-8 pb-4 reveal">
         <div className="relative overflow-hidden rounded-2xl p-7 md:p-12 text-white shadow-float" style={POLAR_HERO}>
           <div className="film-grain" />
-          <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-[#9fd6e8]/15 blur-3xl pointer-events-none" />
           <div className="relative">
             <Eyebrow icon={Calendar} light>{t('antarctica.season.eyebrow')}</Eyebrow>
-            <h2 className="font-display text-[26px] md:text-[36px] font-semibold tracking-tight mb-8 md:mb-10 text-balance">{t('antarctica.season.heading')}</h2>
+            <h2 className="text-[26px] md:text-[36px] font-semibold tracking-tight mb-8 md:mb-10 text-balance">{t('antarctica.season.heading')}</h2>
             <div className="grid md:grid-cols-3 gap-7 md:gap-10">
               {seasons.map((s, i) => (
                 <div key={i} className="border-t border-white/20 pt-5">
                   <s.icon className="w-5 h-5 text-[#9fd6e8] mb-3" />
-                  <div className="font-display text-[19px] md:text-[22px] font-semibold mb-1.5">{s.label}</div>
+                  <div className="text-[19px] md:text-[22px] font-semibold mb-1.5">{s.label}</div>
                   <p className="text-[13px] text-white/65 font-medium leading-relaxed">{s.desc}</p>
                 </div>
               ))}
@@ -625,7 +622,7 @@ export default function Antarctica() {
           <div className="film-grain" />
           <div className="relative max-w-2xl mx-auto">
             <Snowflake className="w-8 h-8 text-[#9fd6e8] mx-auto mb-5 animate-float" />
-            <h2 className="font-display text-[30px] md:text-[44px] font-semibold tracking-[-0.025em] leading-[1.05] mb-4 text-balance">{t('antarctica.cta.heading')}</h2>
+            <h2 className="text-[30px] md:text-[44px] font-black tracking-[-0.025em] leading-[1.05] mb-4 text-balance">{t('antarctica.cta.heading')}</h2>
             <p className="text-[14px] md:text-[15px] text-[#cfe3ee]/85 font-medium mb-8 leading-relaxed">{t('antarctica.cta.body')}</p>
             <div className="flex flex-wrap justify-center gap-3">
               <button onClick={() => buildPlan()} className="btn-gold px-7 py-3.5 rounded-xl font-black text-[14px] flex items-center gap-2 active:scale-95 transition">

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Plane, Filter, TrendingDown, ExternalLink, Search, Star, Globe,
-  ArrowRight, Sparkles, Shield, BadgePercent, Headphones, ThumbsUp, MapPin,
+  ArrowRight, Sparkles, Shield, BadgePercent, Headphones, ThumbsUp,
   X, Wallet, BadgeCheck,
   Telescope, Compass, Map, Wand2,
 } from 'lucide-react';
@@ -202,56 +202,38 @@ export default function Flights() {
   }, [altDates, altWeather]);
 
   return (
-    <div className="relative bg-[#f5f7f9] min-h-screen -mt-[64px] overflow-hidden">
-      {/* ── soft, airy ambient tints ── */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[820px]"
-        style={{
-          background:
-            'radial-gradient(46rem 40rem at 10% 0%, rgba(1, 114, 203,0.06) 0%, transparent 60%), radial-gradient(42rem 38rem at 94% 2%, rgba(0, 152, 130,0.06) 0%, transparent 60%)',
-        }}
-      />
-
+    <div className="relative bg-[#f5f7f9] min-h-screen -mt-[64px]">
       <div className="relative z-10">
       {/* ── HERO + SEARCH ── */}
-      <section className="relative text-white pt-[120px] pb-36 md:pb-44 overflow-hidden">
+      <section className="relative text-white pt-[120px] pb-[120px] md:pb-[128px] overflow-hidden">
         {/* real Maldives photo */}
         <div
-          className="absolute inset-0 bg-cover bg-center scale-105"
+          className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroFor('maldives')})` }}
         />
-        {/* navy gradient for white-text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#001a3d]/85 via-[#1c2127]/70 to-[#252a31]/55" />
-        {/* fade INTO the light page */}
-        <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent to-[#f5f7f9]" />
-        <Plane className="absolute right-[6%] top-[120px] w-40 h-40 text-white/[0.08] -rotate-[25deg] animate-float pointer-events-none hidden md:block" />
-        <div className="absolute -right-24 -bottom-12 w-80 h-80 rounded-full bg-[#00a58e]/12 blur-3xl pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto px-4 md:px-8">
-          <div className="max-w-2xl mb-7">
-            <div className="badge-editorial px-3.5 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.14em] mb-4">
-              <Plane className="w-3.5 h-3.5 text-[#61d1bf]" /> {t('flights.badge') || t('flightsPage.hero.badge')}
-            </div>
-            <h1 className="font-display text-[40px] md:text-[62px] font-semibold tracking-[-0.03em] leading-[1.0] mb-3 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.28)]">
-              {t('flightsPage.hero.titleLine1')}<br className="hidden md:block" /> <span className="italic font-medium text-gradient-gold gold-animate">{t('flightsPage.hero.titleLine2')}</span>
+        {/* navy wash for white-text legibility */}
+        <div className="absolute inset-0 bg-[#1c2127]/85" />
+        <div className="relative max-w-6xl mx-auto px-4 md:px-8">
+          <div className="max-w-2xl">
+            <h1 className="text-[clamp(30px,5.2vw,52px)] font-black tracking-[-0.035em] leading-[1.06] mb-3 text-balance">
+              {t('flightsPage.hero.titleLine1')} <span className="text-[#61d1bf]">{t('flightsPage.hero.titleLine2')}</span>
             </h1>
-            <p className="text-[15px] md:text-[18px] text-white/80 font-medium max-w-xl leading-relaxed">
+            <p className="text-[15px] md:text-[17px] text-white/70 font-medium max-w-xl">
               {t('flightsPage.hero.subtitle')}
             </p>
           </div>
         </div>
-
-        {/* Floating search card */}
-        <div className="relative max-w-6xl mx-auto px-4 md:px-8 -mb-24">
-          <FlightSearch formData={formData} onChange={setFormData} onSubmit={handleSearch} loading={loading} />
-          {error && (
-            <div className="mt-3 note-danger rounded-lg p-3 text-[13px] font-semibold text-danger flex items-center gap-2">
-              <X className="w-4 h-4" /> {error}
-            </div>
-          )}
-        </div>
       </section>
 
-      <div className="h-24" />
+      {/* Search card sits across the seam, same as the home page */}
+      <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 -mt-[86px] md:-mt-[92px]">
+        <FlightSearch formData={formData} onChange={setFormData} onSubmit={handleSearch} loading={loading} />
+        {error && (
+          <div className="mt-3 note-danger rounded-lg p-3 text-[13px] font-semibold text-danger flex items-center gap-2">
+            <X className="w-4 h-4" /> {error}
+          </div>
+        )}
+      </div>
 
       {/* ── Trust strip ── */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-6">
@@ -375,7 +357,7 @@ export default function Flights() {
                 <button
                   onClick={() => handleSearch({ formData })}
                   disabled={loading || aiRefining}
-                  className="px-3.5 py-2 rounded-xl border-2 border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shadow-soft hover:shadow-float"
+                  className="px-3.5 py-2 rounded-xl border border-[#0172cb] text-[#0172cb] hover:bg-[#e8f4fd] text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shadow-soft hover:shadow-float"
                   title={t('flightsPage.results.refreshTitle')}>
                   <Sparkles className={`w-3.5 h-3.5 ${aiRefining ? 'animate-pulse' : ''}`} />
                   {aiRefining ? t('flightsPage.results.aiRefining') : t('flightsPage.results.refreshWithAI')}
@@ -398,7 +380,7 @@ export default function Flights() {
                   </div>
                   {isGrokAvailable() && !advice && (
                     <button onClick={handleExplainFares} disabled={adviceLoading || !filtered.length}
-                      className="px-3 py-1.5 rounded-lg border-2 border-[#24513a]/30 text-[#24513a] hover:bg-[#dcefe0] text-[11px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shrink-0">
+                      className="px-3 py-1.5 rounded-lg border border-[#24513a]/30 text-[#24513a] hover:bg-[#dcefe0] text-[11px] font-black flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 shrink-0">
                       <Sparkles className={`w-3 h-3 ${adviceLoading ? 'animate-pulse' : ''}`} />
                       {adviceLoading ? t('flightsPage.advice.loading') : t('flightsPage.advice.button')}
                     </button>
@@ -462,7 +444,7 @@ export default function Flights() {
                         <button key={d.iso} type="button"
                           disabled={isToday}
                           onClick={() => handleSearch({ formData: { ...formData, date: d.iso } })}
-                          className={`relative shrink-0 snap-start w-[110px] rounded-xl border-2 px-2.5 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
+                          className={`relative shrink-0 snap-start w-[110px] rounded-xl border px-2.5 pt-3 pb-2.5 text-left transition active:scale-[0.98] ${
                             isToday
                               ? 'border-[#0172cb] bg-[#e8f4fd] ring-4 ring-[#0172cb]/10'
                               : 'border-[#dfe7ec] bg-white hover:border-[#0172cb]/50'
@@ -574,8 +556,7 @@ export default function Flights() {
 
             {/* AI Trip CTA — rich blue/gold accent band */}
             <section className="mt-10 reveal">
-              <div className="relative overflow-hidden bg-gradient-to-br from-[#252a31] via-[#0172cb] to-[#252a31] rounded-2xl p-6 md:p-9 text-white shadow-float">
-                <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#00a58e]/30 blur-3xl pointer-events-none animate-float" />
+              <div className="relative overflow-hidden bg-[#1c2127] rounded-2xl p-6 md:p-9 text-white shadow-float">
                 <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
                   <div className="max-w-xl">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-widest mb-3">
@@ -588,7 +569,7 @@ export default function Flights() {
                       {t('flightsPage.aiCta.body')}
                     </p>
                   </div>
-                  <button onClick={() => navigate('/hot-tours')}
+                  <button onClick={() => navigate('/planner')}
                     className="btn-gold px-5 py-3 text-[14px] flex items-center gap-2 shrink-0">
                     <Sparkles className="w-4 h-4" /> {t('flightsPage.aiCta.button')}
                   </button>

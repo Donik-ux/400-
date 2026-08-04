@@ -28,7 +28,7 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
       style={{ animationDelay: `${index * 0.07}s` }}
     >
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-[#252a31] to-[#1c2127] px-5 py-4 overflow-hidden">
+      <div className="relative bg-[#1c2127] px-5 py-4 overflow-hidden">
         <div className="absolute inset-0 opacity-25 pointer-events-none"
              style={{ backgroundImage: 'radial-gradient(circle at 90% 10%, #0172cb 0%, transparent 55%)' }} />
         <div className="relative flex items-center justify-between">

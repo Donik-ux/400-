@@ -82,7 +82,7 @@ export default function NotificationsTab() {
                   <Icon className="w-4 h-4 text-white/40" />
                 </div>
                 {!n.read && (
-                  <span className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ${SEVERITY_DOT[severity]} border-2 border-[#14181d]`} />
+                  <span className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ${SEVERITY_DOT[severity]} border border-[#14181d]`} />
                 )}
               </div>
               <div className="flex-1 min-w-0">

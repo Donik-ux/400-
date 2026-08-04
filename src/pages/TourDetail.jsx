@@ -287,7 +287,6 @@ export default function TourDetail() {
           transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
           className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#001a3d] via-[#001a3d]/45 to-[#001a3d]/25" />
-        <div className="absolute top-8 right-[10%] w-56 h-56 rounded-full bg-[#00a58e]/10 blur-3xl pointer-events-none animate-float" />
 
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 md:px-12 flex flex-col">
           {/* Back */}
@@ -373,7 +372,7 @@ export default function TourDetail() {
                   transition={{ duration: 0.28, delay: i * 0.05, ease: [0.4, 0, 0.2, 1] }}
                   className="flex items-center gap-3 bg-white border border-[#dfe7ec] rounded-xl p-3.5 shadow-soft transition-colors hover:border-[#0172cb]/40"
                 >
-                  <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0172cb] to-[#252a31] text-white text-[12px] font-black flex items-center justify-center shrink-0 shadow-sm">
+                  <span className="w-7 h-7 rounded-lg bg-[#0172cb] text-white text-[12px] font-black flex items-center justify-center shrink-0 shadow-sm">
                     {i + 1}
                   </span>
                   <span className="text-[14px] font-semibold text-[#252a31]">{h}</span>
@@ -513,7 +512,7 @@ export default function TourDetail() {
               <span className="flex items-center gap-1.5 text-[12px] font-bold text-[#252a31] mb-1.5">
                 <Wallet className="w-3.5 h-3.5 text-[#0172cb]" /> {t('tourDetail.totalBudget')}
               </span>
-              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus-within:border-[#0172cb] transition">
+              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-[#dfe7ec] focus-within:border-[#0172cb] transition">
                 <span className="text-[15px] font-black text-[#4a5867]">$</span>
                 <input type="number" min="0" step="100" value={budget}
                   onChange={e => setBudget(Math.max(0, Number(e.target.value)))}
@@ -526,11 +525,11 @@ export default function TourDetail() {
               </span>
               <input type="date" min={today} value={date}
                 onChange={e => setDate(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] outline-none text-[14px] font-bold text-[#252a31] transition" />
+                className="w-full px-3 py-2.5 rounded-xl border border-[#dfe7ec] focus:border-[#0172cb] outline-none text-[14px] font-bold text-[#252a31] transition" />
             </label>
 
             {/* Fit banner */}
-            <div className={`p-3.5 rounded-xl border-2 mb-4 ${
+            <div className={`p-3.5 rounded-xl border mb-4 ${
               fits ? 'bg-[#e9f3ea] border-[#cfe3d2]' : 'bg-[#fdf3dc] border-[#f0dfb4]'
             }`}>
               <div className="flex items-start gap-2.5">

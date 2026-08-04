@@ -59,7 +59,7 @@ const CurrencySelect = ({ value, onChange, codes }) => {
   const list = codes && codes.length ? codes : CURRENCIES.map(c => c.code);
   return (
     <select value={value} onChange={e => onChange(e.target.value)}
-      className="w-full px-3 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 outline-none text-[14px] font-bold text-[#252a31] bg-white transition-premium">
+      className="w-full px-3 py-2.5 rounded-xl border border-[#dfe7ec] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 outline-none text-[14px] font-bold text-[#252a31] bg-white transition-premium">
       {list.map(code => (
         <option key={code} value={code}>{currencyFlag(code)} {code} — {nameFor(code)}</option>
       ))}
@@ -127,7 +127,7 @@ function CurrencyConverter() {
         <span className="text-[12px] font-bold text-[#252a31] mb-1.5 block">{t('toolsPage.converter.amount')}</span>
         <input type="number" min="0" value={amount}
           onChange={e => setAmount(Math.max(0, Number(e.target.value)))}
-          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 outline-none text-[18px] font-black text-[#252a31] transition-premium" />
+          className="w-full px-3.5 py-2.5 rounded-xl border border-[#dfe7ec] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 outline-none text-[18px] font-black text-[#252a31] transition-premium" />
       </label>
 
       <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2">
@@ -183,7 +183,7 @@ function TipCalculator() {
         <span className="text-[12px] font-bold text-[#252a31] mb-1.5 block">{t('toolsPage.tip.bill')}</span>
         <input type="number" min="0" value={bill}
           onChange={e => setBill(Math.max(0, Number(e.target.value)))}
-          className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 outline-none text-[18px] font-black text-[#252a31] transition-premium" />
+          className="w-full px-3.5 py-2.5 rounded-xl border border-[#dfe7ec] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 outline-none text-[18px] font-black text-[#252a31] transition-premium" />
       </label>
 
       <span className="text-[12px] font-bold text-[#252a31] mb-1.5 block">{t('toolsPage.tip.tipLabel')}</span>
@@ -327,7 +327,7 @@ function UnitConverter() {
           <span className="text-[11px] font-bold text-[#697d95] mb-1 block">{fromU}</span>
           <input type="number" value={val}
             onChange={e => setVal(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 outline-none text-[18px] font-black text-[#252a31] transition-premium" />
+            className="w-full px-3 py-2.5 rounded-xl border border-[#dfe7ec] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 outline-none text-[18px] font-black text-[#252a31] transition-premium" />
         </div>
         <button onClick={() => setDir(d => !d)} title={t('toolsPage.units.flipTitle')}
           className="w-10 h-[42px] mt-5 rounded-xl bg-[#252a31] text-white flex items-center justify-center hover:bg-[#0172cb] transition-premium active:scale-90 shadow-soft hover:shadow-float">
@@ -335,7 +335,7 @@ function UnitConverter() {
         </button>
         <div>
           <span className="text-[11px] font-bold text-[#697d95] mb-1 block">{toU}</span>
-          <div className="px-3 py-2.5 rounded-xl bg-gradient-to-br from-[#e8f4fd] to-[#eef2f5] border-2 border-[#0172cb]/15 text-[18px] font-black text-gradient">
+          <div className="px-3 py-2.5 rounded-xl bg-gradient-to-br from-[#e8f4fd] to-[#eef2f5] border border-[#0172cb]/15 text-[18px] font-black text-gradient">
             {result.toFixed(1)}
           </div>
         </div>
@@ -525,8 +525,8 @@ export default function Tools() {
           <div className="badge-editorial inline-flex px-3.5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest mb-4">
             <Wrench className="w-3.5 h-3.5 text-[#61d1bf]" /> {t('toolsPage.hero.badge')}
           </div>
-          <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-[-0.03em] leading-[1.05] mb-2 text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.25)]">
-            {t('toolsPage.hero.title1')} <span className="italic font-medium text-gradient-gold gold-animate">{t('toolsPage.hero.title2')}</span>
+          <h1 className="font-display text-3xl md:text-5xl font-black tracking-[-0.03em] leading-[1.05] mb-2 text-balance">
+            {t('toolsPage.hero.title1')} <span className="text-[#61d1bf]">{t('toolsPage.hero.title2')}</span>
           </h1>
           <p className="text-[14px] md:text-[15px] text-white/70 font-medium max-w-xl">
             {t('toolsPage.hero.sub')}

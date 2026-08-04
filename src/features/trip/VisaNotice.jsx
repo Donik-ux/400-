@@ -15,11 +15,10 @@
  * reminder, "a visa is required" is only a fact.
  */
 import React, { useEffect, useState } from 'react';
-import { ShieldAlert, CheckCircle2, ArrowRight, Clock, FileText } from 'lucide-react';
+import { ShieldAlert, CheckCircle2, Clock, FileText } from 'lucide-react';
 import { getVisaStatus } from '../../services/destinationLookup';
 import { checkVisa } from '../../services/travelServicesService';
 import { isGrokAvailable } from '../../services/grokClient';
-import { Link } from 'react-router-dom';
 import { useTranslation } from '../../store/useLangStore';
 import { leadTimeDays, DEFAULT_VISA_LEAD_DAYS, localizeVisa } from '../../utils/visaTiming';
 
@@ -132,13 +131,7 @@ export default function VisaNotice({ destination, travelDate, nationality, lang 
           <p className="mt-2 text-[11px] font-semibold opacity-80">{t('tripPlan.visa.addNationality')}</p>
         )}
 
-        {/* Link, not <a href> — a full page reload here would throw away the
-            generated plan the traveler is standing on. */}
-        <Link to="/services" className="mt-2 inline-flex items-center gap-1 text-[11.5px] font-black underline">
-          {t('tripPlan.visa.fullCheck')} <ArrowRight className="w-3 h-3" />
-        </Link>
-
-        <p className="mt-1.5 text-[10.5px] font-semibold opacity-70">{t('tripPlan.visa.disclaimer')}</p>
+        <p className="mt-2 text-[10.5px] font-semibold opacity-70">{t('tripPlan.visa.disclaimer')}</p>
       </div>
     </div>
   );

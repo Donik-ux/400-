@@ -35,7 +35,7 @@ export default function GlobalSearch() {
     )).slice(0, 5).map(f => ({ type: 'flight', icon: Plane, title: `${f.from} → ${f.to}`, sub: `${f.airline} · ${f.cabin} · ${fmt(f.price)}`, action: () => navigate('/flights') })),
     ...packages.filter(p => p.available && (
       p.name.toLowerCase().includes(q) || p.destination.toLowerCase().includes(q)
-    )).slice(0, 5).map(p => ({ type: 'package', icon: Package, title: p.name, sub: `${p.destination} · ${p.duration} days · ${fmt(p.price)}`, action: () => navigate('/hot-tours') })),
+    )).slice(0, 5).map(p => ({ type: 'package', icon: Package, title: p.name, sub: `${p.destination} · ${p.duration} days · ${fmt(p.price)}`, action: () => navigate(`/trip-plan?to=${encodeURIComponent(p.destination)}&days=${p.duration}&balance=${p.price}`) })),
   ];
 
   const TYPE_COLOR = { flight: 'bg-[#eaf3f4] text-[#2d6a6f]', package: 'bg-[#eef2f5] text-[#007f6d]' };

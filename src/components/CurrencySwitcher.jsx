@@ -59,17 +59,17 @@ export default function CurrencySwitcher({ align = 'right', full = false }) {
     <button
       onClick={() => { setCurrency(code); setOpen(false); }}
       className={`w-full flex items-center justify-between gap-3 px-4 py-2 text-left transition-premium ${
-        currency === code ? 'bg-[#009882]/15' : 'hover:bg-white/[0.06]'
+        currency === code ? 'bg-[#e6f6f3]' : 'hover:bg-[#f5f7f9]'
       }`}
     >
       <span className="flex items-center gap-2.5 min-w-0">
         <span className="text-[15px] shrink-0">{currencyFlag(code)}</span>
         <span className="flex flex-col min-w-0">
-          <span className={`text-[13px] font-bold ${currency === code ? 'text-[#009882]' : 'text-white'}`}>{code}</span>
-          <span className="text-[11px] text-white/40 truncate">{nameFor(code)}</span>
+          <span className={`text-[13px] font-bold ${currency === code ? 'text-[#008f77]' : 'text-[#252a31]'}`}>{code}</span>
+          <span className="text-[11px] text-[#697d95] truncate">{nameFor(code)}</span>
         </span>
       </span>
-      {currency === code && <Check className="w-4 h-4 text-[#009882] shrink-0" />}
+      {currency === code && <Check className="w-4 h-4 text-[#008f77] shrink-0" />}
     </button>
   );
 
@@ -78,7 +78,7 @@ export default function CurrencySwitcher({ align = 'right', full = false }) {
       <button
         type="button"
         onClick={() => { if (!open) setQuery(''); setOpen((v) => !v); }}
-        className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[12px] font-bold text-white/80 hover:text-white hover:bg-white/10 transition-premium border border-white/15 ${full ? 'w-full justify-between' : ''}`}
+        className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-[12px] font-bold text-[#4a5867] hover:text-[#252a31] hover:bg-[#eef2f5] transition-premium border border-[#dfe7ec] ${full ? 'w-full justify-between' : ''}`}
       >
         <Coins className="w-3.5 h-3.5 shrink-0" />
         <span>{currency}</span>
@@ -87,18 +87,18 @@ export default function CurrencySwitcher({ align = 'right', full = false }) {
 
       {open && (
         <div
-          className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} top-full mt-2 w-72 bg-[#012154] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-[60] page-fade`}
+          className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} top-full mt-2 w-72 bg-white border border-[#dfe7ec] rounded-xl shadow-[0_10px_36px_-12px_rgba(16,24,40,0.28)] overflow-hidden z-[60] page-fade`}
         >
           {/* Search across all world currencies */}
-          <div className="p-2.5 border-b border-white/10">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.06] border border-white/10 focus-within:border-[#009882]/50 transition-premium">
-              <Search className="w-3.5 h-3.5 text-white/40 shrink-0" />
+          <div className="p-2.5 border-b border-[#e8edf1] bg-[#f5f7f9]">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-[#dfe7ec] focus-within:border-[#0172cb] transition-premium">
+              <Search className="w-3.5 h-3.5 text-[#697d95] shrink-0" />
               <input
                 ref={searchRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t('ui.currency.placeholder')}
-                className="w-full bg-transparent outline-none text-[13px] font-semibold text-white placeholder:text-white/30"
+                className="w-full bg-transparent outline-none text-[13px] font-semibold text-[#252a31] placeholder:text-[#94a3af]"
               />
             </div>
           </div>
@@ -106,14 +106,14 @@ export default function CurrencySwitcher({ align = 'right', full = false }) {
           <div className="max-h-80 overflow-y-auto overscroll-contain">
             {popular.length > 0 && (
               <>
-                <div className="px-4 pt-2.5 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-[#009882]/70">{t('ui.currency.popular')}</div>
+                <div className="px-4 pt-2.5 pb-1 text-[9px] font-black uppercase tracking-[0.14em] text-[#008f77]">{t('ui.currency.popular')}</div>
                 {popular.map((code) => <Row key={code} code={code} />)}
-                <div className="px-4 pt-2.5 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-white/30">{t('ui.currency.all')} · {rest.length}</div>
+                <div className="px-4 pt-2.5 pb-1 text-[9px] font-black uppercase tracking-[0.14em] text-[#697d95]">{t('ui.currency.all')} · {rest.length}</div>
               </>
             )}
             {rest.map((code) => <Row key={code} code={code} />)}
             {filtered.length === 0 && (
-              <p className="px-4 py-6 text-center text-[12px] text-white/40 font-semibold">{t('ui.currency.nothingFound')}</p>
+              <p className="px-4 py-6 text-center text-[12px] text-[#697d95] font-semibold">{t('ui.currency.nothingFound')}</p>
             )}
           </div>
         </div>

@@ -83,7 +83,7 @@ export default function RecommendedTrips() {
               value={from}
               onChange={(e) => { setFrom(e.target.value); setDetected(false); setLocError(''); }}
               placeholder={t('tripRec.fromPh')}
-              className="w-full px-3 py-2.5 rounded-xl border-2 border-[#dfe7ec] focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/15 outline-none text-[14px] font-bold text-[#252a31] bg-white transition placeholder:text-[#94a3af]"
+              className="w-full px-3 py-2.5 rounded-xl border border-[#dfe7ec] focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/15 outline-none text-[14px] font-bold text-[#252a31] bg-white transition placeholder:text-[#94a3af]"
             />
           </label>
           <button

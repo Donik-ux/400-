@@ -27,15 +27,48 @@ import SmartImage from '../components/SmartImage';
 
 const REAL_FARE_SOURCES = ['kiwi', 'travelpayouts', 'duffel', 'amadeus'];
 
-/* ── External Booking Sites ── */
-const getBookingSites = (t) => [
-  { name: 'Aviasales',      icon: Plane,     color: '#0a7cff', url: 'https://aviasales.ru',       desc: t('flights.sites.aviasales.desc'),  badge: t('flights.sites.aviasales.badge'),  rating: 4.8 },
-  { name: 'Skyscanner',     icon: Telescope, color: '#0770e3', url: 'https://skyscanner.com',     desc: t('flights.sites.skyscanner.desc'), badge: t('flights.sites.skyscanner.badge'), rating: 4.7 },
-  { name: 'Google Flights', icon: Globe,     color: '#34a853', url: 'https://flights.google.com', desc: t('flights.sites.google.desc'),     badge: t('flights.sites.google.badge'),     rating: 4.9 },
-  { name: 'Kayak',          icon: Compass,   color: '#ff690f', url: 'https://kayak.com',          desc: t('flights.sites.kayak.desc'),      badge: t('flights.sites.kayak.badge'),      rating: 4.6 },
-  { name: 'Trip.com',       icon: Map,       color: '#287dfa', url: 'https://trip.com',           desc: t('flights.sites.trip.desc'),       badge: t('flights.sites.trip.badge'),       rating: 4.5 },
-  { name: 'Momondo',        icon: Sparkles,  color: '#e6007e', url: 'https://momondo.com',        desc: t('flights.sites.momondo.desc'),    badge: t('flights.sites.momondo.badge'),    rating: 4.5 },
-];
+/* ── External booking sites ──
+ * None of these sells fares through a public API, so we cannot show their
+ * prices. What we CAN do without any key is hand them the search the traveler
+ * just ran: each URL is built from the current route and date, so one click
+ * lands on their results page instead of their homepage with empty fields.
+ * With no search yet, they fall back to the plain site. */
+const iataOf = (s = '') => {
+  const m = String(s).match(/\(([A-Z]{3})\)/);
+  return m ? m[1] : String(s).toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
+};
+const ymd = (d) => (/^\d{4}-\d{2}-\d{2}$/.test(String(d || '')) ? d : '');
+// Skyscanner wants yymmdd, Aviasales wants ddmm — everyone else takes ISO.
+const skyDate = (d) => (ymd(d) ? d.slice(2).replace(/-/g, '') : '');
+const asDate  = (d) => (ymd(d) ? d.slice(8, 10) + d.slice(5, 7) : '');
+
+const getBookingSites = (t, { from, to, date, pax = 1 } = {}) => {
+  const f = iataOf(from);
+  const a = iataOf(to);
+  const d = ymd(date);
+  const routed = f.length === 3 && a.length === 3 && d;
+  const deep = (built, home) => (routed ? built : home);
+  return [
+    { name: 'Aviasales',      icon: Plane,     color: '#0a7cff', rating: 4.8,
+      url: deep(`https://www.aviasales.ru/search/${f}${asDate(d)}${a}${pax}`, 'https://www.aviasales.ru'),
+      desc: t('flights.sites.aviasales.desc'),  badge: t('flights.sites.aviasales.badge') },
+    { name: 'Skyscanner',     icon: Telescope, color: '#0770e3', rating: 4.7,
+      url: deep(`https://www.skyscanner.com/transport/flights/${f}/${a}/${skyDate(d)}/?adults=${pax}`, 'https://www.skyscanner.com'),
+      desc: t('flights.sites.skyscanner.desc'), badge: t('flights.sites.skyscanner.badge') },
+    { name: 'Google Flights', icon: Globe,     color: '#34a853', rating: 4.9,
+      url: deep(`https://www.google.com/travel/flights?q=${encodeURIComponent(`Flights from ${f} to ${a} on ${d}`)}&curr=USD`, 'https://flights.google.com'),
+      desc: t('flights.sites.google.desc'),     badge: t('flights.sites.google.badge') },
+    { name: 'Kayak',          icon: Compass,   color: '#ff690f', rating: 4.6,
+      url: deep(`https://www.kayak.com/flights/${f}-${a}/${d}/${pax}adults`, 'https://www.kayak.com'),
+      desc: t('flights.sites.kayak.desc'),      badge: t('flights.sites.kayak.badge') },
+    { name: 'Trip.com',       icon: Map,       color: '#287dfa', rating: 4.5,
+      url: deep(`https://www.trip.com/flights/${f.toLowerCase()}-to-${a.toLowerCase()}/?dcity=${f}&acity=${a}&ddate=${d}&adult=${pax}`, 'https://www.trip.com'),
+      desc: t('flights.sites.trip.desc'),       badge: t('flights.sites.trip.badge') },
+    { name: 'Momondo',        icon: Sparkles,  color: '#e6007e', rating: 4.5,
+      url: deep(`https://www.momondo.com/flight-search/${f}-${a}/${d}`, 'https://www.momondo.com'),
+      desc: t('flights.sites.momondo.desc'),    badge: t('flights.sites.momondo.badge') },
+  ];
+};
 
 // Offsets (days) around the searched date for the "smarter dates" strip.
 const ALT_DATE_OFFSETS = [-3, -1, 0, 1, 3, 7];
@@ -102,7 +135,12 @@ export default function Flights() {
     }
   };
 
-  const BOOKING_SITES = getBookingSites(t);
+  // Rebuilt whenever the search changes, so the cards always point at the
+  // route currently on screen.
+  const BOOKING_SITES = useMemo(
+    () => getBookingSites(t, { from: formData.from, to: formData.to, date: formData.date }),
+    [t, formData.from, formData.to, formData.date],
+  );
 
   /* ── Derived: filter state ── */
   const priceRange = useMemo(() => {

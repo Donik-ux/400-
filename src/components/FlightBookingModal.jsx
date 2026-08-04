@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, ExternalLink, TrendingDown, ShieldCheck, Plane, Award, BadgeCheck, Search } from 'lucide-react';
+import { X, ExternalLink, TrendingDown, ShieldCheck, Plane, BadgeCheck, Search } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 import Price from './Price';
 
@@ -15,20 +15,18 @@ const fmt = {
   iso:        (d) => d ? new Date(d).toISOString().slice(0,10) : new Date().toISOString().slice(0,10),
 };
 
-/* ── Deterministic per-site fare around the flight's base price ──
- * Each site shows a stable, realistic quote (aggregators usually swing
- * ~ -10%..+13% vs the airline) that doesn't jump on every re-render. */
-const hash01 = (str) => {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-  return (h >>> 0) / 4294967296;
-};
-const sitePrice = (base, key, spread = [-0.08, 0.08]) => {
-  if (!base) return null;
-  const r = hash01(`${key}|${base}`);
-  const f = spread[0] + r * (spread[1] - spread[0]);
-  return Math.max(1, Math.round(base * (1 + f)));
-};
+/* No per-site prices here on purpose.
+ *
+ * These cards used to show a bold fare under each aggregator's name, derived
+ * by hashing our own base price into a ±10% spread. It looked like a price
+ * comparison, but nobody had asked Skyscanner or Kayak anything — the numbers
+ * were invented, and the cheapest invented one even wore a "BEST" badge.
+ *
+ * None of these platforms sells real-time fares through a public API, so the
+ * honest version is what remains: a one-click link that runs the SAME search
+ * on their site, with the route, date and passenger count already filled in.
+ * The traveler sees their real price on their page.
+ */
 
 /* ── Official airline direct-booking sites, keyed by airline name ── */
 const AIRLINE_DIRECTORY = {
@@ -55,17 +53,6 @@ function buildAggregators(flight, date, pax = 1) {
   const d_as = fmt.aviasales(date);
   const d_sc = fmt.skyscanner(date);
   const d_iso = fmt.iso(date);
-  const base = flight.price || 0;
-  const SPREADS = {
-    'Aviasales':            [-0.08, 0.05],
-    'Skyscanner':           [-0.05, 0.08],
-    'Google Flights':       [-0.10, 0.02],
-    'Kayak':                [-0.02, 0.12],
-    'Trip.com':             [-0.03, 0.10],
-    'Booking.com Flights':  [-0.04, 0.09],
-    'Momondo':              [-0.09, 0.04],
-    'Expedia':              [ 0.00, 0.13],
-  };
 
   const sites = [
     {
@@ -110,9 +97,7 @@ function buildAggregators(flight, date, pax = 1) {
     },
   ];
 
-  return sites
-    .map((s) => ({ ...s, price: sitePrice(base, s.name, SPREADS[s.name]) }))
-    .sort((a, b) => (a.price || 1e9) - (b.price || 1e9));
+  return sites;
 }
 
 /* ── Match the flight's airline to its official site ── */
@@ -128,10 +113,11 @@ export default function FlightBookingModal({ flight, date, pax = 1, onClose }) {
   const official = findOfficialAirline(flight);
   const aggregators = buildAggregators(flight, date, pax);
 
-  // Live per-site quotes → official airline shows the headline fare; cheapest gets a badge.
+  // Only the airline row carries a price, and only because it is the fare our
+  // own sources quoted for this flight. The aggregator cards are links, not
+  // quotes — see buildAggregators.
   const officialPrice = official ? (flight.price || null) : null;
-  const allPrices = [officialPrice, ...aggregators.map(s => s.price)].filter(n => n != null && n > 0);
-  const bestPrice = allPrices.length ? Math.min(...allPrices) : null;
+  const bestPrice = officialPrice;
 
   return (
     <div
@@ -249,15 +235,9 @@ export default function FlightBookingModal({ flight, date, pax = 1, onClose }) {
                   </span>
                 </div>
                 <p className="text-[11.5px] text-[#4a5867] font-semibold leading-snug">{site.tagline}</p>
-                <div className="flex items-center justify-between mt-auto pt-1">
-                  <div className="flex items-center gap-1.5">
-                    {site.price != null && <span className="text-[18px] font-black text-[#252a31] leading-none tabular-nums"><Price amount={site.price} /></span>}
-                    {site.price != null && site.price === bestPrice && (
-                      <span className="text-[9px] font-black uppercase tracking-wider bg-[#008009] text-white px-1.5 py-0.5 rounded">{t('ui.booking.best') || 'Best'}</span>
-                    )}
-                  </div>
+                <div className="flex items-center justify-end mt-auto pt-1">
                   <span className="flex items-center gap-1 text-[#0172cb] text-[12px] font-black group-hover:gap-2 transition-all">
-                    {t('ui.booking.book') || 'Book'} <ExternalLink className="w-3 h-3" />
+                    {t('ui.booking.checkPrice') || 'Check price'} <ExternalLink className="w-3 h-3" />
                   </span>
                 </div>
               </a>

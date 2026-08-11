@@ -12,9 +12,18 @@
 import { checkRateLimit, sendRateLimited } from './_rateLimit.js';
 
 const SERP_URL = 'https://serpapi.com/search.json';
-const getApiKey = () => process.env.SERPAPI_KEY || '';
 
-// SerpApi charges per search and the free tier is 100/month, so a warm
+// Deliberately NOT `SERPAPI_KEY` — that key's monthly search budget is reserved
+// for flight fares (api/flightsSerp.js), where nothing else returns the price a
+// traveler actually pays. Hotels fall back to Amadeus (api/hotels.js) and to
+// the planner's own suggestion, which is a far smaller loss than a flights page
+// that runs out of searches mid-month. Set SERPAPI_HOTELS_KEY — a second
+// SerpApi account, or the same key once you accept the shared budget — to turn
+// Google Hotels back on. Unset, this endpoint answers 501 and every caller
+// already degrades gracefully.
+const getApiKey = () => process.env.SERPAPI_HOTELS_KEY || '';
+
+// SerpApi charges per search and the free tier is 250/month, so a warm
 // instance reuses the same city+dates result rather than re-billing it.
 const cache = new Map();          // cacheKey -> { hotels, expiresAt }
 const CACHE_TTL_MS = 6 * 60 * 60_000;

@@ -15,7 +15,7 @@ import { checkRateLimit, sendRateLimited } from './_rateLimit.js';
 const SERP_URL = 'https://serpapi.com/search.json';
 const getApiKey = () => process.env.SERPAPI_KEY || '';
 
-// Searches are billed and the free tier is 100/month, so a warm instance
+// Searches are billed and the free tier is 250/month, so a warm instance
 // reuses the same route+dates rather than re-billing it.
 const cache = new Map();
 const CACHE_TTL_MS = 3 * 60 * 60_000;

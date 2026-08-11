@@ -3,15 +3,39 @@ import { AlertTriangle, CheckCircle, Shield } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const DISCLAIMER_KEY = 'imaf_disclaimer_accepted';
+// Once a day per device. localStorage rather than sessionStorage so closing the
+// tab does not re-trigger it, and a stored timestamp rather than a flag so it
+// comes back the next day instead of never. New key name: the old flag carried
+// no time, so it cannot be reinterpreted.
+const DISCLAIMER_KEY = 'imaf_disclaimer_accepted_at';
+const REMIND_AFTER_MS = 24 * 60 * 60_000;
+
+// A rolling 24h window, not a calendar day — accepting at 23:55 should not put
+// the modal back five minutes later.
+const needsDisclaimer = () => {
+  try {
+    const at = Number(localStorage.getItem(DISCLAIMER_KEY));
+    if (!Number.isFinite(at) || at <= 0) return true;
+    // A timestamp in the future means the device clock moved backwards; trust
+    // the clock over the stored value rather than hiding the notice forever.
+    if (at > Date.now()) return true;
+    return Date.now() - at >= REMIND_AFTER_MS;
+  } catch {
+    return true;               // storage blocked — show it, never fail to mount
+  }
+};
 
 export default function DisclaimerModal() {
   const { t } = useTranslation();
-  const [visible, setVisible] = useState(() => !sessionStorage.getItem(DISCLAIMER_KEY));
+  const [visible, setVisible] = useState(needsDisclaimer);
   const [read, setRead] = useState(false);
 
   const handleAccept = () => {
-    sessionStorage.setItem(DISCLAIMER_KEY, '1');
+    try {
+      localStorage.setItem(DISCLAIMER_KEY, String(Date.now()));
+    } catch {
+      // Private mode or storage full: accept for this view, ask again next load.
+    }
     setVisible(false);
   };
 

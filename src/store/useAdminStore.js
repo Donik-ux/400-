@@ -54,7 +54,6 @@ const SEED_SETTINGS = {
   currency: 'USD',
   language: 'en',
   contactEmail: 'admin@maftravel.com',
-  contactPhone: '+996 700 000 000',
   commission: 10,
   maintenanceMode: false,
   primaryColor: '#0172cb',

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Mail, Phone, Youtube } from 'lucide-react';
+import { Mail, Youtube } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 import useAdminStore from '../store/useAdminStore';
 import { SUPPORT_EMAIL } from '../config/contact';
 
 export default function Footer() {
   const { t } = useTranslation();
-  // Contact details are editable from the admin Settings tab; the hard-coded
-  // support address stays as the fallback when the field is blank.
+  // Editable from the admin Settings tab; the hard-coded support address stays
+  // as the fallback when the field is blank. Email is the only channel shown —
+  // there is no support phone line to answer one.
   const settings = useAdminStore(s => s.settings);
   const contactEmail = (settings?.contactEmail || '').trim() || SUPPORT_EMAIL;
-  const contactPhone = (settings?.contactPhone || '').trim();
   const [email, setEmail] = useState('');
   const [joined, setJoined] = useState(false);
   const [mailError, setMailError] = useState('');
@@ -121,20 +121,11 @@ export default function Footer() {
 
         <div className="pt-8 pb-2 flex flex-col items-center gap-2 text-center">
           <p className="text-[13px] text-[#4a5867] font-medium">{t('footer.questions')}</p>
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-5">
-            <a href={`mailto:${contactEmail}`}
-              className="inline-flex items-center gap-2 text-[14px] font-bold text-[#0172cb] hover:text-[#015aa3] transition-colors">
-              <Mail className="w-4 h-4" />
-              {contactEmail}
-            </a>
-            {contactPhone && (
-              <a href={`tel:${contactPhone.replace(/[^\d+]/g, '')}`}
-                className="inline-flex items-center gap-2 text-[14px] font-bold text-[#0172cb] hover:text-[#015aa3] transition-colors">
-                <Phone className="w-4 h-4" />
-                {contactPhone}
-              </a>
-            )}
-          </div>
+          <a href={`mailto:${contactEmail}`}
+            className="inline-flex items-center gap-2 text-[14px] font-bold text-[#0172cb] hover:text-[#015aa3] transition-colors">
+            <Mail className="w-4 h-4" />
+            {contactEmail}
+          </a>
         </div>
 
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-6">

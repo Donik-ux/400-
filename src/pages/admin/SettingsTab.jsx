@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Save, RotateCcw, Globe, DollarSign, Mail, Phone, Percent, AlertTriangle } from 'lucide-react';
+import { Settings, Save, RotateCcw, Globe, DollarSign, Mail, Percent, AlertTriangle } from 'lucide-react';
 import useAdminStore from '../../store/useAdminStore';
 
 const CURRENCIES = ['USD', 'EUR', 'GBP', 'RUB', 'KGS', 'UZS'];
@@ -64,17 +64,12 @@ export default function SettingsTab() {
         <h3 className="text-sm font-black uppercase tracking-widest text-white/50 mb-5 flex items-center gap-2">
           <Mail className="w-4 h-4" /> Contact Information
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">Contact Email</label>
-            <input type="email" value={form.contactEmail} onChange={e => f('contactEmail', e.target.value)}
-              className="w-full inp-night rounded-xl px-3 py-2.5 text-sm transition-all" />
-          </div>
-          <div>
-            <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">Contact Phone</label>
-            <input type="tel" value={form.contactPhone} onChange={e => f('contactPhone', e.target.value)}
-              className="w-full inp-night rounded-xl px-3 py-2.5 text-sm transition-all" />
-          </div>
+        {/* Email only: the footer stopped showing a phone number, so a phone
+            field here would save a value nothing on the site reads. */}
+        <div>
+          <label className="text-[10px] font-bold uppercase tracking-widest text-white/35 mb-1.5 block">Contact Email</label>
+          <input type="email" value={form.contactEmail} onChange={e => f('contactEmail', e.target.value)}
+            className="w-full inp-night rounded-xl px-3 py-2.5 text-sm transition-all" />
         </div>
       </div>
 

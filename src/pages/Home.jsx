@@ -196,12 +196,27 @@ const Home = () => {
     });
   };
 
+  // Ordered by when in the trip the promise pays off — booking, planning, the
+  // week before, then on the road — which is what the stage eyebrow labels.
   const promises = [
-    { icon: BadgePercent, title: t('homePage.promise.f1t'), body: t('homePage.promise.f1b') },
-    { icon: Sparkles,     title: t('homePage.promise.f2t'), body: t('homePage.promise.f2b') },
-    { icon: Stamp,        title: t('homePage.promise.f3t'), body: t('homePage.promise.f3b') },
-    { icon: FileText,     title: t('homePage.promise.f4t'), body: t('homePage.promise.f4b') },
+    { icon: BadgePercent, stage: t('homePage.promise.f1s'), title: t('homePage.promise.f1t'), body: t('homePage.promise.f1b') },
+    { icon: Sparkles,     stage: t('homePage.promise.f2s'), title: t('homePage.promise.f2t'), body: t('homePage.promise.f2b') },
+    { icon: Stamp,        stage: t('homePage.promise.f3s'), title: t('homePage.promise.f3t'), body: t('homePage.promise.f3b') },
+    { icon: FileText,     stage: t('homePage.promise.f4s'), title: t('homePage.promise.f4t'), body: t('homePage.promise.f4b') },
   ];
+
+  // Hairlines BETWEEN the promise cells, not around them. The grid is 1 / 2 / 4
+  // columns, so which edge a cell needs changes with the breakpoint, and
+  // Tailwind's `divide-*` gets it wrong the moment the grid wraps to a second
+  // row. Computed per index instead of hand-listed. (Tuned for the 1/2/4 ladder
+  // below; a fifth promise would need the lg row-2 case adding.)
+  const cellEdges = (i) => [
+    i > 0 && 'border-t',                              // 1 column: all but the first
+    i % 2 === 0 ? 'sm:border-l-0' : 'sm:border-l',    // 2 columns
+    i < 2 && 'sm:border-t-0',
+    i === 0 ? 'lg:border-l-0' : 'lg:border-l',        // 4 columns, single row
+    'lg:border-t-0',
+  ].filter(Boolean).join(' ');
 
   const countries = [...new Set(ALL_CITIES.map(c => c.country))];
 
@@ -463,28 +478,33 @@ const Home = () => {
       <section className="max-w-6xl mx-auto px-4 md:px-8 py-10">
         <h2 className="text-[22px] md:text-[28px] font-black tracking-[-0.02em] text-[#252a31]">{t('homePage.promise.heading')}</h2>
         <p className="text-[14px] text-[#4a5867] font-medium mt-1 mb-6 max-w-2xl">{t('homePage.promise.sub')}</p>
-        {/* Alternating 2:1 / 1:2 rhythm — four equal boxes in a line read as a
-            spec sheet; this reads as four separate promises. */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {promises.map((p, i) => {
-            const wide = i === 0 || i === 3;
-            return (
-              <div key={i}
-                className={`bg-white border border-[#dfe7ec] rounded-xl p-4 md:p-5 flex gap-3.5 ${
-                  wide ? 'md:col-span-2 items-start' : 'flex-col'
-                }`}>
-                <div className={`rounded-lg bg-[#e6f6f3] text-[#008f77] flex items-center justify-center shrink-0 ${
-                  wide ? 'w-11 h-11' : 'w-9 h-9 mb-1'
-                }`}>
-                  <p.icon className={wide ? 'w-5 h-5' : 'w-4 h-4'} />
+        {/* One panel divided by hairlines, not four separate cards. The four
+            bodies differ in length by two lines in English and by far more once
+            translated, so the old 2:1 / 1:2 spans left each card stretched to
+            its row-mate's height with the slack showing inside its own border.
+            A shared panel absorbs a ragged bottom edge, and the stage eyebrow
+            gives equal cells the reading order the uneven widths were after. */}
+        <div className="rounded-2xl border border-[#dfe7ec] bg-white overflow-hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          {/* No scroll reveal here, unlike the destination mosaic below: these
+              cells re-mount when the language dictionary swaps in, and a
+              re-mount that lands while they are already on screen leaves them
+              stuck at the initial opacity — an empty bordered box. A fade worth
+              250ms is not worth a section that can render blank. */}
+          {promises.map((p, i) => (
+            <div key={i} className={`p-5 border-[#dfe7ec] ${cellEdges(i)}`}>
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-9 h-9 rounded-lg bg-[#e6f6f3] text-[#008f77] flex items-center justify-center shrink-0">
+                  <p.icon className="w-[18px] h-[18px]" aria-hidden="true" />
                 </div>
-                <div className="min-w-0">
-                  <h3 className={`font-black text-[#252a31] leading-snug mb-1 ${wide ? 'text-[16px]' : 'text-[14px]'}`}>{p.title}</h3>
-                  <p className="text-[12.5px] text-[#4a5867] font-medium leading-relaxed">{p.body}</p>
-                </div>
+                {/* Muted, but not below 4.5:1 on white — it is 10.5px type. */}
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.09em] text-[#5f6b7a] leading-tight">
+                  {p.stage}
+                </span>
               </div>
-            );
-          })}
+              <h3 className="text-[15px] font-black text-[#252a31] leading-snug mb-1.5 text-balance">{p.title}</h3>
+              <p className="text-[12.5px] text-[#4a5867] font-medium leading-relaxed">{p.body}</p>
+            </div>
+          ))}
         </div>
       </section>
 

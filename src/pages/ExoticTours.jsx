@@ -49,11 +49,14 @@ const TourCard = ({ tour, budget, anchor = false }) => {
       <div className={`relative overflow-hidden cursor-pointer shrink-0 ${
         anchor ? 'h-56 md:h-auto md:w-[44%]' : 'h-56'
       }`} onClick={openTour}>
+        {/* Absolute, so the photo's own aspect ratio never sets the card's
+            height. Left in flow it made the double-width card taller than its
+            copy needed, and the surplus showed up as a hole above the price. */}
         <img
           src={tour.image}
           alt={tour.title}
           onError={handleImgError}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
 
@@ -78,7 +81,12 @@ const TourCard = ({ tour, budget, anchor = false }) => {
         </div>
       </div>
 
-      <div className="p-5 flex flex-col flex-1 min-w-0">
+      {/* The grid stretches every card to the tallest in its row, and next to a
+          stacked card the double-width one has a lot of height to account for.
+          It spends it on content — the highlights are open here rather than
+          behind a toggle — and spreads whatever is left between the blocks
+          instead of pooling it all above the price. */}
+      <div className={`p-5 flex flex-col flex-1 min-w-0 ${anchor ? 'md:justify-between' : ''}`}>
         {/* Temperature route */}
         <div className="flex items-center gap-2 mb-4 p-2.5 rounded-xl bg-gradient-to-r from-[#fdf1e8] via-white to-[#eaf3f4] border border-[#e8edf1]">
           <div className="text-center px-1 shrink-0">
@@ -113,16 +121,46 @@ const TourCard = ({ tour, budget, anchor = false }) => {
         {/* Description */}
         <p className="text-[13px] text-[#4a5867] leading-relaxed mb-3">{tour.desc}</p>
 
-        {/* Highlights toggle */}
-        <button
-          onClick={() => setExpanded(v => !v)}
-          className="text-[12px] font-bold text-[#0172cb] hover:underline mb-2 flex items-center gap-1 self-start"
-        >
-          {expanded ? t('exotic.hideHighlights') : t('exotic.showHighlights')} <ArrowRight className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-90' : ''}`} />
-        </button>
+        {/* Highlights — always open on the wide card, behind a toggle on the
+            narrow ones where there is no room to spare. */}
+        {!anchor && (
+          <button
+            onClick={() => setExpanded(v => !v)}
+            className="text-[12px] font-bold text-[#0172cb] hover:underline mb-2 flex items-center gap-1 self-start"
+          >
+            {expanded ? t('exotic.hideHighlights') : t('exotic.showHighlights')} <ArrowRight className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-90' : ''}`} />
+          </button>
+        )}
+
+        {anchor && (
+          <div className="hidden md:block mb-3">
+            <div className="text-[10px] font-black uppercase tracking-[0.09em] text-[#5f6b7a] mb-2">
+              {t('exotic.highlights')}
+            </div>
+            <ul className="space-y-2">
+              {tour.highlights.map((h, i) => (
+                <li key={i} className="flex items-center gap-2 text-[13px] text-[#4a5867]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0172cb] shrink-0" />
+                  {h}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* The wide card keeps its toggle on mobile, where it is stacked like
+            any other card and the inline list above is hidden. */}
+        {anchor && (
+          <button
+            onClick={() => setExpanded(v => !v)}
+            className="md:hidden text-[12px] font-bold text-[#0172cb] hover:underline mb-2 flex items-center gap-1 self-start"
+          >
+            {expanded ? t('exotic.hideHighlights') : t('exotic.showHighlights')} <ArrowRight className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-90' : ''}`} />
+          </button>
+        )}
 
         {expanded && (
-          <ul className="mb-3 space-y-1.5">
+          <ul className={`mb-3 space-y-1.5 ${anchor ? 'md:hidden' : ''}`}>
             {tour.highlights.map((h, i) => (
               <li key={i} className="flex items-center gap-2 text-[13px] text-[#4a5867]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#0172cb] shrink-0" />
@@ -133,7 +171,7 @@ const TourCard = ({ tour, budget, anchor = false }) => {
         )}
 
         {/* Price + CTA */}
-        <div className="flex items-center justify-between gap-3 pt-3 mt-auto border-t border-[#e8edf1]">
+        <div className={`flex items-center justify-between gap-3 pt-3 mt-auto border-t border-[#e8edf1] ${anchor ? 'md:mt-0' : ''}`}>
           <div>
             <div className="text-[10px] text-[#697d95] font-bold uppercase tracking-wider">{t('exotic.perPerson')}</div>
             <div className="text-[22px] font-black text-[#252a31] leading-none"><Price amount={price} /></div>

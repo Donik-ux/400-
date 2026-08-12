@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { SUPPORT_EMAIL } from '../config/contact';
 
 const S_FLIGHTS       = 'maf_admin_flights';
 const S_PACKAGES      = 'maf_packages';
@@ -53,7 +54,9 @@ const SEED_SETTINGS = {
   siteName: 'MAFTRAVEL',
   currency: 'USD',
   language: 'en',
-  contactEmail: 'admin@maftravel.com',
+  // One source of truth with the footer's fallback and every mailto: on the
+  // site — a second literal here is how they drifted apart in the first place.
+  contactEmail: SUPPORT_EMAIL,
   commission: 10,
   maintenanceMode: false,
   primaryColor: '#0172cb',

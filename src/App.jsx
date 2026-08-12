@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout          from './components/Layout';
-import DisclaimerModal from './components/DisclaimerModal';
 import { ProtectedRoute, AdminRoute, GuestRoute } from './components/ProtectedRoute';
 import Home            from './pages/Home';
 import Planner         from './pages/Planner';
@@ -27,7 +26,8 @@ import NotFound       from './pages/NotFound';
 function App() {
   return (
     <Router>
-      <DisclaimerModal />
+      {/* No entry gate: the same terms are on /terms, linked from the footer,
+          so nothing is hidden by not blocking the first page view. */}
       <Layout>
         <Routes>
           <Route path="/"            element={<Home />} />

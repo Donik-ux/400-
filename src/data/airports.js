@@ -202,6 +202,82 @@ const RAW = [
   ['Perth', 'Australia', 'PER'],
   ['Auckland', 'New Zealand', 'AKL'],
   ['Nadi', 'Fiji', 'NAN'],
+
+  // ── One hub per remaining country ───────────────────────────────────
+  // The lists above are the routes this site sells, grouped by region and
+  // deep in the places people here fly. That left about sixty countries
+  // absent entirely, so searching them returned nothing at all and the
+  // dropdown looked like the whole world was thirty cities. These add the
+  // principal international airport for each, so every country is at least
+  // reachable; the regions above stay the ones with real depth.
+  ['Tirana', 'Albania', 'TIA'],
+  ['Sarajevo', 'Bosnia and Herzegovina', 'SJJ'],
+  ['Pristina', 'Kosovo', 'PRN'],
+  ['Skopje', 'North Macedonia', 'SKP'],
+  ['Podgorica', 'Montenegro', 'TGD'],
+  ['Ljubljana', 'Slovenia', 'LJU'],
+  ['Bratislava', 'Slovakia', 'BTS'],
+  ['Tallinn', 'Estonia', 'TLL'],
+  ['Riga', 'Latvia', 'RIX'],
+  ['Vilnius', 'Lithuania', 'VNO'],
+  ['Chisinau', 'Moldova', 'KIV'],
+  ['Luxembourg', 'Luxembourg', 'LUX'],
+  ['Malta', 'Malta', 'MLA'],
+  ['Larnaca', 'Cyprus', 'LCA'],
+
+  ['Damascus', 'Syria', 'DAM'],
+  ['Ulaanbaatar', 'Mongolia', 'UBN'],
+  ['Yangon', 'Myanmar', 'RGN'],
+  ['Vientiane', 'Laos', 'VTE'],
+  ['Bandar Seri Begawan', 'Brunei', 'BWN'],
+  ['Macau', 'Macau', 'MFM'],
+  ['Paro', 'Bhutan', 'PBH'],
+
+  ['Algiers', 'Algeria', 'ALG'],
+  ['Tripoli', 'Libya', 'TIP'],
+  ['Khartoum', 'Sudan', 'KRT'],
+  ['Accra', 'Ghana', 'ACC'],
+  ['Abidjan', "Côte d'Ivoire", 'ABJ'],
+  ['Dakar', 'Senegal', 'DSS'],
+  ['Bamako', 'Mali', 'BKO'],
+  ['Ouagadougou', 'Burkina Faso', 'OUA'],
+  ['Conakry', 'Guinea', 'CKY'],
+  ['Cotonou', 'Benin', 'COO'],
+  ["N'Djamena", 'Chad', 'NDJ'],
+  ['Douala', 'Cameroon', 'DLA'],
+  ['Libreville', 'Gabon', 'LBV'],
+  ['Kinshasa', 'DR Congo', 'FIH'],
+  ['Luanda', 'Angola', 'LAD'],
+  ['Kigali', 'Rwanda', 'KGL'],
+  ['Entebbe', 'Uganda', 'EBB'],
+  ['Lilongwe', 'Malawi', 'LLW'],
+  ['Lusaka', 'Zambia', 'LUN'],
+  ['Harare', 'Zimbabwe', 'HRE'],
+  ['Maputo', 'Mozambique', 'MPM'],
+  ['Antananarivo', 'Madagascar', 'TNR'],
+  ['Windhoek', 'Namibia', 'WDH'],
+  ['Gaborone', 'Botswana', 'GBE'],
+
+  ['Panama City', 'Panama', 'PTY'],
+  ['San José', 'Costa Rica', 'SJO'],
+  ['Guatemala City', 'Guatemala', 'GUA'],
+  ['San Salvador', 'El Salvador', 'SAL'],
+  ['Tegucigalpa', 'Honduras', 'TGU'],
+  ['Managua', 'Nicaragua', 'MGA'],
+  ['Belize City', 'Belize', 'BZE'],
+  ['Kingston', 'Jamaica', 'KIN'],
+  ['Nassau', 'Bahamas', 'NAS'],
+  ['Bridgetown', 'Barbados', 'BGI'],
+  ['Port of Spain', 'Trinidad and Tobago', 'POS'],
+  ['San Juan', 'Puerto Rico', 'SJU'],
+
+  ['Quito', 'Ecuador', 'UIO'],
+  ['La Paz', 'Bolivia', 'LPB'],
+  ['Asunción', 'Paraguay', 'ASU'],
+  ['Montevideo', 'Uruguay', 'MVD'],
+  ['Caracas', 'Venezuela', 'CCS'],
+
+  ['Port Moresby', 'Papua New Guinea', 'POM'],
 ];
 
 export const AIRPORTS = RAW.map(([city, country, code]) => ({
@@ -226,7 +302,10 @@ const norm = (s) =>
  * These are hand-picked to span continents from the first glance: home
  * airport first, then the hubs most trips here connect through.
  */
-const DEFAULT_CODES = ['TAS', 'IST', 'DXB', 'MOW', 'LON', 'CDG', 'BKK', 'NRT', 'JFK', 'SIN'];
+const DEFAULT_CODES = [
+  'TAS', 'IST', 'DXB', 'MOW', 'LON', 'CDG',
+  'JFK', 'GRU', 'JNB', 'BKK', 'NRT', 'SYD',
+];
 
 const DEFAULTS = DEFAULT_CODES
   .map((code) => AIRPORTS.find((a) => a.code === code))

@@ -22,7 +22,10 @@ export default function CityAutocomplete({
   const listId  = useId();
 
   // Suggestion list is derived from the current value (no effect needed).
-  const results = useMemo(() => searchPlaces(value, 8), [value]);
+  // Twelve rather than eight: the dataset covers ~150 countries, and a short
+  // list made broad queries look like the site only knows a handful. The
+  // dropdown scrolls, so the extra rows cost nothing above the fold.
+  const results = useMemo(() => searchPlaces(value, 12), [value]);
 
   // Close the dropdown when clicking outside the component.
   useEffect(() => {

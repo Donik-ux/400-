@@ -75,6 +75,8 @@ export default {
         swap: 'Swap origin and destination',
         needDestTitle: 'Add a destination',
         needDestBody: 'Type where you want to go and the AI builds the plan from there.',
+        needRouteTitle: 'Add both cities',
+        needRouteBody: 'Fill in where you are flying from and where to, then search.',
       },
       promise: {
         heading: 'Booking with MAFTRAVEL',
@@ -323,6 +325,8 @@ export default {
         swap: 'Jo‘nash va manzilni almashtirish',
         needDestTitle: 'Manzilni kiriting',
         needDestBody: 'Qayerga bormoqchi ekaningizni yozing — AI shundan rejani tuzadi.',
+        needRouteTitle: 'Ikkala shaharni kiriting',
+        needRouteBody: 'Qayerdan va qayerga uchishingizni yozing, so‘ng qidiring.',
       },
       promise: {
         heading: 'MAFTRAVEL bilan band qilish',

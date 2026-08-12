@@ -61,7 +61,10 @@ const Home = () => {
 
   // search widget state
   const [tab, setTab] = useState('flights');
-  const [flightFrom, setFlightFrom]     = useState(`${ORIGIN.city} (${ORIGIN.code})`);
+  // Both origin fields start empty — the placeholder carries the example, and
+  // a pre-filled Tashkent quietly decided the route for anyone who did not
+  // notice it sitting there.
+  const [flightFrom, setFlightFrom]     = useState('');
   const [flightTo, setFlightTo]         = useState('');
   const [flightDate, setFlightDate]     = useState('');
   const [flightReturn, setFlightReturn] = useState('');
@@ -70,7 +73,7 @@ const Home = () => {
   const [aiDays,    setAiDays]    = useState(7);
   const [aiVibe,    setAiVibe]    = useState('any');
   const [aiDest,    setAiDest]    = useState('');
-  const [aiFrom,    setAiFrom]    = useState(ORIGIN.city);
+  const [aiFrom,    setAiFrom]    = useState('');
   const [aiStart,   setAiStart]   = useState('');
   const [aiReturn,  setAiReturn]  = useState('');
   const [locatingFrom, setLocatingFrom] = useState(false);
@@ -136,6 +139,14 @@ const Home = () => {
   const submit = (e) => {
     e?.preventDefault?.();
     if (tab === 'flights') {
+      // With nothing pre-filled, an empty field is a state a visitor can
+      // actually reach. /flights only auto-searches when both cities are set,
+      // so without this the button would just navigate and appear to do
+      // nothing.
+      if (!flightFrom.trim() || !flightTo.trim()) {
+        toast.info(t('homePage.search.needRouteTitle'), t('homePage.search.needRouteBody'));
+        return;
+      }
       navigate('/flights', {
         state: {
           formData: {

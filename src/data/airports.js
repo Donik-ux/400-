@@ -219,13 +219,64 @@ const norm = (s) =>
     .replace(/[̀-ͯ]/g, '');
 
 /**
+ * What an empty field offers before anyone types.
+ *
+ * RAW is grouped by region, so slicing off the top of it showed six Uzbek
+ * cities in a row and read as though the site only flies inside Uzbekistan.
+ * These are hand-picked to span continents from the first glance: home
+ * airport first, then the hubs most trips here connect through.
+ */
+const DEFAULT_CODES = ['TAS', 'IST', 'DXB', 'MOW', 'LON', 'CDG', 'BKK', 'NRT', 'JFK', 'SIN'];
+
+const DEFAULTS = DEFAULT_CODES
+  .map((code) => AIRPORTS.find((a) => a.code === code))
+  .filter(Boolean);
+
+/**
+ * Names travelers actually type that are not the dataset's country name.
+ * Without these, "USA", "UK" and "UAE" match nothing at all — the dataset
+ * spells them out in full.
+ */
+const COUNTRY_ALIASES = {
+  usa: 'united states', us: 'united states', america: 'united states',
+  uk: 'united kingdom', britain: 'united kingdom', england: 'united kingdom',
+  'great britain': 'united kingdom', scotland: 'united kingdom',
+  uae: 'united arab emirates', emirates: 'united arab emirates',
+  korea: 'south korea', holland: 'netherlands', turkiye: 'turkey',
+  'czech republic': 'czechia',
+  antarctica: 'white continent', 'the white continent': 'white continent',
+};
+
+/** The country a query names, if it names one — via alias or prefix. */
+const countryFor = (q) => {
+  const alias = COUNTRY_ALIASES[q];
+  if (alias) return alias;
+  // Only a prefix of at least three characters: "i" should not commit the
+  // whole dropdown to India.
+  if (q.length < 3) return null;
+  const hit = AIRPORTS.find((a) => norm(a.country).startsWith(q));
+  return hit ? norm(hit.country) : null;
+};
+
+/** Every city in a country, so naming a country never shows a partial list. */
+const citiesInCountry = (country) => {
+  const target = norm(country);
+  return AIRPORTS.filter((a) => norm(a.country).startsWith(target));
+};
+
+/**
  * Filter airports by a free-text query (city, country or IATA code).
  * Prefix matches rank above mid-string matches; capped at `limit` results.
  * An empty query returns the first `limit` airports (popular hubs first).
  */
 export function searchAirports(query, limit = 8) {
   const q = norm(query).trim();
-  if (!q) return AIRPORTS.slice(0, limit);
+  if (!q) return DEFAULTS.slice(0, limit);
+
+  // `limit` is honoured strictly here — this one resolves a name to a single
+  // airport for pricing, so it must return exactly what the caller asked for.
+  // searchPlaces is the browsing variant that widens for a country.
+  const named = countryFor(q);
 
   const scored = [];
   for (const a of AIRPORTS) {
@@ -235,6 +286,7 @@ export function searchAirports(query, limit = 8) {
 
     let score = -1;
     if (code === q) score = 0;                       // exact code
+    else if (named && country.startsWith(named)) score = 0.5;  // named country
     else if (city.startsWith(q)) score = 1;          // city prefix
     else if (code.startsWith(q)) score = 2;          // code prefix
     else if (country.startsWith(q)) score = 3;       // country prefix
@@ -256,7 +308,11 @@ export function searchAirports(query, limit = 8) {
  */
 export function searchPlaces(query, limit = 8) {
   const q = norm(query).trim();
-  if (!q) return AIRPORTS.slice(0, limit);
+  if (!q) return DEFAULTS.slice(0, limit);
+
+  // See searchAirports: a country name returns that country in full.
+  const named = countryFor(q);
+  const cap = named ? Math.max(limit, citiesInCountry(named).length) : limit;
 
   const scored = [];
   for (const a of AIRPORTS) {
@@ -266,6 +322,7 @@ export function searchPlaces(query, limit = 8) {
 
     let score = -1;
     if (code === q) score = 0;
+    else if (named && country.startsWith(named)) score = 0.5;
     else if (city.startsWith(q)) score = 1;
     else if (code.startsWith(q)) score = 2;
     else if (country.startsWith(q)) score = 3;
@@ -293,5 +350,5 @@ export function searchPlaces(query, limit = 8) {
   }
 
   scored.sort((x, y) => x.score - y.score || x.sort.localeCompare(y.sort));
-  return scored.slice(0, limit).map((s) => s.item);
+  return scored.slice(0, cap).map((s) => s.item);
 }

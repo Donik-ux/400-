@@ -5,10 +5,11 @@ import {
   Copy, Download,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useTranslation } from '../store/useLangStore';
+import { tileUrl } from '../config/mapTiles';
 import { usePriceFormatter } from '../components/Price';
 
 // Fix leaflet default icon
@@ -227,7 +228,7 @@ const DAY_COLOR_HEX = {
 
 const BerlinTrip = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const fmt = usePriceFormatter();
   const [copyStatus, setCopyStatus]   = useState('');
   const [activeTab, setActiveTab]     = useState('itinerary'); // 'itinerary' | 'map'
@@ -426,10 +427,19 @@ const BerlinTrip = () => {
                   zoom={12}
                   style={{ height: '100%', width: '100%' }}
                   scrollWheelZoom={true}
+                  attributionControl={false}
+                  zoomControl={false}
                 >
-                  <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  {/* Keyed on the language so switching it refetches the tiles. */}
+                  <TileLayer key={lang} url={tileUrl(lang)} />
+                  {/* Keyed on the wording: Leaflet reads these titles once at
+                      build time, and an AI-translated language resolves them a
+                      moment after mount. */}
+                  <ZoomControl
+                    key={`${t('ui.map.zoomIn')}|${t('ui.map.zoomOut')}`}
+                    position="topleft"
+                    zoomInTitle={t('ui.map.zoomIn')}
+                    zoomOutTitle={t('ui.map.zoomOut')}
                   />
                   <FitBounds locations={filteredLocations} />
                   {filteredLocations.map((loc, i) => (

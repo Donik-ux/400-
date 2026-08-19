@@ -18,6 +18,12 @@ export default {
       cookiePolicy:     'Cookie Policy',
     },
     ui: {
+      // Leaflet ships English tooltips on its zoom buttons; these replace them
+      // so the whole map control reads in the chosen language.
+      map: {
+        zoomIn:  'Zoom in',
+        zoomOut: 'Zoom out',
+      },
       disclaimer: {
         eyebrow:  'User Agreement',
         warning:  'Please read carefully before using the service',
@@ -124,6 +130,10 @@ export default {
       cookiePolicy:     'Cookie siyosati',
     },
     ui: {
+      map: {
+        zoomIn:  'Kattalashtirish',
+        zoomOut: 'Kichraytirish',
+      },
       disclaimer: {
         eyebrow:  'Foydalanuvchi kelishuvi',
         warning:  'Iltimos, xizmatdan foydalanishdan oldin diqqat bilan oʻqing',

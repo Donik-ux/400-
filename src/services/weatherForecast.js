@@ -6,7 +6,7 @@
  * reaches that far — both branches return real measured/predicted data,
  * never an invented number.
  */
-import { getCoords } from '../data/coords';
+import { resolveCoords } from './geocode';
 
 const FORECAST_URL = (lat, lng) =>
   `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,weathercode&timezone=auto&forecast_days=16`;
@@ -88,7 +88,9 @@ async function climateNormal(lat, lng, isoDate) {
  * price-only comparison instead of guessing.
  */
 export async function getWeatherForDates(city, isoDates) {
-  const coords = getCoords(city);
+  // Geocoded rather than looked up in a fifty-city table, so "smarter dates"
+  // works for any destination the search can reach.
+  const coords = await resolveCoords(city);
   const out = {};
   if (!coords) { isoDates.forEach((d) => { out[d] = null; }); return out; }
 

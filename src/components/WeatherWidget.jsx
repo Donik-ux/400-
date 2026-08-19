@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { getCoords } from '../data/coords';
+import { resolveCoords } from '../services/geocode';
 import { wmoInfo } from '../utils/wmoWeatherCodes';
 import { useTranslation } from '../store/useLangStore';
 
 export default function WeatherWidget({ city }) {
-  if (!city || !getCoords(city)) return null;
+  if (!city) return null;
   // key remounts the inner widget per city, so data/error state always starts fresh
   return <WeatherInner key={city} city={city} />;
 }
@@ -14,22 +14,30 @@ function WeatherInner({ city }) {
   const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  // Null until the city resolves, so nothing renders for a place that turns
+  // out not to exist — the old code decided that synchronously off a table of
+  // fifty cities, which is why most destinations never showed weather at all.
+  const [missing, setMissing] = useState(false);
 
   useEffect(() => {
-    const coords = getCoords(city);
     let cancelled = false;
-    fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lng}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&forecast_days=3`
-    )
-      .then(r => { if (!r.ok) throw new Error('bad response'); return r.json(); })
-      .then(d => {
-        if (cancelled) return;
-        if (!d || d.error || !d.current_weather) { setError('Failed to load'); return; }
-        setData(d); setError(null);
-      })
-      .catch(() => { if (!cancelled) setError('Failed to load'); });
+    resolveCoords(city).then((coords) => {
+      if (cancelled) return;
+      if (!coords) { setMissing(true); return; }
+      return fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lng}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&forecast_days=3`
+      )
+        .then(r => { if (!r.ok) throw new Error('bad response'); return r.json(); })
+        .then(d => {
+          if (cancelled) return;
+          if (!d || d.error || !d.current_weather) { setError('Failed to load'); return; }
+          setData(d); setError(null);
+        });
+    }).catch(() => { if (!cancelled) setError('Failed to load'); });
     return () => { cancelled = true; };
   }, [city]);
+
+  if (missing) return null;
 
   if (error) {
     return (

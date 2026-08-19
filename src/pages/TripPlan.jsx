@@ -27,7 +27,6 @@ import SmartImage from '../components/SmartImage';
 import { useTranslation } from '../store/useLangStore';
 import CityAutocomplete from '../features/flights/CityAutocomplete';
 import DestinationMap from '../components/DestinationMap';
-import { getCoords } from '../data/coords';
 import Price, { usePriceFormatter } from '../components/Price';
 import useSEO from '../hooks/useSEO';
 import { findCity } from '../services/cityDatabase';
@@ -553,10 +552,14 @@ export default function TripPlan() {
               const destCity = cleanCity(item.destination || item.name);
               const fromClean = cleanCity(fromCity);
               const backClean = cleanCity(returnToState);
+              // No coordinate check here any more: DestinationMap geocodes
+              // whatever it is given and drops only what genuinely cannot be
+              // found, so a trip to a city outside the curated table still
+              // gets a map. It renders nothing when every point misses.
               const mapPoints = [
-                fromClean && getCoords(fromClean) ? { city: fromClean } : null,
-                getCoords(destCity) ? { city: destCity } : null,
-                backClean && backClean !== fromClean && getCoords(backClean) ? { city: backClean } : null,
+                fromClean ? { city: fromClean } : null,
+                destCity ? { city: destCity } : null,
+                backClean && backClean !== fromClean ? { city: backClean } : null,
               ].filter(Boolean);
               if (!mapPoints.length) return null;
               return (

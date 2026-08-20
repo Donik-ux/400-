@@ -159,7 +159,8 @@ ${(day.events || []).map(ev => `
   <span class="event-price">${ev.price || ''}</span>
 </div>
 ${ev.halalNote ? `<div class="halal">🥩 ${ev.halalNote}</div>` : ''}`).join('')}
-${day.halalRestaurant ? `<div class="halal">🥩 <b>Halal Restaurant:</b> ${day.halalRestaurant.name} · ${day.halalRestaurant.address} · ${day.halalRestaurant.avgPrice}</div>` : ''}
+${(day.halalRestaurants?.length ? day.halalRestaurants : [day.halalRestaurant].filter(Boolean))
+  .map(r => `<div class="halal">🥩 <b>${r.cuisine || 'Halal'}:</b> ${r.name} · ${r.address} · ${r.avgPrice}</div>`).join('')}
 </div>`).join('')}
 </div>
 

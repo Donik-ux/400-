@@ -188,19 +188,47 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
         }
       : null;
 
-    const halal = src.halalRestaurant && typeof src.halalRestaurant === 'object'
-      ? {
-          name:     src.halalRestaurant.name     || 'Local Halal Restaurant 🥩',
-          address:  src.halalRestaurant.address  || 'Ask hotel reception for the nearest halal spot',
-          avgPrice: src.halalRestaurant.avgPrice || '$15',
-          cuisine:  src.halalRestaurant.cuisine  || 'Local halal',
-          note:     src.halalRestaurant.note     || '100% halal, no pork, no alcohol',
-        }
-      : {
-          name:     'Local Halal Restaurant 🥩',
-          address:  'Ask hotel reception for the nearest halal spot',
-          avgPrice: '$15',
-        };
+    // Up to three restaurants a day, each a different cuisine, one of them the
+    // country's own — five nights out of the same kitchen is not a plan.
+    // Plans saved before this carry a single `halalRestaurant`, so both shapes
+    // are read here and both are written below.
+    const rawRestaurants = Array.isArray(src.halalRestaurants)
+      ? src.halalRestaurants
+      : (src.halalRestaurant ? [src.halalRestaurant] : []);
+
+    const cleanRestaurant = (r) => {
+      if (!r || typeof r !== 'object') return null;
+      // Latitude 0 is a real place, so test the value rather than its truthiness.
+      const coord = (v) => (v === null || v === undefined || v === '' || !Number.isFinite(Number(v))
+        ? undefined : Number(v));
+      return {
+        name:     r.name     || 'Local Halal Restaurant 🥩',
+        address:  r.address  || 'Ask hotel reception for the nearest halal spot',
+        avgPrice: r.avgPrice || '$15',
+        cuisine:  r.cuisine  || 'Local halal',
+        note:     r.note     || '100% halal, no pork, no alcohol',
+        lat: coord(r.lat),
+        lng: coord(r.lng),
+      };
+    };
+
+    const halalRestaurants = rawRestaurants
+      .map(cleanRestaurant)
+      .filter(Boolean)
+      // The model sometimes returns the same cuisine twice; three entries that
+      // all say "Turkish" is the sameness this was meant to fix.
+      .filter((r, i, all) => all.findIndex((x) => x.cuisine.toLowerCase() === r.cuisine.toLowerCase()) === i)
+      .slice(0, 3);
+
+    if (!halalRestaurants.length) {
+      halalRestaurants.push({
+        name:     'Local Halal Restaurant 🥩',
+        address:  'Ask hotel reception for the nearest halal spot',
+        avgPrice: '$15',
+        cuisine:  'Local halal',
+        note:     '100% halal, no pork, no alcohol',
+      });
+    }
 
     days.push({
       day:        i + 1,
@@ -214,7 +242,10 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
       transportNote: src.transportNote || '',
       weather,
       events,
-      halalRestaurant: halal,
+      halalRestaurants,
+      // Kept so plans saved by an older build, and any reader that still
+      // expects one restaurant, keep working.
+      halalRestaurant: halalRestaurants[0],
       hotel,
     });
   }
@@ -388,6 +419,13 @@ CRITICAL RULES — FOLLOW EXACTLY:
    - "🚕 Taxi ~12 min, ~€15"
    The LAST event of each day can leave it empty (end of day).
 4. ALL food recommendations must be 100% HALAL CERTIFIED real restaurants in ${destination}. Add "🥩 Halal" in the name. Halal restaurant entries also need full address.
+4a. EACH DAY gets a "halalRestaurants" array of 2–3 real restaurants — never more than 3, never the same restaurant twice in the trip.
+   - EVERY ONE MUST BE A DIFFERENT CUISINE from the others that day. Name the cuisine plainly in "cuisine": "Uzbek", "Chinese", "Italian", "Indian", "Turkish", "Georgian", "Japanese", "Lebanese".
+   - ONE of them MUST be the NATIONAL cuisine of ${destination}'s own country, so the traveler eats what the place is actually known for. Put it first.
+   - The others should be different foreign cuisines, and vary them ACROSS the days — do not give the same three cuisines every day of the trip.
+   - Each entry needs a real "name", a full street "address" (street + number + postal code + district), its own "lat"/"lng" as decimal numbers with 4+ decimals matching that address, a "cuisine", one exact "avgPrice", and a short "note".
+   - The coordinates are used to drop a pin on a map, so they must be the restaurant's own — not the district centre, not a landmark nearby.
+   - Only list places you are confident actually exist at that address. Two real restaurants are better than three with one invented.
 5. Include a top-level "hotel" object with: name (real hotel), address (full street + postal), area (district), pricePerNight (local currency — NEVER empty, ONE exact nightly rate like "$55/night", not a range), stars. The traveler must know exactly where they sleep.
 5a. HOTEL LOCATION IS A PROXIMITY DECISION — plan the days FIRST, then pick the hotel LAST. Look at where the attractions you scheduled actually are, find the district that holds the most of them, and choose a REAL, bookable ${style}-tier hotel INSIDE that district — as close to those attractions as possible, so the traveler walks to most of their stops instead of paying for taxis. Do NOT default to "near the airport", a business district, or a generic city-centre chain if the sightseeing is concentrated elsewhere. Also add to the "hotel" object:
    - "lat" and "lng": the hotel's OWN real decimal coordinates (numbers, 4+ decimals) — the coordinates of its street address. NEVER copy the coordinates of a nearby landmark: a hotel and the mosque across the square are not at the same point, and these numbers are used to compute the walking times shown to the traveler.
@@ -455,13 +493,28 @@ Return EXACTLY this JSON shape:
           "halalNote": ""
         }
       ],
-      "halalRestaurant": {
-        "name": "Real Halal Restaurant 🥩",
-        "address": "Street name + number, postal code City",
-        "cuisine": "Turkish / Arab / local halal",
-        "avgPrice": "$12 per person (one exact figure, not a range)",
-        "note": "100% halal, no pork, no alcohol"
-      }
+      "halalRestaurants": [
+        {
+          "name": "Real Halal Restaurant 🥩",
+          "address": "Street name + number, postal code City",
+          "district": "Neighbourhood name",
+          "lat": 41.0086,
+          "lng": 28.9802,
+          "cuisine": "the NATIONAL cuisine of this country — name it plainly, e.g. Turkish",
+          "avgPrice": "$12 per person (one exact figure, not a range)",
+          "note": "100% halal, no pork, no alcohol"
+        },
+        {
+          "name": "A different real halal restaurant 🥩",
+          "address": "Street name + number, postal code City",
+          "district": "Neighbourhood name",
+          "lat": 41.0251,
+          "lng": 28.9744,
+          "cuisine": "a DIFFERENT cuisine, e.g. Chinese / Italian / Uzbek / Indian",
+          "avgPrice": "$18 per person (one exact figure, not a range)",
+          "note": "100% halal, no pork, no alcohol"
+        }
+      ]
     }
   ],
   "transportSuggestion": "2-3 sentences about getting around ${destination} using ${transportMode}",
@@ -481,7 +534,10 @@ Every event MUST have "address" (real street+postal), "lat"/"lng" (real numeric 
   // 9,000 ceiling is not arbitrary: Groq's account limit is 12,000 tokens/min
   // for prompt + max_tokens together, and this prompt runs ~2,600 tokens, so
   // anything higher makes a long trip fail outright with a 413.
-  const maxTokens = Math.min(9000, 1200 + numDays * 900);
+  // Sized to fit under the account's per-minute token budget alongside a long
+  // prompt: asking for more than a minute's worth is refused outright rather
+  // than answered shortly. api/aiAsk.js caps this again on the server.
+  const maxTokens = Math.min(5500, 1200 + numDays * 700);
 
   let parseErr;
   try {
@@ -579,7 +635,8 @@ export const refinePlan = async (currentPlan, instruction, { destination = '', l
     days: currentPlan.days.map((d) => ({
       day: d.day, title: d.title, label: d.label || '', place: d.place, cost: d.cost,
       transportNote: d.transportNote || '',
-      halalRestaurant: d.halalRestaurant || null,
+      halalRestaurants: (d.halalRestaurants?.length ? d.halalRestaurants : [d.halalRestaurant].filter(Boolean))
+        .map((r) => ({ name: r.name, address: r.address, cuisine: r.cuisine || '', avgPrice: r.avgPrice })),
       events: (d.events || []).map((ev) => ({
         time: ev.time, duration: ev.duration, name: ev.name, address: ev.address,
         district: ev.district || '', price: ev.price, type: ev.type,

@@ -136,24 +136,33 @@ const ItineraryCard = ({ dayPlan, index, transportMode = 'walking', navApps = []
         )}
       </div>
 
-      {/* Halal Restaurant */}
-      {dayPlan.halalRestaurant && (
-        <div className="mx-4 mb-4 mt-2 note-ok rounded-xl p-3">
-          <div className="flex items-start gap-2">
-            <span className="text-[16px] shrink-0">🥩</span>
-            <div className="min-w-0">
-              <p className="text-[12px] font-black text-[#24513a]">{dayPlan.halalRestaurant.name}</p>
-              <div className="flex items-start gap-1 mt-0.5">
-                <MapPin className="w-3 h-3 text-[#2e7d4f] shrink-0 mt-0.5" />
-                <p className="text-[11px] text-ok font-medium">{dayPlan.halalRestaurant.address}</p>
+      {/* Halal restaurants — two or three a day, each a different cuisine.
+          The singular field is what older saved plans carry. */}
+      {(dayPlan.halalRestaurants?.length ? dayPlan.halalRestaurants : [dayPlan.halalRestaurant].filter(Boolean))
+        .map((r, ri) => (
+          <div key={ri} className="mx-4 mb-2 last:mb-4 mt-2 note-ok rounded-xl p-3">
+            <div className="flex items-start gap-2">
+              <span className="text-[16px] shrink-0">🥩</span>
+              <div className="min-w-0">
+                <p className="text-[12px] font-black text-[#24513a] flex items-center gap-1.5 flex-wrap">
+                  {r.name}
+                  {r.cuisine && (
+                    <span className="px-1.5 py-0.5 rounded bg-[#dcfce7] text-[#166534] text-[9.5px] font-black uppercase tracking-wider">
+                      {r.cuisine}
+                    </span>
+                  )}
+                </p>
+                <div className="flex items-start gap-1 mt-0.5">
+                  <MapPin className="w-3 h-3 text-[#2e7d4f] shrink-0 mt-0.5" />
+                  <p className="text-[11px] text-ok font-medium">{r.address}</p>
+                </div>
+                {r.avgPrice && (
+                  <p className="text-[10px] text-[#2e7d4f] mt-0.5 font-bold">{t('plannerPage.card.avg')}: {r.avgPrice}</p>
+                )}
               </div>
-              {dayPlan.halalRestaurant.avgPrice && (
-                <p className="text-[10px] text-[#2e7d4f] mt-0.5 font-bold">{t('plannerPage.card.avg')}: {dayPlan.halalRestaurant.avgPrice}</p>
-              )}
             </div>
           </div>
-        </div>
-      )}
+        ))}
 
       {/* Car nav apps strip */}
       {transportMode === 'car' && navApps.length > 0 && (

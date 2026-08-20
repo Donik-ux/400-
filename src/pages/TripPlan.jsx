@@ -1075,22 +1075,36 @@ export default function TripPlan() {
                         </ol>
                       )}
 
-                      {d.halalRestaurant && (() => {
-                        const halalUrl = mapsUrlFromAddress(`${d.halalRestaurant.name}, ${d.halalRestaurant.address}`);
-                        return (
-                          <a href={halalUrl || '#'} target="_blank" rel="noreferrer noopener"
-                            className="px-4 py-2.5 bg-[#f0fdf4] border-t border-[#bbf7d0] flex items-start gap-3 hover:bg-[#e0f7e2] transition">
-                            <Utensils className="w-4 h-4 text-[#008009] mt-0.5 shrink-0" />
-                            <div className="min-w-0 flex-1">
-                              <div className="text-[12px] font-black text-[#155724]">🥩 {d.halalRestaurant.name}</div>
-                              <div className="text-[11px] text-[#155724]/85 font-semibold flex items-start gap-1">
-                                <MapPin className="w-2.5 h-2.5 mt-0.5 shrink-0" /> {d.halalRestaurant.address} · {exactPrice(d.halalRestaurant.avgPrice)}
+                      {/* Two or three kitchens a day, each a different cuisine.
+                          `halalRestaurants` is the current shape; the singular
+                          is what plans saved by an older build still carry. */}
+                      {(d.halalRestaurants?.length ? d.halalRestaurants : [d.halalRestaurant].filter(Boolean))
+                        .map((r, ri) => {
+                          // mapsUrlFor pins the exact coordinates when the plan
+                          // supplied them, and only falls back to searching the
+                          // name + address when it did not.
+                          const url = mapsUrlFor(r) || mapsUrlFromAddress(`${r.name}, ${r.address}`);
+                          return (
+                            <a key={ri} href={url || '#'} target="_blank" rel="noreferrer noopener"
+                              className="px-4 py-2.5 bg-[#f0fdf4] border-t border-[#bbf7d0] flex items-start gap-3 hover:bg-[#e0f7e2] transition">
+                              <Utensils className="w-4 h-4 text-[#008009] mt-0.5 shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-[12px] font-black text-[#155724] flex items-center gap-1.5 flex-wrap">
+                                  🥩 {r.name}
+                                  {r.cuisine && (
+                                    <span className="px-1.5 py-0.5 rounded bg-[#dcfce7] text-[#166534] text-[9.5px] font-black uppercase tracking-wider">
+                                      {r.cuisine}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="text-[11px] text-[#155724]/85 font-semibold flex items-start gap-1">
+                                  <MapPin className="w-2.5 h-2.5 mt-0.5 shrink-0" /> {r.address} · {exactPrice(r.avgPrice)}
+                                </div>
                               </div>
-                            </div>
-                            <ExternalLink className="w-3.5 h-3.5 text-[#008009] mt-1 shrink-0" />
-                          </a>
-                        );
-                      })()}
+                              <ExternalLink className="w-3.5 h-3.5 text-[#008009] mt-1 shrink-0" />
+                            </a>
+                          );
+                        })}
 
                       {/* Daily spend summary */}
                       <div className="px-4 py-2.5 bg-white border-t border-[#dfe7ec] flex items-center justify-between flex-wrap gap-2">
@@ -1453,7 +1467,8 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
           i < arr.length - 1 && ev.transportToNext ? `<br><span class="next">→ ${escapeHtml(ev.transportToNext)}</span>` : ''
         }</li>`
       ).join('')}</ul>` : ''}
-      ${d.halalRestaurant ? `<div class="halal">🥩 ${escapeHtml(d.halalRestaurant.name)}<br>📍 ${escapeHtml(d.halalRestaurant.address || '')} · 💰 ${escapeHtml(exactPrice(d.halalRestaurant.avgPrice))}</div>` : ''}
+      ${(d.halalRestaurants?.length ? d.halalRestaurants : [d.halalRestaurant].filter(Boolean))
+        .map(r => `<div class="halal">🥩 ${escapeHtml(r.name)}${r.cuisine ? ` · ${escapeHtml(r.cuisine)}` : ''}<br>📍 ${escapeHtml(r.address || '')} · 💰 ${escapeHtml(exactPrice(r.avgPrice))}</div>`).join('')}
       <div class="day-total">💰 Spent today: <strong>$${(Number(d.cost) || 0).toLocaleString()}</strong> · Running: $${runningPdfTotal.toLocaleString()} / $${Number(item.price).toLocaleString()}</div>
     </div>
   `;}).join('');

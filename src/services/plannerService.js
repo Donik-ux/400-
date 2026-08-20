@@ -395,8 +395,20 @@ export const generateItinerary = async ({
       if (isGeneric) synthesizedEvents = buildMiddleDayEvents(destination, curatedAttractions, i - 1, style);
     }
 
+    // Up to three places a day rather than one, and the window rotates so a
+    // five-day trip does not eat at the same table five times. Cuisine labels
+    // are left off here on purpose: this curated table does not record them,
+    // and guessing one per restaurant would be inventing a fact the traveler
+    // would act on. The AI path returns cuisines it actually names.
     const halalList = getHalalRestaurants(destination);
-    const halalRestaurant = halalList[i % halalList.length];
+    // Copies, not references: HALAL_RESTAURANTS is a module-level constant and
+    // the price pass below rewrites avgPrice in place. One day's rotation would
+    // otherwise edit the shared entry every other day is showing too.
+    const halalRestaurants = halalList.length
+      ? Array.from({ length: Math.min(3, halalList.length) },
+          (_, k) => ({ ...halalList[(i + k) % halalList.length] }))
+      : [];
+    const halalRestaurant = halalRestaurants[0];
 
     const events = synthesizedEvents ?? template?.events ?? [];
 
@@ -414,7 +426,8 @@ export const generateItinerary = async ({
       label:           '',
       events:          ensureAddress(addDurations(events), destination),
       cost:            dayBudget,
-      halalRestaurant,
+      halalRestaurants,
+      halalRestaurant,          // older readers still expect the singular
     };
   });
 
@@ -439,7 +452,9 @@ export const generateItinerary = async ({
       // Anything else is left blank on purpose — an entry we have no price for
       // is not proof that it's free. The UI renders a "check on site" label.
     }
-    if (d.halalRestaurant?.avgPrice) d.halalRestaurant.avgPrice = exactPrice(d.halalRestaurant.avgPrice);
+    (d.halalRestaurants || []).forEach((r) => {
+      if (r?.avgPrice) r.avgPrice = exactPrice(r.avgPrice);
+    });
   }
 
   const transportSuggestion = cityData?.transport?.[style] ?? transportFallback[style];

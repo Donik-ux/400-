@@ -9,7 +9,11 @@ import { checkRateLimit, sendRateLimited } from './_rateLimit.js';
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
 const getApiKey = (override) => override || process.env.GROQ_API_KEY || '';
-const getModel = (override) => override || process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+// llama-3.3-70b-versatile was decommissioned by Groq and every call 404'd, so
+// the AI planner silently fell back to the offline template for every trip.
+// gpt-oss-120b returns clean JSON; the qwen models on this account wrap their
+// answers in <think> blocks, which the JSON parser cannot survive.
+const getModel = (override) => override || process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
 
 const safeJson = async (res) => {
   const text = await res.text();
@@ -25,19 +29,30 @@ export async function askGroqServer({ prompt, temperature = 0.7, json = false, m
 
   // Groq's default completion cap (4096 tokens) truncates a full multi-day
   // itinerary mid-JSON. Callers with large/variable output (day-by-day plans)
-  // should pass their own `maxTokens` sized to what they're asking for — the
-  // account-wide limit is 12,000 tokens/minute TOTAL (prompt + max_tokens),
-  // so an oversized flat value here would make every request fail outright.
-  const cappedMaxTokens = Math.max(256, Math.min(11000, Number(maxTokens) || (json ? 4000 : 2000)));
+  // should pass their own `maxTokens` sized to what they're asking for — but
+  // the ceiling here is the ACCOUNT's tokens-per-minute limit, counted as
+  // prompt + max_tokens together. Asking for more than a minute's budget makes
+  // the request fail outright instead of returning a shorter answer, so 6000
+  // leaves room for a long itinerary prompt underneath an 8k/min cap.
+  const cappedMaxTokens = Math.max(256, Math.min(6000, Number(maxTokens) || (json ? 4000 : 2000)));
+
+  const chosenModel = getModel(model);
 
   const body = {
-    model: getModel(model),
+    model: chosenModel,
     temperature,
     max_tokens: cappedMaxTokens,
     messages: json
       ? [{ role: 'system', content: 'Respond with a single valid JSON object only — no markdown, no commentary.' }, { role: 'user', content: prompt }]
       : [{ role: 'user', content: prompt }],
     ...(json ? { response_format: { type: 'json_object' } } : {}),
+    // gpt-oss spends completion tokens on reasoning before it writes anything.
+    // At the default effort a day-by-day itinerary burns the budget thinking
+    // and the JSON arrives truncated, which Groq rejects outright with
+    // "Failed to validate JSON" — no partial answer, no plan. The structure is
+    // already fully specified in the prompt, so there is little for it to
+    // reason about; low effort spends the tokens on the answer instead.
+    ...(/gpt-oss/.test(chosenModel) ? { reasoning_effort: 'low' } : {}),
   };
 
   const res = await fetch(GROQ_URL, {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Ambient hero backdrop: a world skyline with a plane crossing it.
+ * Ambient hero backdrop: a world skyline with an airliner crossing it.
  *
  * Design-only, like everything else in this folder — it renders behind the
  * headline, takes no input and is hidden from assistive tech.
@@ -110,15 +110,54 @@ export default function HeroSkyline() {
 
       {/* The plane flies through the band between the navbar and the headline —
           the hero's top padding, the one strip here with nothing in it. Across
-          the middle it cut straight through the words. */}
-      <div className="hero-plane absolute left-0 top-[66px] w-full">
-        <svg width="132" height="34" viewBox="0 0 132 34" fill="none" className="text-[#9fd3ff]">
+          the middle it cut straight through the words.
+
+          Drawn in side profile rather than from below. A wide-body seen from
+          underneath is nearly as wide as it is long — a square silhouette in a
+          strip of sky this shallow — and with the wings the only feature in
+          view it read as a fighter. From the side the aircraft is three times
+          longer than it is tall, which is the shape this band wants, and the
+          tail fin, the stabiliser, the underslung engine and the window line
+          are all things only an airliner has. */}
+      <div className="hero-plane absolute left-0 top-[64px] w-full">
+        <svg width="176" height="44" viewBox="0 0 176 44" fill="none" className="text-[#9fd3ff]">
           {/* Contrail, fading out behind the aircraft. */}
-          <path d="M2 21 H86" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+          <path d="M2 25 H46" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
             strokeDasharray="3 11" opacity="0.35" />
-          <path
-            d="M92 20.5 L112 14 L118 8 L124 8.5 L121.5 15 L129 17 L129 19 L121 21.5 L123 28 L117.5 28 L112 22.5 Z"
-            fill="currentColor" opacity="0.9" />
+
+          <g fill="currentColor" opacity="0.9">
+            {/* Tail fin and stabiliser first, so the fuselage overlaps their
+                roots the way the real joints do. The fin's trailing edge stops
+                short of the tail cone: run the two together and the whole rear
+                end fills in as one wedge. */}
+            <path d="M88 20 L76 5.5 L68 6.2 L67 21 Z" />
+            {/* The stabiliser drops away as it goes back, the same way the wing
+                does — it is the same aircraft at the same angle. Swept upward
+                instead it ran along the rising tail cone and the two fused
+                into one long spike. */}
+            <path d="M80 24.9 L62 29.4 L56 30.2 L69 27.9 Z" />
+
+            {/* Swept wing, dropping away as it goes back: the aircraft is seen
+                from a little below, the way one crossing the sky is. */}
+            <path d="M134 29.4 L100 37.8 L92 37.4 L114 29.9 Z" />
+
+            {/* Engine, slung under the wing root on its pylon — without the
+                pylon the nacelle floats under the belly as a loose capsule. */}
+            <path d="M131 29.5 L138.5 29.4 L142 32.4 L132.5 32.6 Z" />
+            <rect x="124" y="31.4" width="22" height="5.6" rx="2.8" />
+
+            {/* Fuselage: nose cone, a long rear taper and the upswept tail. */}
+            <path d="M171 25
+                     C169 22.2 163 20.4 156 20
+                     L100 19.6 L88 19.8 L60 21.6 L60 22.6 L88 29.2 L156 30
+                     C163 29.8 169 27.8 171 25 Z" />
+          </g>
+
+          {/* Windows and the flight-deck glass, in the sky's own colour so they
+              read as openings rather than as paint. */}
+          <path d="M104 24.4 H152" stroke="#02182f" strokeWidth="1.8" strokeLinecap="round"
+            strokeDasharray="1.6 4.2" opacity="0.45" />
+          <path d="M159 22.4 L165.5 23.4 L165 24.6 L158.5 24.1 Z" fill="#02182f" opacity="0.5" />
         </svg>
       </div>
     </div>

@@ -162,7 +162,12 @@ const Home = () => {
     setDeparture: setAiStart, setReturn: setAiReturn, setDays: setAiDays,
   });
 
-  const openFlights = (to, from = `${ORIGIN.city} (${ORIGIN.code})`) =>
+  // Origin is left empty on purpose. These cards no longer claim to depart
+  // from anywhere, so tapping one carries the destination into the flight
+  // search and stops there — the traveler fills in where they are flying from.
+  // /flights only auto-runs a search once both cities are set, so the form
+  // simply opens pre-filled instead of searching a route nobody chose.
+  const openFlights = (to, from = '') =>
     navigate('/flights', { state: { formData: { from, to, date: '', returnDate: '' } } });
 
   const submit = (e) => {
@@ -553,7 +558,7 @@ const Home = () => {
         <div className="flex items-end justify-between gap-4 mb-5">
           <div>
             <h2 className="text-[22px] md:text-[28px] font-black tracking-[-0.02em] text-[#252a31]">
-              {t('homePage.popularDest.heading')} {ORIGIN.city}
+              {t('homePage.popularDest.heading')}
             </h2>
             <p className="text-[14px] text-[#4a5867] font-medium mt-1">{t('homePage.popularDest.sub')}</p>
           </div>
@@ -605,7 +610,7 @@ const Home = () => {
               className="group flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-[#dfe7ec] bg-white hover:border-[#0172cb] transition text-left">
               <span className="min-w-0">
                 <span className="block text-[13.5px] font-bold text-[#252a31] truncate">
-                  {ORIGIN.city} <span className="text-[#697d95]">→</span> {d.city}
+                  {d.city}
                 </span>
                 <span className="block text-[11.5px] text-[#697d95] font-semibold">{d.country}</span>
               </span>

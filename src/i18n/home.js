@@ -97,7 +97,7 @@ export default {
         f4b: 'Download the whole itinerary — day plan, budget, tips — and carry it without a signal.',
       },
       popularDest: {
-        heading: 'Popular destinations from',
+        heading: 'Popular destinations',
         sub: 'Fares travelers booked most on these routes.',
       },
       popularFlights: {
@@ -345,7 +345,7 @@ export default {
         f4b: 'Butun marshrutni — kunlik reja, byudjet, maslahatlar — yuklab oling va internetsiz olib yuring.',
       },
       popularDest: {
-        heading: 'Mashhur manzillar —',
+        heading: 'Mashhur manzillar',
         sub: 'Sayohatchilar bu yo‘nalishlarda eng ko‘p band qilgan narxlar.',
       },
       popularFlights: {

@@ -353,7 +353,7 @@ const Home = () => {
                   className="md:col-span-3"
                   icon={<MapPin className="w-4 h-4" />}
                   label={t('homePage.search.from')}
-                  placeholder="Tashkent (TAS)"
+                  placeholder="Los Angeles (LAX)"
                   value={flightFrom}
                   onChange={setFlightFrom}
                 />
@@ -393,7 +393,7 @@ const Home = () => {
                     className="md:col-span-3"
                     icon={<Plane className="w-4 h-4" />}
                     label={t('homePage.search.from')}
-                    placeholder="Tashkent"
+                    placeholder="Los Angeles"
                     value={aiFrom}
                     onChange={setAiFrom}
                   />

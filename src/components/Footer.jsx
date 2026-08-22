@@ -50,8 +50,9 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5 mb-4 cursor-pointer group" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
-              <img src="/images/maf-logo.png" alt="MAF Travel"
-                className="w-10 h-10 rounded-lg object-cover group-hover:scale-105 transition-premium" />
+              {/* The emblem alone — see the note in layout/Navbar.jsx. */}
+              <img src="/images/maf-mark.png" alt="MAF Travel" width="40" height="40"
+                className="w-10 h-10 rounded-lg object-contain bg-[#0d1b33] group-hover:scale-105 transition-premium" />
               <div className="flex flex-col">
                 <span className="text-[17px] font-black tracking-tight leading-none">MAFTRAVEL</span>
                 <span className="text-[7px] font-bold text-[#697d95] uppercase tracking-widest mt-0.5">{t('footer.brandSub')}</span>

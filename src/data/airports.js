@@ -177,6 +177,8 @@ const RAW = [
   ['Chicago', 'United States', 'ORD'],
   ['San Francisco', 'United States', 'SFO'],
   ['Las Vegas', 'United States', 'LAS'],
+  ['Phoenix', 'United States', 'PHX'],
+  ['Houston', 'United States', 'IAH'],
   ['Washington', 'United States', 'IAD'],
   ['Boston', 'United States', 'BOS'],
   ['Toronto', 'Canada', 'YYZ'],

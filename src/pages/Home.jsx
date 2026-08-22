@@ -25,7 +25,9 @@ import { isGrokAvailable } from '../services/grokClient';
 const ORIGIN = { city: 'Tashkent', code: 'TAS' };
 
 /* Showcase destinations — `from` is the lowest fare we have seen on the route,
-   used for the "from $X" labels. Not a live quote; the flight search re-prices. */
+   used for the "from $X" labels. Not a live quote; the flight search re-prices.
+   The US rows were re-read off Google Flights in October 2026; the rest are
+   older figures that have not been checked against a live search since. */
 const DESTINATIONS = [
   { city: 'Bukhara',   country: 'Uzbekistan',  code: 'BHK', from: 125, img: 'https://images.unsplash.com/photo-1670514535515-e7af911bdadb?auto=format&fit=crop&w=900&q=80' },
   { city: 'Dubai',     country: 'UAE',         code: 'DXB', from: 280, img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80' },
@@ -34,7 +36,10 @@ const DESTINATIONS = [
   { city: 'Paris',     country: 'France',      code: 'CDG', from: 410, img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80' },
   { city: 'Tokyo',     country: 'Japan',       code: 'HND', from: 680, img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=900&q=80' },
   { city: 'Maldives',  country: 'Maldives',    code: 'MLE', from: 920, img: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=900&q=80' },
-  { city: 'New York',  country: 'USA',         code: 'JFK', from: 540, img: 'https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=900&q=80' },
+  // 977, not the 540 this said before: Google Flights quoted $977 for a
+  // Tashkent round trip on 2026-10-21, and a tile promising $540 sends the
+  // traveler to a search that shows nearly double.
+  { city: 'New York',  country: 'USA',         code: 'JFK', from: 977, img: 'https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=900&q=80' },
 ];
 
 /* Longer tail for the route list and the footer-style link clusters. */
@@ -44,10 +49,34 @@ const MORE_CITIES = [
   { city: 'Barcelona', country: 'Spain',          code: 'BCN', from: 360 },
   { city: 'Bangkok',   country: 'Thailand',       code: 'BKK', from: 380 },
   { city: 'Singapore', country: 'Singapore',      code: 'SIN', from: 610 },
-  { city: 'Las Vegas', country: 'USA',            code: 'LAS', from: 590 },
+  // US routes. Every `from` here was read off Google Flights for a Tashkent
+  // round trip departing 2026-10-21, except Phoenix, which had no reasonable
+  // October connection at all ($4,893) and is quoted from 2026-12-10 instead.
+  // These are far above the figures this list used to carry — New York said
+  // $540 against a real $977, Las Vegas $590 against $1,784 — so those two
+  // were corrected at the same time rather than left to undercut the new rows.
+  { city: 'Las Vegas',   country: 'USA', code: 'LAS', from: 1784 },
+  { city: 'Miami',       country: 'USA', code: 'MIA', from: 1322 },
+  { city: 'Phoenix',     country: 'USA', code: 'PHX', from: 3253 },
+  { city: 'Chicago',     country: 'USA', code: 'ORD', from: 1218 },
+  { city: 'Houston',     country: 'USA', code: 'IAH', from: 1404 },
+  { city: 'Los Angeles', country: 'USA', code: 'LAX', from: 1383 },
 ];
 
-const ALL_CITIES = [...DESTINATIONS, ...MORE_CITIES];
+/* The US routes lead the "Popular flights" list and the Explore links, in this
+   order. The mosaic above them still runs off DESTINATIONS, which is a
+   different, image-backed set — reordering that would change which tile gets
+   the 2x2 anchor. */
+const US_FIRST = ['Las Vegas', 'New York', 'Miami', 'Phoenix', 'Chicago', 'Houston', 'Los Angeles'];
+
+const ALL_CITIES = [...DESTINATIONS, ...MORE_CITIES].sort((a, b) => {
+  const ai = US_FIRST.indexOf(a.city);
+  const bi = US_FIRST.indexOf(b.city);
+  if (ai !== -1 && bi !== -1) return ai - bi;      // both listed: keep US_FIRST order
+  if (ai !== -1) return -1;
+  if (bi !== -1) return 1;
+  return 0;                                        // everything else keeps its own order
+});
 
 const Home = () => {
   const navigate = useNavigate();

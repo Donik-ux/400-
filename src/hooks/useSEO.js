@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { SUPPORT_EMAIL } from '../config/contact';
 
+/** Built-in site name — the admin Settings tab can override it (see below). */
+const BRAND = 'MAFTRAVEL';
+
 /**
  * useSEO — Har bir sahifa uchun <title>, meta description,
  * Open Graph, Twitter Card va canonical URL ni dinamik o'rnatadi.
@@ -21,8 +24,21 @@ export default function useSEO({ title, description, image, url, type = 'website
     let adminName = '';
     try { adminName = String(JSON.parse(localStorage.getItem('maf_settings') || 'null')?.siteName || '').trim(); }
     catch { /* corrupted settings — use the built-in name */ }
-    const siteTitle = adminName || 'MAFTRAVEL';
-    const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+    const siteTitle = adminName || BRAND;
+    // Several dictionaries already sign their title off with the brand — home
+    // and Antarctica end in "| MAFTRAVEL", Register in "— Join MAFTRAVEL" —
+    // and appending it unconditionally shipped "… | MAFTRAVEL | MAFTRAVEL" to
+    // the tab and to every search result. Leave a title that already ends in
+    // the site's name alone; if it ends in the built-in name while the admin
+    // has renamed the site, swap that ending for the new name instead of
+    // stacking both.
+    const endsWithName = (s, name) => s.trim().toLowerCase().endsWith(name.toLowerCase());
+    const pageTitle = (title || '').trim();
+    let fullTitle;
+    if (!pageTitle)                            fullTitle = siteTitle;
+    else if (endsWithName(pageTitle, siteTitle)) fullTitle = pageTitle;
+    else if (endsWithName(pageTitle, BRAND))     fullTitle = pageTitle.slice(0, -BRAND.length) + siteTitle;
+    else                                       fullTitle = `${pageTitle} | ${siteTitle}`;
     const canonical = url || window.location.href;
     const ogImage   = image || 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80';
 

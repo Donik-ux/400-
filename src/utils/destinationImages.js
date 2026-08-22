@@ -110,18 +110,27 @@ const findCuratedKey = (k) => {
   return null;
 };
 
-/** Find a hero image for any destination string. Always returns something. */
-export const heroFor = (destination = '') => {
+/* Every URL above is written at w=1400, the size a full-bleed page hero needs.
+   Unsplash serves whatever `w` asks for, so a caller drawing something smaller
+   can say so instead of downloading four times the pixels it will show. */
+const atWidth = (url, width) => (width === 1400 ? url : url.replace(/([?&]w=)\d+/, `$1${width}`));
+
+/**
+ * Find a hero image for any destination string. Always returns something.
+ * @param {string} destination
+ * @param {number} [width] — pixel width to request; default 1400 (page hero).
+ */
+export const heroFor = (destination = '', width = 1400) => {
   const k = String(destination).toLowerCase().trim();
-  if (!k) return GENERIC_FALLBACKS[0];
+  if (!k) return atWidth(GENERIC_FALLBACKS[0], width);
 
   const curatedKey = findCuratedKey(k);
-  if (curatedKey) return HEROES[curatedKey];
+  if (curatedKey) return atWidth(HEROES[curatedKey], width);
 
   // deterministic fallback by hash
   let h = 0;
   for (let i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) | 0;
-  return GENERIC_FALLBACKS[Math.abs(h) % GENERIC_FALLBACKS.length];
+  return atWidth(GENERIC_FALLBACKS[Math.abs(h) % GENERIC_FALLBACKS.length], width);
 };
 
 /** True if `destination` has a hand-picked photo (vs. the generic hash fallback). */

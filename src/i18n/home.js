@@ -13,7 +13,7 @@ export default {
         titleLead: 'Your next unforgettable',
         titleHighlight: 'journey',
         titleTail: 'planned by MAFTRAVEL AI.',
-        subtitle: 'Compare flights and tours, or let our AI build your itinerary — from Dubai to Antarctica in two clicks.',
+        subtitle: 'Compare flights and tours, or let our AI build your itinerary — from Los Angeles to Antarctica in two clicks.',
       },
       radar: {
         eyebrow: 'Trip radar',
@@ -27,10 +27,12 @@ export default {
       wish: {
         eyebrow: 'Just describe the trip — AI fills the search for you',
         tryLabel: 'Try:',
-        ex1: 'Bukhara for 5 days in May, $900',
-        ex2: 'Dubai for a week for $2500 in June',
-        ex3: 'Maldives in September, 10 days, luxury',
-        ex4: 'Weekend in Istanbul under $800',
+        // Budgets track the fares the route lists quote: a US round trip runs
+        // $1,000–1,800, so a $900 example would be a trip the AI cannot build.
+        ex1: 'New York for 5 days in May, $2500',
+        ex2: 'Las Vegas for a week for $3500 in June',
+        ex3: 'Miami in September, 10 days, luxury',
+        ex4: 'Weekend in Los Angeles under $2000',
       },
       tabs: {
         tours: 'Tours',
@@ -263,7 +265,7 @@ export default {
         titleLead: 'Sizning navbatdagi unutilmas',
         titleHighlight: 'sayohatingiz',
         titleTail: 'MAFTRAVEL sun’iy intellekti bilan rejalashtiriladi.',
-        subtitle: 'Aviachiptalar va turlarni solishtiring yoki marshrutingizni sun’iy intellektimizga tuzdiring — Dubaydan Antarktidagacha ikki bosishda.',
+        subtitle: 'Aviachiptalar va turlarni solishtiring yoki marshrutingizni sun’iy intellektimizga tuzdiring — Los-Anjelesdan Antarktidagacha ikki bosishda.',
       },
       radar: {
         eyebrow: 'Sayohat radari',
@@ -277,10 +279,10 @@ export default {
       wish: {
         eyebrow: 'Sayohatni oddiy so‘zlar bilan yozing — AI qidiruvni o‘zi to‘ldiradi',
         tryLabel: 'Sinab ko‘ring:',
-        ex1: 'May oyida 5 kunga Buxoro, $900',
-        ex2: 'Iyunda bir haftaga Dubay, $2500',
-        ex3: 'Sentyabrda Maldiv, 10 kun, hashamatli',
-        ex4: 'Istanbulga dam olish kunlari, $800 gacha',
+        ex1: 'May oyida 5 kunga Nyu-York, $2500',
+        ex2: 'Iyunda bir haftaga Las-Vegas, $3500',
+        ex3: 'Sentyabrda Mayami, 10 kun, hashamatli',
+        ex4: 'Los-Anjelesga dam olish kunlari, $2000 gacha',
       },
       tabs: {
         tours: 'Turlar',

@@ -16,6 +16,7 @@ import Price from '../components/Price';
 import BudgetAdvisory from '../components/BudgetAdvisory';
 import CityAutocomplete from '../features/flights/CityAutocomplete';
 import WeatherWidget from '../components/WeatherWidget';
+import HeroSkyline from '../components/fx/HeroSkyline';
 import { detectCurrentLocation } from '../services/geolocation';
 import { parseTripQuery } from '../services/travelServicesService';
 import { isGrokAvailable } from '../services/grokClient';
@@ -271,11 +272,15 @@ const Home = () => {
       {/* ─── HERO ─────────────────────────────────────────────────
           Short brand band, headline, and the one thing that is ours
           alone: describe the trip in words and the AI fills the form. */}
-      <section className="relative bg-[#1c2127] pt-[120px] pb-[120px] md:pb-[128px] overflow-hidden">
+      {/* #011328 is the navy sampled straight out of the logo artwork, so the
+          band behind the headline is the same blue the brand mark sits on
+          rather than the near-black it used to be. */}
+      <section className="relative bg-[#011328] pt-[120px] pb-[120px] md:pb-[128px] overflow-hidden">
         <div aria-hidden="true"
-          className="absolute inset-0 opacity-[0.22] bg-cover bg-center"
+          className="absolute inset-0 opacity-[0.20] bg-cover bg-center"
           style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1800&q=80")' }} />
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-[#1c2127]/70 via-[#1c2127]/85 to-[#1c2127]" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-[#0a2b4d]/70 via-[#011328]/88 to-[#011328]" />
+        <HeroSkyline />
 
         <div className="relative max-w-6xl mx-auto px-4 md:px-8 text-white">
           <motion.div

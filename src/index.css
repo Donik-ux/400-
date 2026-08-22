@@ -668,6 +668,25 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   }
 }
 
+/* ── Hero plane (src/components/fx/HeroSkyline.jsx) ──────────────────────
+   Crosses the skyline and climbs slightly as it goes, fading in and out at the
+   edges so it never appears to bounce off the sides. Off by default and only
+   switched on where motion is welcome — with motion reduced the aircraft sits
+   still over the skyline, which is a composition rather than a broken loop. */
+@keyframes heroPlane {
+  0%   { transform: translate3d(-14vw, 6px, 0) rotate(-2deg); opacity: 0; }
+  10%  { opacity: 0.85; }
+  88%  { opacity: 0.85; }
+  100% { transform: translate3d(108vw, -22px, 0) rotate(-6deg); opacity: 0; }
+}
+.hero-plane { opacity: 0.85; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-plane {
+    animation: heroPlane 26s linear infinite;
+    will-change: transform, opacity;
+  }
+}
+
 /* ── Respect reduced-motion preference ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

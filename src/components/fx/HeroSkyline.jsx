@@ -234,51 +234,83 @@ export default function HeroSkyline() {
               <stop offset="0.55" stopColor="currentColor" stopOpacity="0.18" />
               <stop offset="1" stopColor="currentColor" stopOpacity="0.5" />
             </linearGradient>
+            {/* A cylinder lit from above is bright along the crown and dark
+                along the belly. Flat fill made the aircraft a paper cut-out;
+                these three gradients are what give it a body. */}
+            <linearGradient id="mafBody" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#d2ebff" />
+              <stop offset="0.5" stopColor="#a3d5ff" />
+              <stop offset="1" stopColor="#6ba6da" />
+            </linearGradient>
+            <linearGradient id="mafWing" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#aedaff" />
+              <stop offset="1" stopColor="#7ab2e0" />
+            </linearGradient>
+            <linearGradient id="mafFin" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#4bd8c2" />
+              <stop offset="1" stopColor="#1aa494" />
+            </linearGradient>
           </defs>
           <path d="M0 26.6 C16 26.4 34 25.8 52 25.2" stroke="url(#mafTrail)"
             strokeWidth="2.6" strokeLinecap="round" fill="none" />
 
-          <g fill="currentColor" opacity="0.9">
-            {/* Stabiliser first, so the fuselage overlaps its root the way the
-                real joint does. It drops away as it goes back, the same way the
-                wing does — it is the same aircraft at the same angle. Swept
-                upward instead it ran along the rising tail cone and the two
-                fused into one long spike. */}
-            <path d="M80 24.9 L62 29.4 L56 30.2 L69 27.9 Z" />
+          <g opacity="0.9">
+            {/* The far wing, drawn before the fuselage so the belly cuts off
+                its root and only the outer half shows. It is a flatter sweep
+                than the near one and a darker blue — a wing on the other side
+                of the aeroplane is further away and in its shadow. Done as a
+                transparency of the same blue it read as a smudge, not a wing. */}
+            <path d="M130 28.8 L106 33.9 L99 33.5 L118 29 Z" fill="#5f96c6" />
+
+            {/* Stabiliser before the fuselage too, so the joint is a joint. It
+                drops away as it goes back, the same way the wing does — it is
+                the same aircraft at the same angle. Swept upward instead it ran
+                along the rising tail cone and the two fused into one spike. */}
+            <path d="M80 24.9 L62 29.4 L56 30.2 L69 27.9 Z" fill="url(#mafWing)" />
 
             {/* Swept wing, dropping away as it goes back: the aircraft is seen
                 from a little below, the way one crossing the sky is. The blade
                 at the tip is the winglet — the one silhouette detail that dates
                 an airliner to this century rather than the 1970s. */}
-            <path d="M134 29.4 L100 37.8 L92 37.4 L114 29.9 Z" />
-            <path d="M99.6 38 L104.2 33.4 L101.4 33.1 L96.4 37.6 Z" />
+            <path d="M134 29.4 L100 37.8 L92 37.4 L114 29.9 Z" fill="url(#mafWing)" />
+            <path d="M99.8 37.9 L98.8 34 L95.4 34.3 L92.6 37.5 Z" fill="url(#mafWing)" />
 
             {/* Engine, slung under the wing root on its pylon — without the
-                pylon the nacelle floats under the belly as a loose capsule. */}
-            <path d="M131 29.5 L138.5 29.4 L142 32.4 L132.5 32.6 Z" />
-            <rect x="124" y="31.4" width="22" height="5.6" rx="2.8" />
+                pylon the nacelle floats under the belly as a loose capsule.
+                The dark disc at the front is the intake and the cone behind is
+                the exhaust: a plain capsule reads as a pill, and those two ends
+                are the whole difference between a pill and a turbofan. */}
+            <path d="M131 29.5 L138.5 29.4 L142 32.4 L132.5 32.6 Z" fill="#7ab2e0" />
+            <path d="M124 32.8 L120 33.7 L120 34.9 L124 35.8 Z" fill="#5f96c6" />
+            <rect x="124" y="31.4" width="22" height="5.6" rx="2.8" fill="url(#mafBody)" />
+            <ellipse cx="145.4" cy="34.2" rx="1.5" ry="2.6" fill="#02182f" opacity="0.4" />
 
-            {/* Fuselage: nose cone, a long rear taper and the upswept tail. */}
-            <path d="M171 25
-                     C169 22.2 163 20.4 156 20
+            {/* Fuselage: nose cone, a long rear taper and the upswept tail. The
+                nose tip sits below the centreline — airliner noses droop, and
+                a symmetrical one looks like a tube with a cap on it. */}
+            <path d="M171 25.6
+                     C169 22.4 163 20.4 156 20
                      L100 19.6 L88 19.8 L60 21.6 L60 22.6 L88 29.2 L156 30
-                     C163 29.8 169 27.8 171 25 Z" />
+                     C164 29.9 169 28.2 171 25.6 Z" fill="url(#mafBody)" />
+
+            {/* Livery. The brand's teal runs off the fin and onto the rear
+                fuselage the way a real one does, so it is MAFTRAVEL's aircraft
+                rather than a clip-art one. The sweep is the deeper teal and the
+                fin the lighter, or the whole tail would set as one slab. */}
+            <path d="M96 19.65 L88 19.8 L60 21.6 L60 22.6 L80 27.3 Z" fill="#199589" />
+            {/* The fin's trailing edge stops short of the tail cone: run the
+                two together and the whole rear end fills in as one wedge. */}
+            <path d="M88 20 L76 5.5 L68 6.2 L67 21 Z" fill="url(#mafFin)" />
+            <path d="M104 28.5 L150 28.85 C153 28.9 155 29.05 156.4 29.25
+                     L156 29.95 C154 29.75 152 29.6 150 29.55 L104 29.2 Z"
+              fill="#2ec5b0" opacity="0.8" />
+
+            {/* Windows and the flight-deck glass, in the sky's own colour so
+                they read as openings rather than as paint. */}
+            <path d="M104 24.2 H152" stroke="#02182f" strokeWidth="1.8" strokeLinecap="round"
+              strokeDasharray="1.6 4.2" opacity="0.45" />
+            <path d="M159 22.6 L165.5 23.6 L165 24.8 L158.5 24.3 Z" fill="#02182f" opacity="0.5" />
           </g>
-
-          {/* Livery. The fin and the stripe under the windows carry the brand's
-              own teal, so this is MAFTRAVEL's aircraft rather than a clip-art
-              one — the fin is the only surface big enough at this size to hold
-              a colour and still be read as a tail. The fin's trailing edge
-              stops short of the tail cone: run the two together and the whole
-              rear end fills in as one wedge. */}
-          <path d="M88 20 L76 5.5 L68 6.2 L67 21 Z" fill="#2ec5b0" opacity="0.85" />
-          <path d="M100 27.6 L156 28 L156 29.4 L100 29 Z" fill="#2ec5b0" opacity="0.7" />
-
-          {/* Windows and the flight-deck glass, in the sky's own colour so they
-              read as openings rather than as paint. */}
-          <path d="M104 24.2 H152" stroke="#02182f" strokeWidth="1.8" strokeLinecap="round"
-            strokeDasharray="1.6 4.2" opacity="0.45" />
-          <path d="M159 22.4 L165.5 23.4 L165 24.6 L158.5 24.1 Z" fill="#02182f" opacity="0.5" />
         </svg>
       </div>
     </div>

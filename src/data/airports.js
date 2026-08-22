@@ -301,12 +301,19 @@ const norm = (s) =>
  *
  * RAW is grouped by region, so slicing off the top of it showed six Uzbek
  * cities in a row and read as though the site only flies inside Uzbekistan.
- * These are hand-picked to span continents from the first glance: home
- * airport first, then the hubs most trips here connect through.
+ * This list is hand-picked instead, and it leads with the same US cities the
+ * home page promotes — a destination the site is pushing should be one tap
+ * away in the search box, not something you have to know to type.
+ *
+ * New York is NYC, the metropolitan code, so it covers JFK, Newark and
+ * LaGuardia rather than committing the traveler to one airport.
+ *
+ * After those: the home airport, then the hubs most trips here connect
+ * through, so the list still spans more than one continent.
  */
 const DEFAULT_CODES = [
-  'TAS', 'IST', 'DXB', 'MOW', 'LON', 'CDG',
-  'JFK', 'GRU', 'JNB', 'BKK', 'NRT', 'SYD',
+  'LAS', 'NYC', 'MIA', 'PHX', 'ORD', 'IAH', 'LAX',
+  'TAS', 'IST', 'DXB', 'LON', 'NRT',
 ];
 
 const DEFAULTS = DEFAULT_CODES

@@ -687,6 +687,20 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   }
 }
 
+/* Mobile-friendly adjustments for the hero aircraft so it reads well
+   on small screens: lift it a little, and scale the SVG down so it
+   doesn't collide with the headline or the compact navbar. */
+@media (max-width: 640px) {
+  .hero-plane {
+    top: 48px !important;
+  }
+  .hero-plane svg {
+    width: 120px !important;
+    height: auto !important;
+    margin-left: 8px !important;
+  }
+}
+
 /* ── Respect reduced-motion preference ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

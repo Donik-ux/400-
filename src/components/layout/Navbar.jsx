@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, User, LogOut, BookOpen, ShieldCheck, Heart, LayoutDashboard, Map } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LogOut, BookOpen, ShieldCheck, Heart, LayoutDashboard, Map, Plane } from 'lucide-react';
 import { useTranslation } from '../../store/useLangStore';
 import useAuthStore  from '../../store/useAuthStore';
 import useWishlistStore from '../../store/useWishlistStore';
@@ -185,7 +185,12 @@ export default function Navbar() {
             <NavLink key={to} to={to} onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
                 `py-3.5 px-4 rounded-lg text-[14px] font-bold border-b border-[#e8edf1] transition-premium ${isActive ? 'text-[#0172cb] bg-[#e8f4fd]' : 'text-[#252a31]'}`
-              }>{label}</NavLink>
+              }>
+              <div className="flex items-center gap-3">
+                {to === '/flights' && <Plane className="w-4 h-4 text-[#4a5867]" />}
+                <span>{label}</span>
+              </div>
+            </NavLink>
           ))}
           {user && (
             <>

@@ -16,10 +16,10 @@ const Section = ({ num, title, children }) => (
 export default function CookiePolicy() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen bg-[#f5f7f9] py-14 px-4">
+    <div className="min-h-screen page-ground py-14 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="bg-white rounded-2xl shadow-float border border-[#dfe7ec] overflow-hidden">
-          <div className="bg-[#252a31] px-8 py-10 text-white">
+          <div className="relative aurora-bg px-8 py-10 text-white">
             <div className="flex items-center gap-3 mb-3">
               <Cookie className="w-7 h-7" />
               <span className="text-[12px] font-black uppercase tracking-widest text-white/60">{t('legal.legal')}</span>

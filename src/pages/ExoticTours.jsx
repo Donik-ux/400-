@@ -219,10 +219,18 @@ const ExoticTours = () => {
     : 0;
 
   return (
-    <div className="min-h-screen bg-[#eef2f5]">
+    <div className="min-h-screen page-ground">
 
       {/* Hero */}
-      <div className="relative bg-[#1c2127] overflow-hidden">
+      <div className="relative band-contrast overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center scale-[1.04]"
+          style={{ backgroundImage: `url(${TOURS[4].image})` }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(16,24,29,0.94)_0%,rgba(16,24,29,0.78)_42%,rgba(16,24,29,0.28)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,18,25,0.28)_0%,transparent_42%,rgba(8,18,25,0.88)_100%)]" />
+        <div className="hero-airways" />
+        <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 pt-[120px] pb-14">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -262,12 +270,6 @@ const ExoticTours = () => {
           </motion.div>
         </div>
 
-        {/* Wave divider */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 60L1440 60L1440 20C1200 60 720 0 0 40V60Z" fill="#eef2f5" />
-          </svg>
-        </div>
       </div>
 
       {/* Filters */}
@@ -323,7 +325,7 @@ const ExoticTours = () => {
               {f.label}
             </button>
           ))}
-          <span className="ml-auto self-center text-[13px] text-[#697d95] font-medium">
+          <span className="ml-auto self-center text-[13px] text-[#4a5867] font-medium">
             {visible.length} {t('exotic.toursFound')}
           </span>
         </div>

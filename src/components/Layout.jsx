@@ -7,6 +7,8 @@ import SupportButton from './SupportButton';
 import ToastContainer from './Toast';
 import TranslationProgress from './TranslationProgress';
 import ScrollProgress from './fx/ScrollProgress';
+import PageBackdrop from './fx/PageBackdrop';
+import CardSpotlight from './fx/CardSpotlight';
 import MaintenanceScreen from './MaintenanceScreen';
 import useAdminStore from '../store/useAdminStore';
 import useAuthStore from '../store/useAuthStore';
@@ -51,7 +53,8 @@ export default function Layout({ children }) {
 
   if (locked) {
     return (
-      <div className="min-h-screen bg-[#f5f7f9] text-[#252a31]">
+      <div className="min-h-screen page-ground text-[#252a31]">
+        <PageBackdrop />
         <MaintenanceScreen />
         <ToastContainer />
       </div>
@@ -59,8 +62,9 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f7f9] text-[#252a31] selection:bg-[#0172cb] selection:text-white">
+    <div className="min-h-screen page-ground text-[#252a31] selection:bg-[#0172cb] selection:text-white">
       {!isAdmin && !isAuth && <ScrollProgress />}
+      {!isAdmin && !isAuth && <CardSpotlight />}
       {!isAdmin && !isAuth && <Navbar />}
       <main className={!isAdmin && !isAuth ? 'pt-[64px]' : ''}>{children}</main>
       {!isAdmin && !isAuth && <Footer />}
@@ -68,6 +72,10 @@ export default function Layout({ children }) {
       {!isAdmin && !isAuth && <SupportButton />}
       <ToastContainer />
       <TranslationProgress />
+      {/* Last in the DOM on purpose: it paints under everything regardless
+          (fixed, z-index -1), and this keeps its decorative SVG text out of
+          the document's opening words for crawlers and reader modes. */}
+      <PageBackdrop />
     </div>
   );
 }

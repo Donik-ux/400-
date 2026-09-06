@@ -19,6 +19,8 @@ import { SAME_BLOCK_KM } from '../services/hotelProximity';
 import { exactPrice } from '../utils/priceText';
 import { findHotelNearAttractions, applyHotelChoice } from '../services/hotelSearch';
 import VisaNotice from '../features/trip/VisaNotice';
+import FlightsCard from '../features/trip/FlightsCard';
+import DepartureDates from '../features/planner/DepartureDates';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
 import { heroFor } from '../utils/destinationImages';
@@ -117,6 +119,7 @@ export default function TripPlan() {
   const [prevPlan,   setPrevPlan]   = useState(null);
   const [brief,      setBrief]      = useState(null);
   const [guestBannerDismissed, setGuestBannerDismissed] = useState(false);
+
   // Not signed in at all, or only ever used "continue as guest" — either way
   // this plan lives in localStorage only and won't survive a cache clear.
   const isGuest = !user || user.role === 'guest';
@@ -210,7 +213,7 @@ export default function TripPlan() {
     setPrevPlan(null);
   };
 
-  const runGenerate = async () => {
+  const runGenerate = async (startDateOverride = travelDate) => {
     if (!itemWithHero || loading || refining) return;  // guard: no item OR already generating/refining
     setLoading(true);
     setError(null);
@@ -225,7 +228,7 @@ export default function TripPlan() {
         style:       itemWithHero.category || itemWithHero.style || 'standard',
         interests:   ['culture','food','sightseeing'],
         transportMode: 'walking',
-        startDate:   travelDate,
+        startDate:   startDateOverride,
         purpose,
         lang,
       };
@@ -346,7 +349,7 @@ export default function TripPlan() {
   /* ── No item passed in → friendly redirect ── */
   if (!item || !type) {
     return (
-      <div className="min-h-screen bg-[#f5f7f9] flex items-center justify-center p-6">
+      <div className="min-h-screen page-ground flex items-center justify-center p-6">
         <div className="bg-white rounded-2xl border border-[#dfe7ec] p-10 max-w-md w-full text-center shadow-float relative overflow-hidden">
           <div className="relative">
             <div className="w-16 h-16 rounded-2xl bg-[#00a58e] flex items-center justify-center mx-auto mb-4 rotate-3 shadow-lift">
@@ -422,10 +425,12 @@ export default function TripPlan() {
   const totalNice = fmt(item.price);
 
   return (
-    <div className="min-h-screen bg-[#f5f7f9]">
+    <div className="min-h-screen page-ground">
 
       {/* ── HEADER ────────────────────────────────────────────── */}
-      <section className="relative bg-[#1c2127] text-white overflow-hidden">
+      <section className="relative aurora-bg text-white overflow-hidden">
+        <div className="hero-airways" />
+        <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-6xl mx-auto px-4 md:px-8 py-7">
           <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-white/70 hover:text-white text-[12px] font-bold mb-3 transition">
             <ArrowLeft className="w-4 h-4" /> {t('tripPlan.back')}
@@ -454,7 +459,7 @@ export default function TripPlan() {
               <p className="text-[13px] text-[#4a5867] font-medium mt-0.5">{t('tripPlan.guestBanner.body')}</p>
               <button
                 onClick={() => navigate('/register')}
-                className="mt-2.5 inline-flex items-center gap-1.5 bg-[#252a31] hover:bg-[#0172cb] text-white text-[12px] font-black rounded-lg px-3.5 py-2 shadow-soft transition active:scale-95">
+                className="mt-2.5 inline-flex items-center gap-1.5 bg-[#252a31] hover:bg-[#00a58e] text-white text-[12px] font-black rounded-lg px-3.5 py-2 shadow-soft transition active:scale-95">
                 <UserPlus className="w-3.5 h-3.5" /> {t('tripPlan.guestBanner.cta')}
               </button>
             </div>
@@ -602,121 +607,59 @@ export default function TripPlan() {
               lang={lang}
             />
 
-            {/* ── Flights card — the fare the plan is actually costed on ── */}
-            {plan?.flights && (() => {
-              const f = plan.flights;
-              const legs = [f.outbound, f.inbound].filter(Boolean);
-              return (
-                <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 shadow-soft">
-                  <div className="flex items-center gap-2 flex-wrap mb-3">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[#0172cb] flex items-center gap-1">
-                      <Plane className="w-3.5 h-3.5" /> {t('tripPlan.flights.title')}
-                    </span>
-                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-md ${
-                      f.isLive ? 'text-[#008009] bg-[#eafaea]' : 'text-[#697d95] bg-[#eef2f5]'
-                    }`}>
-                      {f.isLive
-                        ? fill(t('tripPlan.flights.liveBadge'), { source: f.source })
-                        : t('tripPlan.flights.estimateBadge')}
-                    </span>
-                  </div>
+            {/* Keep fare alternatives available after the plan is generated.
+                Picking one reruns the plan with that departure date so the
+                itinerary and its flight cost stay in sync. */}
+            <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 shadow-soft">
+              <DepartureDates
+                formData={{
+                  destination: item?.destination || item?.name,
+                  fromCity,
+                  days: plan?.days?.length || Number(item?.duration) || 5,
+                  budget: Number(item?.price) || 0,
+                  budgetStyle: item?.category || item?.style || 'standard',
+                  startDate: travelDate,
+                }}
+                onChange={({ startDate }) => {
+                  if (!startDate || startDate === travelDate || loading) return;
+                  const nextReturn = new Date(startDate);
+                  nextReturn.setDate(nextReturn.getDate() + Math.max(0, (plan?.days?.length || Number(item?.duration) || 5) - 1));
+                  const nextReturnIso = `${nextReturn.getFullYear()}-${String(nextReturn.getMonth() + 1).padStart(2, '0')}-${String(nextReturn.getDate()).padStart(2, '0')}`;
+                  setTravelDate(startDate);
+                  setReturnDate(nextReturnIso);
+                  runGenerate(startDate);
+                }}
+              />
+            </div>
 
-                  <ul className="space-y-2">
-                    {legs.map((leg, i) => (
-                      <li key={i} className="flex items-center gap-3 flex-wrap">
-                        <span className="text-[13px] font-black text-[#252a31] tabular-nums whitespace-nowrap">
-                          {leg.from} → {leg.to}
-                        </span>
-                        {leg.date && <span className="text-[11px] text-[#697d95] font-bold">{fmtDate(leg.date)}</span>}
-                        {leg.airline && (
-                          <span className="text-[11px] text-[#4a5867] font-semibold">{leg.airlineLogo} {leg.airline}</span>
-                        )}
-                        {leg.duration && <span className="text-[11px] text-[#697d95] font-bold">{leg.duration}</span>}
-                        {Number.isFinite(leg.stops) && (
-                          <span className="text-[10px] font-black text-[#007f6d] bg-[#e6f6f3] px-1.5 py-0.5 rounded">
-                            {leg.stops === 0 ? t('tripPlan.flights.direct') : fill(t('tripPlan.flights.stops'), { count: leg.stops })}
-                          </span>
-                        )}
-                        {leg.departure && (
-                          <span className="text-[11px] text-[#697d95] font-bold tabular-nums">{leg.departure}{leg.arrival ? `–${leg.arrival}` : ''}</span>
-                        )}
-                        {/* A round-trip ticket has one price, shown once in the
-                            total row — a per-leg figure here would be invented. */}
-                        {Number.isFinite(leg.price) && (
-                          <span className="ml-auto text-[13px] font-black text-[#252a31] whitespace-nowrap">{fmt(leg.price)}</span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {f.priceLevel && (
-                    <p className={`mt-2 text-[11px] font-bold ${
-                      f.priceLevel === 'low' ? 'text-[#008009]' : f.priceLevel === 'high' ? 'text-[#b3402e]' : 'text-[#697d95]'
-                    }`}>
-                      {t(`tripPlan.flights.level.${f.priceLevel}`)}
-                    </p>
-                  )}
-
-                  <div className="mt-3 pt-3 border-t border-[#eef2f5] flex items-center justify-between flex-wrap gap-2">
-                    <span className="text-[11px] font-black uppercase tracking-widest text-[#697d95]">
-                      {fill(t(f.travelers === 1 ? 'tripPlan.flights.totalOne' : 'tripPlan.flights.totalMany'), { count: f.travelers })}
-                    </span>
-                    <span className="text-[15px] font-black text-[#252a31]">
-                      {/* Per-leg rows are per person — spell out the multiplication
-                          so the total doesn't look like it came from nowhere. */}
-                      {f.travelers > 1 && (
-                        <span className="text-[11px] text-[#697d95] font-bold mr-1.5">{fmt(f.perPerson)} × {f.travelers} =</span>
-                      )}
-                      {fmt(f.total)}
-                    </span>
-                  </div>
-
-                  {/* The budget split assumed a cheaper ticket than the route
-                      actually costs — say so instead of letting the tiles imply
-                      the trip still fits. */}
-                  {plan.budgetBreakdown?.flightBudgeted > 0
-                    && f.perPerson > plan.budgetBreakdown.flightBudgeted * 1.25 && (
-                    <p className="mt-2 p-2 rounded-lg note-danger text-danger text-[11px] font-bold">
-                      {fill(t('tripPlan.flights.overBudget'), {
-                        actual: fmt(f.perPerson),
-                        planned: fmt(plan.budgetBreakdown.flightBudgeted),
-                      })}
-                    </p>
-                  )}
-
-                  <div className="mt-3 flex items-center gap-2 flex-wrap">
-                    {(f.bookLink || f.outbound?.buyLink) && (
-                      <a href={f.bookLink || f.outbound.buyLink} target="_blank" rel="noreferrer noopener"
-                        className="px-3 py-2 rounded-lg bg-[#00a58e] hover:bg-[#008f77] text-white text-[11px] font-black inline-flex items-center gap-1 active:scale-95 transition">
-                        {t('tripPlan.flights.book')} <ExternalLink className="w-3 h-3" />
-                      </a>
-                    )}
-                    <button
-                      onClick={() => {
-                        const bare = (s) => String(s || '').replace(/\s*\([^)]*\)\s*/g, '').trim();
-                        navigate('/flights', {
-                          state: {
-                            formData: {
-                              from: `${bare(fromCity)} (${f.outbound?.from})`,
-                              to:   `${bare(item.destination || item.name)} (${f.outbound?.to})`,
-                              date: f.outbound?.date || '',
-                              returnDate: f.inbound?.date || '',
-                            },
-                          },
-                        });
-                      }}
-                      className="px-3 py-2 rounded-lg border border-[#dfe7ec] text-[#0172cb] text-[11px] font-black hover:bg-[#e8f4fd] active:scale-95 transition">
-                      {t('tripPlan.flights.compare')}
-                    </button>
-                  </div>
-
-                  <p className="mt-2 text-[10px] text-[#8a99ab] font-semibold">
-                    {f.isLive ? t('tripPlan.flights.liveNote') : t('tripPlan.flights.estimateNote')}
-                  </p>
-                </div>
-              );
-            })()}
-
+            {/* ── The fare the plan is actually costed on ── */}
+            <FlightsCard
+              flights={plan?.flights}
+              budgetedFlight={plan?.budgetBreakdown?.flightBudgeted}
+              query={{
+                fromCity,
+                destination: item?.destination || item?.name,
+                returnCity:  returnToState,
+                startDate:   travelDate,
+                days:        plan?.days?.length || Number(item?.duration) || 5,
+                travelers,
+                style:       item?.category || item?.style || 'standard',
+              }}
+              onCompare={() => {
+                const bare = (x) => String(x || '').replace(/\s*\([^)]*\)\s*/g, '').trim();
+                const f = plan?.flights;
+                navigate('/flights', {
+                  state: {
+                    formData: {
+                      from: `${bare(fromCity)} (${f?.outbound?.from})`,
+                      to:   `${bare(item?.destination || item?.name)} (${f?.outbound?.to})`,
+                      date: f?.outbound?.date || '',
+                      returnDate: f?.inbound?.date || '',
+                    },
+                  },
+                });
+              }}
+            />
             {/* ── Hotel card ── */}
             {plan?.hotel && (plan.hotel.name || plan.hotel.address) && (() => {
               const h = plan.hotel;
@@ -858,35 +801,9 @@ export default function TripPlan() {
                         </div>
                       )}
 
-                      {/* Runners-up from the same ranking — so "closest" is a
-                          choice the traveler can see, not a black box. */}
-                      {h.alternatives?.length > 0 && (
-                        <details className="mt-2">
-                          <summary className="text-[11px] font-black text-[#0172cb] cursor-pointer">
-                            {t('tripPlan.otherNearbyHotels')}
-                          </summary>
-                          <ul className="mt-1.5 space-y-1">
-                            {h.alternatives.map((alt, i) => (
-                              <li key={i} className="flex items-baseline gap-2 text-[11.5px]">
-                                {alt.link ? (
-                                  <a href={alt.link} target="_blank" rel="noreferrer noopener"
-                                    className="font-bold text-[#0172cb] hover:underline truncate">{alt.name}</a>
-                                ) : (
-                                  <span className="font-bold text-[#252a31] truncate">{alt.name}</span>
-                                )}
-                                {alt.nightly && <span className="shrink-0 text-[#252a31] font-black">{alt.nightly}</span>}
-                                <span className="shrink-0 text-[#697d95] font-semibold">
-                                  {fill(t('tripPlan.altWalkable'), { count: alt.walkableCount })}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-                        </details>
-                      )}
-
                       {h.bookLink && (
                         <a href={h.bookLink} target="_blank" rel="noreferrer noopener"
-                          className="mt-3 inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-[#0172cb] hover:bg-[#015ba3] text-white text-[11px] font-black active:scale-95 transition">
+                          className="mt-3 inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-[#00a58e] hover:bg-[#009882] text-white text-[11px] font-black active:scale-95 transition">
                           {t('tripPlan.bookHotel')} <ExternalLink className="w-3 h-3" />
                         </a>
                       )}
@@ -1075,10 +992,10 @@ export default function TripPlan() {
                         </ol>
                       )}
 
-                      {/* Two or three kitchens a day, each a different cuisine.
-                          `halalRestaurants` is the current shape; the singular
-                          is what plans saved by an older build still carry. */}
+                      {/* One concrete restaurant for the day, with its exact
+                          address and map link instead of a choice list. */}
                       {(d.halalRestaurants?.length ? d.halalRestaurants : [d.halalRestaurant].filter(Boolean))
+                        .slice(0, 1)
                         .map((r, ri) => {
                           // mapsUrlFor pins the exact coordinates when the plan
                           // supplied them, and only falls back to searching the
@@ -1378,7 +1295,7 @@ export default function TripPlan() {
                         className="flex-1 min-w-0 px-3 py-2.5 rounded-xl border border-[#dfe7ec] focus:border-[#0172cb] outline-none text-[12px] font-semibold text-[#252a31] placeholder:text-[#8fa1b3] disabled:opacity-50 bg-white"
                       />
                       <button onClick={handleRefine} disabled={refining || loading || !refineText.trim()}
-                        className="px-3.5 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015fa8] text-white text-[12px] font-black transition active:scale-95 disabled:opacity-50 shrink-0 flex items-center gap-1.5">
+                        className="px-3.5 py-2.5 rounded-xl bg-[#00a58e] hover:bg-[#009882] text-white text-[12px] font-black transition active:scale-95 disabled:opacity-50 shrink-0 flex items-center gap-1.5">
                         {refining ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
                         {refining ? t('tripPlan.refine.working') : t('tripPlan.refine.button')}
                       </button>

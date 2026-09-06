@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 /* ── Warm editorial theme — ivory/sand neutrals instead of flat corporate grays,
@@ -36,9 +37,9 @@
   /* Flat elevation scale — booking-site depth: a hairline contact shadow and a
      short ambient one. Deep multi-layer "vitrine" shadows read as ornamental
      next to the flat card grids this UI is built from. */
-  --shadow-soft:  0 1px 2px rgba(16,24,40,0.04);
-  --shadow-float: 0 1px 2px rgba(16,24,40,0.05), 0 6px 16px -8px rgba(16,24,40,0.14);
-  --shadow-lift:  0 2px 4px rgba(16,24,40,0.06), 0 10px 24px -10px rgba(16,24,40,0.18);
+  --shadow-soft:  0 1px 2px rgba(16,24,40,0.045), 0 4px 14px -10px rgba(16,24,40,0.12);
+  --shadow-float: 0 1px 2px rgba(16,24,40,0.05), 0 8px 20px -10px rgba(16,24,40,0.17);
+  --shadow-lift:  0 2px 5px rgba(16,24,40,0.07), 0 14px 30px -12px rgba(16,24,40,0.22);
 
   /* Motion */
   --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,7 +47,9 @@
 }
 
 :root {
-  background-color: #f5f7f9;
+  /* The ground settles from #f7f9fb to #e9eef3; the canvas takes the middle
+     stop so iOS rubber-banding shows no lighter strip at either end. */
+  background-color: #f2f5f8;
   color: #252a31;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -70,7 +73,9 @@ p { line-height: 1.65; }
 body {
   margin: 0;
   min-height: 100vh;
-  background: #f5f7f9;
+  /* The ground itself is painted by <PageBackdrop/> (fixed, z-index -1);
+     :root keeps the flat colour so nothing ever flashes white behind it. */
+  background: transparent;
   position: relative;
   /* Stop the browser from silently re-adjusting scroll position when async
      content (images, AI results) loads in above the fold on a freshly
@@ -302,12 +307,278 @@ button, a, input, select, textarea {
   50%      { transform: translate3d(2%, -2%, 0); }
 }
 
-/* ── Atmosphere: living aurora mesh for navy hero surfaces — richer, more saturated,
-   with a visible gold vein through the middle instead of a faint tint ── */
-/* Dark hero band — one solid brand navy, no animated mesh. Every hero on the
-   site is the same surface, so the search card on top of it always reads. */
+/* ── The page ground ─────────────────────────────────────────────────────────
+   Every page used to repaint this itself as one flat grey — two of them, in
+   fact (#f5f7f9 and #eef2f5), depending on which page you landed on. It is the
+   largest surface on the site and it was the only one with no light in it at
+   all: white cards sat on it at a contrast ratio of about 1.03 and barely
+   read as raised.
+
+   So: light gathers where the reading starts and the ground settles a shade
+   cooler as it runs out from under the content. The settled tone is the base
+   colour, not the end of a gradient, so a three-screen itinerary looks the
+   same at the foot as a short one — nothing stretches. ── */
+.page-ground {
+  /* Transparent on purpose: the ground is one fixed layer under the whole
+     site now (see components/fx/PageBackdrop.jsx), so page wrappers no longer
+     paint their own. The class stays so pages need no edits. */
+  background: transparent;
+}
+
+/* ── Site ground: fixed, under everything ──
+   z-index -1 directly in the root stacking context (body and the Layout
+   wrapper create none), so it paints above the html background and below
+   every in-flow element — cards, heroes, navbar and modals keep exactly the
+   z-order they had. `contain: strict` scopes its children's stacking to
+   itself and lets the compositor skip it entirely when nothing moves. */
+.page-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  user-select: none;
+  contain: strict;
+}
+/* Animated motif parts get their compositor layer from the running animation
+   itself; on touch devices stacked promoted layers compound the pinch-zoom
+   whiteout (see the pointer:coarse block above), so never pin them there. */
+@media (pointer: coarse) {
+  .page-backdrop * { will-change: auto !important; }
+}
+
+/* The hour of the day, as a tint no stronger than a window's reflection:
+   peach from above at dawn, gold from below-left at dusk, indigo overhead at
+   night, nothing by day. Static; set once per mount via data-phase. */
+.page-backdrop__tint {
+  position: absolute;
+  inset: 0;
+}
+.page-backdrop__tint[data-phase="dawn"] {
+  background:
+    radial-gradient(90% 55% at 50% -10%, rgba(255, 176, 128, 0.13), transparent 70%),
+    linear-gradient(180deg, rgba(255, 205, 170, 0.06), transparent 45%);
+}
+.page-backdrop__tint[data-phase="dusk"] {
+  background:
+    radial-gradient(70% 60% at 0% 100%, rgba(217, 164, 65, 0.13), transparent 70%),
+    radial-gradient(60% 50% at 100% 0%, rgba(1, 114, 203, 0.07), transparent 70%);
+}
+.page-backdrop__tint[data-phase="night"] {
+  background:
+    radial-gradient(100% 60% at 50% -10%, rgba(13, 27, 51, 0.10), transparent 70%),
+    linear-gradient(180deg, rgba(13, 27, 51, 0.05), transparent 50%);
+}
+
+/* Depth against the scrolling page: the scene slides up a few vh over the
+   document's length. A scroll-driven animation runs on the compositor with
+   no script; browsers without it simply keep the scene still. The 3% scale
+   keeps the edges covered while it moves. */
+.page-backdrop__scroll {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.03);
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .page-backdrop__scroll {
+      animation: bdScrollDrift linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+@keyframes bdScrollDrift {
+  from { transform: scale(1.03) translate3d(0, 0, 0); }
+  to   { transform: scale(1.03) translate3d(0, -7vh, 0); }
+}
+
+/* The scene leans towards the pointer — --bd-mx/--bd-my are -1..1, written
+   by PageBackdrop on pointer move (never on touch or reduced motion) — and
+   eases there, so a fast mouse reads as a slow tilt. Each motif change
+   mounts a fresh element, and the fade-in is what turns a pop into a
+   dissolve. Opacity and transform only: nothing here repaints. */
+.page-backdrop__motif {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(calc(var(--bd-mx, 0) * 18px), calc(var(--bd-my, 0) * 12px), 0);
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: bdMotifIn 1100ms ease-out both;
+}
+@keyframes bdMotifIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-backdrop__motif { transition: none; animation: none; transform: none; }
+}
+
+/* Dust: two fields of soft motes — teal, gold, white — drifting upward at
+   two speeds, on every route. Each field is ONE element whose background is
+   a fixed table of radial dots, twice the viewport tall, scrolled by exactly
+   one tile so the loop never seams. Life in the gutters of even a form page. */
+.page-backdrop__dust {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 200%;
+  background-repeat: repeat-y;
+  background-size: 100% 50%;
+}
+.page-backdrop__dust--near {
+  opacity: 0.9;
+  background-image:
+    radial-gradient(3px 3px at 6% 12%,  rgba(0, 165, 142, 0.34) 0, transparent 100%),
+    radial-gradient(2px 2px at 14% 58%, rgba(217, 164, 65, 0.32) 0, transparent 100%),
+    radial-gradient(3px 3px at 22% 31%, rgba(255, 255, 255, 0.85) 0, transparent 100%),
+    radial-gradient(2px 2px at 9% 84%,  rgba(1, 114, 203, 0.26) 0, transparent 100%),
+    radial-gradient(3px 3px at 91% 22%, rgba(0, 165, 142, 0.30) 0, transparent 100%),
+    radial-gradient(2px 2px at 84% 69%, rgba(217, 164, 65, 0.30) 0, transparent 100%),
+    radial-gradient(3px 3px at 95% 47%, rgba(255, 255, 255, 0.85) 0, transparent 100%),
+    radial-gradient(2px 2px at 78% 91%, rgba(1, 114, 203, 0.24) 0, transparent 100%),
+    radial-gradient(2px 2px at 3% 40%,  rgba(0, 165, 142, 0.28) 0, transparent 100%),
+    radial-gradient(2px 2px at 97% 77%, rgba(0, 165, 142, 0.26) 0, transparent 100%);
+}
+.page-backdrop__dust--far {
+  opacity: 0.6;
+  background-image:
+    radial-gradient(1.6px 1.6px at 11% 5%,  rgba(0, 165, 142, 0.30) 0, transparent 100%),
+    radial-gradient(1.6px 1.6px at 4% 27%,  rgba(217, 164, 65, 0.28) 0, transparent 100%),
+    radial-gradient(1.6px 1.6px at 18% 73%, rgba(1, 114, 203, 0.24) 0, transparent 100%),
+    radial-gradient(1.6px 1.6px at 7% 95%,  rgba(255, 255, 255, 0.8) 0, transparent 100%),
+    radial-gradient(1.6px 1.6px at 88% 9%,  rgba(217, 164, 65, 0.28) 0, transparent 100%),
+    radial-gradient(1.6px 1.6px at 96% 34%, rgba(0, 165, 142, 0.28) 0, transparent 100%),
+    radial-gradient(1.6px 1.6px at 82% 55%, rgba(255, 255, 255, 0.8) 0, transparent 100%),
+    radial-gradient(1.6px 1.6px at 93% 88%, rgba(1, 114, 203, 0.22) 0, transparent 100%),
+    radial-gradient(1.6px 1.6px at 15% 45%, rgba(0, 165, 142, 0.22) 0, transparent 100%),
+    radial-gradient(1.6px 1.6px at 86% 76%, rgba(0, 165, 142, 0.22) 0, transparent 100%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .page-backdrop__dust--near { animation: bdDustRise 110s linear infinite; }
+  .page-backdrop__dust--far  { animation: bdDustRise 170s linear infinite -60s; }
+}
+@keyframes bdDustRise {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(0, -50%, 0); }
+}
+
+/* A passing light: a soft diagonal band of white that crosses the page
+   once every 44 s, the way sun through a window crosses a table. One
+   element, one transform. Gone under reduced motion. */
+.page-backdrop__sweep {
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 46vw;
+  height: 140%;
+  transform: translate3d(-80vw, 0, 0) skewX(-18deg);
+  opacity: 0;
+  background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.28) 35%,
+    rgba(255, 255, 255, 0.48) 50%, rgba(255, 255, 255, 0.28) 65%, rgba(255, 255, 255, 0) 100%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .page-backdrop__sweep { animation: bdSweep 44s linear infinite 6s; }
+}
+@keyframes bdSweep {
+  0%   { transform: translate3d(-80vw, 0, 0) skewX(-18deg); opacity: 0; }
+  2%   { opacity: 1; }
+  24%  { opacity: 1; }
+  27%  { transform: translate3d(150vw, 0, 0) skewX(-18deg); opacity: 0; }
+  100% { transform: translate3d(150vw, 0, 0) skewX(-18deg); opacity: 0; }
+}
+
+/* Light under the pointer: a wide, soft brightening of the ground with a
+   breath of teal at its heart, carried by transform from --bd-px/--bd-py
+   (viewport px, written with the lean variables). Invisible until the
+   pointer has moved once; never on touch. */
+.page-backdrop__cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 640px;
+  height: 640px;
+  margin: -320px 0 0 -320px;
+  border-radius: 50%;
+  opacity: var(--bd-on, 0);
+  transform: translate3d(var(--bd-px, -1000px), var(--bd-py, -1000px), 0);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 600ms ease-out;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.22) 28%, rgba(255, 255, 255, 0) 62%),
+    radial-gradient(circle, rgba(0, 165, 142, 0.10) 0%, rgba(0, 165, 142, 0) 46%);
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .page-backdrop__cursor, .page-backdrop__sweep { display: none; }
+}
+
+/* Card spotlight: a white card under the pointer glows softly where the
+   pointer is (CardSpotlight.jsx sets --sx/--sy on the hovered card and adds
+   .spot-lit). A background-image over the card's own colour, so no overflow
+   or positioning changes — dropdowns inside cards still escape. */
+.spot-lit {
+  background-image: radial-gradient(280px circle at var(--sx, 50%) var(--sy, 50%),
+    rgba(0, 165, 142, 0.085), rgba(1, 114, 203, 0.03) 45%, transparent 70%);
+}
+.page-backdrop__ground {
+  position: absolute;
+  inset: 0;
+  background-color: #e9eef3;
+  /* The light ground should feel like textured travel paper, not an empty
+     white canvas. The dot layer remains quiet in the gutters while the
+     directional washes give long pages a little visual depth. */
+  background-image:
+    radial-gradient(rgba(37, 42, 49, 0.045) 1px, transparent 1px),
+    radial-gradient(46% 34% at 8% 6%, rgba(0, 165, 142, 0.075), transparent 72%),
+    radial-gradient(42% 32% at 94% 18%, rgba(1, 114, 203, 0.065), transparent 72%),
+    radial-gradient(52% 42% at 52% 100%, rgba(217, 164, 65, 0.055), transparent 76%),
+    linear-gradient(118deg, #f9fbfc 0%, #f3f7f8 43%, #e8eef2 100%);
+  background-repeat: repeat, no-repeat;
+  background-size: 26px 26px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+}
+
+/* ── Dark hero band — still one brand navy, so every hero on the site reads as
+   the same surface, but lit rather than flat: a teal dawn off the top-left, a
+   colder blue high on the right, and the floor darkening again underneath so
+   the white search card always lands on the deepest part of the band. Static
+   gradients only — nothing here animates, so it stays cheap to paint. ── */
 .aurora-bg {
-  background: #1c2127;
+  /* The band casts onto the page below it, so the seam is a transition rather
+     than a cut. Clipped away harmlessly where a band sits inside a rounded
+     card (the legal pages) or runs to the foot of the viewport (auth). */
+  box-shadow: 0 22px 34px -26px rgba(16, 24, 40, 0.55);
+  background-color: #1c2127;
+  /* Everything is sized in percentages of the band, so the same surface reads
+     the same on a 1100px hero and on a 220px page header — an absolute-height
+     floor would swallow the short one whole. */
+  background-image:
+    radial-gradient(80% 125% at 1% -4%,  rgba(0, 165, 142, 0.20), transparent 60%),
+    radial-gradient(72% 118% at 99% 6%,  rgba(1, 114, 203, 0.22), transparent 58%),
+    linear-gradient(to bottom, rgba(8, 11, 15, 0.34), rgba(8, 11, 15, 0) 52%, rgba(8, 11, 15, 0.46));
+}
+
+/* The Contrast Journeys band. Same navy, but the page's whole premise —
+   scorching desert on one end of the trip, polar ice on the other — is stated
+   by the surface itself: terracotta heat entering from the left, polar blue
+   from the right, meeting over the headline. */
+.band-contrast {
+  box-shadow: 0 22px 34px -26px rgba(16, 24, 40, 0.55);
+  background-color: #1c2127;
+  background-image:
+    radial-gradient(72% 105% at 4% 2%,    rgba(194, 109, 74, 0.26), transparent 60%),
+    radial-gradient(72% 105% at 97% 10%,  rgba(1, 114, 203, 0.26),  transparent 62%),
+    radial-gradient(120% 82% at 50% 122%, rgba(8, 11, 15, 0.72),    transparent 66%);
+}
+
+/* Navigation-chart overlay for a dark hero: a graticule of faint dots that
+   fades out to the left, so it fills the empty side of the band and never
+   reaches the headline or the form. Mount as an absolute child of .aurora-bg. */
+.hero-airways {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1.1px, transparent 1.1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: linear-gradient(100deg, transparent 34%, #000 78%, #000 100%);
+  mask-image: linear-gradient(100deg, transparent 34%, #000 78%, #000 100%);
 }
 
 /* Grain, sheen and lattice overlays are no-ops now — the surfaces they dressed
@@ -416,17 +687,21 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
-  transition: background-color 0.2s var(--ease-premium), transform 0.2s var(--ease-premium);
+  box-shadow: 0 4px 12px -6px rgba(1, 90, 163, 0.55);
+  transition: background-color 0.2s var(--ease-premium), transform 0.2s var(--ease-premium), box-shadow 0.2s var(--ease-premium);
 }
-.btn-primary:hover  { background: #015aa3; }
+.btn-primary:hover  { background: #015aa3; box-shadow: 0 8px 18px -8px rgba(1, 90, 163, 0.72); transform: translateY(-1px); }
 .btn-primary:active { transform: scale(0.98); }
 
 /* ── White card ── */
 .wcard {
-  background: white;
-  border: 1px solid #dfe7ec;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(207, 220, 228, 0.9);
   border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  transition: border-color 0.22s var(--ease-premium), box-shadow 0.22s var(--ease-premium), transform 0.22s var(--ease-premium);
 }
+.wcard:hover { border-color: #bfd2dc; box-shadow: var(--shadow-float); }
 
 /* ── Custom Animations ── */
 @keyframes bounceSlow {
@@ -586,7 +861,10 @@ input[type='number']::-webkit-outer-spin-button { opacity: 0.5; }
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: #697d95;
+  /* #4a5867, not the lighter #697d95 muted tone: at 11px this label sits on
+     the ground on Flights/Exotic and needs 4.5:1 there (6.2:1; the lighter
+     one measured 3.6:1 and worse under the backdrop). */
+  color: #4a5867;
 }
 .eyebrow-lux--light { color: #61d1bf; }
 

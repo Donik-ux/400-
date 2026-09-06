@@ -72,12 +72,12 @@ export default function Profile() {
   };
 
   return (
-    <div className="bg-[#f5f7f9] min-h-screen -mt-[64px]">
+    <div className="page-ground min-h-screen -mt-[64px]">
 
       {/* ── Hero header ── */}
-      <section className="relative bg-[#1c2127] text-white overflow-hidden pt-[100px] pb-16">
-        <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0172cb 0%, transparent 45%), radial-gradient(circle at 78% 65%, #009882 0%, transparent 38%)' }} />
+      <section className="relative aurora-bg text-white overflow-hidden pt-[100px] pb-16">
+        <div className="hero-airways" />
+        <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-4xl mx-auto px-4 md:px-8">
           <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-white/60 hover:text-white text-[13px] font-semibold mb-7 transition">
             <ArrowLeft className="w-4 h-4" /> {t('profilePage.back')}
@@ -197,7 +197,7 @@ export default function Profile() {
                               <Download className="w-3.5 h-3.5" /> PDF
                             </button>
                             <button onClick={() => openPlan(plan)}
-                              className="px-3 py-2 rounded-lg bg-[#0172cb] hover:bg-[#015aa3] text-white text-[11px] font-black flex items-center gap-1 transition active:scale-95 shadow-soft">
+                              className="px-3 py-2 rounded-lg bg-[#00a58e] hover:bg-[#009882] text-white text-[11px] font-black flex items-center gap-1 transition active:scale-95 shadow-soft">
                               {t('lists.plans.open') || 'Open'} <ArrowRight className="w-3 h-3" />
                             </button>
                           </div>

@@ -5,6 +5,7 @@ import { getVisaStatus, lookupDestination } from '../../services/destinationLook
 import { localizeVisa } from '../../utils/visaTiming';
 import CityAutocomplete from '../flights/CityAutocomplete';
 import SmartImage from '../../components/SmartImage';
+import DepartureDates from './DepartureDates';
 
 /* ── Budget tiers ─────────────────────────────────────────────────────────── */
 /* `budget` values are data; labelKey/descKey resolve to translated UI text. */
@@ -103,7 +104,9 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
             label={t('plannerPage.form.toLabel') || 'To'}
             placeholder={t('planner.form.destPlaceholder')}
             value={formData.destination}
-            onChange={set('destination')}
+            /* CityAutocomplete hands back the string itself, not an event —
+               the event-shaped setter here left the destination empty. */
+            onChange={(val) => onChange({ ...formData, destination: val })}
           />
         </div>
 
@@ -160,6 +163,12 @@ const PlannerForm = ({ formData, onChange, onSubmit, loading }) => {
             className={inputCls}
           />
         </Field>
+
+        {/* Departure-date cards: fare, weather and an AI pick per date; a tap
+            fills the Start date field above. */}
+        <div className="sm:col-span-2">
+          <DepartureDates formData={formData} onChange={onChange} />
+        </div>
 
         {/* Budget tiers + input — full width */}
         <div className="sm:col-span-2">

@@ -1,0 +1,207 @@
+/* ── Flights backdrop — "high altitude sky" ─────────────────────────────────
+   Painted on top of the shared ground (see .page-backdrop__ground) and under
+   every card on /flights. Decoration only.
+
+   Two rules everything below obeys:
+   1. Only `transform` and `opacity` ever animate. Every animated element is a
+      cheap compositor layer ( what crosses the
+   middle is white-on-white (cloud tops, contrail threads) which reads as light,
+   not as marks. Colours are the brand blues #0172cb / #015aa3 at low alpha and
+   pure white; the one teal is the waypoint dots on the chart. */
+
+.bd-flights {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.bd-flights > * {
+  position: absolute;
+}
+
+/* ── Sky wash ───────────────────────────────────────────────────────────────
+   The sky at 11 000 m is darker overhead than at the horizon, and the horizon
+   itself is a bright white band — the reverse of the ground-level "light sky,
+   dark ground" a viewer expects, and the thing that says "altitude" before any
+   cloud does. Layers, top to bottom of the paint order:
+     sun glare top-right → 22° halo ring → overhead blue → left edge → right
+     edge → horizon band. The halo is the one detail here that only exists from
+     an aircraft window; it is kept faint enough to be found, not noticed. */
+.bd-flights-sky {
+  inset: 0;
+  background:
+    radial-gradient(30vw 30vw at 91% 10%,
+      rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.38) 30%, rgba(255,255,255,0) 62%),
+    radial-gradient(circle at 91% 10%,
+      rgba(1,114,203,0) 14.4vw, rgba(1,114,203,0.055) 15vw,
+      rgba(1,114,203,0.055) 15.7vw, rgba(1,114,203,0) 16.3vw),
+    linear-gradient(180deg, rgba(1,90,163,0.08) 0%, rgba(1,90,163,0) 36%),
+    linear-gradient(90deg,  rgba(1,114,203,0.09) 0%, rgba(1,114,203,0) 24%),
+    linear-gradient(270deg, rgba(1,114,203,0.075) 0%, rgba(1,114,203,0) 22%),
+    radial-gradient(130% 34% at 50% 104%,
+      rgba(255,255,255,0.88) 0%, rgba(214,232,250,0.42) 40%, rgba(214,232,250,0) 72%);
+}
+
+/* ── Cloud bands ────────────────────────────────────────────────────────────
+   Each band is one element and one background: a wide flat base ellipse, two
+   or three taller lobes rising off it, and a blue-grey shadow tucked under the
+   base. Seen from above, cumulus is exactly that — flat underneath, lumpy on
+   top — and the shadow is what stops a white cloud on a near-white ground from
+   vanishing. No blur filter anywhere; radial-gradient falloff is the softness.
+
+   Sizes are clamped in px so a cloud never shrinks to a smudge on a phone or
+   swells past a real cloud's proportions on a 4K display. */
+.bd-flights-cloud {
+}
+
+/* A — high, far, top-left. Lowest contrast of the four: distance flattens. */
+.bd-flights-cloud--a {
+  left: -6vw;
+  top: 13vh;
+  width: clamp(420px, 52vw, 980px);
+  height: clamp(120px, 20vh, 220px);
+  opacity: 0.82;
+  background:
+    radial-gradient(22% 48% at 30% 46%, rgba(255,255,255,1)    0%, rgba(255,255,255,0) 66%),
+    radial-gradient(18% 54% at 47% 38%, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0) 66%),
+    radial-gradient(20% 44% at 66% 50%, rgba(255,255,255,0.9)  0%, rgba(255,255,255,0) 66%),
+    radial-gradient(66% 32% at 48% 60%, rgba(255,255,255,0.9)  0%, rgba(255,255,255,0.45) 44%, rgba(255,255,255,0) 72%),
+    radial-gradient(60% 24% at 48% 82%, rgba(1,90,163,0.075)   0%, rgba(1,90,163,0) 70%);
+}
+
+/* B — nearest, largest, left of centre. Moves fastest, shadow strongest. */
+.bd-flights-cloud--b {
+  left: -12vw;
+  top: 55vh;
+  width: clamp(520px, 64vw, 1200px);
+  height: clamp(160px, 26vh, 300px);
+  background:
+    radial-gradient(22% 46% at 28% 44%, rgba(255,255,255,1)    0%, rgba(255,255,255,0) 66%),
+    radial-gradient(17% 56% at 45% 33%, rgba(255,255,255,1)    0%, rgba(255,255,255,0) 66%),
+    radial-gradient(20% 42% at 61% 46%, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0) 66%),
+    radial-gradient(14% 34% at 12% 56%, rgba(255,255,255,0.9)  0%, rgba(255,255,255,0) 66%),
+    radial-gradient(70% 34% at 46% 60%, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.5) 46%, rgba(255,255,255,0) 72%),
+    radial-gradient(64% 26% at 46% 84%, rgba(1,90,163,0.11)    0%, rgba(1,90,163,0) 70%);
+}
+
+/* C — middle distance, right side, sitting under the sun so it is the
+   brightest of the three cumulus. */
+.bd-flights-cloud--c {
+  right: -10vw;
+  top: 33vh;
+  width: clamp(480px, 56vw, 1050px);
+  height: clamp(140px, 22vh, 260px);
+  background:
+    radial-gradient(20% 46% at 44% 44%, rgba(255,255,255,1)    0%, rgba(255,255,255,0) 66%),
+    radial-gradient(18% 58% at 60% 34%, rgba(255,255,255,1)    0%, rgba(255,255,255,0) 66%),
+    radial-gradient(22% 44% at 78% 48%, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0) 66%),
+    radial-gradient(62% 34% at 60% 60%, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.48) 46%, rgba(255,255,255,0) 72%),
+    radial-gradient(56% 26% at 60% 84%, rgba(1,90,163,0.095)   0%, rgba(1,90,163,0) 70%);
+}
+
+/* D — cirrus, top-right. The wrapper carries the static skew (ice-crystal
+   streaks are combed sideways by wind shear); the streaks inside carry the
+   drift, so the two transforms never fight over one element. */
+.bd-flights-cirrus {
+  right: -4vw;
+  top: 5vh;
+  width: clamp(420px, 50vw, 900px);
+  height: clamp(70px, 10vh, 120px);
+  transform: skewX(-18deg);
+}
+.bd-flights-cloud--d {
+  position: absolute;
+  inset: 0;
+  opacity: 0.9;
+  background:
+    radial-gradient(46% 20% at 42% 36%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 70%),
+    radial-gradient(38% 16% at 64% 60%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 70%),
+    radial-gradient(28% 14% at 20% 68%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0) 70%),
+    radial-gradient(40% 12% at 50% 80%, rgba(1,90,163,0.045)   0%, rgba(1,90,163,0) 70%);
+}
+
+/* ── Contrails ──────────────────────────────────────────────────────────────
+   The wrapper holds the static heading (rotate) and, for the westbound one, a
+   horizontal flip; the SVG inside travels head-first along that heading. Both
+   sit low-contrast: white threads with a whisper of blue under them so they
+   hold on the pale ground. The two cross in the left third of the viewport at
+   a shallow angle — the classic window-seat composition. */
+.bd-flights-contrail {
+  width: clamp(360px, 60vw, 1150px);
+  transform-origin: 50% 50%;
+}
+.bd-flights-contrail > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.bd-flights-contrail--east {
+  left: -14vw;
+  top: 22vh;
+  transform: rotate(7deg);
+}
+.bd-flights-contrail--west {
+  left: 7vw;
+  top: 38vh;
+  transform: rotate(-5deg) scaleX(-1);
+}
+
+/* ── Navigation graticule ───────────────────────────────────────────────────
+   An aeronautical chart corner: latitude arcs around a pole that sits off the
+   bottom-right of the viewport, meridians converging on it, a tick ring and
+   one dashed route between waypoints. Masked so it fades before it reaches the
+   content column — it belongs to the gutter, not the page. */
+.bd-flights-grid {
+  right: 0;
+  bottom: 0;
+  width: clamp(320px, 44vw, 760px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  -webkit-mask-image: radial-gradient(circle at 100% 100%, #000 34%, transparent 74%);
+          mask-image: radial-gradient(circle at 100% 100%, #000 34%, transparent 74%);
+}
+.bd-flights-grid > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────────────
+   At 390px the content fills the width and the sky only shows in section gaps.
+   Keep the two nearest clouds and one contrail; drop the far cloud, the
+   cirrus, the second contrail and the chart. */
+@media (max-width: 767px) {
+  .bd-flights-cloud--a,
+  .bd-flights-cirrus,
+  .bd-flights-contrail--west,
+  .bd-flights-grid {
+    display: none;
+  }
+}
+
+/* ── Motion ─────────────────────────────────────────────────────────────────
+   Clouds drift with `alternate`, each a different amplitude-per-second, so
+   the near one visibly overtakes the far one: parallax from four durations.
+   Negative delays start each at a different point of its swing so nothing
+   moves in lockstep. Contrails run one way — an aircraft never reverses — and
+   fade at both ends of the loop so the wrap is invisible. Six animated
+   elements in total. */
+@media (prefers-reduced-motion: no-preference) {
+  .bd-flights-cloud--a { animation: bdFlightsDrift 72s ease-in-out -18s infinite alternate; }
+  .bd-flights-cloud--b { animation: bdFlightsDrift 38s ease-in-out -9s  infinite alternate; }
+  .bd-flights-cloud--c { animation: bdFlightsDrift 52s ease-in-out -30s infinite alternate; }
+  .bd-flights-cloud--d { animation: bdFlightsDrift 88s ease-in-out -50s infinite alternate; }
+
+  .bd-flights-contrail--east > svg { animation: bdFlightsCruise 84s linear -26s infinite; }
+  .bd-flights-contrail--west > svg { animation: bdFlightsCruise 96s linear -61s infinite; }
+
+  @keyframes bdFlightsDrift {
+    from { transform: translate3d(-3.5%, 0, 0); }
+    to   { transform: translate3d(3.5%, 0, 0); }
+  }
+  @keyframes bdFlightsCruise {
+    0%   { transform: translate3d(-26%, 0, 0); opacity: 0; }
+    9%   { opacity: 1; }
+    91%  { opacity: 1; }
+    100% { transform: translate3d(26%, 0, 0);  opacity: 0; }
+  }
+}

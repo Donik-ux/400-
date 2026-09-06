@@ -63,7 +63,7 @@ export default function ReviewForm({ t, onSubmitted }) {
         className="w-full px-3 py-2.5 rounded-xl border border-[#dfe7ec] bg-white text-[13px] font-medium text-[#252a31] placeholder:text-[#94a3af] outline-none focus:border-[#0172cb] transition resize-none mb-3" />
 
       <button type="submit" disabled={submitting}
-        className="inline-flex items-center gap-2 bg-[#252a31] hover:bg-[#0172cb] disabled:opacity-60 text-white text-[13px] font-black rounded-xl px-4 py-2.5 transition active:scale-95">
+        className="inline-flex items-center gap-2 bg-[#252a31] hover:bg-[#00a58e] disabled:opacity-60 text-white text-[13px] font-black rounded-xl px-4 py-2.5 transition active:scale-95">
         {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
         {t('homePage.reviews.formSubmit')}
       </button>

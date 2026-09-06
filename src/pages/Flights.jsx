@@ -240,17 +240,22 @@ export default function Flights() {
   }, [altDates, altWeather]);
 
   return (
-    <div className="relative bg-[#f5f7f9] min-h-screen -mt-[64px]">
+    <div className="relative page-ground min-h-screen -mt-[64px]">
       <div className="relative z-10">
       {/* ── HERO + SEARCH ── */}
       <section className="relative text-white pt-[120px] pb-[120px] md:pb-[128px] overflow-hidden">
         {/* real Maldives photo */}
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-[center_42%] scale-[1.04]"
           style={{ backgroundImage: `url(${heroFor('maldives')})` }}
         />
-        {/* navy wash for white-text legibility */}
-        <div className="absolute inset-0 bg-[#1c2127]/85" />
+        {/* Directional wash, not a flat 85% scrim: nearly opaque behind the
+            headline on the left, thin enough on the right that the photo is
+            still a photo, and deep again along the bottom where the white
+            search card crosses the seam. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#101b23]/95 via-[#142b35]/78 to-[#0d5963]/38" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#071820]/62 via-transparent to-[#08151c]/92" />
+        <div className="absolute inset-0 opacity-35 bg-[radial-gradient(circle_at_78%_18%,rgba(97,209,191,0.42),transparent_28%),radial-gradient(circle_at_90%_72%,rgba(1,114,203,0.3),transparent_34%)]" />
         <div className="relative max-w-6xl mx-auto px-4 md:px-8">
           <div className="max-w-2xl">
             <h1 className="text-[clamp(30px,5.2vw,52px)] font-black tracking-[-0.035em] leading-[1.06] mb-3 text-balance">
@@ -534,7 +539,7 @@ export default function Flights() {
                     <p className="text-[#252a31] font-bold mb-1">{t('flightsPage.results.noMatchTitle')}</p>
                     <p className="text-[#697d95] text-sm mb-4">{t('flightsPage.results.noMatchSub')}</p>
                     <button onClick={clearFilters}
-                      className="px-4 py-2 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft hover:shadow-float">
+                      className="px-4 py-2 rounded-xl bg-[#00a58e] hover:bg-[#009882] text-white text-[13px] font-black transition active:scale-95 shadow-soft hover:shadow-float">
                       {t('flightsPage.results.clearFilters')}
                     </button>
                   </div>

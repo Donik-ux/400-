@@ -50,7 +50,7 @@ const ICE_TEXT = {
    glacial layer so this page keeps a single ice accent. */
 function Eyebrow({ icon: Icon, children, light = false }) {
   return (
-    <div className={`flex items-center gap-2 text-[10.5px] font-black uppercase tracking-[0.24em] mb-2 ${light ? 'text-[#9fd6e8]' : 'text-[#1f6d94]'}`}>
+    <div className={`flex items-center gap-2 text-[10.5px] font-black uppercase tracking-[0.24em] mb-2 ${light ? 'text-[#9fd6e8]' : 'text-[#15577a]'}`}>
       <Icon className="w-3.5 h-3.5" /> <span>{children}</span>
       <span className={`h-px w-12 ${light ? 'bg-gradient-to-r from-[#9fd6e8]/60 to-transparent' : 'bg-gradient-to-r from-[#1f6d94]/50 to-transparent'}`} />
     </div>
@@ -69,7 +69,9 @@ function IceHorizon() {
         />
         <path
           d="M0,100 L0,80 L110,58 L220,72 L340,46 L470,66 L590,38 L710,60 L830,32 L950,58 L1070,44 L1190,64 L1310,50 L1440,66 L1440,100 Z"
-          fill="#f5f7f9"
+          /* Matches .page-ground at the depth this horizon lands — the ground
+             is a gradient now, so the old flat #f5f7f9 read as a lighter band. */
+          fill="#eaeff4"
         />
       </svg>
     </div>
@@ -266,7 +268,7 @@ export default function Antarctica() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f5f7f9] -mt-[64px]">
+    <div className="min-h-screen page-ground -mt-[64px]">
 
       {/* ─── HERO — the glacial front ────────────────────────────── */}
       <section className="relative text-white overflow-hidden pt-[128px]" style={POLAR_HERO}>
@@ -280,7 +282,7 @@ export default function Antarctica() {
             filter: 'saturate(0.55) brightness(0.95)',
           }}
         />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(4,16,31,0.62) 0%, rgba(4,16,31,0.10) 42%, rgba(4,16,31,0.55) 100%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(108deg, rgba(3,12,24,0.82) 0%, rgba(4,16,31,0.34) 46%, rgba(4,16,31,0.18) 72%, rgba(4,16,31,0.72) 100%), linear-gradient(to bottom, rgba(4,16,31,0.34) 0%, transparent 42%, rgba(4,16,31,0.82) 100%)' }} />
         <div className="film-grain" />
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
@@ -535,7 +537,7 @@ export default function Antarctica() {
                     <div className="text-[24px] md:text-[26px] font-bold text-[#252a31] whitespace-nowrap leading-tight">{fmtCompact(r.price)}</div>
                   </div>
                   <button onClick={() => buildPlan({ days: r.days, price: r.price })}
-                    className="text-[12.5px] font-black text-white bg-[#0172cb] hover:bg-[#015aa3] px-4 py-2.5 rounded-xl transition shadow-soft flex items-center gap-1.5 active:scale-95">
+                    className="text-[12.5px] font-black text-white bg-[#00a58e] hover:bg-[#009882] px-4 py-2.5 rounded-xl transition shadow-soft flex items-center gap-1.5 active:scale-95">
                     {t('antarctica.hero.ctaPlan').split(' ')[0]} <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>

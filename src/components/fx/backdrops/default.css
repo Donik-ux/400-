@@ -1,0 +1,42 @@
+.bd-default { position: absolute; inset: 0; }
+
+.bd-default-glow {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+}
+.bd-default-glow--teal {
+  left: -28vmax; top: -30vmax;
+  background: radial-gradient(circle, rgba(0, 165, 142, 0.16) 0%, rgba(0, 165, 142, 0.05) 42%, transparent 68%);
+}
+.bd-default-glow--blue {
+  right: -30vmax; bottom: -34vmax;
+  background: radial-gradient(circle, rgba(1, 114, 203, 0.14) 0%, rgba(1, 114, 203, 0.04) 44%, transparent 68%);
+}
+
+.bd-default-globe {
+  position: absolute;
+  right: -8vw;
+  bottom: -14vh;
+  width: 46vmin;
+  height: 46vmin;
+  opacity: 0.9;
+}
+@media (max-width: 767px) {
+  .bd-default-globe { width: 64vw; height: 64vw; right: -22vw; bottom: -8vh; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bd-default-glow--teal { animation: bdDefaultDrift 46s ease-in-out infinite alternate; }
+  .bd-default-glow--blue { animation: bdDefaultDrift 58s ease-in-out infinite alternate-reverse; }
+  .bd-default-globe      { animation: bdDefaultSpin 240s linear infinite; }
+}
+@keyframes bdDefaultDrift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(6vw, 4vh, 0) scale(1.08); }
+}
+@keyframes bdDefaultSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

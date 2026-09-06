@@ -276,7 +276,7 @@ const Home = () => {
   const countries = [...new Set(ALL_CITIES.map(c => c.country))];
 
   return (
-    <div className="min-h-screen bg-white -mt-[64px]">
+    <div className="min-h-screen -mt-[64px]">
 
       {/* ─── HERO ─────────────────────────────────────────────────
           Short brand band, headline, and the one thing that is ours
@@ -606,7 +606,7 @@ const Home = () => {
                 <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4 text-white">
                   <div className={`font-black leading-tight ${anchor ? 'text-[24px] md:text-[30px]' : 'text-[15px]'}`}>{d.city}</div>
                   <div className={`font-semibold text-white/70 ${anchor ? 'text-[13px]' : 'text-[11.5px]'}`}>{d.country}</div>
-                  <span className="mt-2 inline-flex items-center gap-1 rounded-md bg-white px-2 py-1 text-[11.5px] font-black text-[#252a31] group-hover:bg-[#0172cb] group-hover:text-white transition-colors">
+                  <span className="mt-2 inline-flex items-center gap-1 rounded-md bg-white px-2 py-1 text-[11.5px] font-black text-[#252a31] group-hover:bg-[#00a58e] group-hover:text-white transition-colors">
                     <Plane className="w-3 h-3" /> {t('homePage.common.from')} <Price amount={d.from} />
                   </span>
                 </div>
@@ -641,7 +641,7 @@ const Home = () => {
       </section>
 
       {/* ─── EXPLORE LINKS ─────────────────────────────────────── */}
-      <section className="border-t border-[#e8edf1] bg-[#f5f7f9]">
+      <section className="border-t border-[#e8edf1] bg-white/40">
         <div className="max-w-6xl mx-auto px-4 md:px-8 py-10">
           <h2 className="text-[18px] md:text-[22px] font-black tracking-[-0.02em] text-[#252a31] mb-6">{t('homePage.explore.heading')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -709,7 +709,7 @@ const Field = ({ icon, label, placeholder, type = 'text', value, onChange, class
 
 const SubmitButton = ({ className = '', icon, label }) => (
   <button type="submit"
-    className={`flex items-center justify-center gap-2 bg-[#0172cb] hover:bg-[#015aa3] text-white font-black text-[14px] rounded-xl py-3 px-5 transition active:scale-95 ${className}`}>
+    className={`flex items-center justify-center gap-2 bg-[#00a58e] hover:bg-[#009882] text-white font-black text-[14px] rounded-xl py-3 px-5 transition active:scale-95 ${className}`}>
     {icon || <Search className="w-5 h-5" />}
     <span className="md:hidden">{label}</span>
   </button>

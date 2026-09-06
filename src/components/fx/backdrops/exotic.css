@@ -1,0 +1,196 @@
+/* Exotic Tours backdrop — golden hour in the tropics.
+   Companion to ExoticBackdrop.jsx. Sits inside the fixed .page-backdrop, so
+   every position here is a viewport position. Only transform and opacity ever
+   animate; softness comes from radial gradients, never from filter: blur(). */
+
+.bd-exotic {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.bd-exotic > * {
+  position: absolute;
+}
+.bd-exotic svg:not([width="0"]) {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* ---- Light -------------------------------------------------------------- */
+
+/* Sand over the lower-left, ice over the upper-right, and a hairline of each
+   along the bottom and top edges so the two corners read as one sky. Sand
+   (#e8d3b0) is close enough to the ground that even at 30% it only warms the
+   paper; it never gets heavy under text. */
+.bd-exotic-haze {
+  inset: 0;
+  background:
+    radial-gradient(72vw 74vh at 0% 100%, rgba(232, 211, 176, 0.34) 0, rgba(232, 211, 176, 0.12) 48%, rgba(232, 211, 176, 0) 80%),
+    radial-gradient(62vw 62vh at 100% 0%, rgba(159, 223, 211, 0.24) 0, rgba(159, 223, 211, 0.07) 50%, rgba(159, 223, 211, 0) 80%),
+    linear-gradient(0deg, rgba(217, 164, 65, 0.07) 0, rgba(217, 164, 65, 0) 18vh),
+    linear-gradient(180deg, rgba(1, 114, 203, 0.04) 0, rgba(1, 114, 203, 0) 14vh);
+}
+
+/* The sun: a small bright disc just past the corner, terracotta close in,
+   gold further out. The ellipse is taller than it is wide so the warmth runs
+   up the left gutter rather than across the bottom of the cards. Its
+   transform-origin is the corner, so breathing swells it from the sun
+   outward instead of from the middle of the screen. */
+.bd-exotic-sun {
+  inset: 0;
+  transform-origin: 0 100%;
+  background:
+    radial-gradient(circle at 4% 96%, rgba(255, 221, 150, 0.60) 0, rgba(255, 205, 120, 0.26) 2.6vw, rgba(255, 205, 120, 0) 8vw),
+    radial-gradient(48vw 62vh at 0% 100%, rgba(194, 109, 74, 0.36) 0, rgba(217, 164, 65, 0.21) 34%, rgba(217, 164, 65, 0.05) 62%, rgba(217, 164, 65, 0) 82%);
+}
+
+/* Sun rays: a conic fan of pale gold spokes pinned at the sun and masked to
+   fade well before the content column. It turns once every four minutes,
+   the way light through blinds crawls across a floor. */
+.bd-exotic-rays {
+  left: -30vmax;
+  bottom: -30vmax;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg,
+    rgba(255, 225, 160, 0.16) 0deg, rgba(255, 225, 160, 0.16) 4deg,
+    rgba(255, 225, 160, 0)    4deg, rgba(255, 225, 160, 0)    13deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 18%, transparent 52%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 18%, transparent 52%);
+  transform-origin: 50% 50%;
+}
+
+/* The lagoon: shallow teal at the corner going to deep blue, then nothing. */
+.bd-exotic-lagoon {
+  inset: 0;
+  transform-origin: 100% 0;
+  background:
+    radial-gradient(circle at 97% 3%, rgba(214, 246, 240, 0.55) 0, rgba(159, 223, 211, 0.18) 3vw, rgba(159, 223, 211, 0) 9vw),
+    radial-gradient(46vw 54vh at 100% 0%, rgba(97, 209, 191, 0.28) 0, rgba(1, 114, 203, 0.10) 42%, rgba(1, 114, 203, 0.03) 66%, rgba(1, 114, 203, 0) 84%);
+}
+
+/* ---- Motes -------------------------------------------------------------- */
+
+/* Each layer is a fixed table of points, tiled twice down the element; the
+   element scrolls exactly one tile and loops, so the rise has no seam. Every
+   point is a bright core inside a softer halo. Positions are % of the tile
+   (= the viewport). They keep to the left and right thirds — a mote or two
+   crosses the middle, but small and pale enough to pass under a heading. */
+.bd-exotic-motes {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 200%;
+  background-repeat: repeat-y;
+  background-size: 100% 50%;
+}
+/* Nearer layer: larger, brighter, faster. */
+.bd-exotic-motes--a {
+  background-image:
+    radial-gradient(circle at 9% 88%,  rgba(255, 214, 120, 0.55) 0 2.6px, rgba(255, 214, 120, 0.14) 4px, rgba(255, 214, 120, 0) 9px),
+    radial-gradient(circle at 16% 62%, rgba(239, 125, 92, 0.32) 0 2.2px, rgba(239, 125, 92, 0.08) 4px, rgba(239, 125, 92, 0) 8px),
+    radial-gradient(circle at 6% 34%,  rgba(217, 164, 65, 0.40) 0 2px,   rgba(217, 164, 65, 0.10) 3.5px, rgba(217, 164, 65, 0) 7px),
+    radial-gradient(circle at 27% 78%, rgba(255, 214, 120, 0.34) 0 1.8px, rgba(255, 214, 120, 0.08) 3px, rgba(255, 214, 120, 0) 6px),
+    radial-gradient(circle at 92% 70%, rgba(159, 223, 211, 0.46) 0 2.2px, rgba(159, 223, 211, 0.12) 4px, rgba(159, 223, 211, 0) 8px),
+    radial-gradient(circle at 84% 24%, rgba(217, 164, 65, 0.34) 0 2px,   rgba(217, 164, 65, 0.08) 3.5px, rgba(217, 164, 65, 0) 7px),
+    radial-gradient(circle at 96% 46%, rgba(255, 214, 120, 0.40) 0 2.4px, rgba(255, 214, 120, 0.10) 4px, rgba(255, 214, 120, 0) 8px),
+    radial-gradient(circle at 58% 12%, rgba(217, 164, 65, 0.22) 0 1.6px, rgba(217, 164, 65, 0) 5px);
+}
+/* Farther layer: smaller, paler, slower. */
+.bd-exotic-motes--b {
+  background-image:
+    radial-gradient(circle at 12% 74%, rgba(217, 164, 65, 0.30) 0 1.6px, rgba(217, 164, 65, 0.06) 3px, rgba(217, 164, 65, 0) 5px),
+    radial-gradient(circle at 4% 52%,  rgba(255, 214, 120, 0.28) 0 1.4px, rgba(255, 214, 120, 0) 4.5px),
+    radial-gradient(circle at 22% 92%, rgba(239, 125, 92, 0.26) 0 1.5px, rgba(239, 125, 92, 0) 4.5px),
+    radial-gradient(circle at 33% 40%, rgba(217, 164, 65, 0.18) 0 1.3px, rgba(217, 164, 65, 0) 4px),
+    radial-gradient(circle at 88% 84%, rgba(159, 223, 211, 0.30) 0 1.5px, rgba(159, 223, 211, 0) 4.5px),
+    radial-gradient(circle at 79% 58%, rgba(255, 214, 120, 0.24) 0 1.4px, rgba(255, 214, 120, 0) 4px),
+    radial-gradient(circle at 95% 18%, rgba(217, 164, 65, 0.26) 0 1.5px, rgba(217, 164, 65, 0) 4.5px),
+    radial-gradient(circle at 70% 30%, rgba(217, 164, 65, 0.16) 0 1.2px, rgba(217, 164, 65, 0) 3.5px);
+}
+
+/* ---- Leaves ------------------------------------------------------------- */
+
+/* The fronds grow out of the bottom-left corner and pivot at their base.
+   The front one is sized so its tip stops around a third of the way across
+   at desktop widths — reaching in, not reaching over the content. */
+.bd-exotic-frond {
+  left: -3vw;
+  bottom: -5vh;
+  width: clamp(260px, 42vw, 640px);
+  transform-origin: 5% 98%;
+}
+.bd-exotic-frond--b {
+  left: 7vw;
+  bottom: -9vh;
+  width: clamp(180px, 28vw, 430px);
+  transform: rotate(14deg);
+}
+
+/* The monstera hangs from its petiole at the top-right corner, turned so the
+   tip points down and in towards the page. */
+.bd-exotic-monstera {
+  right: -3vw;
+  top: -7vh;
+  width: clamp(180px, 22vw, 350px);
+  transform-origin: 50% 0;
+  transform: rotate(36deg);
+  /* The tip reaches ~290px into the content column; fade the inboard
+     leaflets out so right-aligned captions there keep their contrast. */
+  -webkit-mask-image: linear-gradient(270deg, #000 50%, transparent 100%);
+  mask-image: linear-gradient(270deg, #000 50%, transparent 100%);
+}
+
+/* ---- Motion --------------------------------------------------------------
+   Everything below is guarded: with reduced motion the sun holds at full,
+   the leaves rest at their base angle and the motes hang where they are. */
+@media (prefers-reduced-motion: no-preference) {
+  .bd-exotic-sun       { animation: bdExoticBreathe 48s ease-in-out infinite alternate; }
+  .bd-exotic-rays      { animation: bdExoticRays 240s linear infinite; }
+  @keyframes bdExoticRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .bd-exotic-lagoon    { animation: bdExoticLagoon  64s ease-in-out infinite alternate; }
+  .bd-exotic-frond--a  { animation: bdExoticSwayA   26s ease-in-out infinite alternate; }
+  .bd-exotic-frond--b  { animation: bdExoticSwayB   34s ease-in-out -9s infinite alternate; }
+  .bd-exotic-monstera  { animation: bdExoticSwayM   30s ease-in-out -14s infinite alternate; }
+  .bd-exotic-motes--a  { animation: bdExoticRise    70s linear infinite; }
+  .bd-exotic-motes--b  { animation: bdExoticRise    90s linear infinite; }
+
+  @keyframes bdExoticBreathe {
+    from { transform: scale(1);    opacity: 0.86; }
+    to   { transform: scale(1.07); opacity: 1; }
+  }
+  @keyframes bdExoticLagoon {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(-2.5vw, 2vh, 0) scale(1.05); }
+  }
+  @keyframes bdExoticSwayA {
+    from { transform: rotate(-1.8deg); }
+    to   { transform: rotate(1.8deg); }
+  }
+  @keyframes bdExoticSwayB {
+    from { transform: rotate(12.2deg); }
+    to   { transform: rotate(15.8deg); }
+  }
+  @keyframes bdExoticSwayM {
+    from { transform: rotate(34.2deg); }
+    to   { transform: rotate(37.8deg); }
+  }
+  @keyframes bdExoticRise {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(0, -50%, 0); }
+  }
+}
+
+/* ---- Mobile --------------------------------------------------------------
+   One frond, one mote layer, and the leaves sized to the narrow screen. The
+   corner glows are already tall and narrow, which suits a phone. */
+@media (max-width: 767px) {
+  .bd-exotic-frond--b,
+  .bd-exotic-rays,
+  .bd-exotic-motes--b { display: none; }
+  .bd-exotic-frond    { width: 66vw; left: -10vw; bottom: -4vh; }
+  .bd-exotic-monstera { width: 44vw; right: -6vw; top: -4vh; }
+}

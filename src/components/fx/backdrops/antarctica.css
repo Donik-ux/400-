@@ -1,0 +1,249 @@
+/* ── Antarctica backdrop: polar night on the site's light ground ──
+   Companion to AntarcticaBackdrop.jsx. Every class is bd-antarctica-*, every
+   keyframe bdAntarctica*. Only transform and opacity ever animate, and every
+   animation sits inside the prefers-reduced-motion guard at the bottom: with
+   motion reduced, the rest poses below are the finished picture. */
+
+.bd-antarctica {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Dusk in the top corners, a cold tint across the top of the sky, and the
+   sea's ice-light rising from the bottom. The corners are where the night
+   is allowed to be dark; the middle of the sky stays the ground's own tone. */
+.bd-antarctica-dusk {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(46% 54% at 0% 0%,   rgba(13, 27, 51, 0.17) 0%, rgba(13, 27, 51, 0) 70%),
+    radial-gradient(42% 50% at 100% 0%, rgba(13, 27, 51, 0.14) 0%, rgba(13, 27, 51, 0) 70%),
+    linear-gradient(180deg, rgba(31, 109, 148, 0.07) 0%, rgba(31, 109, 148, 0) 38%),
+    linear-gradient(0deg,   rgba(159, 214, 232, 0.34) 0%, rgba(159, 214, 232, 0.12) 11%, rgba(159, 214, 232, 0) 26%);
+}
+
+/* Moon, high in the top-right dusk, with the 22° halo cold air draws around
+   it. The glow is one radial gradient; the ring is a border on ::after. */
+.bd-antarctica-moon {
+  position: absolute;
+  top: calc(9% - 130px);
+  right: calc(8% - 130px);
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.95) 0 11px,
+    rgba(234, 248, 253, 0.70) 16px,
+    rgba(159, 214, 232, 0.26) 34px,
+    rgba(159, 214, 232, 0.08) 70px,
+    rgba(159, 214, 232, 0) 130px
+  );
+}
+.bd-antarctica-moon::after {
+  content: '';
+  position: absolute;
+  inset: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(159, 214, 232, 0.28);
+  box-shadow: inset 0 0 0 6px rgba(159, 214, 232, 0.05);
+}
+
+/* Aurora ribbons. Each is a wide, short box of soft radial lobes, skewed so
+   it hangs across the sky at an angle. Strong colour only at the ends —
+   the centre column gets a lobe at 6–7% at most. */
+.bd-antarctica-aurora {
+  position: absolute;
+  left: -12%;
+  width: 124%;
+  height: 24vh;
+  min-height: 150px;
+  max-height: 260px;
+}
+/* Rays: the vertical striations that make a curtain read as aurora rather
+   than as a blur. Masked to the two ends so they never cross the content. */
+.bd-antarctica-aurora::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    92deg,
+    rgba(127, 227, 193, 0)    0 26px,
+    rgba(127, 227, 193, 0.11) 26px 29px,
+    rgba(127, 227, 193, 0)    29px 45px,
+    rgba(139, 139, 220, 0.08) 45px 47px
+  );
+  -webkit-mask-image:
+    radial-gradient(26% 46% at 11% 50%, #000 0%, transparent 74%),
+    radial-gradient(26% 46% at 89% 50%, #000 0%, transparent 74%);
+  mask-image:
+    radial-gradient(26% 46% at 11% 50%, #000 0%, transparent 74%),
+    radial-gradient(26% 46% at 89% 50%, #000 0%, transparent 74%);
+}
+
+.bd-antarctica-aurora--1 {
+  top: 15%;
+  transform: skewY(-5deg);
+  background:
+    radial-gradient(28% 52% at 9%  50%, rgba(127, 227, 193, 0.44) 0%, rgba(127, 227, 193, 0) 72%),
+    radial-gradient(22% 46% at 33% 50%, rgba(159, 214, 232, 0.10) 0%, rgba(159, 214, 232, 0) 72%),
+    radial-gradient(20% 44% at 60% 50%, rgba(139, 139, 220, 0.07) 0%, rgba(139, 139, 220, 0) 72%),
+    radial-gradient(26% 52% at 92% 50%, rgba(127, 227, 193, 0.34) 0%, rgba(127, 227, 193, 0) 72%);
+}
+.bd-antarctica-aurora--2 {
+  top: 29%;
+  height: 18vh;
+  transform: skewY(3.5deg);
+  background:
+    radial-gradient(26% 50% at 6%  50%, rgba(139, 139, 220, 0.36) 0%, rgba(139, 139, 220, 0) 72%),
+    radial-gradient(20% 44% at 42% 50%, rgba(159, 214, 232, 0.07) 0%, rgba(159, 214, 232, 0) 72%),
+    radial-gradient(18% 44% at 78% 50%, rgba(127, 227, 193, 0.11) 0%, rgba(127, 227, 193, 0) 72%),
+    radial-gradient(24% 50% at 96% 50%, rgba(139, 139, 220, 0.32) 0%, rgba(139, 139, 220, 0) 72%);
+}
+.bd-antarctica-aurora--3 {
+  top: 5%;
+  height: 14vh;
+  min-height: 100px;
+  transform: skewY(-2.5deg);
+  background:
+    radial-gradient(24% 48% at 18% 50%, rgba(159, 214, 232, 0.24) 0%, rgba(159, 214, 232, 0) 72%),
+    radial-gradient(18% 40% at 55% 50%, rgba(139, 139, 220, 0.05) 0%, rgba(139, 139, 220, 0) 72%),
+    radial-gradient(22% 48% at 84% 50%, rgba(159, 214, 232, 0.22) 0%, rgba(159, 214, 232, 0) 72%);
+}
+.bd-antarctica-aurora--3::before { display: none; }
+
+/* A meteor: one streak crossing the top-right dusk every 41 s, gone in a
+   second and a half. A thin box with a gradient tail, moved by transform
+   alone; the long quiet between passes is what makes the pass worth
+   noticing. Sits still and invisible under reduced motion. */
+.bd-antarctica-meteor {
+  position: absolute;
+  top: 12%;
+  right: 6%;
+  width: 180px;
+  height: 2px;
+  border-radius: 2px;
+  opacity: 0;
+  transform-origin: 100% 50%;
+  transform: rotate(-32deg) translate3d(0, 0, 0);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(159, 214, 232, 0.55) 70%, #ffffff 100%);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.55);
+}
+
+/* Star field over the top half of the sky. */
+.bd-antarctica-stars {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 52%;
+}
+
+/* Snow layers: twice the viewport tall, parked one viewport above, and
+   translated down by half their height per loop — the second copy of every
+   flake lands exactly where the first began, so the wrap has no seam. */
+.bd-antarctica-snow {
+  position: absolute;
+  left: 0;
+  top: -100%;
+  width: 100%;
+  height: 200%;
+}
+
+/* Ice horizon, anchored to the bottom edge. */
+.bd-antarctica-floes {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 150px;
+}
+
+/* Drifting bergs, just above the pack ice, out in the gutters. */
+.bd-antarctica-berg {
+  position: absolute;
+  bottom: 118px;
+  opacity: 0.9;
+}
+.bd-antarctica-berg--l { left: 2vw; }
+.bd-antarctica-berg--r { right: 3vw; width: 150px; height: 58px; }
+
+/* Phones: the content column is the whole width, so only the section gaps
+   and the hero's edges show. Fewer elements, shallower ribbons. */
+@media (max-width: 767px) {
+  .bd-antarctica-aurora { height: 16vh; min-height: 110px; }
+  .bd-antarctica-aurora::before,
+  .bd-antarctica-aurora--3,
+  .bd-antarctica-moon,
+  .bd-antarctica-snow--far { display: none; }
+  .bd-antarctica-floes { height: 96px; }
+  .bd-antarctica-berg { bottom: 78px; transform: scale(0.6); transform-origin: 100% 100%; }
+  .bd-antarctica-berg--r { display: none; }
+}
+
+/* ── Motion ──
+   Seven animated elements: three ribbons, two star groups, two snow layers.
+   Ribbons breathe and drift with `alternate` so there is no loop seam; snow
+   is a linear loop whose end state is pixel-identical to its start. */
+@media (prefers-reduced-motion: no-preference) {
+  .bd-antarctica-aurora--1 { animation: bdAntarcticaRibbon1 64s ease-in-out infinite alternate; }
+  .bd-antarctica-aurora--2 { animation: bdAntarcticaRibbon2 78s ease-in-out infinite alternate -30s; }
+  .bd-antarctica-aurora--3 { animation: bdAntarcticaRibbon3 52s ease-in-out infinite alternate -12s; }
+  .bd-antarctica-meteor    { animation: bdAntarcticaMeteor 41s linear infinite -7s; }
+  .bd-antarctica-berg--l   { animation: bdAntarcticaDriftL 96s ease-in-out infinite alternate; }
+  .bd-antarctica-berg--r   { animation: bdAntarcticaDriftR 84s ease-in-out infinite alternate -30s; }
+  @keyframes bdAntarcticaDriftL { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(4vw, 3px, 0); } }
+  @keyframes bdAntarcticaDriftR { from { transform: translate3d(0, 2px, 0); } to { transform: translate3d(-3.5vw, 0, 0); } }
+  @keyframes bdAntarcticaMeteor {
+    0%    { transform: rotate(-32deg) translate3d(0, 0, 0);       opacity: 0; }
+    95.5% { transform: rotate(-32deg) translate3d(0, 0, 0);       opacity: 0; }
+    96%   { opacity: 0.9; }
+    98.5% { transform: rotate(-32deg) translate3d(-520px, 0, 0);  opacity: 0; }
+    100%  { transform: rotate(-32deg) translate3d(-520px, 0, 0);  opacity: 0; }
+  }
+
+  .bd-antarctica-twinkle-a { animation: bdAntarcticaTwinkle 24s ease-in-out infinite alternate; }
+  .bd-antarctica-twinkle-b { animation: bdAntarcticaTwinkle 31s ease-in-out infinite alternate -15s; }
+
+  .bd-antarctica-snow--near { animation: bdAntarcticaSnow 44s linear infinite; }
+  .bd-antarctica-snow--far  { animation: bdAntarcticaSnowFar 82s linear infinite -20s; }
+
+  /* Each ribbon's first frame equals its rest pose, so there is no jump when
+     the animation attaches. */
+  @keyframes bdAntarcticaRibbon1 {
+    0%   { transform: translateX(0)      skewY(-5deg)   scaleY(1);    opacity: 1; }
+    50%  { transform: translateX(1.6%)   skewY(-4deg)   scaleY(1.10); opacity: 0.82; }
+    100% { transform: translateX(-1.2%)  skewY(-5.6deg) scaleY(0.94); opacity: 0.95; }
+  }
+  @keyframes bdAntarcticaRibbon2 {
+    0%   { transform: translateX(0)      skewY(3.5deg)  scaleY(1);    opacity: 0.9; }
+    50%  { transform: translateX(-1.8%)  skewY(2.6deg)  scaleY(1.12); opacity: 1; }
+    100% { transform: translateX(1.4%)   skewY(4.2deg)  scaleY(0.92); opacity: 0.78; }
+  }
+  @keyframes bdAntarcticaRibbon3 {
+    0%   { transform: translateX(0)      skewY(-2.5deg) scaleY(1);    opacity: 0.85; }
+    100% { transform: translateX(2.2%)   skewY(-1.6deg) scaleY(1.16); opacity: 1; }
+  }
+
+  @keyframes bdAntarcticaTwinkle {
+    0%   { opacity: 1; }
+    38%  { opacity: 0.42; }
+    66%  { opacity: 0.9; }
+    100% { opacity: 0.3; }
+  }
+
+  /* Constant fall with a slow sideways sway at the midpoint. The 50% frame
+     is at exactly half the travel, so the descent stays even. */
+  @keyframes bdAntarcticaSnow {
+    0%   { transform: translate3d(0, 0, 0); }
+    50%  { transform: translate3d(1.4%, 25%, 0); }
+    100% { transform: translate3d(0, 50%, 0); }
+  }
+  @keyframes bdAntarcticaSnowFar {
+    0%   { transform: translate3d(0, 0, 0); }
+    50%  { transform: translate3d(-0.9%, 25%, 0); }
+    100% { transform: translate3d(0, 50%, 0); }
+  }
+}

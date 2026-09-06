@@ -218,7 +218,9 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
       // The model sometimes returns the same cuisine twice; three entries that
       // all say "Turkish" is the sameness this was meant to fix.
       .filter((r, i, all) => all.findIndex((x) => x.cuisine.toLowerCase() === r.cuisine.toLowerCase()) === i)
-      .slice(0, 3);
+      // The itinerary gives the traveler one clear place to eat, not a list
+      // of competing choices. Keep the first verified restaurant for the day.
+      .slice(0, 1);
 
     if (!halalRestaurants.length) {
       halalRestaurants.push({
@@ -295,9 +297,11 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
     ? { about: parsed.cityInfo.about || '', currentHappenings: parsed.cityInfo.currentHappenings || '', upcomingEvent }
     : null;
 
+  const stableDays = days.map((day) => ({ ...day, hotel: tripHotel }));
+
   return {
     header,
-    days,
+    days: stableDays,
     hotel:               tripHotel,
     cityInfo,
     transportSuggestion: parsed?.transportSuggestion || '',
@@ -419,17 +423,15 @@ CRITICAL RULES — FOLLOW EXACTLY:
    - "🚕 Taxi ~12 min, ~€15"
    The LAST event of each day can leave it empty (end of day).
 4. ALL food recommendations must be 100% HALAL CERTIFIED real restaurants in ${destination}. Add "🥩 Halal" in the name. Halal restaurant entries also need full address.
-4a. EACH DAY gets a "halalRestaurants" array of 2–3 real restaurants — never more than 3, never the same restaurant twice in the trip.
-   - EVERY ONE MUST BE A DIFFERENT CUISINE from the others that day. Name the cuisine plainly in "cuisine": "Uzbek", "Chinese", "Italian", "Indian", "Turkish", "Georgian", "Japanese", "Lebanese".
-   - ONE of them MUST be the NATIONAL cuisine of ${destination}'s own country, so the traveler eats what the place is actually known for. Put it first.
-   - The others should be different foreign cuisines, and vary them ACROSS the days — do not give the same three cuisines every day of the trip.
-   - Each entry needs a real "name", a full street "address" (street + number + postal code + district), its own "lat"/"lng" as decimal numbers with 4+ decimals matching that address, a "cuisine", one exact "avgPrice", and a short "note".
-   - The coordinates are used to drop a pin on a map, so they must be the restaurant's own — not the district centre, not a landmark nearby.
-   - Only list places you are confident actually exist at that address. Two real restaurants are better than three with one invented.
+4a. EACH DAY gets exactly ONE "halalRestaurant" object — one clear restaurant to go to, never a list of alternatives. It must be a real restaurant serving the national cuisine of ${destination}'s country when possible.
+  - It needs a real "name", a full street "address" (street + number + postal code + district), its own "lat"/"lng" as decimal numbers with 4+ decimals matching that address, a "cuisine", one exact "avgPrice", and a short "note".
+  - The coordinates are used to drop a pin on a map, so they must be the restaurant's own — not the district centre, not a landmark nearby.
+  - Only use a place you are confident actually exists at that address. Never offer several restaurants for the traveler to choose between.
 5. Include a top-level "hotel" object with: name (real hotel), address (full street + postal), area (district), pricePerNight (local currency — NEVER empty, ONE exact nightly rate like "$55/night", not a range), stars. The traveler must know exactly where they sleep.
 5a. HOTEL LOCATION IS A PROXIMITY DECISION — plan the days FIRST, then pick the hotel LAST. Look at where the attractions you scheduled actually are, find the district that holds the most of them, and choose a REAL, bookable ${style}-tier hotel INSIDE that district — as close to those attractions as possible, so the traveler walks to most of their stops instead of paying for taxis. Do NOT default to "near the airport", a business district, or a generic city-centre chain if the sightseeing is concentrated elsewhere. Also add to the "hotel" object:
    - "lat" and "lng": the hotel's OWN real decimal coordinates (numbers, 4+ decimals) — the coordinates of its street address. NEVER copy the coordinates of a nearby landmark: a hotel and the mosque across the square are not at the same point, and these numbers are used to compute the walking times shown to the traveler.
    - "whyHere": ONE sentence NAMING the 2–3 planned attractions it sits closest to and the district it shares with them (e.g. "In Sultanahmet, on the same square as the Blue Mosque and a short walk from Hagia Sophia and Topkapi Palace"). Do NOT state distances, walking minutes or "X of Y stops" counts — the app computes those from your coordinates, and an invented number would contradict them.
+5c. HOTEL CHANGES — use one hotel for the whole trip when all nights are in ${destination}. Never return hotel alternatives. If the route genuinely contains overnight stays in different cities, change hotels only when the city changes and never more than twice in the entire trip. Each overnight city gets one exact hotel with its own real address, coordinates, nightly price and check-in event.
 5b. EVERY event MUST also carry "lat" and "lng" — the real decimal coordinates of that exact place (numbers, not strings, 4+ decimals). These are used to compute real walking distances from the hotel, so they must match the address you gave. Airport/flight events use the airport's coordinates.
 6. EVERY single event MUST include its own price — never omit it. Fields per event: time (HH:MM 24-hour), duration ("1.5 hours"), price in LOCAL currency ("€15", "₺200", "AED 50", "Free"), and type (one of: flight, transport, hotel, attraction, museum, food, nature, shopping, leisure, rest). Only genuinely free things (parks, walks, viewpoints) may say "Free" — flights, hotels, taxis and meals are NEVER "Free".
 6a. PRICES MUST BE ONE EXACT FIGURE — never a range, never a "~" or "approx". Write "€15", NOT "€10–20"; "$420", NOT "$300–500"; "₺250", NOT "₺200-300". A traveler adds these up into a daily total, and a range cannot be added up. Where the real price genuinely varies (a taxi, a meal), give the single most likely amount a visitor pays on an ordinary day, not the cheapest and not the most expensive.
@@ -493,28 +495,16 @@ Return EXACTLY this JSON shape:
           "halalNote": ""
         }
       ],
-      "halalRestaurants": [
-        {
-          "name": "Real Halal Restaurant 🥩",
-          "address": "Street name + number, postal code City",
-          "district": "Neighbourhood name",
-          "lat": 41.0086,
-          "lng": 28.9802,
-          "cuisine": "the NATIONAL cuisine of this country — name it plainly, e.g. Turkish",
-          "avgPrice": "$12 per person (one exact figure, not a range)",
-          "note": "100% halal, no pork, no alcohol"
-        },
-        {
-          "name": "A different real halal restaurant 🥩",
-          "address": "Street name + number, postal code City",
-          "district": "Neighbourhood name",
-          "lat": 41.0251,
-          "lng": 28.9744,
-          "cuisine": "a DIFFERENT cuisine, e.g. Chinese / Italian / Uzbek / Indian",
-          "avgPrice": "$18 per person (one exact figure, not a range)",
-          "note": "100% halal, no pork, no alcohol"
-        }
-      ]
+      "halalRestaurant": {
+        "name": "One real Halal Restaurant 🥩",
+        "address": "Street name + number, postal code City",
+        "district": "Neighbourhood name",
+        "lat": 41.0086,
+        "lng": 28.9802,
+        "cuisine": "the NATIONAL cuisine of this country — name it plainly, e.g. Turkish",
+        "avgPrice": "$12 per person (one exact figure, not a range)",
+        "note": "100% halal, no pork, no alcohol"
+      }
     }
   ],
   "transportSuggestion": "2-3 sentences about getting around ${destination} using ${transportMode}",
@@ -580,11 +570,25 @@ Every event MUST have "address" (real street+postal), "lat"/"lng" (real numeric 
     // How close the stay actually is to the sights the plan schedules —
     // measured here from the itinerary's own coordinates, not taken on the
     // model's word (see hotelProximity.js).
-    finalHotel.proximity = computeHotelProximity(finalHotel, normalized.days, { city: destination });
+    const canonicalDays = normalized.days.map((day) => ({
+      ...day,
+      hotel: finalHotel,
+      events: (day.events || []).map((event) => event.type === 'hotel'
+        ? {
+            ...event,
+            name: `Check-in at ${finalHotel.name}`,
+            address: finalHotel.address || event.address,
+            lat: finalHotel.lat ?? event.lat,
+            lng: finalHotel.lng ?? event.lng,
+            price: finalHotel.pricePerNight || event.price,
+          }
+        : event),
+    }));
+    finalHotel.proximity = computeHotelProximity(finalHotel, canonicalDays, { city: destination });
 
     return {
       header:              normalized.header,
-      days:                normalized.days,
+      days:                canonicalDays,
       hotel:               finalHotel,
       cityInfo:            normalized.cityInfo,
       budgetBreakdown:     bd,

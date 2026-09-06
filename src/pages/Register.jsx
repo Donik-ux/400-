@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Compass, User, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle, CheckCircle2, Plane, Globe2, Sparkles, Gift } from 'lucide-react';
+import { Compass, User, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle, CheckCircle2, Globe2, Gift } from 'lucide-react';
 import useAuthStore from '../store/useAuthStore';
 import useSEO from '../hooks/useSEO';
+import RouteGlobe from '../components/fx/RouteGlobe';
 import { useTranslation } from '../store/useLangStore';
 
 export default function Register() {
@@ -43,15 +44,15 @@ export default function Register() {
   const inp = 'w-full bg-white border-[1.5px] border-[#dfe7ec] rounded-xl px-4 py-3 text-sm text-[#252a31] placeholder:text-[#bac7d1] focus:outline-none focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/10 transition-all';
 
   return (
-    <div className="min-h-screen bg-[#f5f7f9] grid lg:grid-cols-2">
+    <div className="min-h-screen page-ground grid lg:grid-cols-2">
 
       {/* Brand panel */}
-      <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-[#1c2127] p-12 text-white">
-        {/* Floating accents */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <Sparkles className="animate-float absolute top-28 left-24 w-9 h-9 text-[#00a58e]/40" style={{ animationDelay: '0.5s' }} />
-          <Plane className="animate-float absolute bottom-32 right-24 w-10 h-10 text-white/15" style={{ animationDelay: '2s' }} />
-        </div>
+      <div className="relative hidden lg:flex flex-col justify-between overflow-hidden aurora-bg p-12 text-white">
+        {/* The panel gets its own weather — a lit navy, a dotted graticule and
+            the brand's route globe behind the copy — instead of two loose icons
+            drifting in an empty rectangle. */}
+        <div className="hero-airways" />
+        <RouteGlobe className="absolute inset-0" />
 
         <div className="relative z-10 flex items-center gap-2.5">
           <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#61d1bf] via-[#009882] to-[#007f6d] flex items-center justify-center shadow-[0_4px_16px_rgba(0, 152, 130,0.5)] ring-1 ring-white/30">
@@ -163,7 +164,7 @@ export default function Register() {
             )}
 
             <button type="submit" disabled={loading}
-              className="w-full py-3 rounded-xl bg-[#0172cb] text-white text-[14px] font-bold hover:bg-[#015aa3] transition-premium disabled:opacity-50 disabled:cursor-not-allowed mt-1 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(1, 114, 203,0.3)]">
+              className="w-full py-3 rounded-xl bg-[#00a58e] text-white text-[14px] font-bold hover:bg-[#009882] transition-premium disabled:opacity-50 disabled:cursor-not-allowed mt-1 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(0,165,142,0.3)]">
               {loading ? (
                 <><div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin" />{t('auth.register.submitting')}</>
               ) : (

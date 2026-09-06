@@ -50,6 +50,10 @@ function mapItinerary(it, isBest) {
     airline: first.airline || '',
     airlineLogo: it.airline_logo || first.airline_logo || '',
     flightNumber: first.flight_number || '',
+    // The aircraft the traveler actually flies on. Google returns it per
+    // segment; a one-stop itinerary can mix a widebody with a regional jet, so
+    // this names the first leg's plane and `legs[].airplane` carries the rest.
+    aircraft: first.airplane || '',
     duration: fmtDuration(it.total_duration),
     durationMin: Number(it.total_duration) || null,
     stops: Array.isArray(it.layovers) ? it.layovers.length : Math.max(0, segments.length - 1),
@@ -68,6 +72,7 @@ function mapItinerary(it, isBest) {
       arrival: clockOf(s.arrival_airport?.time),
       airline: s.airline || '',
       flightNumber: s.flight_number || '',
+      aircraft: s.airplane || '',
       duration: fmtDuration(s.duration),
     })),
   };

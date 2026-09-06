@@ -7,7 +7,7 @@ const NotFound = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   return (
-    <div className="relative min-h-[70vh] flex items-center justify-center px-4 py-16 bg-[#f5f7f9] overflow-hidden">
+    <div className="relative min-h-[70vh] flex items-center justify-center px-4 py-16 overflow-hidden">
       {/* Floating accents */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <Plane className="animate-float absolute top-16 right-[12%] w-10 h-10 text-[#252a31]/10" style={{ animationDelay: '0.5s' }} />

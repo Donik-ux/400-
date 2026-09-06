@@ -136,7 +136,7 @@ function CurrencyConverter() {
           <CurrencySelect value={from} onChange={setFrom} codes={allCodes} />
         </label>
         <button onClick={swap} title={t('toolsPage.converter.swap')}
-          className="w-10 h-[42px] rounded-xl bg-[#252a31] text-white flex items-center justify-center hover:bg-[#0172cb] transition-premium active:scale-90 shadow-soft hover:shadow-float">
+          className="w-10 h-[42px] rounded-xl bg-[#252a31] text-white flex items-center justify-center hover:bg-[#00a58e] transition-premium active:scale-90 shadow-soft hover:shadow-float">
           <ArrowLeftRight className="w-4 h-4" />
         </button>
         <label>
@@ -330,7 +330,7 @@ function UnitConverter() {
             className="w-full px-3 py-2.5 rounded-xl border border-[#dfe7ec] focus:border-[#0172cb] focus:ring-4 focus:ring-[#0172cb]/10 outline-none text-[18px] font-black text-[#252a31] transition-premium" />
         </div>
         <button onClick={() => setDir(d => !d)} title={t('toolsPage.units.flipTitle')}
-          className="w-10 h-[42px] mt-5 rounded-xl bg-[#252a31] text-white flex items-center justify-center hover:bg-[#0172cb] transition-premium active:scale-90 shadow-soft hover:shadow-float">
+          className="w-10 h-[42px] mt-5 rounded-xl bg-[#252a31] text-white flex items-center justify-center hover:bg-[#00a58e] transition-premium active:scale-90 shadow-soft hover:shadow-float">
           <ArrowLeftRight className="w-4 h-4" />
         </button>
         <div>
@@ -467,7 +467,7 @@ function Phrasebook() {
             />
           </div>
           <button type="submit" disabled={!query.trim() || (aiLoading && customActive)}
-            className="px-4 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] disabled:opacity-40 text-white text-[12.5px] font-black flex items-center gap-1.5 transition active:scale-95 shrink-0">
+            className="px-4 py-2.5 rounded-xl bg-[#00a58e] hover:bg-[#009882] disabled:opacity-40 text-white text-[12.5px] font-black flex items-center gap-1.5 transition active:scale-95 shrink-0">
             <Sparkles className="w-4 h-4" /> {t('toolsPage.phrasebook.aiBuild')}
           </button>
         </form>
@@ -516,7 +516,7 @@ export default function Tools() {
   });
 
   return (
-    <div className="bg-[#f5f7f9] min-h-screen">
+    <div className="page-ground min-h-screen">
       {/* Hero */}
       <section className="relative aurora-bg text-white overflow-hidden">
         <div className="film-grain" />

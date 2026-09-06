@@ -79,11 +79,11 @@ export default function MyBookings() {
   }, [bookings, filter, search]);
 
   return (
-    <div className="bg-[#f5f7f9] min-h-screen -mt-[64px]">
+    <div className="page-ground min-h-screen -mt-[64px]">
       {/* ── Hero header ── */}
-      <section className="relative bg-[#1c2127] text-white overflow-hidden pt-[100px] pb-14">
-        <div className="absolute inset-0 opacity-25 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 25% 30%, #0172cb 0%, transparent 45%), radial-gradient(circle at 75% 70%, #00a58e 0%, transparent 35%)' }} />
+      <section className="relative aurora-bg text-white overflow-hidden pt-[100px] pb-14">
+        <div className="hero-airways" />
+        <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00a58e] text-white text-[11px] font-black uppercase tracking-widest mb-4 shadow-float">
             <BookOpen className="w-3.5 h-3.5" /> {t('bookings.badge') || 'Travel History'}
@@ -235,7 +235,7 @@ export default function MyBookings() {
                           savedPlan: b.plan || undefined,
                           startDate: b.date || undefined,
                         } })}
-                        className="px-4 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
+                        className="px-4 py-2.5 rounded-xl bg-[#00a58e] hover:bg-[#009882] text-white text-[12px] font-black flex items-center gap-1.5 transition active:scale-95 shadow-soft group-hover:shadow-float">
                         {t('lists.bookings.open')} <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                       </button>
                     </div>
@@ -255,7 +255,7 @@ export default function MyBookings() {
             <p className="text-[#252a31] font-black mb-1">{t('lists.bookings.noMatchTitle')}</p>
             <p className="text-[#697d95] text-sm mb-4">{t('lists.bookings.noMatchSub')}</p>
             <button onClick={() => { setFilter('all'); setSearch(''); }}
-              className="px-5 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] text-white text-[13px] font-black transition active:scale-95 shadow-soft">
+              className="px-5 py-2.5 rounded-xl bg-[#00a58e] hover:bg-[#009882] text-white text-[13px] font-black transition active:scale-95 shadow-soft">
               {t('lists.bookings.clearFilters')}
             </button>
           </div>

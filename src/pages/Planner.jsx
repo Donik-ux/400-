@@ -27,6 +27,9 @@ import { toast } from '../components/Toast';
 import useSEO from '../hooks/useSEO';
 import { usePriceFormatter } from '../components/Price';
 import SmartImage from '../components/SmartImage';
+import RouteGlobe from '../components/fx/RouteGlobe';
+import FlightsCard from '../features/trip/FlightsCard';
+import { fetchTripFlights } from '../services/tripFlightPricing';
 
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80';
 
@@ -357,6 +360,33 @@ export default function Planner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasResults, meta, lang]);
   const packing = aiPacking || rulePacking;
+  /* Real airfare for the route, resolved after the plan renders so a slow or
+     unconfigured flight API never holds up the itinerary. The budget split
+     above stands on its own — the card itself says so when the fare a traveller
+     would actually pay blows past what that split set aside for flights. */
+  const [flights, setFlights] = useState(null);
+  useEffect(() => {
+    if (!hasResults || !formData.fromCity || !formData.destination) {
+      setFlights(null);
+      return undefined;
+    }
+    let cancelled = false;
+    const controller = new AbortController();
+    fetchTripFlights({
+      fromCity:    formData.fromCity,
+      destination: formData.destination,
+      startDate:   formData.startDate,
+      days:        Number(formData.days) || 5,
+      travelers:   1,
+      style:       formData.budgetStyle,
+      signal:      controller.signal,
+    })
+      .then((res) => { if (!cancelled) setFlights(res); })
+      .catch(() => {});
+    return () => { cancelled = true; controller.abort(); };
+  }, [hasResults, formData.fromCity, formData.destination, formData.startDate,
+      formData.days, formData.budgetStyle]);
+
   const emergency  = useMemo(() => hasResults ? getEmergencyContacts(formData.destination) : null, [hasResults, formData.destination]);
   const localApps  = useMemo(() => hasResults ? getLocalApps(formData.destination) : null, [hasResults, formData.destination]);
   const currency   = useMemo(() => hasResults ? getCurrencyInfo(formData.destination) : null, [hasResults, formData.destination]);
@@ -376,10 +406,18 @@ export default function Planner() {
   const navApps = meta?.navApps || NAV_APPS[transport] || NAV_APPS.walking;
 
   return (
-    <div className="bg-[#f5f7f9] min-h-screen">
+    <div className="page-ground min-h-screen">
 
       {/* ── Hero / Form Section ── */}
       <div className="relative aurora-bg text-white overflow-hidden">
+        {/* Backdrop. The form only ever occupies the left of this band, so the
+            decoration lives entirely on the right: a dotted graticule fading in
+            from that side, and a wireframe globe with one dashed route arcing
+            across it. Hidden below md, where the form goes full-width and there
+            is no empty side left to fill. */}
+        <div className="hero-airways" />
+        <RouteGlobe className="hidden md:block absolute top-0 right-0 h-full w-[52%]" />
+        <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-14">
           <div className="max-w-2xl mb-8 page-fade">
             <div className="badge-editorial inline-flex rounded-full px-3.5 py-1.5 mb-4">
@@ -568,6 +606,39 @@ export default function Planner() {
                   {budgetDiff < 0 && ` — ${t('plannerPage.results.budgetOverHint')}`}
                 </p>
               </div>
+            </div>
+          )}
+
+          {/* The fare this trip actually costs — with the other aircraft and
+              airlines flying it on these dates, and a check on whether leaving
+              a few days either side would be cheaper. */}
+          {flights && (
+            <div className="mb-6">
+              <FlightsCard
+                flights={flights}
+                budgetedFlight={meta?.budgetBreakdown?.flight}
+                query={{
+                  fromCity:    formData.fromCity,
+                  destination: formData.destination,
+                  startDate:   formData.startDate,
+                  days:        Number(formData.days) || 5,
+                  travelers:   1,
+                  style:       formData.budgetStyle,
+                }}
+                onCompare={() => {
+                  const bare = (x) => String(x || '').replace(/\s*\([^)]*\)\s*/g, '').trim();
+                  navigate('/flights', {
+                    state: {
+                      formData: {
+                        from: `${bare(formData.fromCity)} (${flights.outbound?.from})`,
+                        to:   `${bare(formData.destination)} (${flights.outbound?.to})`,
+                        date: flights.outbound?.date || '',
+                        returnDate: flights.inbound?.date || '',
+                      },
+                    },
+                  });
+                }}
+              />
             </div>
           )}
 

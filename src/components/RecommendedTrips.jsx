@@ -90,7 +90,7 @@ export default function RecommendedTrips() {
             type="button"
             onClick={useMyLocation}
             disabled={locating}
-            className="inline-flex items-center justify-center gap-2 bg-[#252a31] hover:bg-[#0172cb] disabled:opacity-60 text-white font-black text-[13px] rounded-xl py-2.5 px-4 shadow-soft transition active:scale-95 shrink-0">
+            className="inline-flex items-center justify-center gap-2 bg-[#252a31] hover:bg-[#00a58e] disabled:opacity-60 text-white font-black text-[13px] rounded-xl py-2.5 px-4 shadow-soft transition active:scale-95 shrink-0">
             {locating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Navigation className="w-4 h-4" />}
             {locating ? t('tripRec.locating') : t('tripRec.useLocation')}
           </button>

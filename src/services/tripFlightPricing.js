@@ -85,6 +85,53 @@ const cheapestLiveOffer = async ({ from, to, date, adults, signal }) => {
 };
 
 /**
+ * A short, honest shortlist of what else flies this route on these dates.
+ *
+ * The search already returns up to 20 itineraries and we were throwing 19 of
+ * them away. Three rows of the same 737 four dollars apart is noise, not a
+ * choice, so the shortlist answers three different questions instead: the one
+ * the plan is costed on, the cheapest one, and the quickest one. When those
+ * are the same itinerary the list simply gets shorter — it never pads itself
+ * with near-duplicates to look busier.
+ */
+const asOption = (f, chosen, role) => ({
+  role,                                   // 'chosen' | 'cheapest' | 'fastest'
+  chosen: f === chosen,
+  price: f.price,
+  delta: f.price - chosen.price,          // vs the fare the plan is costed on
+  airline: f.airline || '',
+  airlineLogo: f.airlineLogo || '✈️',
+  aircraft: f.aircraft || '',
+  flightNumber: f.flightNumber || '',
+  duration: f.duration || '',
+  durationMin: Number.isFinite(f.durationMin) ? f.durationMin : null,
+  stops: Number(f.stops) || 0,
+  departure: f.departure || '',
+  arrival: f.arrival || '',
+});
+
+const pickOptions = (list, chosen) => {
+  const priced = (list || []).filter((f) => Number.isFinite(f.price) && f.price > 0);
+  if (!priced.length) return [];
+
+  const cheapest = priced.reduce((a, b) => (b.price < a.price ? b : a));
+  const timed = priced.filter((f) => Number.isFinite(f.durationMin));
+  const fastest = timed.length ? timed.reduce((a, b) => (b.durationMin < a.durationMin ? b : a)) : null;
+
+  const out = [];
+  const add = (f, role) => {
+    if (f && !out.some((o) => o.src === f)) out.push({ src: f, role });
+  };
+  add(chosen, 'chosen');
+  add(cheapest, 'cheapest');
+  add(fastest, 'fastest');
+
+  return out
+    .map(({ src, role }) => asOption(src, chosen, role))
+    .sort((a, b) => a.price - b.price);
+};
+
+/**
  * One round-trip Google Flights search. The endpoint always asks for a single
  * adult (see api/flightsSerp.js), so the fare returned here is per person for
  * the whole round trip — the party total is applied by the caller.
@@ -122,10 +169,12 @@ const googleFlightsRoundTrip = async ({ from, to, outboundDate, returnDate, styl
       airline: best.airline, airlineLogo: best.airlineLogo || '✈️',
       duration: best.duration, stops: best.stops,
       departure: best.departure, arrival: best.arrival,
-      flightNumber: best.flightNumber,
+      flightNumber: best.flightNumber, aircraft: best.aircraft || '',
     },
     inbound: returnDate ? { from: to, to: from, date: returnDate } : null,
     perPerson: best.price,
+    // What else flies this route today — same dates, different plane or airline.
+    options: pickOptions(list, best),
     roundTripFare: true,
     priceLevel: json?.priceInsights?.level || '',
     bookLink: `https://www.google.com/travel/flights?q=${encodeURIComponent(
@@ -213,6 +262,67 @@ export const fetchTripFlights = async ({
   }
 
   return null;
+};
+
+/**
+ * Would leaving a few days either side be cheaper?
+ *
+ * Each probe is a real round-trip search, not a weekend-surcharge rule applied
+ * to the fare we already have — so the answer is a price a traveller could
+ * actually book, and "your dates are already the cheap ones" means something.
+ * That costs a search per probe, which is why nothing calls this on load: the
+ * traveller asks for it.
+ *
+ * Only Google round trips are compared, and only when the return is to the
+ * origin — an estimate held up against a live fare would not be a comparison.
+ *
+ * @returns {Promise<Array<{offset: number, startDate: string, returnDate: string,
+ *   perPerson: number, total: number, airline: string, aircraft: string}>>}
+ *   one entry per priced probe, in the order the offsets were given.
+ */
+export const compareNearbyDates = async ({
+  fromCity, destination, returnCity, startDate, days = 5, travelers = 1,
+  style, offsets = [-3, 3], signal,
+} = {}) => {
+  const origin = iataFor(fromCity);
+  const dest   = iataFor(destination);
+  if (!origin || !dest || origin === dest || !startDate) return [];
+
+  const back = iataFor(returnCity) || origin;
+  if (back !== origin) return [];          // open-jaw — one round-trip search cannot price it
+  const pax = Math.max(1, Number(travelers) || 1);
+  const span = Math.max(0, (Number(days) || 5) - 1);
+
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const probes = offsets
+    .map((off) => {
+      const out = new Date(startDate);
+      if (Number.isNaN(out.getTime())) return null;
+      out.setDate(out.getDate() + off);
+      if (out < today) return null;        // no one can fly into the past
+      const ret = new Date(out);
+      ret.setDate(ret.getDate() + span);
+      return { off, outDate: isoDate(out), backDate: isoDate(ret) };
+    })
+    .filter(Boolean);
+
+  const priced = await Promise.all(probes.map(async ({ off, outDate, backDate }) => {
+    const gf = await googleFlightsRoundTrip({
+      from: origin, to: dest, outboundDate: outDate, returnDate: backDate, style, signal,
+    });
+    if (!gf || !Number.isFinite(gf.perPerson)) return null;
+    return {
+      offset: off,
+      startDate: outDate,
+      returnDate: backDate,
+      perPerson: gf.perPerson,
+      total: gf.perPerson * pax,
+      airline: gf.outbound.airline || '',
+      aircraft: gf.outbound.aircraft || '',
+    };
+  }));
+
+  return priced.filter(Boolean);
 };
 
 /**

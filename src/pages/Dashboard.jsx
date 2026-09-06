@@ -54,9 +54,11 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="bg-[#eef2f5] min-h-screen">
+    <div className="page-ground min-h-screen">
       {/* Header */}
-      <div className="relative bg-[#1c2127] text-white overflow-hidden">
+      <div className="relative aurora-bg text-white overflow-hidden">
+        <div className="hero-airways" />
+        <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-20">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">

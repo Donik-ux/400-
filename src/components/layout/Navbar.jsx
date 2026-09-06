@@ -163,7 +163,7 @@ export default function Navbar() {
                   {t('nav.signIn')}
                 </button>
                 <button onClick={() => navigate('/register')}
-                  className="shrink-0 px-4 py-2 text-[13px] font-black whitespace-nowrap text-white bg-[#0172cb] hover:bg-[#015aa3] rounded-full transition-premium">
+                  className="shrink-0 px-4 py-2 text-[13px] font-black whitespace-nowrap text-white bg-[#00a58e] hover:bg-[#009882] rounded-full transition-premium">
                   {t('nav.register')}
                 </button>
               </div>
@@ -231,7 +231,7 @@ export default function Navbar() {
                   {t('nav.signIn')}
                 </button>
                 <button onClick={() => { navigate('/register'); setMobileOpen(false); }}
-                  className="w-full py-3 rounded-lg bg-[#0172cb] text-white text-[13px] font-black">
+                  className="w-full py-3 rounded-lg bg-[#00a58e] hover:bg-[#009882] text-white text-[13px] font-black">
                   {t('nav.registerFree')}
                 </button>
               </>

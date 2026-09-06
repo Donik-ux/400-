@@ -1,0 +1,194 @@
+/* Home backdrop — "the world's routes". Companion to HomeBackdrop.jsx.
+   Every class is bd-home-*, every keyframe bdHome*. Only transform and
+   opacity ever animate; nothing here is blurred. */
+
+.bd-home {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── Glows ──────────────────────────────────────────────────────────────
+   Radial gradients rather than blurred blobs: they cost one paint, and their
+   falloff is tuned so the colour is spent by the time it reaches the content
+   column. Each is a circle with its centre pushed off into a corner, so the
+   part on screen is the soft shoulder, never the bright core. */
+.bd-home-glow {
+  position: absolute;
+  border-radius: 50%;
+}
+.bd-home-glow--teal {
+  width: 66vw; height: 66vw;
+  left: -27vw; bottom: -29vw;                     /* centre ≈ 6vw, 4vw up */
+  background: radial-gradient(closest-side,
+    rgba(0, 165, 142, 0.19),
+    rgba(0, 165, 142, 0.085) 36%,
+    rgba(97, 209, 191, 0.03) 66%,
+    rgba(97, 209, 191, 0) 100%);
+}
+.bd-home-glow--blue {
+  width: 60vw; height: 60vw;
+  right: -24vw; top: -25vw;                       /* centre ≈ 94vw, 5vw down */
+  background: radial-gradient(closest-side,
+    rgba(1, 114, 203, 0.16),
+    rgba(1, 114, 203, 0.075) 38%,
+    rgba(1, 114, 203, 0.025) 68%,
+    rgba(1, 114, 203, 0) 100%);
+}
+/* Static. Ivory is a hair warmer than the ground, so this reads as a patch
+   of late sun bottom-right rather than as another colour. */
+.bd-home-glow--ivory {
+  width: 44vw; height: 44vw;
+  right: -14vw; bottom: -20vw;
+  background: radial-gradient(closest-side,
+    rgba(242, 234, 217, 0.85),
+    rgba(242, 234, 217, 0.4) 45%,
+    rgba(242, 234, 217, 0) 100%);
+}
+
+/* ── Scenes ───────────────────────────────────────────────────────────── */
+.bd-home-routes,
+.bd-home-live {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.bd-home-routes--mobile { display: none; }
+
+/* Airport codes, set in a monospace the way they are on a departure board.
+   Ink at a third strength: legible if you look, invisible if you do not. */
+.bd-home-code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  fill: #0d1b33;
+  fill-opacity: 0.32;
+  stroke: none;
+}
+
+/* Beacons at rest: a faint outer ring, which is also what reduced-motion
+   users see. The animation scales from the ring's own centre. */
+.bd-home-ping {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  opacity: 0.16;
+}
+
+/* The airliner. Without motion-path support it is parked a little way up
+   the route, pitched to match the tangent there; the keyframes below carry
+   it the rest of the way. They are sampled from ROUTES[0] in
+   HomeBackdrop.jsx — regenerate them if that path changes. */
+.bd-home-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1440px;
+  height: 900px;
+  transform: translate(-50%, -50%) scale(var(--bd-home-s, 1));
+  transform-origin: center;
+}
+.bd-home-plane {
+  position: absolute;
+  /* The 140x40 box is centred on the plane's origin, so the box centre —
+     the transform origin — is the point that rides the route. */
+  left: -70px;
+  top: -20px;
+  width: 140px;
+  height: 40px;
+  opacity: 0.6;
+  /* Parked 9% along the route, pitched to the tangent there — the pose the
+     animation passes through, so reduced motion shows a plane that has just
+     lifted off rather than one hanging mid-ocean. */
+  transform: translate(193px, 618px) rotate(-42deg);
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────────
+   Five moving things, all slow: two glows breathing across the corners, the
+   airliner crossing once a minute, two beacons pinging. Everything else is
+   painted once. */
+@media (prefers-reduced-motion: no-preference) {
+  .bd-home-glow--teal {
+    animation: bdHomeDriftTeal 70s ease-in-out infinite alternate;
+  }
+  .bd-home-glow--blue {
+    animation: bdHomeDriftBlue 84s ease-in-out infinite alternate;
+  }
+  .bd-home-ping {
+    animation: bdHomePing 24s ease-out infinite;
+  }
+  .bd-home-ping--far {
+    animation-duration: 30s;
+    animation-delay: -11s;
+  }
+  .bd-home-plane {
+    animation: bdHomePlane 58s linear infinite;
+  }
+}
+
+@keyframes bdHomeDriftTeal {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(3vw, -2.5vw, 0) scale(1.08); }
+}
+@keyframes bdHomeDriftBlue {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-2.5vw, 2vw, 0) scale(1.06); }
+}
+/* A ping is a four-second event inside a long quiet: it reads as a beacon,
+   not as a pulse. */
+@keyframes bdHomePing {
+  0%   { transform: scale(0.22); opacity: 0.55; }
+  16%  { transform: scale(1);    opacity: 0; }
+  100% { transform: scale(1);    opacity: 0; }
+}
+/* Fades in on take-off and out on arrival, so the jump back to the origin
+   happens while it is invisible. */
+/* The route ROUTES[0] in HomeBackdrop.jsx, sampled every 5% of ARC LENGTH
+   (not of t, so the plane flies at one speed) with the tangent's heading.
+   Plain transform keyframes rather than offset-path: a motion path on an
+   HTML box composites in Chromium but not everywhere, and transform does,
+   so the airliner never touches the main thread. Twenty straight segments
+   on a curve this gentle are indistinguishable from the bezier. */
+@keyframes bdHomePlane {
+  0%   { transform: translate(101px, 703px) rotate(-43.8deg); opacity: 0; }
+  5%   { transform: translate(152px, 655px) rotate(-42.9deg); opacity: 0.6; }
+  10%  { transform: translate(202px, 609px) rotate(-41.8deg); }
+  15%  { transform: translate(256px, 562px) rotate(-40.7deg); }
+  20%  { transform: translate(310px, 517px) rotate(-39.4deg); }
+  25%  { transform: translate(363px, 474px) rotate(-38.1deg); }
+  30%  { transform: translate(420px, 431px) rotate(-36.5deg); }
+  35%  { transform: translate(477px, 390px) rotate(-34.9deg); }
+  40%  { transform: translate(536px, 350px) rotate(-32.9deg); }
+  45%  { transform: translate(596px, 313px) rotate(-30.9deg); }
+  50%  { transform: translate(658px, 277px) rotate(-28.5deg); }
+  55%  { transform: translate(720px, 245px) rotate(-25.9deg); }
+  60%  { transform: translate(782px, 217px) rotate(-23.1deg); }
+  65%  { transform: translate(850px, 190px) rotate(-19.7deg); }
+  70%  { transform: translate(917px, 169px) rotate(-16.0deg); }
+  75%  { transform: translate(985px, 152px) rotate(-12.0deg); }
+  80%  { transform: translate(1054px, 140px) rotate(-7.5deg); }
+  85%  { transform: translate(1124px, 133px) rotate(-2.7deg); }
+  90%  { transform: translate(1193px, 133px) rotate(2.3deg); }
+  95%  { transform: translate(1264px, 139px) rotate(7.8deg); opacity: 0.6; }
+  100% { transform: translate(1332px, 152px) rotate(13.2deg); opacity: 0; }
+}
+
+/* ── Phones ───────────────────────────────────────────────────────────────
+   Cards run nearly edge to edge, so what shows is the strip between
+   sections. One portrait route, bigger glows, no airliner, no beacons. */
+@media (max-width: 767px) {
+  .bd-home-routes--desk,
+  .bd-home-live,
+  .bd-home-stage,
+  .bd-home-glow--ivory { display: none; }
+  .bd-home-routes--mobile { display: block; }
+  .bd-home-glow--teal {
+    width: 150vw; height: 150vw;
+    left: -90vw; bottom: -72vw;
+  }
+  .bd-home-glow--blue {
+    width: 140vw; height: 140vw;
+    right: -85vw; top: -66vw;
+  }
+}

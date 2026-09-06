@@ -44,7 +44,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative w-full bg-[#f5f7f9] border-t border-[#dfe7ec] text-[#252a31] mt-12">
+    <footer className="relative w-full bg-white/50 border-t border-[#dfe7ec] text-[#252a31] mt-12">
       <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12 pb-20 md:pb-24">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-[#dfe7ec]">
           {/* Brand */}
@@ -110,7 +110,7 @@ export default function Footer() {
                     className="flex-1 min-w-0 bg-transparent px-2 text-[13px] text-[#252a31] placeholder:text-[#94a3af] focus:outline-none"
                   />
                   <button onClick={handleJoin}
-                    className="shrink-0 max-w-[55%] px-3.5 py-2 rounded-lg bg-[#0172cb] hover:bg-[#015aa3] text-white text-[11px] font-black uppercase tracking-tighter truncate transition">
+                    className="shrink-0 max-w-[55%] px-3.5 py-2 rounded-lg bg-[#00a58e] hover:bg-[#009882] text-white text-[11px] font-black uppercase tracking-tighter truncate transition">
                     {t('footer.join')}
                   </button>
                 </div>

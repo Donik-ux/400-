@@ -118,7 +118,7 @@ function FitAdvisor({ tour, pricePer }) {
 
       {!verdict && (
         <button onClick={ask} disabled={busy}
-          className="px-5 py-2.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] disabled:opacity-60 text-white text-[12.5px] font-black flex items-center gap-2 transition active:scale-95">
+          className="px-5 py-2.5 rounded-xl bg-[#00a58e] hover:bg-[#009882] disabled:opacity-60 text-white text-[12.5px] font-black flex items-center gap-2 transition active:scale-95">
           {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
           {busy ? t('tourDetail.fit.loading') : t('tourDetail.fit.ask')}
         </button>
@@ -233,13 +233,13 @@ export default function TourDetail() {
 
   if (!tour) {
     return (
-      <div className="min-h-screen bg-[#eef2f5] flex flex-col items-center justify-center text-center px-6">
+      <div className="min-h-screen page-ground flex flex-col items-center justify-center text-center px-6">
         <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#0172cb]/15 to-[#252a31]/10 flex items-center justify-center mb-5 animate-float">
           <Compass className="w-10 h-10 text-[#0172cb]" />
         </div>
         <h1 className="text-2xl font-black text-[#252a31] mb-2">{t('tourDetail.notFoundTitle')}</h1>
         <p className="text-[#4a5867] mb-6">{t('tourDetail.notFoundSub')}</p>
-        <Link to="/exotic-tours" className="px-5 py-3 rounded-xl bg-[#252a31] text-white font-black text-[13px] shadow-soft transition hover:bg-[#0172cb] active:scale-95">
+        <Link to="/exotic-tours" className="px-5 py-3 rounded-xl bg-[#252a31] text-white font-black text-[13px] shadow-soft transition hover:bg-[#00a58e] active:scale-95">
           {t('tourDetail.allExoticTours')}
         </Link>
       </div>
@@ -276,7 +276,7 @@ export default function TourDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#eef2f5]">
+    <div className="min-h-screen page-ground">
 
       {/* Hero */}
       <div className="relative h-[400px] md:h-[460px] overflow-hidden">

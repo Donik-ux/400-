@@ -81,12 +81,12 @@ export default function Checkout() {
 
   /* Price calculation */
   if (!item || !type) return (
-    <div className="min-h-screen bg-[#f5f7f9] flex items-center justify-center">
+    <div className="min-h-screen page-ground flex items-center justify-center">
       <div className="bg-white rounded-2xl border border-[#dfe7ec] p-8 max-w-md mx-4 text-center shadow-float">
         <AlertCircle className="w-10 h-10 text-[#00a58e] mx-auto mb-3" />
         <p className="text-[#252a31] font-bold mb-1">{t('checkout.noBooking') || 'No booking selected'}</p>
         <p className="text-[#4a5867] text-sm font-medium mb-5">Pick a flight or tour package to start checkout.</p>
-        <button onClick={() => navigate('/')} className="px-5 py-3 rounded-lg bg-[#0172cb] hover:bg-[#015aa3] text-white text-[13px] font-black transition active:scale-95">
+        <button onClick={() => navigate('/')} className="px-5 py-3 rounded-lg bg-[#00a58e] hover:bg-[#009882] text-white text-[13px] font-black transition active:scale-95">
           {t('checkout.goHome') || 'Go to homepage'}
         </button>
       </div>
@@ -209,10 +209,11 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f7f9]">
+    <div className="min-h-screen page-ground">
 
       {/* ── Top stripe (Booking-style) ── */}
-      <div className="bg-[#252a31] text-white">
+      <div className="relative aurora-bg text-white">
+        <div className="absolute inset-x-0 bottom-0 h-px hairline-gold pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 md:px-8 py-6 md:py-8">
           <button onClick={() => step === 1 ? navigate(-1) : setStep(1)}
             className="inline-flex items-center gap-2 text-white/70 hover:text-white text-[12px] font-bold mb-3 transition">
@@ -405,7 +406,7 @@ export default function Checkout() {
                 )}
 
                 <button onClick={handleNextStep}
-                  className="w-full py-4 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] text-white text-[14px] font-black tracking-wide transition active:scale-[0.98] mt-2 flex items-center justify-center gap-2">
+                  className="w-full py-4 rounded-xl bg-[#00a58e] hover:bg-[#009882] text-white text-[14px] font-black tracking-wide transition active:scale-[0.98] mt-2 flex items-center justify-center gap-2">
                   {t('checkout.continueToPayment') || 'Continue to payment'}
                   <ArrowLeft className="w-4 h-4 rotate-180" />
                 </button>
@@ -591,7 +592,7 @@ export default function Checkout() {
 function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
   const fmtPrice = usePriceFormatter();
   return (
-    <div className="min-h-screen bg-[#f5f7f9] flex items-center justify-center px-4 py-20">
+    <div className="min-h-screen page-ground flex items-center justify-center px-4 py-20">
       <div className="max-w-lg w-full page-fade">
         <div className="bg-white border border-[#dfe7ec] rounded-2xl p-8 md:p-10 shadow-float text-center">
           <div className="relative mx-auto mb-5 w-20 h-20">
@@ -627,7 +628,7 @@ function ConfirmationScreen({ booking, total, navigate, traveler, t }) {
 
           <div className="flex flex-col sm:flex-row gap-3">
             <button onClick={() => navigate('/my-bookings')}
-              className="flex-1 py-3.5 rounded-xl bg-[#0172cb] hover:bg-[#015aa3] text-white text-[13px] font-black tracking-wide transition active:scale-95">
+              className="flex-1 py-3.5 rounded-xl bg-[#00a58e] hover:bg-[#009882] text-white text-[13px] font-black tracking-wide transition active:scale-95">
               {t('checkout.myBookings') || 'View my bookings'}
             </button>
             <button onClick={() => navigate('/')}

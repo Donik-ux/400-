@@ -2,6 +2,7 @@ import React from 'react';
 import { Lock } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 import { SUPPORT_EMAIL } from '../config/contact';
+import useSEO from '../hooks/useSEO';
 
 const Section = ({ num, title, children }) => (
   <div className="mb-8">
@@ -15,6 +16,10 @@ const Section = ({ num, title, children }) => (
 
 export default function PrivacyPolicy() {
   const { t } = useTranslation();
+  useSEO({
+    title: 'Privacy Policy',
+    description: 'How MAFTRAVEL collects, uses and protects your personal data when you search, plan and book travel.',
+  });
   return (
     <div className="min-h-screen page-ground py-14 px-4">
       <div className="max-w-3xl mx-auto">

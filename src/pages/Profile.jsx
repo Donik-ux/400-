@@ -15,10 +15,15 @@ import { downloadPlanPdf } from '../utils/planPdf';
 import { heroFor } from '../utils/destinationImages';
 import { toast } from '../components/Toast';
 import { usePriceFormatter } from '../components/Price';
+import useSEO from '../hooks/useSEO';
 
 export default function Profile() {
   const { t } = useTranslation();
   const fmt = usePriceFormatter();
+  useSEO({
+    title: 'My Profile — Account Settings',
+    description: 'Manage your MAFTRAVEL account details, travel documents and saved trip plans.',
+  });
   const user        = useAuthStore(s => s.user);
   const getProfile  = useAuthStore(s => s.getProfile);
   const saveProfile = useAuthStore(s => s.saveProfile);

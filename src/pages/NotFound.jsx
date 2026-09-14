@@ -2,10 +2,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Compass, ArrowLeft, Sparkles, Flame, Plane } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
+import useSEO from '../hooks/useSEO';
 
 const NotFound = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  useSEO({
+    title: 'Page Not Found',
+    description: 'The page you are looking for does not exist or has moved.',
+  });
   return (
     <div className="relative min-h-[70vh] flex items-center justify-center px-4 py-16 overflow-hidden">
       {/* Floating accents */}

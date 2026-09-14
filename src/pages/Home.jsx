@@ -534,40 +534,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-      {/* ─── WHAT YOU GET ──────────────────────────────────────── */}
-      <section className="max-w-6xl mx-auto px-4 md:px-8 py-10">
-        <h2 className="text-[22px] md:text-[28px] font-black tracking-[-0.02em] text-[#252a31]">{t('homePage.promise.heading')}</h2>
-        <p className="text-[14px] text-[#4a5867] font-medium mt-1 mb-6 max-w-2xl">{t('homePage.promise.sub')}</p>
-        {/* One panel divided by hairlines, not four separate cards. The four
-            bodies differ in length by two lines in English and by far more once
-            translated, so the old 2:1 / 1:2 spans left each card stretched to
-            its row-mate's height with the slack showing inside its own border.
-            A shared panel absorbs a ragged bottom edge, and the stage eyebrow
-            gives equal cells the reading order the uneven widths were after. */}
-        <div className="rounded-2xl border border-[#dfe7ec] bg-white overflow-hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {/* No scroll reveal here, unlike the destination mosaic below: these
-              cells re-mount when the language dictionary swaps in, and a
-              re-mount that lands while they are already on screen leaves them
-              stuck at the initial opacity — an empty bordered box. A fade worth
-              250ms is not worth a section that can render blank. */}
-          {promises.map((p, i) => (
-            <div key={i} className={`p-5 border-[#dfe7ec] ${cellEdges(i)}`}>
-              <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-9 h-9 rounded-lg bg-[#e6f6f3] text-[#008f77] flex items-center justify-center shrink-0">
-                  <p.icon className="w-[18px] h-[18px]" aria-hidden="true" />
-                </div>
-                {/* Muted, but not below 4.5:1 on white — it is 10.5px type. */}
-                <span className="text-[10.5px] font-bold uppercase tracking-[0.09em] text-[#5f6b7a] leading-tight">
-                  {p.stage}
-                </span>
-              </div>
-              <h3 className="text-[15px] font-black text-[#252a31] leading-snug mb-1.5 text-balance">{p.title}</h3>
-              <p className="text-[12.5px] text-[#4a5867] font-medium leading-relaxed">{p.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ─── POPULAR DESTINATIONS ──────────────────────────────── */}
       <section className="max-w-6xl mx-auto px-4 md:px-8 py-10">
         <div className="flex items-end justify-between gap-4 mb-5">
@@ -616,6 +582,39 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ─── WHAT YOU GET ──────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-4 md:px-8 py-10">
+        <h2 className="text-[22px] md:text-[28px] font-black tracking-[-0.02em] text-[#252a31]">{t('homePage.promise.heading')}</h2>
+        <p className="text-[14px] text-[#4a5867] font-medium mt-1 mb-6 max-w-2xl">{t('homePage.promise.sub')}</p>
+        {/* One panel divided by hairlines, not four separate cards. The four
+            bodies differ in length by two lines in English and by far more once
+            translated, so the old 2:1 / 1:2 spans left each card stretched to
+            its row-mate's height with the slack showing inside its own border.
+            A shared panel absorbs a ragged bottom edge, and the stage eyebrow
+            gives equal cells the reading order the uneven widths were after. */}
+        <div className="rounded-2xl border border-[#dfe7ec] bg-white overflow-hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          {/* No scroll reveal here, unlike the destination mosaic above: these
+              cells re-mount when the language dictionary swaps in, and a
+              re-mount that lands while they are already on screen leaves them
+              stuck at the initial opacity — an empty bordered box. A fade worth
+              250ms is not worth a section that can render blank. */}
+          {promises.map((p, i) => (
+            <div key={i} className={`p-5 border-[#dfe7ec] ${cellEdges(i)}`}>
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-9 h-9 rounded-lg bg-[#e6f6f3] text-[#008f77] flex items-center justify-center shrink-0">
+                  <p.icon className="w-[18px] h-[18px]" aria-hidden="true" />
+                </div>
+                {/* Muted, but not below 4.5:1 on white — it is 10.5px type. */}
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.09em] text-[#5f6b7a] leading-tight">
+                  {p.stage}
+                </span>
+              </div>
+              <h3 className="text-[15px] font-black text-[#252a31] leading-snug mb-1.5 text-balance">{p.title}</h3>
+              <p className="text-[12.5px] text-[#4a5867] font-medium leading-relaxed">{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* ─── POPULAR FLIGHTS ───────────────────────────────────── */}
       <section className="max-w-6xl mx-auto px-4 md:px-8 py-10">

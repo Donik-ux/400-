@@ -1,6 +1,9 @@
 import { askGrok, isGrokAvailable, extractJson as extractJsonFromText } from './grokClient';
 import { findCity, hotelPhotoFor } from './cityDatabase';
 import { getEmergencyContacts } from './emergencyContacts';
+import { normalizeMustSee, buildMustSee } from './mustSee';
+import { getCoords } from '../data/coords';
+import { plausibleCoord } from '../utils/geoDistance';
 import { getWeatherForDates } from './weatherForecast';
 import { computeHotelProximity, reuseCoordsFrom } from './hotelProximity';
 import { exactPrice, exactPricesInPlan } from '../utils/priceText';
@@ -80,6 +83,30 @@ Use ONLY real, well-known facts and events with real dates — set "upcomingEven
   }
 };
 
+/**
+ * Small standalone AI call for the "popular places to visit" card. This used
+ * to be one more field on the giant itinerary prompt, but a 10-12 item list
+ * with address/coords/price/hours/why for every entry pushed a long trip's
+ * JSON past the server's 6000-token completion cap and silently truncated
+ * the whole plan (see api/aiAsk.js) — moved out here so it can never break
+ * the day-by-day itinerary, the same way fetchCityInfo is kept separate.
+ * The caller already has a non-AI fallback (buildMustSee), so a failure here
+ * just means the card stays with the curated/derived list already showing.
+ */
+export const fetchMustSeePlaces = async ({ destination, lang = 'en' } = {}) => {
+  if (!isGrokAvailable() || !destination) return null;
+  const langName = LANG_MAP[lang]?.target || LANG_MAP[lang]?.name || 'English';
+  const prompt = `Return ONLY a JSON object {"places": [...]} listing the 10-12 MOST POPULAR, most visited real places to visit in ${destination} (landmarks, museums, palaces, viewpoints, parks, markets, old town, waterfront, famous mosque/cathedral/temple). For EACH give: "name" (real place name), "address" (real street address), "district" (neighbourhood), "lat", "lng" (real numeric coordinates), "entryPrice" (ONE exact adult ticket price in local currency, e.g. "€26", "₺200", "AED 169" — where a site charges foreign visitors a separate tariff, give that price; "Free" ONLY when entry is genuinely free), "hours" (typical opening hours, e.g. "09:00–18:00, closed Mon"), "why" (one short sentence on why it's worth visiting), "type" (one of: attraction, museum, nature, leisure, shopping). Use real, current, accurate information — do not invent places or prices.${lang !== 'en' ? ` Write "why" in ${langName}; keep place names/addresses in their official local form (you MAY add a ${langName} translation in parentheses).` : ''}`;
+  try {
+    const raw = await askGrok(prompt, { temperature: 0.4, json: true, maxTokens: 2500, timeoutMs: 25000 });
+    const parsed = extractJson(raw);
+    const places = normalizeMustSee(parsed?.places);
+    return places.length ? places : null;
+  } catch {
+    return null;
+  }
+};
+
 const WEEKDAY_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTH_LONG   = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -129,6 +156,20 @@ const weatherPromptBlock = (weatherByDate) => {
 const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose, weatherByDate }) => {
   const rawDays = Array.isArray(parsed?.days) ? parsed.days : [];
 
+  // Guard against a hallucinated lat/lng: a plausible-looking number for the
+  // wrong city (or a transposed digit) would otherwise pin every "Map" link
+  // built from coordinates (see utils/mapsUrl.js) far from the real address
+  // that sits right next to it. Checked against the destination's known
+  // centre when we have one; skipped (coordinate trusted as given) when we
+  // don't, rather than discarding a good pin for lack of a reference.
+  const cityCenter = getCoords(destination) || null;
+  const coord = (v) => (v === null || v === undefined || v === '' || !Number.isFinite(Number(v)) ? undefined : Number(v));
+  const safeCoord = (rawLat, rawLng) => {
+    const lat = coord(rawLat);
+    const lng = coord(rawLng);
+    return (cityCenter && !plausibleCoord(lat, lng, cityCenter)) ? { lat: undefined, lng: undefined } : { lat, lng };
+  };
+
   const days = [];
   const startD = startDate ? new Date(startDate) : null;
   const lastD  = startD ? new Date(startD) : null;
@@ -171,8 +212,7 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
         type:      ev.type     || 'attraction',
         halalNote: ev.halalNote || '',
         transportToNext: ev.transportToNext || ev.nextTransport || '',
-        lat:       Number(ev.lat) || undefined,
-        lng:       Number(ev.lng) || undefined,
+        ...safeCoord(ev.lat, ev.lng),
       };
     }) : [];
 
@@ -183,8 +223,7 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
           address: src.hotel.address || '',
           area:    src.hotel.area    || '',
           price:   src.hotel.price   || src.hotel.pricePerNight || '',
-          lat:     Number(src.hotel.lat) || undefined,
-          lng:     Number(src.hotel.lng) || undefined,
+          ...safeCoord(src.hotel.lat, src.hotel.lng),
         }
       : null;
 
@@ -198,17 +237,13 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
 
     const cleanRestaurant = (r) => {
       if (!r || typeof r !== 'object') return null;
-      // Latitude 0 is a real place, so test the value rather than its truthiness.
-      const coord = (v) => (v === null || v === undefined || v === '' || !Number.isFinite(Number(v))
-        ? undefined : Number(v));
       return {
         name:     r.name     || 'Local Halal Restaurant 🥩',
         address:  r.address  || 'Ask hotel reception for the nearest halal spot',
         avgPrice: r.avgPrice || '$15',
         cuisine:  r.cuisine  || 'Local halal',
         note:     r.note     || '100% halal, no pork, no alcohol',
-        lat: coord(r.lat),
-        lng: coord(r.lng),
+        ...safeCoord(r.lat, r.lng),
       };
     };
 
@@ -260,8 +295,7 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
         area:    parsed.hotel.area    || '',
         price:   parsed.hotel.price   || parsed.hotel.pricePerNight || '',
         stars:   parsed.hotel.stars   || '',
-        lat:     Number(parsed.hotel.lat) || undefined,
-        lng:     Number(parsed.hotel.lng) || undefined,
+        ...safeCoord(parsed.hotel.lat, parsed.hotel.lng),
         whyHere: parsed.hotel.whyHere || '',
       }
     : days.find(d => d.hotel)?.hotel || null;
@@ -307,6 +341,7 @@ const normalizeAiPlan = (parsed, { numDays, dailyBudget, startDate, destination,
     transportSuggestion: parsed?.transportSuggestion || '',
     travelTips:          Array.isArray(parsed?.travelTips) ? parsed.travelTips.filter(Boolean).slice(0, 6) : [],
     halalFoodGuide:      parsed?.halalFoodGuide || '',
+    mustSee:             normalizeMustSee(parsed?.mustSee),
     emergency,
   };
 };
@@ -436,7 +471,8 @@ CRITICAL RULES — FOLLOW EXACTLY:
 6. EVERY single event MUST include its own price — never omit it. Fields per event: time (HH:MM 24-hour), duration ("1.5 hours"), price in LOCAL currency ("€15", "₺200", "AED 50", "Free"), and type (one of: flight, transport, hotel, attraction, museum, food, nature, shopping, leisure, rest). Only genuinely free things (parks, walks, viewpoints) may say "Free" — flights, hotels, taxis and meals are NEVER "Free".
 6a. PRICES MUST BE ONE EXACT FIGURE — never a range, never a "~" or "approx". Write "€15", NOT "€10–20"; "$420", NOT "$300–500"; "₺250", NOT "₺200-300". A traveler adds these up into a daily total, and a range cannot be added up. Where the real price genuinely varies (a taxi, a meal), give the single most likely amount a visitor pays on an ordinary day, not the cheapest and not the most expensive.
 7. Day 1 = arrival flight from ${fromCity || 'home city'} with one realistic round-trip ticket price (e.g. "$420" — a single figure, not a range), airport transfer to hotel (with real airport name + hotel name + transport cost), hotel check-in (price = the nightly rate), light dinner. Day ${numDays} = packing + transfer to airport + departure flight to ${returnCity || fromCity || 'home city'}.
-8. Middle days = 6–8 events each (more places to visit). If special day, add label like "(Shopping Day)", "(Day Trip to X)", "(Free Day)".
+8. COVER THE POPULAR HIGHLIGHTS — before adding hidden gems, identify the most famous and most visited attractions in ${destination} and include the important ones in the itinerary: landmark, historic site, signature museum, viewpoint, market/old town and a major park or waterfront when they exist. Do not repeat the same attraction. Every middle day must contain at least 2–3 headline attractions from different parts of the city when travel time allows; use nearby clusters so the route remains realistic.
+8a. Middle days = 7–9 concise events each, with 2–3 of them being the city's best-known attractions. Arrival and departure days = 4–5 events each when the flight schedule allows. If special day, add label like "(Shopping Day)", "(Day Trip to X)", "(Free Day)". Do not fill the count with generic walks, unnamed streets, rest blocks or duplicate viewpoints.
 9. Respect budget: daily ~$${dailyBudget}, food ~$${mealBudget}/day. Choose ${style}-tier experiences. Every individual event price MUST fit the tier above. Sum of all event prices for a day SHOULD NOT exceed daily budget.
 10. Return ONLY a single valid JSON object — no markdown, no code fences, no commentary.
 11. Include a top-level "cityInfo" object: "about" is 3-4 sentences of real history — founding period/age (e.g. "founded in the 8th century", "over 2,000 years old"), what the city/place is historically known for, and roughly how many/what kind of major attractions it has. "currentHappenings" is 1-2 sentences on what's currently relevant there right now — the current season's appeal, any recurring festival/event around ${startStr}, or what the city is known for today. Use real, factual information — do not invent fake events or statistics.
@@ -514,7 +550,7 @@ Return EXACTLY this JSON shape:
   "halalFoodGuide": "2-3 sentences on finding halal food in ${destination}"
 }
 
-Return EXACTLY ${numDays} day objects in "days". Each "events" array should have 5–7 items for middle days, 3–4 for arrival/departure days.
+Return EXACTLY ${numDays} day objects in "days". Each middle-day "events" array should have 7–9 items, including 2–3 famous headline attractions; arrival/departure days should have 4–5 practical or sightseeing items when the flight schedule allows. Keep every item real, addressable and within the daily budget.
 Every event MUST have "address" (real street+postal), "lat"/"lng" (real numeric coordinates) and "transportToNext" (except the last event of a day).`;
 
   // Size the completion budget to the trip length — a flat cap either
@@ -527,11 +563,14 @@ Every event MUST have "address" (real street+postal), "lat"/"lng" (real numeric 
   // Sized to fit under the account's per-minute token budget alongside a long
   // prompt: asking for more than a minute's worth is refused outright rather
   // than answered shortly. api/aiAsk.js caps this again on the server.
-  const maxTokens = Math.min(5500, 1200 + numDays * 700);
+  const maxTokens = Math.min(6000, 1200 + numDays * 800);
 
   let parseErr;
   try {
-    const rawText = await askGrok(prompt, { apiKey, model, temperature: 0.7, json: true, maxTokens });
+    // 45s, not the 35s default: this prompt is the largest one this app sends
+    // (a full multi-day itinerary), and gpt-oss spends part of its budget
+    // reasoning before writing — the same headroom refinePlan already uses.
+    const rawText = await askGrok(prompt, { apiKey, model, temperature: 0.7, json: true, maxTokens, timeoutMs: 45000 });
     const parsed = extractJson(rawText);
     const normalized = normalizeAiPlan(parsed, { numDays, dailyBudget, startDate, destination, fromCity, returnCity, purpose, weatherByDate });
 
@@ -595,6 +634,9 @@ Every event MUST have "address" (real street+postal), "lat"/"lng" (real numeric 
       transportSuggestion: normalized.transportSuggestion || (cityData?.transport?.[style] ?? 'Walk where possible; use public transit for longer distances.'),
       travelTips:          normalized.travelTips.length ? normalized.travelTips : (cityData?.tips ?? []),
       halalFoodGuide:      normalized.halalFoodGuide,
+      // Popular places + entry prices: the model's list first, topped up from
+      // the curated table and the itinerary's own priced sights.
+      mustSee:             buildMustSee({ destination, days: canonicalDays, aiList: normalized.mustSee }),
       emergency:           normalized.emergency,
       transportMode,
       navApps:             NAV_APPS[transportMode] || NAV_APPS.walking,

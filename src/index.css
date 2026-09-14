@@ -268,6 +268,17 @@ button, a, input, select, textarea {
   body::before, body::after {
     display: none;
   }
+
+  /* Keep the mobile canvas visibly branded even when the heavier ambient
+     layers are disabled for pinch-zoom stability. */
+  .page-backdrop__ground {
+    background-image:
+      radial-gradient(rgba(37, 42, 49, 0.045) 1px, transparent 1px),
+      radial-gradient(70% 42% at 0% 0%, rgba(0, 165, 142, 0.12), transparent 72%),
+      radial-gradient(72% 44% at 100% 100%, rgba(1, 114, 203, 0.10), transparent 74%),
+      linear-gradient(145deg, #f9fbfc 0%, #eef5f6 48%, #e7eef3 100%);
+    background-size: 24px 24px, 100% 100%, 100% 100%, 100% 100%;
+  }
 }
 
 /* Dark glass (navy surfaces) */

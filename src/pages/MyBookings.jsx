@@ -45,9 +45,9 @@ export default function MyBookings() {
   const [search, setSearch] = useState('');
 
   useSEO({
-    title: 'My Trip Plans — Saved Journeys',
-    description: 'All your saved trip plans and booking history with MAFTRAVEL — free planning, no payment.',
-    keywords: ['my plans', 'trip history', 'saved trips'],
+    title: 'My Bookings — Booking History',
+    description: 'Your flight, tour and hotel booking history with MAFTRAVEL, with status and confirmation details.',
+    keywords: ['my bookings', 'booking history', 'confirmed bookings'],
   });
 
   const STATUS = STATUS_META(t);

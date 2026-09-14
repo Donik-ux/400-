@@ -21,7 +21,7 @@
   "screenshots": [],
   "shortcuts": [
     { "name": "Search Flights", "short_name": "Flights", "description": "Search for cheap flights", "url": "/flights", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
-    { "name": "Travel Packages", "short_name": "Packages", "description": "Browse travel packages", "url": "/packages", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
+    { "name": "Exotic Tours", "short_name": "Tours", "description": "Browse exotic tour packages", "url": "/exotic-tours", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
     { "name": "AI Planner", "short_name": "Planner", "description": "Plan your trip with AI", "url": "/planner", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] }
   ]
 }

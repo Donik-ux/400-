@@ -88,10 +88,25 @@ export const askGrok = async (prompt, opts = {}) => {
     if (!res.ok || !data?.text) {
       const err = new Error(data?.error || `AI proxy ${res.status}`);
       err.status = res.status;
-      if (res.status === 429) err.retryAfterMs = 8000;
+      if (res.status === 429) {
+        const retryAfterSec = Number(res.headers?.get?.('Retry-After'));
+        err.retryAfterMs = Number.isFinite(retryAfterSec) && retryAfterSec > 0
+          ? Math.min(15_000, retryAfterSec * 1000) : 8000;
+      }
       throw err;
     }
     return data.text;
+  } catch (err) {
+    // A shared account-wide rate limit is easy to hit when several AI calls
+    // (planner, refine, city info, must-see) land close together — one wait
+    // and retry recovers most of these instead of silently dropping to the
+    // lower-quality offline template.
+    if (err?.status === 429 && !opts._retriedRateLimit && !opts.signal?.aborted) {
+      await new Promise((r) => setTimeout(r, err.retryAfterMs || 8000));
+      if (opts.signal?.aborted) throw err;
+      return askGrok(prompt, { ...opts, _retriedRateLimit: true });
+    }
+    throw err;
   } finally {
     clearTimeout(timer);
   }

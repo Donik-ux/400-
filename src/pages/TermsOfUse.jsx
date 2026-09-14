@@ -2,6 +2,7 @@ import React from 'react';
 import { Shield } from 'lucide-react';
 import { useTranslation } from '../store/useLangStore';
 import { SUPPORT_EMAIL } from '../config/contact';
+import useSEO from '../hooks/useSEO';
 
 const Section = ({ num, title, children }) => (
   <div className="mb-8">
@@ -15,6 +16,10 @@ const Section = ({ num, title, children }) => (
 
 export default function TermsOfUse() {
   const { t } = useTranslation();
+  useSEO({
+    title: 'Terms of Use',
+    description: 'The terms and conditions for using MAFTRAVEL to search, plan and book flights, tours and trips.',
+  });
   return (
     <div className="min-h-screen page-ground py-14 px-4">
       <div className="max-w-3xl mx-auto">

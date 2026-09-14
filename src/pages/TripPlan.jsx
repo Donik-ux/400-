@@ -6,12 +6,12 @@ import {
   Activity, ShoppingBag, Wallet, Printer, Share2, Save, Download, Clock, Heart,
   Check, Map as MapIcon, AlertCircle, Star, Lightbulb, Phone, ShieldAlert, RefreshCcw,
   Navigation, ExternalLink, ArrowRight, UserPlus, X, Landmark, PartyPopper,
-  Compass, Plug, Smartphone, HandCoins, Droplets, Shirt, Moon, Footprints,
+  Compass, Plug, Smartphone, HandCoins, Droplets, Shirt, Moon, Footprints, Ticket, Car, Globe,
 } from 'lucide-react';
 import { mapsUrlFor, mapsUrlFromAddress, dayMapsUrl } from '../utils/mapsUrl';
 import useAuthStore from '../store/useAuthStore';
 import useAdminStore from '../store/useAdminStore';
-import { generateAiItinerary, isAiAvailable, fetchCityInfo, fetchTripWeather, refinePlan } from '../services/aiPlannerService';
+import { generateAiItinerary, isAiAvailable, fetchCityInfo, fetchMustSeePlaces, fetchTripWeather, refinePlan } from '../services/aiPlannerService';
 import { countryBrief } from '../services/travelServicesService';
 import { generateItinerary } from '../services/plannerService';
 import { fetchTripFlights, applyFlightPricing } from '../services/tripFlightPricing';
@@ -23,6 +23,8 @@ import FlightsCard from '../features/trip/FlightsCard';
 import DepartureDates from '../features/planner/DepartureDates';
 import { localizePlan } from '../services/localizePlan';
 import { getEmergencyContacts } from '../services/emergencyContacts';
+import { getCarRentals } from '../services/carRentals';
+import { buildMustSee, entryPriceKind } from '../services/mustSee';
 import { heroFor } from '../utils/destinationImages';
 import { toast } from '../components/Toast';
 import SmartImage from '../components/SmartImage';
@@ -34,6 +36,32 @@ import useSEO from '../hooks/useSEO';
 import { findCity } from '../services/cityDatabase';
 
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) : '—';
+
+/* ── Session-local cache for a generated plan ──────────────────────────
+   A full AI generation costs 10-30s and a real slice of the account's
+   Groq quota (see api/aiAsk.js). Landing back on the same trip — the browser
+   back button, a refresh, re-opening the same destination from Home — used to
+   re-run the whole thing from scratch every time, for a plan that would come
+   back identical. Cached for the tab's session only (not localStorage): the
+   next genuinely new request for the same route should still generate fresh,
+   not resurrect something from days ago. */
+const TRIP_PLAN_CACHE_TTL_MS = 20 * 60 * 1000;
+const tripPlanCacheKey = (params) => `mafTripPlan:${JSON.stringify([
+  params.destination, params.days, params.budget, params.style,
+  params.startDate, params.fromCity, params.returnCity, params.purpose, params.lang,
+])}`;
+const readTripPlanCache = (key) => {
+  try {
+    const raw = sessionStorage.getItem(key);
+    if (!raw) return null;
+    const { ts, plan } = JSON.parse(raw);
+    if (!plan || !Number.isFinite(ts) || Date.now() - ts > TRIP_PLAN_CACHE_TTL_MS) return null;
+    return plan;
+  } catch { return null; }
+};
+const writeTripPlanCache = (key, plan) => {
+  try { sessionStorage.setItem(key, JSON.stringify({ ts: Date.now(), plan })); } catch { /* storage full/disabled — cache is best-effort */ }
+};
 
 // Lightweight {placeholder} interpolation on top of the plain t() lookup.
 const fill = (str, vars = {}) =>
@@ -117,8 +145,17 @@ export default function TripPlan() {
   const [refineText, setRefineText] = useState('');
   const [refining,   setRefining]   = useState(false);
   const [prevPlan,   setPrevPlan]   = useState(null);
+  const [showAllPlaces, setShowAllPlaces] = useState(false);
   const [brief,      setBrief]      = useState(null);
   const [guestBannerDismissed, setGuestBannerDismissed] = useState(false);
+
+  // Identifies the most recent runGenerate call so a slower, superseded one
+  // (a rapid regenerate click, a language switch that fires mid-request, or
+  // the component unmounting) can tell its own result is stale and skip every
+  // setState instead of silently clobbering a newer plan or a real fare with
+  // a leftover budget guess. Set to -1 on unmount so nothing lands after that.
+  const requestIdRef = useRef(0);
+  useEffect(() => () => { requestIdRef.current = -1; }, []);
 
   // Not signed in at all, or only ever used "continue as guest" — either way
   // this plan lives in localStorage only and won't survive a cache clear.
@@ -213,8 +250,16 @@ export default function TripPlan() {
     setPrevPlan(null);
   };
 
-  const runGenerate = async (startDateOverride = travelDate) => {
+  const runGenerate = async (startDateOverride = travelDate, { forceFresh = false } = {}) => {
     if (!itemWithHero || loading || refining) return;  // guard: no item OR already generating/refining
+    // A caller passed as a bare event handler (`onClick={runGenerate}`) hands
+    // this the click's SyntheticEvent instead of a date — `new Date(event)`
+    // is a silently-truthy Invalid Date, which used to blank out every day's
+    // weekday/date/weather on a manual Regenerate. Only a real date string
+    // is trusted; anything else falls back to the date already on screen.
+    const effectiveStartDate = typeof startDateOverride === 'string' ? startDateOverride : travelDate;
+    const myRequestId = ++requestIdRef.current;
+    const isStale = () => requestIdRef.current !== myRequestId;
     setLoading(true);
     setError(null);
     setPrevPlan(null);
@@ -228,10 +273,25 @@ export default function TripPlan() {
         style:       itemWithHero.category || itemWithHero.style || 'standard',
         interests:   ['culture','food','sightseeing'],
         transportMode: 'walking',
-        startDate:   startDateOverride,
+        startDate:   effectiveStartDate,
         purpose,
         lang,
       };
+
+      // Landing back on the same trip (refresh, browser back, re-opening it
+      // from Home/My Plans) shouldn't re-run a 10-30s AI call for a plan that
+      // would come back identical. A manual "Regenerate" click always wants a
+      // genuinely new attempt, so it skips the cache.
+      const cacheKey = tripPlanCacheKey(params);
+      if (!forceFresh) {
+        const cached = readTripPlanCache(cacheKey);
+        if (cached) {
+          setPlan(cached);
+          setLoading(false);
+          return;
+        }
+      }
+
       let result;
       if (isAiAvailable()) {
         try { result = await generateAiItinerary(params); }
@@ -248,10 +308,10 @@ export default function TripPlan() {
       }
       // Template-fallback plans have no per-day weather — attach the same real
       // Open-Meteo data the AI path uses so the day chips render either way.
-      if (travelDate && Array.isArray(result?.days) && !result.days.some((d) => d.weather)) {
-        const wx = await fetchTripWeather(params.destination, travelDate, result.days.length);
+      if (effectiveStartDate && Array.isArray(result?.days) && !result.days.some((d) => d.weather)) {
+        const wx = await fetchTripWeather(params.destination, effectiveStartDate, result.days.length);
         if (wx) {
-          const start = new Date(travelDate);
+          const start = new Date(effectiveStartDate);
           const pad = (n) => String(n).padStart(2, '0');
           result.days.forEach((d, i) => {
             const dd = new Date(start);
@@ -265,12 +325,18 @@ export default function TripPlan() {
       if (!result.header) {
         result.header = {
           title:   `Travel Plan – ${itemWithHero.destination || itemWithHero.name}`,
-          dates:   travelDate ? new Date(travelDate).toDateString() : `${params.days} days`,
+          dates:   effectiveStartDate ? new Date(effectiveStartDate).toDateString() : `${params.days} days`,
           route:   fromCity ? `${fromCity} → ${itemWithHero.destination || itemWithHero.name} → ${returnToState || fromCity}` : (itemWithHero.destination || itemWithHero.name),
           purpose,
         };
       }
+      // A slower request that a newer one (rapid regenerate, a language
+      // switch mid-flight, or leaving the page) has already superseded must
+      // not land its plan over the current one, or the flight/hotel calls
+      // below would end up enriching a plan the user is no longer looking at.
+      if (isStale()) return;
       setPlan(result);
+      writeTripPlanCache(cacheKey, result);
 
       // Real airfare for the route, resolved after the plan renders so a slow
       // or unconfigured flight API never delays the itinerary. Replaces the
@@ -280,16 +346,21 @@ export default function TripPlan() {
         fromCity,
         destination: params.destination,
         returnCity:  returnToState,
-        startDate:   travelDate,
+        startDate:   effectiveStartDate,
         days:        params.days,
         travelers,
         style:       params.style,
       }).then((flights) => {
-        if (!flights) return;
-        setPlan((p) => (p ? applyFlightPricing(p, flights, {
-          fmt,
-          includedLabel: t('tripPlan.flights.includedInTicket'),
-        }) : p));
+        if (!flights || isStale()) return;
+        setPlan((p) => {
+          if (!p) return p;
+          const next = applyFlightPricing(p, flights, {
+            fmt,
+            includedLabel: t('tripPlan.flights.includedInTicket'),
+          });
+          writeTripPlanCache(cacheKey, next);
+          return next;
+        });
       }).catch((e) => console.warn('Trip flight pricing failed:', e.message));
 
       // Swap the model's invented hotel for a real, priced one that actually
@@ -300,7 +371,7 @@ export default function TripPlan() {
         findHotelNearAttractions({
           destination: params.destination,
           days:        result.days,
-          startDate:   travelDate,
+          startDate:   effectiveStartDate,
           nights:      Math.max(1, params.days - 1),
           travelers,
           style:       params.style,
@@ -308,22 +379,50 @@ export default function TripPlan() {
             ? Math.round((result.budgetBreakdown.accommodation / (params.days - 1)) * 1.4)
             : undefined,
         }).then((hotel) => {
-          if (!hotel) return;
-          setPlan((p) => (p && !p.hotel?.recommended ? applyHotelChoice(p, hotel) : p));
+          if (!hotel || isStale()) return;
+          setPlan((p) => {
+            if (!p || p.hotel?.recommended) return p;
+            const next = applyHotelChoice(p, hotel);
+            writeTripPlanCache(cacheKey, next);
+            return next;
+          });
         }).catch((e) => console.warn('Hotel proximity search failed:', e.message));
       }
 
       // Template fallback has no city info — try a much smaller standalone AI
       // call for it (often fits even when the full plan call was rate-limited).
       if (!result.cityInfo && isAiAvailable()) {
-        fetchCityInfo({ destination: params.destination, startDate: travelDate, lang }).then((cityInfo) => {
-          if (cityInfo) setPlan((p) => (p && !p.cityInfo ? { ...p, cityInfo } : p));
+        fetchCityInfo({ destination: params.destination, startDate: effectiveStartDate, lang }).then((cityInfo) => {
+          if (!cityInfo || isStale()) return;
+          setPlan((p) => {
+            if (!p || p.cityInfo) return p;
+            const next = { ...p, cityInfo };
+            writeTripPlanCache(cacheKey, next);
+            return next;
+          });
+        });
+      }
+
+      // "Popular places to visit" starts filled from the curated table (see
+      // mustSee.js), then upgrades to the model's own list — real hours,
+      // foreign-visitor ticket prices, a reason to go — once this small,
+      // separate call resolves. Kept off the main prompt so it can never
+      // truncate the day-by-day itinerary (see fetchMustSeePlaces).
+      if (isAiAvailable()) {
+        fetchMustSeePlaces({ destination: params.destination, lang }).then((places) => {
+          if (!places || isStale()) return;
+          setPlan((p) => {
+            if (!p) return p;
+            const next = { ...p, mustSee: buildMustSee({ destination: params.destination, days: p.days, aiList: places }) };
+            writeTripPlanCache(cacheKey, next);
+            return next;
+          });
         });
       }
     } catch {
-      setError(t('tripPlan.genericError'));
+      if (!isStale()) setError(t('tripPlan.genericError'));
     } finally {
-      setLoading(false);
+      if (!isStale()) setLoading(false);
     }
   };
 
@@ -331,6 +430,14 @@ export default function TripPlan() {
      destination so a search for THEM can also surface this plan page. ── */
   const destName = item?.destination || item?.name || '';
   const cityData  = useMemo(() => findCity(destName), [destName]);
+  // Popular places + entry prices. Plans saved by an older build carry no
+  // `mustSee`, so derive one from the curated table and the plan's own
+  // priced sights rather than hiding the card for them.
+  const mustSee = useMemo(() => {
+    if (!plan) return [];
+    return plan.mustSee?.length ? plan.mustSee : buildMustSee({ destination: destName, days: plan.days });
+  }, [plan, destName]);
+  const carRental = useMemo(() => (destName ? getCarRentals(destName) : null), [destName]);
   const partnerNames = useMemo(() => {
     const names = [];
     if (plan?.hotel?.recommended && plan.hotel.name) names.push(plan.hotel.name);
@@ -550,6 +657,75 @@ export default function TripPlan() {
                 )}
               </div>
             )}
+
+            {/* ── Popular places to visit + entrance price ── */}
+            {plan && mustSee.length > 0 && (() => {
+              const LIMIT = 6;
+              const visible = showAllPlaces ? mustSee : mustSee.slice(0, LIMIT);
+              return (
+                <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 shadow-soft">
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
+                    <div className="w-9 h-9 rounded-xl bg-[#e6f6f3] flex items-center justify-center text-[#008f77] shrink-0">
+                      <Ticket className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-[16px] font-black text-[#252a31]">
+                        {fill(t('tripPlan.mustSee.title'), { destination: destName })}
+                      </h3>
+                      <p className="text-[11px] text-[#697d95] font-bold uppercase tracking-widest">
+                        {t('tripPlan.mustSee.sub')}
+                      </p>
+                    </div>
+                  </div>
+                  <ol className="grid sm:grid-cols-2 gap-2.5">
+                    {visible.map((p, i) => {
+                      const kind = entryPriceKind(p.entryPrice);
+                      const href = (Number.isFinite(p.lat) && Number.isFinite(p.lng))
+                        ? mapsUrlFor(p) : mapsUrlFromAddress(p.address || `${p.name}, ${destName}`);
+                      return (
+                        <li key={`${p.name}-${i}`}
+                          className="flex items-start gap-3 p-3 rounded-xl bg-[#eef2f5] border border-[#dfe7ec]">
+                          <span className="w-7 h-7 rounded-lg bg-white border border-[#dfe7ec] flex items-center justify-center text-[12px] font-black text-[#0172cb] shrink-0 tabular-nums">
+                            {i + 1}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-[13.5px] font-black text-[#252a31] leading-snug">{p.name}</div>
+                            {(p.district || p.hours) && (
+                              <div className="text-[11px] text-[#697d95] font-semibold mt-0.5 truncate">
+                                {[p.district, p.hours].filter(Boolean).join(' · ')}
+                              </div>
+                            )}
+                            {p.why && <p className="text-[12px] text-[#4a5867] font-medium mt-1 leading-snug">{p.why}</p>}
+                            <div className="flex items-center gap-2 mt-2 flex-wrap">
+                              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11.5px] font-black tabular-nums ${
+                                kind === 'free' ? 'bg-[#e6f6f3] text-[#007f6d]'
+                                  : kind === 'paid' ? 'bg-white border border-[#dfe7ec] text-[#252a31]'
+                                  : 'bg-white border border-dashed border-[#c9d3dc] text-[#697d95]'}`}>
+                                <Ticket className="w-3 h-3" />
+                                {kind === 'free' ? t('tripPlan.mustSee.free')
+                                  : kind === 'paid' ? `${t('tripPlan.mustSee.entry')} ${p.entryPrice}`
+                                  : t('tripPlan.mustSee.checkOnSite')}
+                              </span>
+                              <a href={href} target="_blank" rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[11.5px] font-black text-[#0172cb] hover:underline">
+                                <MapPin className="w-3 h-3" /> {t('tripPlan.mustSee.map')}
+                              </a>
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                  {mustSee.length > LIMIT && (
+                    <button type="button" onClick={() => setShowAllPlaces(v => !v)}
+                      className="mt-3 text-[12.5px] font-black text-[#0172cb] hover:underline">
+                      {showAllPlaces ? t('tripPlan.mustSee.showLess') : fill(t('tripPlan.mustSee.showAll'), { count: mustSee.length })}
+                    </button>
+                  )}
+                  <p className="mt-3 text-[10.5px] text-[#8fa1b3] font-semibold">{t('tripPlan.mustSee.disclaimer')}</p>
+                </div>
+              );
+            })()}
 
             {/* ── Route map ── */}
             {(() => {
@@ -857,7 +1033,7 @@ export default function TripPlan() {
               {error && (
                 <div className="p-4 rounded-xl note-danger text-danger text-[13px] font-semibold flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" /> {error}
-                  <button onClick={runGenerate} className="ml-auto text-[12px] font-black underline">{t('tripPlan.retry')}</button>
+                  <button onClick={() => runGenerate()} className="ml-auto text-[12px] font-black underline">{t('tripPlan.retry')}</button>
                 </div>
               )}
 
@@ -1171,6 +1347,70 @@ export default function TripPlan() {
               </div>
             )}
 
+            {/* ── Car rental: official companies' reservation desks ── */}
+            {plan && carRental && (
+              <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 shadow-soft">
+                <div className="flex items-center gap-2 mb-3 flex-wrap">
+                  <div className="w-9 h-9 rounded-xl bg-[#e8f4fd] flex items-center justify-center text-[#0172cb] shrink-0">
+                    <Car className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-[16px] font-black text-[#252a31]">
+                      {fill(t('tripPlan.carRental.title'), { country: carRental.country || destName })} {carRental.flag}
+                    </h3>
+                    <p className="text-[11px] text-[#697d95] font-bold uppercase tracking-widest">
+                      {t('tripPlan.carRental.sub')}
+                    </p>
+                  </div>
+                </div>
+                {carRental.notice && (
+                  <div className="mb-3 p-3 rounded-xl note-warn text-[12px] text-[#7c4a00] font-semibold flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                    <p>{carRental.notice}</p>
+                  </div>
+                )}
+                <div className="grid sm:grid-cols-2 gap-2.5">
+                  {carRental.companies.map((c, i) => (
+                    <div key={`${c.company}-${i}`}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-[#eef2f5] border border-[#dfe7ec]">
+                      <div className="w-9 h-9 rounded-lg bg-white border border-[#dfe7ec] flex items-center justify-center text-[18px] shrink-0">🚗</div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-[12px] font-black text-[#697d95] uppercase tracking-wider truncate">{c.company}</div>
+                        {c.phone ? (
+                          <a href={`tel:${String(c.phone).replace(/[^\d+]/g, '')}`}
+                            className="block text-[15px] font-black text-[#252a31] tabular-nums hover:text-[#0172cb]">
+                            {c.displayPhone || c.phone}
+                          </a>
+                        ) : (
+                          <div className="text-[13px] font-black text-[#252a31]">{c.displayPhone || t('tripPlan.carRental.airportDesk')}</div>
+                        )}
+                        {c.note && <div className="text-[10.5px] text-[#4a5867] font-semibold truncate">{c.note}</div>}
+                        <div className="flex items-center gap-3 mt-1">
+                          {c.phone && (
+                            <a href={`tel:${String(c.phone).replace(/[^\d+]/g, '')}`}
+                              className="inline-flex items-center gap-1 text-[11.5px] font-black text-[#0172cb] hover:underline">
+                              <Phone className="w-3 h-3" /> {t('tripPlan.carRental.call')}
+                            </a>
+                          )}
+                          {c.site && (
+                            <a href={c.site} target="_blank" rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-[11.5px] font-black text-[#0172cb] hover:underline">
+                              <Globe className="w-3 h-3" /> {t('tripPlan.carRental.site')}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3 p-3 rounded-xl bg-[#e8f4fd] text-[12px] text-[#252a31] font-semibold flex items-start gap-2">
+                  <Lightbulb className="w-4 h-4 mt-0.5 shrink-0 text-[#0172cb]" />
+                  <p>{t('tripPlan.carRental.licenseNote')}</p>
+                </div>
+                <p className="mt-2 text-[10.5px] text-[#8fa1b3] font-semibold">{t('tripPlan.carRental.disclaimer')}</p>
+              </div>
+            )}
+
             {/* Travel tips */}
             {plan?.travelTips?.length > 0 && (
               <div className="bg-white border border-[#dfe7ec] rounded-2xl p-5 shadow-soft">
@@ -1309,7 +1549,7 @@ export default function TripPlan() {
                   </div>
                 )}
 
-                <button onClick={runGenerate} disabled={loading || refining}
+                <button onClick={() => runGenerate(travelDate, { forceFresh: true })} disabled={loading || refining}
                   className="w-full py-2.5 rounded-xl bg-[#e8f4fd] hover:bg-[#d6ebfb] text-[#0172cb] text-[12px] font-black transition active:scale-95 flex items-center justify-center gap-1.5 disabled:opacity-50">
                   <Sparkles className="w-3.5 h-3.5" /> {loading ? t('tripPlan.regenerating') : t('tripPlan.regenerate')}
                 </button>
@@ -1361,6 +1601,13 @@ function buildShareText({ item, plan, travelDate, travelers, fmt }) {
     ...(plan?.days || []).slice(0, 12).map(d =>
       `  D${d.day} · ${d.title || d.place || 'Day plan'}${d.cost ? ` (est. ${fmt(d.cost)})` : ''}`
     ),
+    ...(plan?.mustSee?.length ? [
+      '',
+      'Popular places & entry prices:',
+      ...plan.mustSee.slice(0, 8).map(p =>
+        `  • ${p.name} — ${entryPriceKind(p.entryPrice) === 'free' ? 'free' : (p.entryPrice || 'ticket at the door')}`
+      ),
+    ] : []),
     '',
     'Plan built with MAFTRAVEL — https://maftravel.com',
   ];
@@ -1432,6 +1679,27 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
       ${plan.emergency.tips?.length ? `<p class="muted">${plan.emergency.tips.map(escapeHtml).join(' · ')}</p>` : ''}`
     : '';
 
+  const places = plan?.mustSee?.length ? plan.mustSee : buildMustSee({ destination: item.destination || item.name, days: plan?.days });
+  const mustSeeBlock = places.length
+    ? `<h2>🎟️ Popular places to visit — entry prices</h2>
+       <ol class="places">${places.map(p =>
+        `<li><strong>${escapeHtml(p.name)}</strong>${p.district ? ` · ${escapeHtml(p.district)}` : ''} — <span class="cost">${
+          entryPriceKind(p.entryPrice) === 'free' ? 'Free entry' : entryPriceKind(p.entryPrice) === 'paid' ? `Entry ${escapeHtml(p.entryPrice)}` : 'ticket price at the door'
+        }</span>${p.hours ? ` <span class="muted">(${escapeHtml(p.hours)})</span>` : ''}${p.address ? `<br><span class="addr">📍 ${escapeHtml(p.address)}</span>` : ''}</li>`
+      ).join('')}</ol>`
+    : '';
+
+  const rentals = getCarRentals(item.destination || item.name);
+  const carBlock = rentals?.companies?.length
+    ? `<h2>🚗 Rent a car — ${escapeHtml(rentals.country || item.destination || item.name)} ${escapeHtml(rentals.flag || '')}</h2>
+       ${rentals.notice ? `<p class="muted">${escapeHtml(rentals.notice)}</p>` : ''}
+       <ul class="emerg">${rentals.companies.map(c =>
+        `<li><strong>${escapeHtml(c.company)}:</strong> ${c.phone ? escapeHtml(c.displayPhone || c.phone) : escapeHtml(c.displayPhone || 'book online / airport desk')}${
+          c.site ? ` · ${escapeHtml(c.site.replace(/^https?:\/\//, ''))}` : ''}${c.note ? ` <span class="muted">(${escapeHtml(c.note)})</span>` : ''}</li>`
+      ).join('')}</ul>
+      <p class="muted">Official reservation lines — verify on the website before calling. Bring passport, driving licence (IDP where required) and a bank card for the deposit.</p>`
+    : '';
+
   const h = plan?.header || {};
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>MAFTRAVEL · ${escapeHtml(item.destination || item.name)}</title>
   <style>
@@ -1451,6 +1719,7 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
     .halal{background:#f0fdf4;border:1px solid #bbf7d0;padding:8px 10px;border-radius:6px;font-size:12px;color:#155724;margin-top:6px}
     .day-total{background:#eef2f5;border:1px solid #dfe7ec;padding:6px 10px;border-radius:6px;font-size:12px;margin-top:8px;text-align:right}
     .emerg li{font-size:13px}
+    .places li{font-size:12.5px;margin-bottom:5px}
     .footer{margin-top:28px;padding-top:14px;border-top:2px solid #dfe7ec;color:#697d95;font-size:11px;text-align:center}
   </style></head><body>
     <span class="badge">MAFTRAVEL · Free Trip Plan</span>
@@ -1464,9 +1733,11 @@ function buildPdfHtml({ item, plan, travelers, travelDate, name }) {
     ${item.includes?.length ? `<h2>What's included</h2><ul>${item.includes.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>` : ''}
     ${flightsBlock}
     ${hotelBlock}
+    ${mustSeeBlock}
     <h2>Day-by-day plan</h2>
     ${dayBlocks || '<p class="muted">No detailed plan generated yet.</p>'}
     ${emergency}
+    ${carBlock}
     ${plan?.travelTips?.length ? `<h2>Local tips</h2><ul>${plan.travelTips.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>` : ''}
     <div class="footer">Built with MAFTRAVEL · https://maftravel.com · We help you plan, not pay.</div>
   </body></html>`;

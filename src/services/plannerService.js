@@ -2,6 +2,7 @@ import { findCity, hotelPhotoFor } from './cityDatabase';
 import { getSchedulesForCity, genericSchedules } from './citySchedules';
 import { getEmergencyContacts } from './emergencyContacts';
 import { findCityAttractions, buildArrivalEvents, buildDepartureEvents, buildMiddleDayEvents } from './cityAttractions';
+import { buildMustSee } from './mustSee';
 import { computeHotelProximity } from './hotelProximity';
 import { exactPrice } from '../utils/priceText';
 
@@ -507,6 +508,7 @@ export const generateItinerary = async ({
     transportSuggestion,
     travelTips,
     transportMode,
+    mustSee: buildMustSee({ destination, days: itineraryDays }),
     emergency: getEmergencyContacts(destination),
   };
 };

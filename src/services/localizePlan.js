@@ -12,7 +12,7 @@ const TRANSLATE_KEYS = new Set([
   'title', 'label', 'transportNote', 'place', 'name', 'transportToNext',
   'halalNote', 'cuisine', 'note', 'transportSuggestion', 'halalFoodGuide',
   'purpose', 'dates', 'duration', 'summary', 'areaTip', 'advice', 'area',
-  'weekday', 'travelTips', 'whyHere',
+  'weekday', 'travelTips', 'whyHere', 'why', 'hours', 'service',
 ]);
 
 const isTranslatable = (s) => typeof s === 'string' && s.trim() && /[A-Za-z]/.test(s);

@@ -35,7 +35,31 @@ export default function Dashboard() {
     return { totalSpent, pending, confirmed, countries };
   }, [bookings]);
 
+  // 1 point per $1 of confirmed spend — real, not the flat "Silver Member,
+  // 450/1000 pts" this card used to show every account regardless of
+  // history, brand-new ones included.
+  const rewards = useMemo(() => {
+    const points = Math.round(stats.totalSpent);
+    const tiers = [
+      { key: 'explorer', min: 0,    next: 500  },
+      { key: 'silver',   min: 500,  next: 2000 },
+      { key: 'gold',     min: 2000, next: 5000 },
+      { key: 'platinum', min: 5000, next: null },
+    ];
+    const tier = [...tiers].reverse().find(tr => points >= tr.min) || tiers[0];
+    const pct = tier.next ? Math.min(100, Math.round((points / tier.next) * 100)) : 100;
+    return { points, tierKey: tier.key, next: tier.next, pct };
+  }, [stats.totalSpent]);
+
   if (!user) return null;
+
+  const fill = (str, vars = {}) => String(str).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
+  const REWARD_TIER_LABEL = {
+    explorer: t('dashboard.rewardsTierExplorer'),
+    silver:   t('dashboard.rewardsTierSilver'),
+    gold:     t('dashboard.rewardsTierGold'),
+    platinum: t('dashboard.rewardsTierPlatinum'),
+  };
 
   const quickActions = [
     { label: t('dashboard.searchFlights'), to: '/flights',       icon: Plane,     color: 'text-[#2d6a6f]' },
@@ -206,11 +230,15 @@ export default function Dashboard() {
                 {t('dashboard.rewardsText')}
               </p>
               <div className="relative h-1.5 w-full bg-white/10 rounded-full mb-2">
-                <div className="h-full w-[45%] bg-white rounded-full"></div>
+                <div className="h-full bg-white rounded-full" style={{ width: `${rewards.pct}%` }}></div>
               </div>
               <div className="relative flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-white/50">
-                <span>{t('dashboard.rewardsTier')}</span>
-                <span>{t('dashboard.rewardsProgress')}</span>
+                <span>{REWARD_TIER_LABEL[rewards.tierKey]}</span>
+                <span>
+                  {rewards.next
+                    ? fill(t('dashboard.rewardsProgress'), { points: rewards.points, next: rewards.next })
+                    : fill(t('dashboard.rewardsProgressMax'), { points: rewards.points })}
+                </span>
               </div>
             </div>
           </div>

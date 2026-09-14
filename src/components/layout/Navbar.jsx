@@ -56,9 +56,9 @@ export default function Navbar() {
                 the wordmark that already sits beside it in text. */}
             <img src="/images/maf-mark.png" alt="MAF Travel" width="40" height="40"
               className="w-10 h-10 rounded-lg object-contain bg-[#0d1b33] group-hover:scale-105 transition-premium" />
-            <div className="hidden sm:flex flex-col leading-none">
-              <span className="text-[18px] font-black tracking-tight text-[#252a31]">MAFTRAVEL</span>
-              <span className="text-[9px] font-bold text-[#008f77] tracking-[0.22em] uppercase mt-1">{t('footer.brandSub')}</span>
+            <div className="flex flex-col leading-none">
+              <span className="text-[14px] sm:text-[18px] font-black tracking-tight text-[#252a31]">MAFTRAVEL</span>
+              <span className="text-[7px] sm:text-[9px] font-bold text-[#008f77] tracking-[0.16em] sm:tracking-[0.22em] uppercase mt-1">{t('footer.brandSub')}</span>
             </div>
           </button>
 

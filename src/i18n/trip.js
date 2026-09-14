@@ -176,6 +176,28 @@ export default {
       priceOnSite: 'check price on site',
       spentToday: 'Spent today',
       runningTotal: 'Running total',
+      // Popular places + entry prices
+      mustSee: {
+        title: 'Popular places to visit in {destination}',
+        sub: 'The most visited sights — with the entrance price next to each',
+        entry: 'Entry',
+        free: 'Free entry',
+        checkOnSite: 'Ticket price at the door',
+        map: 'Map',
+        showAll: 'Show all {count} places',
+        showLess: 'Show fewer',
+        disclaimer: 'Prices are standard adult tickets and can change — check the official site before you go.',
+      },
+      // Car rental
+      carRental: {
+        title: 'Rent a car in {country}',
+        sub: 'Official rental companies — call or book online',
+        call: 'Call',
+        site: 'Website',
+        airportDesk: 'Desks at major airports',
+        licenseNote: 'Bring your passport, driving licence (an International Driving Permit where required) and a bank card for the deposit.',
+        disclaimer: 'These are the official reservation lines of the companies and may change — verify on the website before calling.',
+      },
       // Emergency
       emergencyTitle: 'Emergency contacts in {country}',
       emergencySub: 'Save these numbers before you fly',
@@ -466,6 +488,28 @@ export default {
       priceOnSite: 'narxni joyida aniqlang',
       spentToday: 'Bugun sarflandi',
       runningTotal: 'Jami yig‘indi',
+      // Popular places + entry prices
+      mustSee: {
+        title: '{destination}dagi mashhur joylar',
+        sub: 'Eng ko‘p tashrif buyuriladigan joylar — har birining yonida kirish narxi',
+        entry: 'Kirish',
+        free: 'Kirish bepul',
+        checkOnSite: 'Chipta narxi joyida',
+        map: 'Xarita',
+        showAll: 'Barcha {count} joyni ko‘rsatish',
+        showLess: 'Kamroq ko‘rsatish',
+        disclaimer: 'Narxlar kattalar uchun standart chipta bo‘yicha va o‘zgarishi mumkin — borishdan oldin rasmiy saytda tekshiring.',
+      },
+      // Car rental
+      carRental: {
+        title: '{country}da mashina ijarasi',
+        sub: 'Rasmiy ijara kompaniyalari — qo‘ng‘iroq qiling yoki onlayn bron qiling',
+        call: 'Qo‘ng‘iroq',
+        site: 'Sayt',
+        airportDesk: 'Yirik aeroportlarda ofislar bor',
+        licenseNote: 'Pasport, haydovchilik guvohnomasi (kerak bo‘lsa xalqaro guvohnoma) va depozit uchun bank kartasini olib boring.',
+        disclaimer: 'Raqamlar kompaniyalarning rasmiy bron liniyalari bo‘lib, o‘zgarishi mumkin — qo‘ng‘iroqdan oldin saytda tekshiring.',
+      },
       // Emergency
       emergencyTitle: '{country}dagi favqulodda raqamlar',
       emergencySub: 'Uchishdan oldin ushbu raqamlarni saqlang',

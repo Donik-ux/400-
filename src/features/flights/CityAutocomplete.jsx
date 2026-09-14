@@ -90,6 +90,19 @@ export default function CityAutocomplete({
         <ul
           id={listId}
           role="listbox"
+          // The list is tall enough on a 12-row match (max-h-72) to overlap
+          // whatever sits below this field in the page's layout — on a
+          // compact form (e.g. Antarctica's route builder) that's the next
+          // row of buttons. Those clicks land on this <ul>'s own background,
+          // not on an <li>, so nothing selects and — since that background
+          // is still inside wrapRef — the outside-click handler above never
+          // closes it either: the dropdown gets stuck open until the user
+          // finds empty space to click. Closing it here on a background
+          // click turns that stuck-open state into an ordinary "first click
+          // dismisses the overlay, second click reaches the button" — a
+          // dead click doesn't disappear (nothing can click through an
+          // opaque element), but it's no longer a trap.
+          onMouseDown={(e) => { if (e.target === e.currentTarget) setOpen(false); }}
           className="absolute left-0 right-0 top-full mt-1.5 max-h-72 overflow-auto bg-white border border-[#dfe7ec] rounded-2xl shadow-float z-40 py-1.5 page-fade"
         >
           {results.map((a, i) => (

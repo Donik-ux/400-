@@ -503,8 +503,9 @@ const Home = () => {
            things that are ours alone, AI Trip and the expedition, read as
            one pair before the generic booking sections start. ───────── */}
       <section className="max-w-6xl mx-auto px-4 md:px-8 pt-12 pb-10">
-        <div onClick={() => navigate('/antarctica')}
-          className="group relative overflow-hidden rounded-2xl cursor-pointer border border-[#dfe7ec]">
+        <div onClick={() => navigate('/antarctica')} role="button" tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/antarctica'); } }}
+          className="group relative overflow-hidden rounded-2xl cursor-pointer border border-[#dfe7ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00a58e]">
           <img
             src="https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?auto=format&fit=crop&w=1800&q=80"
             alt="Antarctica" loading="lazy"

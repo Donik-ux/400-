@@ -428,9 +428,9 @@ const Home = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-2">
                   <Field className="md:col-span-4" icon={<Wallet className="w-4 h-4" />} label={t('homePage.search.balance')}
-                    type="number" placeholder="2000" value={aiBalance} onChange={setAiBalance} />
+                    type="number" min="0" placeholder="2000" value={aiBalance} onChange={setAiBalance} />
                   <Field className="md:col-span-2" icon={<Calendar className="w-4 h-4" />} label={t('homePage.search.days')}
-                    type="number" placeholder="7" value={aiDays} onChange={aiSync.onChangeDays} />
+                    type="number" min="1" placeholder="7" value={aiDays} onChange={setAiDays} />
                   {!aiDest ? (
                     <label className="md:col-span-5 block border border-[#dfe7ec] hover:border-[#0172cb] focus-within:border-[#0172cb] bg-white rounded-xl px-3 py-2.5 transition">
                       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-0.5">

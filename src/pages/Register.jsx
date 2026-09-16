@@ -91,9 +91,13 @@ export default function Register() {
           <span className="text-xl font-black text-[#252a31]">MAFTRAVEL</span>
         </div>
 
-        <div className="corner-gilt bg-white border border-[#dfe7ec] rounded-2xl p-7 shadow-vitrine">
-          <h1 className="font-display text-engraved text-[26px] font-bold text-[#252a31] mb-1">{t('auth.register.title')}</h1>
-          <p className="text-[#697d95] text-sm mb-6">{t('auth.register.sub')}</p>
+        <div className="relative bg-white rounded-2xl p-7 edge-gilded overflow-hidden">
+          {/* A quiet echo of the aurora band's teal, so the card doesn't sit
+              on the page as flat, unlit white next to that lit left panel. */}
+          <div aria-hidden className="pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(0,165,142,0.10), transparent 70%)' }} />
+          <h1 className="h-editorial text-[28px] text-[#252a31] mb-1 relative">{t('auth.register.title')}</h1>
+          <p className="text-[#697d95] text-sm mb-6 relative">{t('auth.register.sub')}</p>
 
           {error && (
             <div role="alert" aria-live="assertive" className="flex items-center gap-2 note-danger rounded-xl px-4 py-3 mb-5">
@@ -153,13 +157,20 @@ export default function Register() {
             </div>
 
             {form.password.length > 0 && (
-              <div className="flex flex-col gap-1.5">
-                {rules.map(r => (
-                  <div key={r.label} className="flex items-center gap-2">
-                    <CheckCircle2 className={`w-3.5 h-3.5 ${r.ok ? 'text-[#2e7d4f]' : 'text-[#dfe7ec]'}`} />
-                    <span className={`text-xs ${r.ok ? 'text-ok' : 'text-[#697d95]'}`}>{r.label}</span>
-                  </div>
-                ))}
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-1" role="presentation">
+                  {rules.map((r, i) => (
+                    <span key={i} className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${r.ok ? 'bg-[#00a58e]' : 'bg-[#eef2f5]'}`} />
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-x-4 gap-y-1">
+                  {rules.map(r => (
+                    <div key={r.label} className="flex items-center gap-1.5">
+                      <CheckCircle2 className={`w-3.5 h-3.5 ${r.ok ? 'text-[#2e7d4f]' : 'text-[#dfe7ec]'}`} />
+                      <span className={`text-xs ${r.ok ? 'text-ok' : 'text-[#697d95]'}`}>{r.label}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 

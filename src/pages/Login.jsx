@@ -89,9 +89,11 @@ export default function Login() {
           <span className="text-xl font-black text-[#252a31]">MAFTRAVEL</span>
         </div>
 
-        <div className="corner-gilt bg-white border border-[#dfe7ec] rounded-2xl p-7 shadow-vitrine">
-          <h1 className="font-display text-engraved text-[26px] font-bold text-[#252a31] mb-1">{t('auth.login.title')}</h1>
-          <p className="text-[#697d95] text-sm mb-6">{t('auth.login.sub')}</p>
+        <div className="relative bg-white rounded-2xl p-7 edge-gilded overflow-hidden">
+          <div aria-hidden className="pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(1,114,203,0.10), transparent 70%)' }} />
+          <h1 className="h-editorial text-[28px] text-[#252a31] mb-1 relative">{t('auth.login.title')}</h1>
+          <p className="text-[#697d95] text-sm mb-6 relative">{t('auth.login.sub')}</p>
 
           {error && (
             <div role="alert" aria-live="assertive" className="flex items-center gap-2 note-danger rounded-xl px-4 py-3 mb-5">

@@ -94,7 +94,7 @@ export default function Login() {
           <p className="text-[#697d95] text-sm mb-6">{t('auth.login.sub')}</p>
 
           {error && (
-            <div className="flex items-center gap-2 note-danger rounded-xl px-4 py-3 mb-5">
+            <div role="alert" aria-live="assertive" className="flex items-center gap-2 note-danger rounded-xl px-4 py-3 mb-5">
               <AlertCircle className="w-4 h-4 text-danger shrink-0" />
               <p className="text-danger text-sm">{error}</p>
             </div>
@@ -107,7 +107,7 @@ export default function Login() {
               </label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#bac7d1]" />
-                <input type="email" required value={form.email}
+                <input type="email" required autoComplete="email" value={form.email}
                   onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                   placeholder={t('auth.login.emailPlaceholder')}
                   className="w-full bg-white border-[1.5px] border-[#dfe7ec] rounded-xl pl-10 pr-4 py-3 text-sm text-[#252a31] placeholder:text-[#bac7d1] focus:outline-none focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/10 transition-all"
@@ -121,7 +121,7 @@ export default function Login() {
               </label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#bac7d1]" />
-                <input type={show ? 'text' : 'password'} required value={form.password}
+                <input type={show ? 'text' : 'password'} required autoComplete="current-password" value={form.password}
                   onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
                   placeholder={t('auth.login.passwordPlaceholder')}
                   className="w-full bg-white border-[1.5px] border-[#dfe7ec] rounded-xl pl-10 pr-10 py-3 text-sm text-[#252a31] placeholder:text-[#bac7d1] focus:outline-none focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/10 transition-all"

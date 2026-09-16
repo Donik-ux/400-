@@ -55,6 +55,7 @@ export default {
         errMatch: 'Passwords do not match',
         errShort: 'Password must be at least 8 characters',
         errDigit: 'Password must contain a number',
+        errEmail: 'Please enter a valid email address',
         // Brand panel
         heroLine1: 'Join over a million',
         heroLine2: 'travelers.',
@@ -197,6 +198,7 @@ export default {
         errMatch: 'Parollar mos kelmaydi',
         errShort: 'Parol kamida 8 ta belgidan iborat boʻlishi kerak',
         errDigit: 'Parolda kamida bitta raqam boʻlishi kerak',
+        errEmail: 'Iltimos, toʻgʻri email manzil kiriting',
         // Brand panel
         heroLine1: 'Bir milliondan ortiq',
         heroLine2: 'sayohatchiga qoʻshiling.',

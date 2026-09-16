@@ -30,12 +30,12 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) { setError(t('auth.register.errEmail')); return; }
     if (form.password !== form.confirm) { setError(t('auth.register.errMatch')); return; }
     if (form.password.length < 8) { setError(t('auth.register.errShort')); return; }
     if (!/\d/.test(form.password)) { setError(t('auth.register.errDigit') || 'Password must contain a number'); return; }
     setLoading(true);
-    await new Promise(r => setTimeout(r, 600));
-    const result = register(form.name.trim(), form.email.trim(), form.password);
+    const result = await register(form.name.trim(), form.email.trim(), form.password);
     setLoading(false);
     if (result.success) navigate('/', { replace: true });
     else setError(result.error);
@@ -96,7 +96,7 @@ export default function Register() {
           <p className="text-[#697d95] text-sm mb-6">{t('auth.register.sub')}</p>
 
           {error && (
-            <div className="flex items-center gap-2 note-danger rounded-xl px-4 py-3 mb-5">
+            <div role="alert" aria-live="assertive" className="flex items-center gap-2 note-danger rounded-xl px-4 py-3 mb-5">
               <AlertCircle className="w-4 h-4 text-danger shrink-0" />
               <p className="text-danger text-sm">{error}</p>
             </div>
@@ -107,7 +107,7 @@ export default function Register() {
               <label className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] mb-1.5 block">{t('auth.register.name')}</label>
               <div className="relative">
                 <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#bac7d1]" />
-                <input type="text" required minLength={2} value={form.name}
+                <input type="text" required minLength={2} autoComplete="name" value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder={t('auth.register.namePlaceholder')}
                   className={`${inp} pl-10`}
                 />
@@ -118,7 +118,7 @@ export default function Register() {
               <label className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] mb-1.5 block">{t('auth.register.email')}</label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#bac7d1]" />
-                <input type="email" required value={form.email}
+                <input type="email" required autoComplete="email" value={form.email}
                   onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder={t('auth.register.emailPlaceholder')}
                   className={`${inp} pl-10`}
                 />
@@ -129,7 +129,7 @@ export default function Register() {
               <label className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] mb-1.5 block">{t('auth.register.password')}</label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#bac7d1]" />
-                <input type={show ? 'text' : 'password'} required value={form.password}
+                <input type={show ? 'text' : 'password'} required autoComplete="new-password" value={form.password}
                   onChange={e => setForm(f => ({ ...f, password: e.target.value }))} placeholder={t('auth.register.passwordPlaceholder')}
                   className={`${inp} pl-10 pr-10`}
                 />
@@ -145,7 +145,7 @@ export default function Register() {
               <label className="text-[11px] font-bold uppercase tracking-widest text-[#697d95] mb-1.5 block">{t('auth.register.confirm')}</label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#bac7d1]" />
-                <input type={show ? 'text' : 'password'} required value={form.confirm}
+                <input type={show ? 'text' : 'password'} required autoComplete="new-password" value={form.confirm}
                   onChange={e => setForm(f => ({ ...f, confirm: e.target.value }))} placeholder={t('auth.register.confirmPlaceholder')}
                   className={`${inp} pl-10`}
                 />

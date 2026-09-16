@@ -12,6 +12,15 @@ const loadProfiles = () => { try { return JSON.parse(localStorage.getItem(S_PROF
 const saveUsers    = u  => localStorage.setItem(S_USERS,    JSON.stringify(u));
 const saveProfiles = p  => localStorage.setItem(S_PROFILES, JSON.stringify(p));
 
+/* There is still no real backend for everyday accounts (see login/register
+   below), so this can't be true security — but a stolen/leaked localStorage
+   dump should not hand over plaintext passwords either. Salted SHA-256 via
+   the browser's own crypto.subtle raises that bar for near-zero cost. */
+const toHex = buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+const randomSalt = () => toHex(crypto.getRandomValues(new Uint8Array(16)));
+const hashPassword = async (password, salt) =>
+  toHex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`${salt}:${password}`)));
+
 const useAuthStore = create((set, get) => ({
   user: loadSession(),
 
@@ -45,12 +54,30 @@ const useAuthStore = create((set, get) => ({
       }
     }
     const users = loadUsers();
-    const found = users.find(u => u.email.toLowerCase() === email && u.password === password);
+    const found = users.find(u => u.email.toLowerCase() === email);
     if (found) {
-      const session = { id: found.id, name: found.name, email: found.email, role: 'user', avatar: (found.name?.[0] || found.email[0]).toUpperCase() };
-      localStorage.setItem(S_SESSION, JSON.stringify(session));
-      set({ user: session });
-      return { success: true };
+      // Legacy accounts created before hashing landed still carry a plaintext
+      // `password` field — verify that once, then upgrade them to a hash so
+      // the plaintext copy doesn't linger in storage.
+      let ok = false;
+      if (found.passwordHash) {
+        ok = (await hashPassword(password, found.salt)) === found.passwordHash;
+      } else if (found.password !== undefined) {
+        ok = found.password === password;
+        if (ok) {
+          const salt = randomSalt();
+          found.passwordHash = await hashPassword(password, salt);
+          found.salt = salt;
+          delete found.password;
+          saveUsers(users);
+        }
+      }
+      if (ok) {
+        const session = { id: found.id, name: found.name, email: found.email, role: 'user', avatar: (found.name?.[0] || found.email[0]).toUpperCase() };
+        localStorage.setItem(S_SESSION, JSON.stringify(session));
+        set({ user: session });
+        return { success: true };
+      }
     }
     return { success: false, error: 'Invalid email or password' };
   },
@@ -61,14 +88,16 @@ const useAuthStore = create((set, get) => ({
     return { success: true };
   },
 
-  register: (name, email, password) => {
+  register: async (name, email, password) => {
     name = String(name || '').trim();
     email = String(email || '').trim().toLowerCase();
     if (!name) return { success: false, error: 'Please enter your name' };
     const users = loadUsers();
     if (email === ADMIN.email) return { success: false, error: 'Email already in use' };
     if (users.find(u => u.email.toLowerCase() === email)) return { success: false, error: 'Email already registered' };
-    const newUser = { id: `user_${Date.now()}`, name, email, password, role: 'user', createdAt: new Date().toISOString() };
+    const salt = randomSalt();
+    const passwordHash = await hashPassword(password, salt);
+    const newUser = { id: `user_${Date.now()}`, name, email, passwordHash, salt, role: 'user', createdAt: new Date().toISOString() };
     users.push(newUser);
     saveUsers(users);
     const session = { id: newUser.id, name, email, role: 'user', avatar: (name[0] || email[0]).toUpperCase() };

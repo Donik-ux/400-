@@ -15,6 +15,7 @@ import { useTranslation } from '../store/useLangStore';
  */
 export default function BudgetAdvisory({ balance, className = '' }) {
   const { t } = useTranslation();
+  if (balance === '' || balance === null || balance === undefined) return null;
   const b = Math.max(0, Number(balance) || 0);
   if (b >= 500) return null;
 

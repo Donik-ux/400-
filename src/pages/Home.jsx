@@ -108,8 +108,8 @@ const Home = () => {
   const [flightDate, setFlightDate]     = useState('');
   const [flightReturn, setFlightReturn] = useState('');
   // dedicated AI-tab state — keeps it isolated from the flight fields
-  const [aiBalance, setAiBalance] = useState(2000);
-  const [aiDays,    setAiDays]    = useState(7);
+  const [aiBalance, setAiBalance] = useState('');
+  const [aiDays,    setAiDays]    = useState('');
   const [aiVibe,    setAiVibe]    = useState('any');
   const [aiDest,    setAiDest]    = useState('');
   const [aiFrom,    setAiFrom]    = useState('');
@@ -451,7 +451,7 @@ const Home = () => {
                     <div className="md:col-span-5 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-[#e9f3ea] border border-[#cfe3d2]">
                       <Sparkles className="w-4 h-4 text-[#2e7d4f] shrink-0" />
                       <span className="text-[12px] font-bold text-[#2e7d4f] leading-snug">
-                        {t('homePage.search.directModePre')}{aiDays}{t('homePage.search.directModePost')} <strong>{aiDest.split(',')[0]}</strong>
+                        {t('homePage.search.directModePre')}{aiDays || 7}{t('homePage.search.directModePost')} <strong>{aiDest.split(',')[0]}</strong>
                       </span>
                     </div>
                   )}

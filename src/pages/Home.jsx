@@ -428,7 +428,7 @@ const Home = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-2">
                   <Field className="md:col-span-4" icon={<Wallet className="w-4 h-4" />} label={t('homePage.search.balance')}
-                    type="number" min="0" placeholder="2000" value={aiBalance} onChange={setAiBalance} />
+                    type="number" min="0" value={aiBalance} onChange={setAiBalance} />
                   <Field className="md:col-span-2" icon={<Calendar className="w-4 h-4" />} label={t('homePage.search.days')}
                     type="number" min="1" placeholder="7" value={aiDays} onChange={setAiDays} />
                   {!aiDest ? (

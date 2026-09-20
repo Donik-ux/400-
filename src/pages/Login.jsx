@@ -29,11 +29,15 @@ export default function Login() {
     e.preventDefault();
     setError('');
     setLoading(true);
-    await new Promise(r => setTimeout(r, 500));
-    const result = await login(form.email, form.password);
-    setLoading(false);
-    if (result.success) navigate(from, { replace: true });
-    else setError(result.error);
+    try {
+      const result = await login(form.email, form.password);
+      if (result.success) navigate(from, { replace: true });
+      else setError(result.error);
+    } catch {
+      setError('Something went wrong — try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGuest = () => {

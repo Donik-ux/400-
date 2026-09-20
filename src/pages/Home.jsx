@@ -172,6 +172,15 @@ const Home = () => {
     setDeparture: setAiStart, setReturn: setAiReturn, setDays: setAiDays,
   });
 
+  // Typing directly into Days: keep the raw string so the field stays
+  // editable (aiSync.onChangeDays clamps on every keystroke, which fights
+  // typing), but drop any explicit return-date override so the return field
+  // recomputes from departure + days instead of showing a stale date.
+  const onDaysInput = (v) => {
+    setAiDays(v);
+    setAiReturn('');
+  };
+
   // Origin is left empty on purpose. These cards no longer claim to depart
   // from anywhere, so tapping one carries the destination into the flight
   // search and stops there — the traveler fills in where they are flying from.
@@ -430,7 +439,7 @@ const Home = () => {
                   <Field className="md:col-span-4" icon={<Wallet className="w-4 h-4" />} label={t('homePage.search.balance')}
                     type="number" min="0" value={aiBalance} onChange={setAiBalance} />
                   <Field className="md:col-span-2" icon={<Calendar className="w-4 h-4" />} label={t('homePage.search.days')}
-                    type="number" min="1" placeholder="7" value={aiDays} onChange={setAiDays} />
+                    type="number" min="1" placeholder="7" value={aiDays} onChange={onDaysInput} />
                   {!aiDest ? (
                     <label className="md:col-span-5 block border border-[#dfe7ec] hover:border-[#0172cb] focus-within:border-[#0172cb] bg-white rounded-xl px-3 py-2.5 transition">
                       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#697d95] mb-0.5">

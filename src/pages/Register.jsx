@@ -35,10 +35,15 @@ export default function Register() {
     if (form.password.length < 8) { setError(t('auth.register.errShort')); return; }
     if (!/\d/.test(form.password)) { setError(t('auth.register.errDigit') || 'Password must contain a number'); return; }
     setLoading(true);
-    const result = await register(form.name.trim(), form.email.trim(), form.password);
-    setLoading(false);
-    if (result.success) navigate('/', { replace: true });
-    else setError(result.error);
+    try {
+      const result = await register(form.name.trim(), form.email.trim(), form.password);
+      if (result.success) navigate('/', { replace: true });
+      else setError(result.error);
+    } catch {
+      setError('Something went wrong — try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inp = 'w-full bg-white border-[1.5px] border-[#dfe7ec] rounded-xl px-4 py-3 text-sm text-[#252a31] placeholder:text-[#bac7d1] focus:outline-none focus:border-[#0172cb] focus:ring-2 focus:ring-[#0172cb]/10 transition-all';

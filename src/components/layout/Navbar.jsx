@@ -50,11 +50,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-[64px] flex items-center justify-between gap-2">
           {/* Logo */}
           <button onClick={() => navigate('/')} className="flex items-center gap-2.5 group shrink-0">
-            {/* maf-mark.png is the emblem alone. The full maf-logo.png is a
-                1050x725 lockup whose lower third is the words "MAF TRAVEL", so
-                squeezing it into a 40px square cropped the artwork and repeated
-                the wordmark that already sits beside it in text. */}
-            <img src="/images/maf-mark.png" alt="MAF Travel" width="40" height="40"
+            <img src="/images/maf-mark.svg" alt="MAF Travel" width="40" height="40"
               className="w-10 h-10 rounded-lg object-contain bg-[#0d1b33] group-hover:scale-105 transition-premium" />
             <div className="flex flex-col leading-none">
               <span className="text-[14px] sm:text-[18px] font-black tracking-tight text-[#252a31]">MAFTRAVEL</span>

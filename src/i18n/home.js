@@ -5,7 +5,7 @@ export default {
   en: {
     homePage: {
       seo: {
-        title: 'Cheap Flights, Tours & AI Trip Plans | MAFTRAVEL',
+        title: 'MAFTRAVEL — Flights, Hotels, Tours & AI Travel',
         description: 'Search flights, book tour packages, grab hot deals and let our AI build a full trip inside your budget. MAFTRAVEL — your one-stop travel platform.',
       },
       hero: {

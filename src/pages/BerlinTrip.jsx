@@ -9,6 +9,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'rea
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useTranslation } from '../store/useLangStore';
+import useSEO from '../hooks/useSEO';
 import { tileUrl } from '../config/mapTiles';
 import { usePriceFormatter } from '../components/Price';
 
@@ -230,6 +231,12 @@ const BerlinTrip = () => {
   const navigate = useNavigate();
   const { t, lang } = useTranslation();
   const fmt = usePriceFormatter();
+  useSEO({
+    title: 'Berlin Travel Guide & 10-Day Itinerary',
+    description: 'Plan 10 days in Berlin with a day-by-day itinerary, estimated travel budget, local attractions and an interactive map from MAFTRAVEL.',
+    url: 'https://maftravel.com/berlin-trip',
+    keywords: ['Berlin itinerary', 'Berlin travel guide', '10 days in Berlin', 'Berlin trip budget'],
+  });
   const [copyStatus, setCopyStatus]   = useState('');
   const [activeTab, setActiveTab]     = useState('itinerary'); // 'itinerary' | 'map'
   const [filterDay, setFilterDay]     = useState(null);

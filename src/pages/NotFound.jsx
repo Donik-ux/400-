@@ -10,6 +10,7 @@ const NotFound = () => {
   useSEO({
     title: 'Page Not Found',
     description: 'The page you are looking for does not exist or has moved.',
+    robots: 'noindex, nofollow',
   });
   return (
     <div className="relative min-h-[70vh] flex items-center justify-center px-4 py-16 overflow-hidden">

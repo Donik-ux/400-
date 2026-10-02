@@ -22,6 +22,7 @@ export default function Wishlist() {
   useSEO({
     title: 'My Wishlist · Saved Trips & Flights',
     description: 'Your saved flights and tour packages. Pick one and let MAFTRAVEL build the plan.',
+    robots: 'noindex, nofollow',
   });
 
   /* ── Derive a uniform card model from any wishlist entry ── */

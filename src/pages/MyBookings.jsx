@@ -48,6 +48,7 @@ export default function MyBookings() {
     title: 'My Bookings — Booking History',
     description: 'Your flight, tour and hotel booking history with MAFTRAVEL, with status and confirmation details.',
     keywords: ['my bookings', 'booking history', 'confirmed bookings'],
+    robots: 'noindex, nofollow',
   });
 
   const STATUS = STATUS_META(t);

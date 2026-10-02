@@ -19,6 +19,7 @@ export default function Register() {
     title: 'Create Account — Join MAFTRAVEL',
     description: 'Create your free MAFTRAVEL account and join over 1 million travelers.',
     keywords: ['create account', 'sign up', 'MAFTRAVEL register'],
+    robots: 'noindex, nofollow',
   });
 
   const rules = [

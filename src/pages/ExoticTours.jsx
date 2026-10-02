@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Thermometer, Snowflake, Globe, ArrowRight, Clock, Star, Users, Plane, Sparkles, Wallet, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../store/useLangStore';
+import useSEO from '../hooks/useSEO';
 import { TOURS } from '../data/exoticTours';
 import Price, { usePriceFormatter } from '../components/Price';
 import { handleImgError } from '../utils/imageFallback';
@@ -192,6 +193,11 @@ const ExoticTours = () => {
   const [activeFilter, setActiveFilter] = useState(null);
   const [budget, setBudget] = useState(0);
   const { t } = useTranslation();
+  useSEO({
+    title: 'Curated Adventure Tours & Travel Packages',
+    description: 'Explore curated adventure tours, cultural journeys and hot-to-cold travel packages. Compare itineraries, highlights and starting prices with MAFTRAVEL.',
+    keywords: ['adventure tours', 'curated travel packages', 'cultural tours', 'exotic destinations'],
+  });
 
   const TYPE_FILTERS = [
     { key: null,        label: t('exotic.allTours'),      icon: Globe },

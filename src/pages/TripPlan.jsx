@@ -451,6 +451,7 @@ export default function TripPlan() {
       : undefined,
     image: item?.image,
     keywords: destName ? [destName, `${destName} trip plan`, `${destName} itinerary`, ...partnerNames] : [],
+    robots: 'noindex, nofollow',
   });
 
   /* ── No item passed in → friendly redirect ── */

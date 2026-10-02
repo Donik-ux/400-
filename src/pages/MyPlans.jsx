@@ -24,6 +24,7 @@ export default function MyPlans() {
   useSEO({
     title: 'My Trip Plans · Saved AI Itineraries',
     description: 'All your saved AI-generated travel plans in one place — reopen any plan, review the budget and itinerary.',
+    robots: 'noindex, nofollow',
   });
 
   /* Restore a saved plan into the live store and open the planner */

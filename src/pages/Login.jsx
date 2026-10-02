@@ -17,6 +17,7 @@ export default function Login() {
     title: 'Sign In — Your Travel Account',
     description: 'Sign in to your MAFTRAVEL account to manage bookings, save itineraries, and access exclusive travel deals.',
     keywords: ['MAFTRAVEL login', 'travel account', 'sign in'],
+    robots: 'noindex, nofollow',
   });
 
   const login      = useAuthStore(s => s.login);

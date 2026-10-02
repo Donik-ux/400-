@@ -16,7 +16,7 @@ const BRAND = 'MAFTRAVEL';
  * @param {string} [options.type]       — OG type: 'website' | 'article' (default: 'website')
  * @param {string[]} [options.keywords] — Meta keywords massivi
  */
-export default function useSEO({ title, description, image, url, type = 'website', keywords = [] }) {
+export default function useSEO({ title, description, image, url, type = 'website', keywords = [], robots = 'index, follow' }) {
   const keywordsKey = keywords.join(', ');
   useEffect(() => {
     // Site name is editable from the admin Settings tab; read it straight from
@@ -39,14 +39,14 @@ export default function useSEO({ title, description, image, url, type = 'website
     else if (endsWithName(pageTitle, siteTitle)) fullTitle = pageTitle;
     else if (endsWithName(pageTitle, BRAND))     fullTitle = pageTitle.slice(0, -BRAND.length) + siteTitle;
     else                                       fullTitle = `${pageTitle} | ${siteTitle}`;
-    const canonical = url || window.location.href;
+    const canonical = url || `https://maftravel.com${window.location.pathname}`;
     const ogImage   = image || 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80';
 
     // ── Basic ──────────────────────────────────
     document.title = fullTitle;
     setMeta('description',               description);
     setMeta('keywords',                  keywordsKey);
-    setMeta('robots',                    'index, follow');
+    setMeta('robots',                    robots);
     setMeta('author',                    siteTitle);
 
     // ── Canonical ──────────────────────────────
@@ -72,20 +72,27 @@ export default function useSEO({ title, description, image, url, type = 'website
     // ── Schema.org JSON-LD ────────────────────
     setJSONLD({
       '@context': 'https://schema.org',
-      '@type':    'TravelAgency',
-      name:       siteTitle,
-      url:        canonical,
-      description,
-      image:      ogImage,
-      email:      SUPPORT_EMAIL,
-      address: {
-        '@type':           'PostalAddress',
-        addressCountry:    'KG',
-        addressLocality:   'Bishkek',
-      },
-      sameAs: [],
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': 'https://maftravel.com/#organization',
+          name: siteTitle,
+          url: 'https://maftravel.com/',
+          logo: 'https://maftravel.com/images/maf-mark.svg',
+          email: SUPPORT_EMAIL,
+        },
+        {
+          '@type': 'WebSite',
+          '@id': 'https://maftravel.com/#website',
+          name: siteTitle,
+          url: 'https://maftravel.com/',
+          description,
+          publisher: { '@id': 'https://maftravel.com/#organization' },
+          inLanguage: 'en',
+        },
+      ],
     });
-  }, [title, description, image, url, type, keywordsKey]);
+  }, [title, description, image, url, type, keywordsKey, robots]);
 }
 
 /* ── helpers ── */

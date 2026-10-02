@@ -5,8 +5,8 @@ export default {
   en: {
     homePage: {
       seo: {
-        title: 'MAFTRAVEL — Flights, Hotels, Tours & AI Travel',
-        description: 'Search flights, book tour packages, grab hot deals and let our AI build a full trip inside your budget. MAFTRAVEL — your one-stop travel platform.',
+        title: 'Cheap Flights & AI Trip Planner | MAFTRAVEL',
+        description: "Compare flight prices, explore curated tours and plan day-by-day trips with MAFTRAVEL's free AI travel planner. Build an itinerary around your dates and budget.",
       },
       hero: {
         badge: 'AI-powered · 10k+ travelers · 4.9 ★',

@@ -23,6 +23,7 @@ export default function Profile() {
   useSEO({
     title: 'My Profile — Account Settings',
     description: 'Manage your MAFTRAVEL account details, travel documents and saved trip plans.',
+    robots: 'noindex, nofollow',
   });
   const user        = useAuthStore(s => s.user);
   const getProfile  = useAuthStore(s => s.getProfile);

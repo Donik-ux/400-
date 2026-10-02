@@ -1,8 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /admin
-Disallow: /dashboard
-Disallow: /profile
-Disallow: /my-bookings
 
 Sitemap: https://maftravel.com/sitemap.xml

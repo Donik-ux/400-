@@ -22,6 +22,7 @@ export default function Dashboard() {
   useSEO({
     title: 'User Dashboard — My Statistics',
     description: 'Track your travel spending, view upcoming trips, and manage your account in one place.',
+    robots: 'noindex, nofollow',
   });
 
   const bookings = useMemo(() => getBookingsByUser(user?.id || ''), [user?.id, getBookingsByUser]);

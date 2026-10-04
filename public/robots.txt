@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://maftravel.com/sitemap.xml
+Sitemap: https://www.maftravel.com/sitemap.xml

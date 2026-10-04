@@ -106,7 +106,7 @@ export default function Antarctica() {
   useSEO({
     title: t('antarctica.seo.title'),
     description: t('antarctica.seo.description'),
-    url: 'https://maftravel.com/antarctica',
+    url: 'https://www.maftravel.com/antarctica',
     keywords: ['Antarctica cruise', 'Antarctica expedition', 'Drake Passage', 'Ushuaia', 'polar travel', 'white continent'],
   });
 

@@ -234,7 +234,7 @@ const BerlinTrip = () => {
   useSEO({
     title: 'Berlin Travel Guide & 10-Day Itinerary',
     description: 'Plan 10 days in Berlin with a day-by-day itinerary, estimated travel budget, local attractions and an interactive map from MAFTRAVEL.',
-    url: 'https://maftravel.com/berlin-trip',
+    url: 'https://www.maftravel.com/berlin-trip',
     keywords: ['Berlin itinerary', 'Berlin travel guide', '10 days in Berlin', 'Berlin trip budget'],
   });
   const [copyStatus, setCopyStatus]   = useState('');

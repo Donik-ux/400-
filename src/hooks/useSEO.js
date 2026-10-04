@@ -39,7 +39,7 @@ export default function useSEO({ title, description, image, url, type = 'website
     else if (endsWithName(pageTitle, siteTitle)) fullTitle = pageTitle;
     else if (endsWithName(pageTitle, BRAND))     fullTitle = pageTitle.slice(0, -BRAND.length) + siteTitle;
     else                                       fullTitle = `${pageTitle} | ${siteTitle}`;
-    const canonical = url || `https://maftravel.com${window.location.pathname}`;
+    const canonical = url || `https://www.maftravel.com${window.location.pathname}`;
     const ogImage   = image || 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80';
 
     // ── Basic ──────────────────────────────────
@@ -75,19 +75,19 @@ export default function useSEO({ title, description, image, url, type = 'website
       '@graph': [
         {
           '@type': 'Organization',
-          '@id': 'https://maftravel.com/#organization',
+          '@id': 'https://www.maftravel.com/#organization',
           name: siteTitle,
-          url: 'https://maftravel.com/',
-          logo: 'https://maftravel.com/images/maf-mark.svg',
+          url: 'https://www.maftravel.com/',
+          logo: 'https://www.maftravel.com/images/maf-mark.svg',
           email: SUPPORT_EMAIL,
         },
         {
           '@type': 'WebSite',
-          '@id': 'https://maftravel.com/#website',
+          '@id': 'https://www.maftravel.com/#website',
           name: siteTitle,
-          url: 'https://maftravel.com/',
+          url: 'https://www.maftravel.com/',
           description,
-          publisher: { '@id': 'https://maftravel.com/#organization' },
+          publisher: { '@id': 'https://www.maftravel.com/#organization' },
           inLanguage: 'en',
         },
       ],

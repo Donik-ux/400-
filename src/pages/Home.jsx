@@ -93,7 +93,7 @@ const Home = () => {
   useSEO({
     title: t('homePage.seo.title'),
     description: t('homePage.seo.description'),
-    url: 'https://maftravel.com/',
+    url: 'https://www.maftravel.com/',
     keywords: ['cheap flights', 'AI trip planner', 'Antarctica expedition', 'budget travel',
       'flights to New York', 'flights to Las Vegas', 'Tashkent flights'],
   });
